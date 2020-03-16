@@ -8,22 +8,22 @@ services:
       context: ./nginx
     ports:
       - '2000:80'
-  client:
-    build:
-      dockerfile: Dockerfile.dev
-      context: ./client
-    volumes:
-      - /app/node_modules
-      - ./client:/app
-    environment:
-      - CHOKIDAR_USEPOLLING=true
-
-#  api:
+#  client:
 #    build:
 #      dockerfile: Dockerfile.dev
-#      context: ./server
+#      context: ./client
 #    volumes:
 #      - /app/node_modules
-#      - ./server:/app
-#    env_file:
-#      - ./env/dev.env
+#      - ./client:/app
+#    environment:
+#      - CHOKIDAR_USEPOLLING=true
+
+  api:
+    build:
+      dockerfile: Dockerfile.dev
+      context: ./server
+    volumes:
+      - /app/node_modules
+      - ./server:/app
+    env_file:
+      - ./server/env/dev.env
