@@ -1,0 +1,74 @@
+*,
+*::after,
+*::before {
+  margin: 0;
+  padding: 0;
+  box-sizing: inherit;
+}
+
+html {
+
+  font-size: 62.5%;
+
+}
+body {
+  font-family: "Roboto", sans-serif;
+  box-sizing: border-box;
+  overflow-x hidden
+  margin 0
+  padding 0
+  font-weight: 300;
+  line-height: 1.6;
+  color: dark-text
+  min-height: 100vh;
+}
+
+.btn-disabled{
+  pointer-events none
+  opacity 0.5
+  cursor not-allowed
+}
+
+.text-select-disable{
+  -webkit-user-select: none
+  -moz-user-select: none
+  -ms-user-select: none
+  user-select: none
+}
+.icon-btn{
+  display flex
+  align-items center
+  & > i{
+    font-size 2rem
+    margin-right 10px
+  }
+}
+button
+  cursor pointer
+  font-size 1.4rem !important
+  padding 8px 15px !important
+  position relative
+  &:disabled{
+    cursor none
+    pointer-events none
+  }
+
+a
+  text-decoration none !important
+  color inherit !important
+
+ul{
+  padding 0
+  margin 0
+  list-style-type none
+  li{
+    padding 0
+  }
+}
+p
+h1
+h2
+h3{
+  margin-bottom 0
+
+}

@@ -1,0 +1,35 @@
+absoluteMiddle() {
+  position absolute
+  left 50%
+  top 50%
+  transform translate(-50%, -50%)
+}
+
+clearfix() {
+  &::after {
+    content: "";
+    display: table;
+    clear: both;
+  }
+}
+
+scrollStyle(color) {
+  &::-webkit-scrollbar {
+    width: 7px;
+  }
+
+  /* Track */
+  &::-webkit-scrollbar-track {
+    box-shadow: inset 0 0 5px grey;
+  }
+
+  /* Handle */
+  &::-webkit-scrollbar-thumb {
+    background: color;
+  }
+
+  /* Handle on hover */
+  &::-webkit-scrollbar-thumb:hover {
+    background: darken(color, 5%)
+  }
+}
