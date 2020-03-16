@@ -11,11 +11,13 @@ import {delayLoad} from "../../common/utils/common";
 import {RoleFilterRoute} from "./route-types/role-filter-route";
 import {CustomSwitch} from "./route-types/custom-switch";
 import {userInfo} from "../../common/states/common";
+import {offlineApi} from "../../api/api";
 
 
 class App extends React.Component {
     constructor(props) {
         super(props);
+        offlineApi.get("/loz").then(s => console.log(s))
     };
 
     render() {
