@@ -1,0 +1,107 @@
+.multiple-select{
+
+  position relative
+  .empty-notify{
+    padding 6px 15px
+    font-size 1.4rem
+    color commonText
+  }
+  .tags-container{
+    padding 6px 15px
+    border 1px solid lightgray
+    border-radius 4px
+    cursor text
+    font-size 1.4rem
+    line-height 30px
+    word-break keep-all
+    white-space pre-wrap
+    vertical-align middle
+    .tag{
+      margin-right 6px
+      background-color success2
+      border-radius 4px
+      font-weight 500
+      white-space nowrap
+      font-size 1.3rem
+      &:hover{
+        background-color darken(success2, 10%)
+
+      }
+      padding 5px 8px
+      color white
+      i{
+        cursor pointer
+        margin-left 10px
+      }
+    }
+    .content{
+      color inverse
+      display inline
+      word-break break-word
+      white-space pre-wrap
+      i{
+        position: absolute;
+        width: 1px;
+        height: 80%;
+        background-color: gray;
+        left: 5px;
+        top: 10%;
+        animation-name: blink;
+        animation-duration: 800ms;
+        animation-iteration-count: infinite;
+        opacity: 1;
+      }
+
+    }
+
+    .rest-input{
+      outline none
+      border none
+      min-width 50px
+      display inline-block
+      word-break break-word
+      white-space pre-wrap
+
+    }
+  }
+  .search-result{
+    position absolute
+    z-index 2
+    background-color white
+    top calc(100% + 10px)
+    left 0
+    width 100%
+    border-radius 4px
+    box-shadow 0px 0px 15px 1px rgba(69, 65, 78, 0.2)
+    color inverse
+    .result-item{
+      font-size 1.4rem
+      padding 6px 15px
+      cursor pointer
+      margin-bottom 3px
+      &.picked{
+        background-color success2
+        color white
+      }
+      &:not(.picked):hover{
+        background-color darken(white, 5%)
+      }
+    }
+    .result-summary{
+      padding 6px 15px
+      margin-bottom 3px
+      font-size 1.4rem
+
+      .value{
+        color info
+        font-weight 500
+        margin-right 5px
+        font-size 1.5rem
+      }
+    }
+  }
+}
+@keyframes blink {
+  from { opacity: 1; }
+  to { opacity: 0; }
+}

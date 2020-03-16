@@ -1,0 +1,47 @@
+.common-checkbox{
+  display: block;
+  position: relative;
+  cursor: pointer;
+  font-size: 22px;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  &:hover{
+    input ~ .check-mark{
+      background-color: #ccc;
+    }
+  }
+  input{
+    position: absolute;
+    opacity: 0;
+    cursor: pointer;
+    &:checked ~ .check-mark{
+      background-color: info;
+    }
+    &:checked ~ .check-mark:after{
+      display: block;
+    }
+  }
+  .check-mark {
+    position: absolute;
+    top 50%
+    left 50%
+    transform translate(-50%, -50%)
+    height: 25px;
+    width: 25px;
+    background-color: #eee;
+    &:after{
+      content: "";
+      position: absolute;
+      display: none;
+      top 50%
+      left 50%
+      width: 6px;
+      height: 10px;
+      border: solid white;
+      border-width: 0 2px 2px 0;
+      transform:  translate(-50%, -50%) rotate(45deg);
+    }
+  }
+}

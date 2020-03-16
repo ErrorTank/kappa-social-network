@@ -1,0 +1,70 @@
+.statistic-panel{
+  margin-bottom 20px
+  display flex
+  flex-wrap wrap
+  .statistic-item{
+    margin-left 20px
+    &.style-info{
+      .item-main{
+        border-bottom-color info
+        .content{
+          .value{
+            color info
+          }
+        }
+      }
+    }
+    &.style-danger{
+      .item-main{
+        border-bottom-color danger2
+        .content{
+          .value{
+            color danger2
+          }
+        }
+      }
+    }
+    &.style-warning{
+      .item-main{
+        border-bottom-color warning
+        .content{
+          .value{
+            color warning
+          }
+        }
+      }
+    }
+    .item-main{
+      border-radius 4px
+      box-shadow 0 1px 20px 0 rgba(69,90,100,.08)
+      background-color white
+      border-bottom 5px solid transparent
+      display flex
+      justify-content space-between
+      align-items center
+      padding 20px
+
+      .icon{
+        font-size 2.8rem
+        color inverse
+      }
+      .content{
+        .value{
+          font-size 1.6rem
+          font-weight 600
+        }
+        .label{
+          color #919aa3
+          font-size 1.4rem
+        }
+      }
+
+
+    }
+    flex 0 0 calc((100% - 60px)/4)
+    &:nth-of-type(4n+1){
+
+      margin-left 0
+    }
+  }
+}

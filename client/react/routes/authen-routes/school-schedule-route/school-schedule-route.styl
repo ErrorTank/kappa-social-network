@@ -1,0 +1,127 @@
+
+.manage-list-route{
+  .info{
+    width 30px
+    .class-tooltip{
+
+      .tooltip-content{
+        background-color white
+        box-shadow 0 2px 30px 6px rgba(0,0,0,.1)
+        max-width none !important
+        padding 0 !important
+      }
+
+
+      .class-tooltip-content{
+        position relative
+        width 400px
+        .ctc-panel{
+          width 200px
+          display inline-block
+          vertical-align top
+          padding 10px
+          .ctc-label{
+            color inverse
+            font-size 1.4rem
+            font-weight 500
+            text-align center
+          }
+          .ctc-value{
+            margin-top 10px
+            font-size 1.8rem
+            font-weight 600
+            color info
+            &.full{
+              color success2
+            }
+            &.canDisabled{
+              color danger2
+            }
+          }
+        }
+        .separate{
+          width 1px
+          background-color common-border
+          height 55px
+          position absolute
+          absoluteMiddle()
+        }
+      }
+    }
+
+    position relative
+    .tooltip-holder{
+      i{
+        font-size 20px
+        color #919aa3
+      }
+    }
+  }
+  .tooltip-wrapper{
+
+  }
+  .checked-actions{
+    margin-bottom 15px
+    text-align right
+    button{
+      margin-left 10px
+      font-size  1.2rem !important
+      font-weight 500
+      padding 5px 15px !important
+      &.disabled-class-btn{
+        color white
+        background-color inverse
+        &:hover{
+          background-color darken(inverse, 10%)
+        }
+      }
+    }
+  }
+  .custom-summary{
+    font-weight 500
+    font-size 1.5rem
+    color inverse
+    margin-bottom 15px
+    span{
+      color info
+
+    }
+  }
+  .route-actions{
+    padding 20px 20px 0 20px
+    text-align right
+    display flex
+    justify-content flex-end
+  }
+  .schedule-items{
+    padding 20px
+  }
+  .table-actions{
+    display flex
+    flex-wrap wrap
+    justify-content space-between
+    .search-schedules{
+      flex 0 0 100% !important
+      input{
+        width 300px
+      }
+    }
+    .spec-select{
+      flex 0 0 30%
+      margin-bottom 30px
+      display flex
+      align-items center
+      width 500px
+      .common-select{
+        flex-grow 1
+      }
+      .label{
+        font-size 1.5rem
+        color inverse
+        font-weight 500
+        margin-right 10px
+      }
+    }
+
+  }
+}

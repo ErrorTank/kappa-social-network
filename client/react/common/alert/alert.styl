@@ -1,0 +1,60 @@
+.common-alert{
+  font-size 1.5rem
+  border-radius 4px
+  position relative
+  padding 1.2rem 2rem
+  border 1px solid transparent
+  .content{
+    strong{
+      font-weight 550
+    }
+  }
+  &.border-alert{
+    border-left-width 3px
+  }
+  &.icon-alert{
+    border-left-width 48px
+    .alert-icon{
+      position absolute
+      top 50%
+      transform translateY(-50%)
+
+      left -32px
+      color white
+      i{
+        font-size 1.8rem
+      }
+    }
+  }
+  &.warning-alert{
+    &.icon-alert{
+      background-color white
+      border-color warning
+      color warning
+    }
+    &.border-alert{
+      border-color warning
+      background-color white
+      color warning
+    }
+  }
+  &.success-alert{
+    &.icon-alert{
+      background-color white
+      border-color success
+      color success
+    }
+  }
+  &.danger-alert{
+    &.border-alert{
+      background-color white
+      border-color danger
+      color danger
+    }
+    &.icon-alert{
+      background-color white
+      border-color danger
+      color danger
+    }
+  }
+}

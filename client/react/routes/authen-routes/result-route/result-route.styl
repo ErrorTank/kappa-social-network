@@ -1,0 +1,59 @@
+.result-route{
+  display flex
+  .left-panel{
+    flex 0 0 280px
+    margin-right 20px
+    .student-summary{
+      padding 20px
+      .summary-info{
+        margin-bottom 15px
+        .label{
+          font-size 1.5rem
+          color inverse
+          margin-right 6px
+          font-weight 500
+        }
+        .value{
+          font-size 1.6rem
+          color info
+          font-weight 500
+        }
+      }
+    }
+  }
+  .right-panel{
+    flex 0 0 calc(100% - 300px)
+  }
+  .student-info{
+
+    padding 20px
+    border-bottom 1px solid common-border
+    font-size 1.5rem
+    color sectionTitle
+    span{
+      font-weight 500
+      margin 0 5px
+    }
+  }
+  .student-result{
+    padding 20px
+    .spec-select{
+      margin-bottom 30px
+      display flex
+      align-items center
+      width 500px
+      .label{
+        font-size 1.5rem
+        color inverse
+        font-weight 500
+        margin-right 15px
+      }
+      .value{
+        color info
+        font-size 1.7rem
+        font-weight 500
+      }
+    }
+
+  }
+}

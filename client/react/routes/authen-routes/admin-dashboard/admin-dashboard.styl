@@ -1,0 +1,39 @@
+.admin-dashboard-route{
+  max-width 1200px
+  .register-quantity{
+    max-width 600px
+    margin-top 25px
+
+    .white-box-body{
+      min-height 200px
+      position relative
+      .loading-inline{
+        i{
+          font-size 35px !important
+        }
+      }
+    }
+  }
+  .overview-panel{
+    display flex
+    .small-panel{
+      flex-grow 1
+      &:not(:last-of-type){
+        border-right 1px solid common-border
+      }
+      .label{
+        text-align center
+        color inverse
+        font-weight 500
+        font-size 16px
+      }
+      .value{
+        text-align center
+        color info2
+        font-weight 600
+        font-size 30px
+        margin-top 10px
+      }
+    }
+  }
+}

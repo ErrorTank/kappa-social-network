@@ -1,0 +1,88 @@
+.common-data-table{
+  min-height 400px
+  position relative
+  .result-table{
+    .grade-display{
+      color success
+      &.tach{
+        color danger
+      }
+      &.wait{
+        color orange2
+      }
+    }
+  }
+  .summary{
+    color #6c757e
+    font-size 16px
+    margin-bottom 15px
+  }
+  .table-footer{
+
+    margin-top 15px
+
+
+  }
+  .loading-inline{
+    .overlay{
+      background-color white
+      i{
+        font-size 50px
+        color #1a1a1a
+      }
+    }
+  }
+  table{
+    width 100%
+    color commonText
+    border-collapse collapse
+
+    tr{
+      max-width 100%
+      position relative
+      th
+      td{
+        padding 8px
+      }
+    }
+    .checkbox-cell{
+      width 40px
+      background-color white !important
+    }
+    thead{
+      font-size 1.2rem
+      color inherit
+      background-color white
+      border-bottom 1px solid #e7eaf3
+      border-top 1px solid #e7eaf3
+      font-weight 500
+    }
+    tbody{
+      .no-data{
+        color #725002
+        background-color #f8ebcd
+        padding 8px
+        font-size 1.3rem
+      }
+      font-size 1.3rem
+      tr{
+        border-top 1px solid #e7eaf3
+        cursor pointer
+
+        &:nth-of-type(odd){
+          background-color white
+          &:hover{
+            background-color darken(white, 3%)
+          }
+        }
+        &:nth-of-type(even){
+          background-color darken(white, 5%)
+          &:hover{
+            background-color darken(white, 8%)
+          }
+        }
+
+      }
+    }
+  }
+}

@@ -1,0 +1,122 @@
+.schedule-board{
+  position relative
+  .board-wrapper{
+    display flex
+    position relative
+    border-left 1px solid #F1F1F1
+    border-top 1px solid #F1F1F1
+    .board-column{
+      transition all 0.2s ease
+      border-right 1px solid #F1F1F1
+      &.active{
+        border-right-color darken(#F1F1F1, 15%)
+      }
+      .column-body{
+        position relative
+        .board-task{
+          position absolute
+          width 100%
+          left 0
+          padding 6px
+          .common-inner-task{
+            width 100%
+            height 100%
+            background-color white
+            display flex
+            flex-direction column
+            font-size 1.1rem
+            justify-content center
+            font-weight 450
+            color inverse
+            border 1px solid inverse
+            border-radius 3px
+            flex-wrap wrap
+            cursor pointer
+            & > div{
+              text-align center
+              padding 0 6px
+              word-break break-word
+              &:last-of-type{
+                margin-top 6px
+                font-size 1.2rem
+                color info
+              }
+            }
+          }
+        }
+        .board-cell{
+          font-size 1.4rem
+          color inverse
+          height 40px
+          line-height 40px
+          border-bottom  1px solid #F1F1F1
+          transition all 0.2s ease
+          &.active{
+            border-bottom-color darken(#F1F1F1, 15%)
+          }
+        }
+      }
+
+      &.first-column{
+        flex 0 0 70px !important
+        .column-header{
+          .board-cell{
+            position: relative
+
+            .left-cell-alias{
+              font-size 1.2rem
+              position absolute
+              clip-path: polygon(0 0, 0 100%, 100% 100%);
+              top 0
+              width 100%
+              left 0
+              height 100%
+              p{
+                position absolute
+                bottom 5px
+                left 10px
+                line-height 2
+              }
+            }
+            .top-cell-alias{
+              clip-path: polygon(100% 0, 0 0, 100% 100%);
+              font-size 1.2rem
+              width 100%
+              position absolute
+              background-color darken(white, 3%)
+              height 100%
+              top 0
+              left 0
+              p{
+                line-height 2
+                position absolute
+                top 5px
+                right 5px
+              }
+            }
+          }
+        }
+
+      }
+      flex 0 0 calc((100% - 70px) / 7)
+      .board-cell{
+        text-align center
+      }
+      .column-header{
+        .board-cell{
+          border-bottom  1px solid #F1F1F1
+          transition all 0.2s ease
+          &.active{
+            border-bottom-color darken(#F1F1F1, 15%)
+          }
+          height 50px
+          line-height 50px
+          font-size 1.5rem
+          font-weight 450
+          overflow hidden
+          color inverse
+        }
+      }
+    }
+  }
+}

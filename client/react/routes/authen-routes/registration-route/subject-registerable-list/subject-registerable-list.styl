@@ -1,0 +1,117 @@
+.subject-registerable-list{
+  .registration-details{
+    .lesson-tooltip{
+      width 100%
+
+      .tool-tip{
+        .tooltip-content{
+          background-color #2ECC71
+          color white
+        }
+
+      }
+      &.is-registered{
+
+        .tool-tip{
+          .tooltip-content{
+            background-color danger
+          }
+
+        }
+      }
+      &:not(:first-of-type){
+        .each-lesson{
+          margin-top 1.4rem
+        }
+      }
+    }
+    .each-lesson{
+      cursor pointer
+      position relative
+      .loading-inline{
+        i{
+          font-size 20px
+        }
+      }
+      &.full{
+        border-color danger !important
+      }
+      .status-bar{
+        margin-left auto
+        .lesson-badge{
+          &:not(:last-of-type){
+            margin-right 6px
+          }
+        }
+      }
+      display flex
+      align-items center
+      padding 8px
+      border 1px solid common-border
+
+      border-radius 3px
+      font-size 1.3rem
+      color #1a1a1a
+      .slot{
+        margin-left 6px
+        i{
+          margin-right 5px
+          font-size 1.4rem
+          color success
+        }
+      }
+      .day{
+        margin-right 8px
+      }
+      .class{
+        padding-right 12px
+        &.full{
+          .slot{
+            i{
+              color danger
+            }
+          }
+        }
+        &:not(:last-of-type){
+          border-right 1px solid darken(#f1f1f1, 10%)
+        }
+        &:not(:first-of-type){
+          padding-left 12px
+        }
+      }
+      .lesson-name{
+        color inverse
+        font-weight 500
+
+      }
+    }
+  }
+  .list-container{
+    display flex
+    flex-wrap wrap
+    .registration-subject{
+      flex 0 0 33.3%
+      cursor pointer
+      padding 6px
+      border 1px solid transparent
+      border-radius 3px
+      &.active{
+        border-color info
+        font-weight 500
+      }
+      &:not(.active):hover{
+        .s-name{
+          color darken(info, 20%)
+        }
+
+      }
+      .s-name{
+
+        font-size 1.3rem
+        color info
+
+
+      }
+    }
+  }
+}

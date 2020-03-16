@@ -1,0 +1,63 @@
+.user-section{
+  align-self center
+  margin-left auto
+  cursor pointer
+  display flex
+  align-items center
+  position relative
+  .full-name{
+    font-size 1.5rem
+    margin-left 1rem
+    margin-right 1rem
+    max-width 150px
+    overflow hidden
+    text-overflow ellipsis
+    white-space nowrap
+  }
+  .user-dropdown{
+
+
+    top 100%
+    right 0
+    position absolute
+    .dropdown-content{
+      margin-top 30px
+      background-color white
+      border-radius 0.25rem
+      position relative
+      padding 8px 0
+      z-index 1
+      .decorate{
+        position absolute
+        width 20px
+        height 20px
+        background-color white
+        transform rotateZ(45deg)
+        right 15px
+        top -9px
+        z-index -1
+      }
+      box-shadow 0 2px 30px 6px rgba(0,0,0,.1)
+      .dropdown-item{
+        padding .7em 20px
+        background-color white
+        display flex
+        align-items center
+        font-size 2.5rem
+        z-index 1
+        color lightgrey
+        &.active{
+          background-color darken(white, 5%)
+        }
+        &:hover{
+          background-color darken(white, 5%)
+        }
+        span{
+          font-size 1.4rem
+          margin-left 1.2rem
+        }
+      }
+    }
+
+  }
+}

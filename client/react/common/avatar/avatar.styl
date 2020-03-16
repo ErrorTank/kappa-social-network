@@ -1,0 +1,52 @@
+.avatar{
+  width 65px
+  height 65px
+  border-radius 50%
+  &.round{
+    border-radius 4px
+  }
+  &.small{
+    height 40px
+    width 40px
+    img{
+      max-height 41px
+    }
+    .fake-ava{
+      height 40px
+      width 40px
+      font-size 1.8rem
+      line-height 40px
+    }
+
+  }
+  overflow hidden
+  display inline-block
+  position relative
+  img{
+    top 50%
+    left 50%
+    max-height 66px
+
+    transform translate(-50%, -50%)
+    position absolute
+  }
+  .fake-ava{
+    top 50%
+    left 50%
+    width 65px
+    height 65px
+
+    transform translate(-50%, -50%)
+    position absolute
+    font-size 2.6rem
+
+    text-align center
+    font-weight bold
+    line-height 65px
+    display inline-block
+    //background-color #d3d2d3
+    //color #919090
+    background-color info
+    color white
+  }
+}

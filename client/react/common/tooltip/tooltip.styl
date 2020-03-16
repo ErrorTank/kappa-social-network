@@ -1,0 +1,41 @@
+.tooltip-container{
+  position relative
+  display inline-block
+  .tool-tip{
+    position absolute
+
+    z-index 1
+    &.bottom{
+      top 100%
+      left 50%
+      transform translateX(-50%)
+
+
+      .tooltip-content{
+        margin-top 0px
+
+      }
+    }
+    &.left{
+      top 50%
+      transform translateY(-50%)
+      right 100%
+
+
+      .tooltip-content{
+        margin-top 0px
+
+      }
+    }
+    .tooltip-content{
+      transition background-color 300ms ease
+      background-color #1a1a1a
+      color white
+      font-size 13px
+      padding 5px 20px
+      text-align center
+      max-width 200px
+      border-radius 4px
+    }
+  }
+}
