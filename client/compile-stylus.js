@@ -32,7 +32,7 @@ module.exports = {
                         starttag: '// inject:all',
                         endtag: '// endinject',
                         transform: function (filepath, file, i, length) {
-                            return `@import "../..${filepath}";`;
+                            return `@import "../${filepath}";`;
                         }
                     }))
                     .pipe(gulp.dest(`./style/`))
@@ -46,7 +46,6 @@ module.exports = {
 
         return {
             watch: () => {
-                inject_().then(compileStyl);
                 chokidar
                     .watch([`./**/*.styl`], {
                         ignoreInitial: true
@@ -61,6 +60,8 @@ module.exports = {
                         compileStyl();
                     })
                 ;
+                return inject_().then(compileStyl);
+
             },
             compile: ()=> {
                 return inject_().then(compileStyl);

@@ -6,7 +6,7 @@ const nodemon = require("gulp-nodemon");
 
 const stylusCompiler = {
     watch: (desk) => {
-        require("./compile-stylus").createCompiler(desk).watch();
+        return require("./compile-stylus").createCompiler(desk).watch();
     },
     compile: (desk) => {
         return require("./compile-stylus").createCompiler(desk).compile();
@@ -39,9 +39,9 @@ gulp.task("dev", () => {
     stylusCompiler.watch("build").then(() => {
         spawn("node", ["./scripts/copy-assets", "dev"], {stdio: "inherit"})
         if (!/^win/.test(process.platform)) { // linux
-            return spawn("webpack", ["--watch"], {stdio: "inherit"});
+            return spawn("webpack-dev-server", {stdio: "inherit"});
         } else {
-            return spawn('cmd', ['/s', "/c", "webpack", "--w"], {stdio: "inherit"});
+            return spawn('cmd', ['/s', "/c", "webpack-dev-server"], {stdio: "inherit"});
         }
     });
 

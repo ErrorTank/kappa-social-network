@@ -12,7 +12,8 @@ const envKeys = Object.keys(env).reduce((prev, next) => {
 module.exports = {
     mode: "development",
     watchOptions: {
-        ignored: ['node_modules', 'scripts']
+        ignored: ['node_modules', 'scripts'],
+        poll: 1000
     },
     entry: {
         loader: ["@babel/polyfill", "./react/loader.jsx"]
@@ -94,6 +95,15 @@ module.exports = {
                 use: `file-loader?name=[path][hash].[ext]&context=${path.resolve(__dirname, 'client')}`
             },
         ]
+    },
+    devServer: {
+        contentBase: path.join(__dirname, 'build'),
+        compress: true,
+        host: '0.0.0.0',
+        port: 2000,
+        hot: true,
+        inline: true,
+        disableHostCheck: true
     },
     devtool: "cheap-module-eval-source-map"
 };

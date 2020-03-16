@@ -2,7 +2,7 @@ const fs = require("fs-extra");
 const path = require("path");
 
 const listDirFiles = ["assets"];
-const source = "./public";
+const source = "../public";
 
 const dest = process.argv[2] === 'dev' ? "build" : "dist";
 
