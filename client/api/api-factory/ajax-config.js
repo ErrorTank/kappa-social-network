@@ -3,6 +3,7 @@ export const sendRequest = ({url, type, data, headers, beforeSend, onError}) => 
     url,
     contentType: "application/json",
     type,
+    async: true,
     beforeSend: (xhr) => {
       if (headers && Object.keys(headers).length) {
         Object.keys(headers).map((each) => {

@@ -66,6 +66,7 @@ export const apiFactory = {
           $.ajax({
             url: hostURL + url,
             type: 'POST',
+            async: true,
             beforeSend: (xhr) => {
               if (headers && Object.keys(headers).length) {
                 Object.keys(headers).map((each) => {
