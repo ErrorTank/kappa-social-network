@@ -20,7 +20,7 @@ module.exports = {
     },
     output: {
         filename: 'bundle.js',
-        chunkFilename: '[name].bundle.js',
+        chunkFilename: '[name].[chunkhash].bundle.js',
         publicPath: "/",
         path: path.resolve(__dirname, 'build'),
 

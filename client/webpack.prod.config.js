@@ -22,7 +22,7 @@ module.exports = {
     },
     output: {
         filename: 'bundle.js',
-        chunkFilename: '[name].bundle.js',
+        chunkFilename: '[name].[chunkhash].bundle.js',
         publicPath: "/",
         path: path.resolve(__dirname, 'dist'),
     },
@@ -40,6 +40,7 @@ module.exports = {
             }
         })],
         splitChunks: {
+            chunks: 'all',
             cacheGroups: {
                 default: false,
                 vendors: false,
