@@ -97,6 +97,9 @@ const userSchema = new Schema({
         ],
         default: []
     },
+    notification_settings: {
+
+    },
     notifications: {
         type: [
             {
@@ -245,9 +248,6 @@ const userSchema = new Schema({
             type: Boolean,
             default: false
         }
-    },
-    notification_settings: {
-
     },
     security_settings: {
         login_sessions: {
