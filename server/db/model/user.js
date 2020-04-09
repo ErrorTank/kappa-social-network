@@ -1,6 +1,7 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 const ObjectId = mongoose.Schema.Types.ObjectId;
+const {AddressSchema} = require("./common-schema/common");
 
 const userSchema = new Schema({
     last_active_at: {
@@ -239,12 +240,139 @@ const userSchema = new Schema({
         ],
         default: []
     },
-    email: {
-        type: String,
-        required: true,
-        index: true,
-        unique: true
-    }
+    general_settings: {
+        block_friend_request: {
+            type: Boolean,
+            default: false
+        }
+    },
+    notification_settings: {
+
+    },
+    security_settings: {
+        login_sessions: {
+            type: [
+                {
+                    name: String,
+                    location: {
+                        lat: Number,
+                        lng: Number
+                    },
+                    last_sign_out: Date,
+                    browser: String
+                }
+            ]
+        }
+    },
+    cover_photo: String,
+    private_info: {
+        password: {
+            type: String,
+            required: true
+        },
+    },
+    basic_info: {
+        first_name: {
+            type: String,
+            required: true
+        },
+        last_name: {
+            type: String,
+            required: true
+        },
+        gender: {
+            type: String,
+            enum: ["MALE", "FEMALE", "OTHERS"],
+            required: true
+        },
+        dob: {
+            type: Date,
+        },
+        last_updated: {
+            type: Date,
+            default: Date.now
+        },
+        is_show: {
+            type: Boolean,
+            default: true
+        }
+    },
+    contact: {
+        address: AddressSchema,
+        login_username: {
+            type: {
+                phone: String,
+                email: String
+            },
+            required: true
+        },
+        last_updated: {
+            type: Date,
+            default: Date.now
+        },
+        is_show: {
+            type: Boolean,
+            default: true
+        }
+    },
+    relationship: {
+        status: ["SINGLE", "IN_RELATIONSHIP", "COMPLICATED"],
+        related_person: {
+            type: ObjectId,
+            ref: "User"
+        },
+        last_updated: {
+            type: Date,
+            default: Date.now
+        },
+        is_show: {
+            type: Boolean,
+            default: true
+        }
+    },
+    works: {
+        type: [
+            {
+                company: String,
+                position: String,
+                currently_working: {
+                    type: Boolean,
+                    default: true
+                },
+                last_updated: {
+                    type: Date,
+                    default: Date.now
+                },
+                is_show: {
+                    type: Boolean,
+                    default: true
+                },
+
+            }
+
+        ]
+    },
+    schools: {
+        type: [
+            {
+                school: String,
+                graduated: {
+                    type: Boolean,
+                    default: true
+                },
+                last_updated: {
+                    type: Date,
+                    default: Date.now
+                },
+                is_show: {
+                    type: Boolean,
+                    default: true
+                },
+
+            }
+
+        ]
+    },
 });
 
 
