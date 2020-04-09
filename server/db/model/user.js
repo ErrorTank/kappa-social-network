@@ -333,7 +333,13 @@ const userSchema = new Schema({
     works: {
         type: [
             {
-                company: String,
+                company: {
+                    related: {
+                        type: ObjectId,
+                        ref: "Page"
+                    },
+                    text: String
+                },
                 position: String,
                 currently_working: {
                     type: Boolean,
@@ -355,7 +361,13 @@ const userSchema = new Schema({
     schools: {
         type: [
             {
-                school: String,
+                school: {
+                    related: {
+                        type: ObjectId,
+                        ref: "Page"
+                    },
+                    text: String
+                },
                 graduated: {
                     type: Boolean,
                     default: true
