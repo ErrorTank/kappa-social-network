@@ -98,16 +98,55 @@ const userSchema = new Schema({
         default: []
     },
     notification_settings: {
-
+        friend_request: {
+            type: Boolean,
+            default: true
+        },
+        followed_friend_post: {
+            type: Boolean,
+            default: true
+        },
+        post_comment_been_reacted: {
+            type: Boolean,
+            default: true
+        },
+        post_comment_been_replied: {
+            type: Boolean,
+            default: true
+        },
+        tagged_in: {
+            type: Boolean,
+            default: true
+        },
+        blocked_notification_groups: {
+            type: [
+                {
+                    type: ObjectId,
+                    ref: "Group"
+                }
+            ],
+            default: []
+        },
+        blocked_notification_pages: {
+            type: [
+                {
+                    type: ObjectId,
+                    ref: "Group"
+                }
+            ],
+            default: []
+        },
     },
     notifications: {
+
         type: [
             {
                 notification_type: {
-                    enum: ["POST_ON_YOUR_WALL", "YOU_BEEN_TAGGED", "YOU_BEEN_MENTIONED_IN_POST", "YOU_BEEN_MENTIONED_IN_COMMENT", "YOU_BEEN_FOLLOWED", "YOUR_COMMENT_BEEN_REACTED", "YOUR_COMMENT_BEEN_LIKED",
+                    enum: [
+                        "POST_ON_YOUR_WALL", "YOU_BEEN_TAGGED", "YOU_BEEN_MENTIONED_IN_POST", "YOU_BEEN_MENTIONED_IN_COMMENT", "YOU_BEEN_FOLLOWED", "YOUR_COMMENT_BEEN_REACTED", "YOUR_COMMENT_BEEN_LIKED",
                         "YOUR_COMMENT_BEEN_REPLIED", "YOUR_POST_BEEN_LIKED", "YOUR_POST_BEEN_REACTED", "YOUR_POST_BEEN_COMMENTED", "FRIEND_REQUEST_ACCEPTED", "YOUR_BIRTHDAY", "FRIENDS_BIRTHDAY",
                         "YOUR_PAGE_BEEN_LIKED", "YOUR_PAGE_HAS_MESSAGE", "YOUR_PAGE_BEEN_UPDATED", "YOUR_GROUP_BEEN_UPDATED", "INVITE_YOU_TO_PAGE", "INVITE_YOU_TO_GROUP", "LIKED_PAGE_POST", "FOLLOWED_PERSON_POST",
-                        "JOINED_GROUP_HAS_NEW_POST"
+                        "JOINED_GROUP_HAS_NEW_POST", "YOUR_GROUP_HAS_NEW_POST"
                     ]
 
                 },
