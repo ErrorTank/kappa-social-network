@@ -318,6 +318,28 @@ const userSchema = new Schema({
             required: true
         },
     },
+    privacy_setting: {
+        can_see_photos: {
+            type: String,
+            enum: ["PERSONAL", "FRIENDS", "PUBLIC"],
+            default: "FRIENDS"
+        },
+        can_see_friends: {
+            type: String,
+            enum: ["PERSONAL", "FRIENDS", "PUBLIC"],
+            default: "PUBLIC"
+        },
+        can_see_wall: {
+            type: String,
+            enum: ["PERSONAL", "FRIENDS", "PUBLIC"],
+            default: "FRIENDS"
+        },
+        can_see_profile: {
+            type: String,
+            enum: ["PERSONAL", "FRIENDS", "PUBLIC"],
+            default: "PUBLIC"
+        },
+    },
     basic_info: {
         first_name: {
             type: String,
@@ -339,10 +361,6 @@ const userSchema = new Schema({
             type: Date,
             default: Date.now
         },
-        is_show: {
-            type: Boolean,
-            default: true
-        }
     },
     contact: {
         address: AddressSchema,
@@ -357,10 +375,6 @@ const userSchema = new Schema({
             type: Date,
             default: Date.now
         },
-        is_show: {
-            type: Boolean,
-            default: true
-        }
     },
     relationship: {
         status: ["SINGLE", "IN_RELATIONSHIP", "COMPLICATED"],
@@ -372,10 +386,6 @@ const userSchema = new Schema({
             type: Date,
             default: Date.now
         },
-        is_show: {
-            type: Boolean,
-            default: true
-        }
     },
     works: {
         type: [
@@ -396,10 +406,7 @@ const userSchema = new Schema({
                     type: Date,
                     default: Date.now
                 },
-                is_show: {
-                    type: Boolean,
-                    default: true
-                },
+
 
             }
 
@@ -423,10 +430,7 @@ const userSchema = new Schema({
                     type: Date,
                     default: Date.now
                 },
-                is_show: {
-                    type: Boolean,
-                    default: true
-                },
+
 
             }
 

@@ -27,6 +27,26 @@ const groupSchema = new Schema({
         ],
         default: []
     },
+    member_reported_posts: {
+        type: [
+            {
+                post: {
+                    type: ObjectId,
+                    ref: "GroupPost"
+                },
+                reported_by: {
+                    type: [
+                        {
+                            type: ObjectId,
+                            ref: "User"
+                        }
+                    ]
+                }
+
+            }
+        ],
+        default: []
+    } ,
     person_group_block: {
         type: [
             {
