@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 const ObjectId = mongoose.Schema.Types.ObjectId;
-
+const editorContentSchema = require("./editor-content");
 
 const postSchema = {
     policy: {
@@ -8,30 +8,7 @@ const postSchema = {
         enum: ["PERSONAL", "FRIENDS", "PUBLIC"],
         default: "PUBLIC"
     },
-    photos: {
-        default: [],
-        type: [
-            {
-                type: String,
-            }
-        ]
-    },
-    files: {
-        default: [],
-        type: [
-            {
-                type: String,
-            }
-        ]
-    },
-    videos: {
-        default: [],
-        type: [
-            {
-                type: String,
-            }
-        ]
-    },
+
     tagged: {
         default: [],
         type: [
@@ -71,10 +48,7 @@ const postSchema = {
             }
         ]
     },
-    content: {
-        type: String,
-        required: true
-    },
+    ...editorContentSchema,
     shared_page_post: {
         type: ObjectId,
         ref: "PagePost"
@@ -95,34 +69,7 @@ const postSchema = {
         default: [],
         type: [
             {
-                content: {
-                    type: String,
-                    required: true
-                },
-                photos: {
-                    default: [],
-                    type: [
-                        {
-                            type: String,
-                        }
-                    ]
-                },
-                files: {
-                    default: [],
-                    type: [
-                        {
-                            type: String,
-                        }
-                    ]
-                },
-                videos: {
-                    default: [],
-                    type: [
-                        {
-                            type: String,
-                        }
-                    ]
-                },
+                ...editorContentSchema,
                 mentioned_page: {
                     default: [],
                     type: [
