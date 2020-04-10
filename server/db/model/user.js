@@ -150,6 +150,14 @@ const userSchema = new Schema({
                     ]
 
                 },
+                belonged_group: {
+                    type: ObjectId,
+                    ref: "Group"
+                },
+                belonged_page: {
+                    type: ObjectId,
+                    ref: "Page"
+                },
                 published_time: {
                     type: Date,
                     default: Date.now
@@ -294,8 +302,8 @@ const userSchema = new Schema({
                 {
                     name: String,
                     location: {
-                        lat: Number,
-                        lng: Number
+                        lat: String,
+                        lng: String
                     },
                     last_sign_out: Date,
                     browser: String
