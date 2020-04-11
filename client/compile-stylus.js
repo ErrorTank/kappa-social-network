@@ -2,7 +2,7 @@ const chokidar = require("chokidar");
 const gulp = require("gulp");
 
 module.exports = {
-    createCompiler(desk) {
+    createCompiler(desk, done) {
         let compileStyl = function() {
             return new Promise((resolve, reject)=> {
                 let stylus = require("gulp-stylus");
@@ -10,11 +10,17 @@ module.exports = {
                     .pipe(stylus({
                         compress: true
                     }))
+                    .on("error", (error) => {
+
+                        reject(error);
+                    })
                     .pipe(gulp.dest(desk))
+
                     .on("end", function() {
                         resolve();
                         console.log("Compiling done");
                     })
+
                 ;
             });
         };
@@ -35,6 +41,10 @@ module.exports = {
                             return `@import "..${filepath}";`;
                         }
                     }))
+                    .on("error", (error) => {
+
+                        reject(error);
+                    })
                     .pipe(gulp.dest(`./style/`))
                     .on("end", ()=>{
                         console.log("Inject done");
@@ -59,6 +69,7 @@ module.exports = {
                     .on('change', function(event, path) {
                         compileStyl();
                     })
+                    // .on('error', error => console.log(`Watcher error: ${error}`))
                 ;
                 return inject_().then(compileStyl);
 

@@ -5,11 +5,11 @@ const rimraf = require('rimraf');
 
 
 const stylusCompiler = {
-    watch: (desk) => {
-        return require("./compile-stylus").createCompiler(desk).watch();
+    watch: (desk, done) => {
+        return require("./compile-stylus").createCompiler(desk, done).watch();
     },
-    compile: (desk) => {
-        return require("./compile-stylus").createCompiler(desk).compile();
+    compile: (desk, done) => {
+        return require("./compile-stylus").createCompiler(desk, done).compile();
     }
 };
 
@@ -35,32 +35,32 @@ const stylusCompiler = {
 //     })
 // };
 
-gulp.task("dev", () => {
+gulp.task("dev", (done) => {
     rimraf('./build/**/*', () => {
-       stylusCompiler.watch("build").then(() => {
+       stylusCompiler.watch("build", done).then(() => {
             spawn("node", ["./scripts/copy-assets", "dev"], {stdio: "inherit"})
             if (!/^win/.test(process.platform)) { // linux
                 return spawn("webpack-dev-server", {stdio: "inherit"});
             } else {
                 return spawn('cmd', ['/s', "/c", "webpack-dev-server"], {stdio: "inherit"});
             }
-        });
+        }).catch(err => console.log(err));
     });
 
 
 });
 
 
-gulp.task("build-prod", () => {
+gulp.task("build-prod", (done) => {
     rimraf('./dist/**/*', () => {
-        return stylusCompiler.compile("dist").then(() => {
+        return stylusCompiler.compile("dist", done).then(() => {
             spawn("node", ["./scripts/copy-assets", "prod"], {stdio: "inherit"})
             if (!/^win/.test(process.platform)) { // linux
                 return spawn("webpack", ["--config", " ./webpack.prod.config.js"], {stdio: "inherit"});
             } else {
                 return spawn('cmd', ['/s', "/c", "webpack", "--config", "./webpack.prod.config.js"], {stdio: "inherit"});
             }
-        })
+        }).catch(err => console.log(err));
     });
 
 });
