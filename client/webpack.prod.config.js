@@ -4,6 +4,7 @@ const webpack = require("webpack");
 const AsyncChunkNames = require('webpack-async-chunk-names-plugin');
 const HtmlWebPackPlugin = require("html-webpack-plugin");
 const TerserPlugin = require('terser-webpack-plugin');
+
 const env = dotenv.config({path: "./env/prod.env"}).parsed;
 
 const envKeys = Object.keys(env).reduce((prev, next) => {
@@ -22,7 +23,7 @@ module.exports = {
     },
     output: {
         filename: 'bundle.js',
-        chunkFilename: '[name].[chunkhash].bundle.js',
+        chunkFilename: '[name].bundle.js',
         publicPath: "/",
         path: path.resolve(__dirname, 'dist'),
     },

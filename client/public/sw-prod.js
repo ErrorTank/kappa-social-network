@@ -1,7 +1,7 @@
 
 
-var CACHE_STATIC_NAME = 'static-v1';
-var CACHE_DYNAMIC_NAME = 'dynamic-v1';
+var CACHE_STATIC_NAME = 'static-v6';
+var CACHE_DYNAMIC_NAME = 'dynamic-v6';
 var STATIC_FILES = [
     '/',
     '/index.html',
@@ -12,8 +12,8 @@ var STATIC_FILES = [
     '/assets/vendor/sw-utilities.js',
     '/main.css',
     "/assets/vendor/fonts/css/all.min.css",
-    "/assets/images/icons/favicon-32x32.png",
-    "/assets/images/icons/favicon-192x192.png",
+    "/assets/images/icons/app-icon-32x32.png",
+    "/assets/images/icons/app-icon-192x192.png",
     'https://fonts.googleapis.com/css?family=Lato:300,300i,400,400i,700,700i|Montserrat:400,400i,500,500i,600,600i,700,700i|Open+Sans:400,400i,600,600i,700,700i|Roboto:400,400i,500,500i,700,700i&display=swap&subset=latin-ext,vietnamese',
     'https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css'
 ];
@@ -58,38 +58,43 @@ function isInArray(string, array) {
 }
 
 self.addEventListener('fetch', function (event) {
-
+    console.log("dasdas")
     if (isInArray(event.request.url, STATIC_FILES)) {
         event.respondWith(
             caches.match(event.request)
         );
     } else {
-        event.respondWith(
-            caches.match(event.request)
-                .then(function (response) {
-                    if (response) {
-                        return response;
-                    } else {
-                        return fetch(event.request)
-                            .then(function (res) {
-                                return caches.open(CACHE_DYNAMIC_NAME)
-                                    .then(function (cache) {
-                                        // trimCache(CACHE_DYNAMIC_NAME, 3);
-                                        cache.put(event.request.url, res.clone());
-                                        return res;
-                                    })
-                            })
-                            .catch(function (err) {
-                                return caches.open(CACHE_STATIC_NAME)
-                                    .then(function (cache) {
-                                        if (event.request.headers.get('accept').includes('text/html')) {
-                                            return cache.match('/index.html');
-                                        }
-                                    });
-                            });
-                    }
-                })
-        );
+        if(event.request.url.indexOf("/sockjs-node/info?")){
+            return;
+        }else{
+            event.respondWith(
+                caches.match(event.request)
+                    .then(function (response) {
+                        if (response) {
+                            return response;
+                        } else {
+                            return fetch(event.request)
+                                .then(function (res) {
+                                    return caches.open(CACHE_DYNAMIC_NAME)
+                                        .then(function (cache) {
+                                            // trimCache(CACHE_DYNAMIC_NAME, 3);
+                                            cache.put(event.request.url, res.clone());
+                                            return res;
+                                        })
+                                })
+                                .catch(function (err) {
+                                    return caches.open(CACHE_STATIC_NAME)
+                                        .then(function (cache) {
+                                            if (event.request.headers.get('accept').includes('text/html')) {
+                                                return cache.match('/index.html');
+                                            }
+                                        });
+                                });
+                        }
+                    })
+            );
+        }
+
     }
 });
 

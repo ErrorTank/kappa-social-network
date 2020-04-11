@@ -1,9 +1,11 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import {MainRoute} from "./routes/routes";
+import {App} from "./routes/routes";
 import {authenLoader} from "../sercurity/authen-loader";
+import {registerServiceWorker} from "../register-service-worker";
 
-
-authenLoader.init().then(() => {
-    ReactDOM.render(<MainRoute/>, document.getElementById("app"));
-});
+registerServiceWorker()
+    .then(() => authenLoader.init())
+    .then(() => {
+        ReactDOM.render(<App/>, document.getElementById("app"));
+    });

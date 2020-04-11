@@ -14,7 +14,7 @@ import {userInfo} from "../../common/states/common";
 import {offlineApi} from "../../api/api";
 
 
-class App extends React.Component {
+class MainRoute extends React.Component {
     constructor(props) {
         super(props);
         offlineApi.get("/loz").then(s => console.log(s))
@@ -30,6 +30,7 @@ class App extends React.Component {
         return (
             <Suspense fallback={<OverlayLoading/>}>
                 {process.env.APP_URI}
+                du ma may dasda
                 {/*cc*/}
                 {/*{isError ? <Redirect to={{pathname: "/"}}/> : (*/}
                 {/*    <CustomSwitch>*/}
@@ -45,24 +46,35 @@ class App extends React.Component {
     };
 }
 
-export class MainRoute extends React.Component {
+export class App extends React.Component {
     constructor(props) {
         super(props);
     };
 
+    enableNotification = () => {
+
+    };
 
     render() {
 
         return (
-            <div id="main-route">
-                <Router
-                    history={customHistory}
-                >
-                    <Route component={App}/>
-                </Router>
+            <div className="app">
+                {'Notification' in window && 'serviceWorker' in navigator && (
+                    <div className="notification-prompt">
+                        Kappa cần sự cho phép của bạn để <span onClick={this.enableNotification}>Gửi thông báo</span>
+                    </div>
+                )}
+                <div id="main-route">
+                    <Router
+                        history={customHistory}
+                    >
+                        <Route component={MainRoute}/>
+                    </Router>
 
-                <ModalsRegistry/>
+                    <ModalsRegistry/>
+                </div>
             </div>
+
         );
     }
 }

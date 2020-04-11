@@ -4,6 +4,8 @@ const path = require("path");
 const listDirFiles = ["assets"];
 const source = "../public";
 
+listDirFiles.push(process.argv[2] === "dev" ? "sw-dev.js" : "sw-prod.js");
+
 const dest = process.argv[2] === 'dev' ? "build" : "dist";
 
 Promise.all(listDirFiles.map(item => fs.copy(path.resolve(__dirname, source + "/" + item), path.resolve(__dirname,"../" + dest + "/" + item), {overwrite: true})))

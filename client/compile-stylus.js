@@ -32,7 +32,7 @@ module.exports = {
                         starttag: '// inject:all',
                         endtag: '// endinject',
                         transform: function (filepath, file, i, length) {
-                            return `@import "../${filepath}";`;
+                            return `@import "..${filepath}";`;
                         }
                     }))
                     .pipe(gulp.dest(`./style/`))
