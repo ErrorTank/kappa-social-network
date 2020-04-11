@@ -17,4 +17,4 @@ const groupPostSchema = new Schema({
 });
 
 
-module.exports = (db) => db.model("GroupPost", groupPostSchema);
+module.exports = (db) => db.model("PagePost", groupPostSchema);

@@ -6,7 +6,7 @@ const createDbConnection = url => {
         resolver = resolve;
     }))();
     let connection = mongoose.createConnection(url, {useNewUrlParser: true, useCreateIndex: true, useFindAndModify: true, useUnifiedTopology: true}, () => {
-        console.log('\x1b[36m%s\x1b[32m',`Connect to ${url} mongoDB successfully`);
+        console.log('\x1b[36m%s\x1b[32m',`Connect to mongoDB endpoint: ${url} successfully!`);
         resolver();
     });
     return executedPromise.then(() => connection)

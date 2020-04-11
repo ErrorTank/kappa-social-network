@@ -42,6 +42,12 @@ module.exports = ({useCors = false}) => {
     if (!fs.existsSync(uploadDir + "/img")) {
         fs.mkdirSync(uploadDir + "/img");
     }
+    if (!fs.existsSync(uploadDir + "/file")) {
+        fs.mkdirSync(uploadDir + "/file");
+    }
+    if (!fs.existsSync(uploadDir + "/video")) {
+        fs.mkdirSync(uploadDir + "/video");
+    }
     return app;
 };
 

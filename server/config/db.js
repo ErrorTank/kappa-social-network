@@ -12,7 +12,7 @@ const createDbManager = () => {
                     return dbs;
                 })
                 .catch((err) => {
-                    console.log("Cannot connect to db");
+                    console.log("Cannot connect to db!");
                     return Promise.reject(err);
                 });
         },
