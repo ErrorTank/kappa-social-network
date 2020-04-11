@@ -58,6 +58,7 @@ module.exports = {
         }
     },
     plugins: [
+        new webpack.ProgressPlugin(),
         new webpack.DefinePlugin(envKeys),
         new HtmlWebPackPlugin({
             inject: true,

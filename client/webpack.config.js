@@ -1,7 +1,7 @@
 const path = require("path");
 const dotenv = require("dotenv");
 const webpack = require("webpack");
-const HtmlWebPackPlugin = require("html-webpack-plugin");
+const HtmlWebpackPlugin  = require("html-webpack-plugin");
 const env = dotenv.config({path: "./env/dev.env"}).parsed;
 
 const envKeys = Object.keys(env).reduce((prev, next) => {
@@ -11,10 +11,6 @@ const envKeys = Object.keys(env).reduce((prev, next) => {
 
 module.exports = {
     mode: "development",
-    watchOptions: {
-        ignored: ['node_modules', 'scripts'],
-        poll: 1000
-    },
     entry: {
         loader: ["@babel/polyfill", "./react/loader.jsx"]
     },
@@ -37,11 +33,12 @@ module.exports = {
         }
     },
     plugins: [
+        new webpack.ProgressPlugin(),
         new webpack.DefinePlugin(envKeys),
-        new HtmlWebPackPlugin({
+        new HtmlWebpackPlugin({
             inject: true,
             template: "./public/index.html",
-            filename: "./index.html",
+            filename: "index.html",
             minify: {
                 removeComments: true,
             }
@@ -103,7 +100,13 @@ module.exports = {
         port: 2000,
         hot: true,
         inline: true,
-        disableHostCheck: true
+        writeToDisk: true,
+        disableHostCheck: true,
+        watchContentBase: true,
+        watchOptions: {
+            ignored: ['node_modules', 'scripts'],
+            poll: 1000
+        },
     },
     devtool: "cheap-module-eval-source-map"
 };

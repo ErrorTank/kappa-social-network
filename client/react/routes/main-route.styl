@@ -1,12 +1,19 @@
 .app{
   position relative
   .notification-prompt{
-    padding 15px 0
+    padding 8px 0
     text-align center
     background-color primaryButton
     color white
     font-weight 500
     font-size 1.5rem
+    span{
+      text-decoration underline
+      cursor pointer
+      &:hover{
+        color darken(white, 10%)
+      }
+    }
   }
   .main-route{
     position relative

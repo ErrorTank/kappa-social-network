@@ -1,7 +1,7 @@
 const gulp = require("gulp");
 const spawn = require('child_process').spawn;
 const nodemon = require("gulp-nodemon");
-
+const rimraf = require('rimraf');
 
 
 const stylusCompiler = {
@@ -36,26 +36,32 @@ const stylusCompiler = {
 // };
 
 gulp.task("dev", () => {
-    stylusCompiler.watch("build").then(() => {
-        spawn("node", ["./scripts/copy-assets", "dev"], {stdio: "inherit"})
-        if (!/^win/.test(process.platform)) { // linux
-            return spawn("webpack-dev-server", {stdio: "inherit"});
-        } else {
-            return spawn('cmd', ['/s', "/c", "webpack-dev-server"], {stdio: "inherit"});
-        }
+    rimraf('./build/**/*', () => {
+       stylusCompiler.watch("build").then(() => {
+            spawn("node", ["./scripts/copy-assets", "dev"], {stdio: "inherit"})
+            if (!/^win/.test(process.platform)) { // linux
+                return spawn("webpack-dev-server", {stdio: "inherit"});
+            } else {
+                return spawn('cmd', ['/s', "/c", "webpack-dev-server"], {stdio: "inherit"});
+            }
+        });
     });
+
 
 });
 
 
 gulp.task("build-prod", () => {
-    return stylusCompiler.compile("dist").then(() => {
-        spawn("node", ["./scripts/copy-assets", "prod"], {stdio: "inherit"})
-        if (!/^win/.test(process.platform)) { // linux
-            return spawn("webpack", ["--config", " ./webpack.prod.config.js"], {stdio: "inherit"});
-        } else {
-            return spawn('cmd', ['/s', "/c", "webpack", "--config", "./webpack.prod.config.js"], {stdio: "inherit"});
-        }
-    })
+    rimraf('./dist/**/*', () => {
+        return stylusCompiler.compile("dist").then(() => {
+            spawn("node", ["./scripts/copy-assets", "prod"], {stdio: "inherit"})
+            if (!/^win/.test(process.platform)) { // linux
+                return spawn("webpack", ["--config", " ./webpack.prod.config.js"], {stdio: "inherit"});
+            } else {
+                return spawn('cmd', ['/s', "/c", "webpack", "--config", "./webpack.prod.config.js"], {stdio: "inherit"});
+            }
+        })
+    });
+
 });
 

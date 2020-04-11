@@ -30,11 +30,9 @@ class MainRoute extends React.Component {
         return (
             <Suspense fallback={<OverlayLoading/>}>
                 {process.env.APP_URI}
-                du ma may dasda
                 {/*cc*/}
                 {/*{isError ? <Redirect to={{pathname: "/"}}/> : (*/}
                 {/*    <CustomSwitch>*/}
-
 
 
                 {/*    </CustomSwitch>*/}
@@ -46,24 +44,61 @@ class MainRoute extends React.Component {
     };
 }
 
+class NotificationPrompt extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            showNotificationPrompt: 'Notification' in window && 'serviceWorker' in navigator && Notification.permission !== "granted"
+        }
+
+    };
+
+    enableNotification = () => {
+        Notification.requestPermission((result) => {
+            console.log('User Choice', result);
+            if (result !== 'granted') {
+                console.log('No notification permission granted!');
+            } else {
+                // configurePushSub();
+                this.setState({showNotificationPrompt: false});
+                let options = {
+                    body: 'Các thông báo quan trọng của bạn sẽ được hiển thị ở đây.',
+                    icon: '/assets/images/icons/app-icon-192x192.png',
+                    dir: 'ltr',
+                    lang: 'en-US',
+                    vibrate: [100, 50, 200],
+                    badge: '/assets/images/icons/app-icon-192x192.png',
+                    tag: 'confirm-notification',
+                    renotify: true
+                };
+                navigator.serviceWorker.ready
+                    .then((swreg) => {
+                        swreg.showNotification('Bật thông báo thành công!', options);
+                    });
+            }
+        });
+    };
+
+    render() {
+        return this.state.showNotificationPrompt ? (
+            <div className="notification-prompt">
+                Kappa cần sự cho phép của bạn để <span onClick={this.enableNotification}>Gửi thông báo</span>.
+            </div>
+        ) : null;
+    }
+}
+
 export class App extends React.Component {
     constructor(props) {
         super(props);
     };
 
-    enableNotification = () => {
-
-    };
 
     render() {
 
         return (
             <div className="app">
-                {'Notification' in window && 'serviceWorker' in navigator && (
-                    <div className="notification-prompt">
-                        Kappa cần sự cho phép của bạn để <span onClick={this.enableNotification}>Gửi thông báo</span>
-                    </div>
-                )}
+                <NotificationPrompt/>
                 <div id="main-route">
                     <Router
                         history={customHistory}
