@@ -2,7 +2,7 @@
 export const registerServiceWorker = () => {
 
     if ('serviceWorker' in navigator) {
-        let swDir = process.env.NODE_ENV === "development" ? "./sw-dev.js" : "./sw-prod.js";
+        let swDir = "./sw.js";
         return navigator.serviceWorker
             .register(swDir)
             .then(function () {

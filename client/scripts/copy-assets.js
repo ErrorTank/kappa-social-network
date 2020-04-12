@@ -1,10 +1,8 @@
 const fs = require("fs-extra");
 const path = require("path");
 
-const listDirFiles = ["assets"];
+const listDirFiles = ["assets", "sw.js"];
 const source = "../public";
-
-listDirFiles.push(process.argv[2] === "dev" ? "sw-dev.js" : "sw-prod.js");
 
 
 const dest = process.argv[2] === 'dev' ? "build" : "dist";

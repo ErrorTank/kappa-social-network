@@ -62,10 +62,10 @@ module.exports = {
     plugins: [
         new webpack.ProgressPlugin(),
         new WebpackShellPlugin({
-            onBuildStart:['node ./scripts/update-sw.js prod']
+            onBuildStart:['node ./scripts/update-sw.js']
         }),
         new CopyWebpackPlugin([
-            { from: 'public' , ignore: ["index.html", "sw-dev.js"]}
+            { from: 'public' , ignore: ["index.html"]}
         ]),
         new webpack.DefinePlugin(envKeys),
         new HtmlWebPackPlugin({

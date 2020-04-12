@@ -2,11 +2,9 @@ const fs = require('fs');
 
 const path = require("path");
 const source = "../public";
-console.log(process.argv[2])
 
-const target = process.argv[2] === 'dev' ? "sw-dev.js" : "sw-prod.js";
 
-const filePath = path.resolve(__dirname, source + "/" + target);
+const filePath = path.resolve(__dirname, source + "/" + "sw.js");
 
 fs.readFile(filePath, 'utf8', function (err,data) {
     if (err) {
