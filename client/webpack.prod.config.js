@@ -2,6 +2,7 @@ const path = require("path");
 const dotenv = require("dotenv");
 const webpack = require("webpack");
 const AsyncChunkNames = require('webpack-async-chunk-names-plugin');
+const CopyWebpackPlugin = require('copy-webpack-plugin');
 const HtmlWebPackPlugin = require("html-webpack-plugin");
 const TerserPlugin = require('terser-webpack-plugin');
 
@@ -59,6 +60,9 @@ module.exports = {
     },
     plugins: [
         new webpack.ProgressPlugin(),
+        new CopyWebpackPlugin([
+            { from: 'public' , ignore: ["index.html", "sw-prod.js"]}
+        ]),
         new webpack.DefinePlugin(envKeys),
         new HtmlWebPackPlugin({
             inject: true,

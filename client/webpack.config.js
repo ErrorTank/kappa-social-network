@@ -1,8 +1,11 @@
 const path = require("path");
 const dotenv = require("dotenv");
 const webpack = require("webpack");
+const EventHooksPlugin = require('event-hooks-webpack-plugin');
 const HtmlWebpackPlugin  = require("html-webpack-plugin");
+const CopyWebpackPlugin = require('copy-webpack-plugin');
 const env = dotenv.config({path: "./env/dev.env"}).parsed;
+const spawn = require('child_process').spawn;
 
 const envKeys = Object.keys(env).reduce((prev, next) => {
     prev[`process.env.${next}`] = JSON.stringify(env[next]);
@@ -34,6 +37,15 @@ module.exports = {
     },
     plugins: [
         new webpack.ProgressPlugin(),
+        new CopyWebpackPlugin([
+            { from: 'public' , ignore: ["index.html", "sw-prod.js"]}
+        ]),
+        // new EventHooksPlugin({
+        //     watchRun: () => {
+        //         spawn("node", ["./scripts/update-sw.js", "dev"], {stdio: "inherit"});
+        //     }
+        // }),
+
         new webpack.DefinePlugin(envKeys),
         new HtmlWebpackPlugin({
             inject: true,
@@ -42,7 +54,9 @@ module.exports = {
             minify: {
                 removeComments: true,
             }
-        })
+        }),
+
+
     ],
     module: {
         rules: [

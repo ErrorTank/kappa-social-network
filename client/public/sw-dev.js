@@ -1,7 +1,8 @@
 
 
-var CACHE_STATIC_NAME = 'static-v9';
-var CACHE_DYNAMIC_NAME = 'dynamic-v9';
+var CACHE_STATIC_NAME = 'static-v1586711949687';
+var CACHE_DYNAMIC_NAME = 'dynamic-v1586711949687';
+
 var STATIC_FILES = [
     '/',
     '/index.html',
@@ -49,7 +50,6 @@ self.addEventListener('activate', function (event) {
 function isInArray(string, array) {
     var cachePath;
     if (string.indexOf(self.origin) === 0) {
-        console.log('matched ', string);
         cachePath = string.substring(self.origin.length);
     } else {
         cachePath = string;
@@ -58,13 +58,13 @@ function isInArray(string, array) {
 }
 
 self.addEventListener('fetch', function (event) {
-    console.log("dasdas")
+
     if (isInArray(event.request.url, STATIC_FILES)) {
         event.respondWith(
             caches.match(event.request)
         );
     } else {
-        if(event.request.url.indexOf("/sockjs-node/info?")){
+        if(event.request.url.indexOf("/sockjs-node/info?") > -1){
            return;
         }else{
             event.respondWith(

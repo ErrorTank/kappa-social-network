@@ -17,8 +17,9 @@ const LoginRoute = lazy(delayLoad(() => import("./guest-routes/login-route/login
 class MainRoute extends React.Component {
     constructor(props) {
         super(props);
-        offlineApi.get("/loz").then(s => console.log(s))
+        fetch("https://raw.githubusercontent.com/madnh/hanhchinhvn/master/dist/tinh_tp.json")
     };
+
 
     render() {
         const {location} = this.props;

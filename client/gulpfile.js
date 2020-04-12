@@ -38,7 +38,7 @@ const stylusCompiler = {
 gulp.task("dev", (done) => {
     rimraf('./build/**/*', () => {
        stylusCompiler.watch("build", done).then(() => {
-            spawn("node", ["./scripts/copy-assets", "dev"], {stdio: "inherit"})
+            // spawn("node", ["./scripts/copy-assets", "dev"], {stdio: "inherit"})
             if (!/^win/.test(process.platform)) { // linux
                 return spawn("webpack-dev-server", {stdio: "inherit"});
             } else {
@@ -54,7 +54,7 @@ gulp.task("dev", (done) => {
 gulp.task("build-prod", (done) => {
     rimraf('./dist/**/*', () => {
         return stylusCompiler.compile("dist", done).then(() => {
-            spawn("node", ["./scripts/copy-assets", "prod"], {stdio: "inherit"})
+            // spawn("node", ["./scripts/copy-assets", "prod"], {stdio: "inherit"})
             if (!/^win/.test(process.platform)) { // linux
                 return spawn("webpack", ["--config", " ./webpack.prod.config.js"], {stdio: "inherit"});
             } else {
