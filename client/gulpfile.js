@@ -60,7 +60,9 @@ gulp.task("build-prod", (done) => {
             } else {
                 return spawn('cmd', ['/s', "/c", "webpack", "--config", "./webpack.prod.config.js"], {stdio: "inherit"});
             }
-        }).catch(err => console.log(err));
+        }).catch(err => {
+            console.log(err);
+        });
     });
 
 });

@@ -3,7 +3,6 @@ const dotenv = require("dotenv");
 const webpack = require("webpack");
 const EventHooksPlugin = require('event-hooks-webpack-plugin');
 const HtmlWebpackPlugin  = require("html-webpack-plugin");
-const CopyWebpackPlugin = require('copy-webpack-plugin');
 const env = dotenv.config({path: "./env/dev.env"}).parsed;
 const spawn = require('child_process').spawn;
 
@@ -37,23 +36,25 @@ module.exports = {
     },
     plugins: [
         new webpack.ProgressPlugin(),
-        new CopyWebpackPlugin([
-            { from: 'public' , ignore: ["index.html", "sw-prod.js"]}
+
+        new webpack.WatchIgnorePlugin([
+            "public"
         ]),
-        // new EventHooksPlugin({
-        //     watchRun: () => {
-        //         spawn("node", ["./scripts/update-sw.js", "dev"], {stdio: "inherit"});
-        //     }
-        // }),
+
+        new EventHooksPlugin({
+            watchRun: () => {
+                let ls = spawn("node", ["./scripts/update-sw.js", "dev"], {stdio: "inherit"});
+                ls.on('close', (code) => {
+                    spawn("node", ["./scripts/copy-assets.js", "dev"], {stdio: "inherit"});
+                });
+            }
+        }),
 
         new webpack.DefinePlugin(envKeys),
         new HtmlWebpackPlugin({
             inject: true,
             template: "./public/index.html",
             filename: "index.html",
-            minify: {
-                removeComments: true,
-            }
         }),
 
 
@@ -118,7 +119,7 @@ module.exports = {
         disableHostCheck: true,
         watchContentBase: true,
         watchOptions: {
-            ignored: ['node_modules', 'scripts'],
+            ignored: ['node_modules', 'scripts', "public"],
             poll: 1000
         },
     },
