@@ -22,6 +22,63 @@ const postSchema = {
         type: Boolean,
         default: false
     },
+    reaction: {
+        liked: {
+            type: [
+                {
+                    type: ObjectId,
+                    ref: "User"
+                }
+            ],
+            default: []
+        },
+        loved: {
+            type: [
+                {
+                    type: ObjectId,
+                    ref: "User"
+                }
+            ],
+            default: []
+        },
+        laughed: {
+            type: [
+                {
+                    type: ObjectId,
+                    ref: "User"
+                }
+            ],
+            default: []
+        },
+        wow: {
+            type: [
+                {
+                    type: ObjectId,
+                    ref: "User"
+                }
+            ],
+            default: []
+        },
+        sad: {
+            type: [
+                {
+                    type: ObjectId,
+                    ref: "User"
+                }
+            ],
+            default: []
+        },
+        angry: {
+            type: [
+                {
+                    type: ObjectId,
+                    ref: "User"
+                }
+            ],
+            default: []
+        },
+    },
+
     created_at: {
         type: Date,
         default: Date.now

@@ -5,7 +5,6 @@ const initDbCollections = appDb => {
     const PersonPost = require("../db/model/person-post")(appDb);
     const PagePost = require("../db/model/page-post")(appDb);
     const PageCategory = require("../db/model/page-category")(appDb);
-    const MarketItem = require("../db/model/market-item")(appDb);
     const Page = require("../db/model/page")(appDb);
     const GroupPost = require("../db/model/group-post")(appDb);
     const Group = require("../db/model/group")(appDb);

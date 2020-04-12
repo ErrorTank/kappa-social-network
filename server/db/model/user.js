@@ -79,15 +79,6 @@ const userSchema = new Schema({
         ],
         default: []
     },
-    cart: {
-        default: [],
-        type: [
-            {
-                type: ObjectId,
-                ref: "MarketItem"
-            }
-        ]
-    },
     saved_group_posts: {
         type: [
             {
