@@ -12,7 +12,9 @@ const createErrorHandlersMiddleware = require("./utils/error/error-handlers");
 dbManager.init()
     .then((dbs) => {
         const appDb = dbs[0];
-        require("./scripts/init-db-collections")(appDb);
+        return require("./scripts/init-db-collections")(appDb);
+    })
+    .then((appDb) => {
         let server = http.createServer(app);
         app.use("/", createRoutes(appDb));
         app.use(createErrorHandlersMiddleware);

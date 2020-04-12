@@ -70,6 +70,42 @@ const userSchema = new Schema({
         ],
         default: []
     },
+    saved_person_posts: {
+        type: [
+            {
+                type: ObjectId,
+                ref: "PersonPost"
+            }
+        ],
+        default: []
+    },
+    cart: {
+        default: [],
+        type: [
+            {
+                type: ObjectId,
+                ref: "MarketItem"
+            }
+        ]
+    },
+    saved_group_posts: {
+        type: [
+            {
+                type: ObjectId,
+                ref: "GroupPost"
+            }
+        ],
+        default: []
+    },
+    saved_page_posts: {
+        type: [
+            {
+                type: ObjectId,
+                ref: "PagePost"
+            }
+        ],
+        default: []
+    },
     followed_person_posts: {
         type: [
             {
