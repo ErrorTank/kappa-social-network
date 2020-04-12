@@ -9,9 +9,13 @@ const initDbCollections = appDb => {
     const GroupPost = require("../db/model/group-post")(appDb);
     const Group = require("../db/model/group")(appDb);
     const ChatRoom = require("../db/model/chat-room")(appDb);
-    console.log("Initialize Db collections successfully!")
+    const {City, Ward, District} = require("../db/model/location")(appDb);
+    console.log("Initialize Db collections successfully!");
     return feed({
         PageCategory,
+        City,
+        Ward,
+        District
     });
 };
 
