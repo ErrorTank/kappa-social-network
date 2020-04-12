@@ -4,15 +4,15 @@ import {createBrowserHistory} from 'history';
 import {ModalsRegistry} from "../common/modal/modals";
 
 export const customHistory = createBrowserHistory();
-import {AuthenRoute} from "./route-types/authen-route";
-import {GuestRoute} from "./route-types/guest-route";
 import {OverlayLoading} from "../common/overlay-loading";
 import {delayLoad} from "../../common/utils/common";
-import {RoleFilterRoute} from "./route-types/role-filter-route";
 import {CustomSwitch} from "./route-types/custom-switch";
 import {userInfo} from "../../common/states/common";
 import {offlineApi} from "../../api/api";
-
+import {FlexibleRoute} from "./route-types/flexible-route";
+import {authenCache} from "../../common/cache/authen-cache";
+const FeedRoute = lazy(delayLoad(() => import("./authen-routes/feed-route/feed-route")));
+const LoginRoute = lazy(delayLoad(() => import("./guest-routes/login-route/login-route")));
 
 class MainRoute extends React.Component {
     constructor(props) {
@@ -29,14 +29,23 @@ class MainRoute extends React.Component {
 
         return (
             <Suspense fallback={<OverlayLoading/>}>
-                {process.env.APP_URI}
-                {/*cc*/}
-                {/*{isError ? <Redirect to={{pathname: "/"}}/> : (*/}
-                {/*    <CustomSwitch>*/}
-
-
-                {/*    </CustomSwitch>*/}
-                {/*)}*/}
+                <CustomSwitch>
+                    <FlexibleRoute
+                        path={"/"}
+                        exact
+                        render={props => !authenCache.getAuthen() ?
+                            (
+                                <LoginRoute
+                                    {...props}
+                                />
+                            ) : (
+                                <FeedRoute
+                                    {...props}
+                                />
+                            )
+                        }
+                    />
+                </CustomSwitch>
 
             </Suspense>
 
