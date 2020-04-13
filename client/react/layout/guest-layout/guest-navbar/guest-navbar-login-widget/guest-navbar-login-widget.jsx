@@ -27,7 +27,6 @@ export class GuestNavbarLoginWidget extends KComponent {
         }));
         this.onUnmount(this.form.on("change", () => {
             this.forceUpdate();
-            this.state.error && this.setState({error: ""});
         }));
         this.form.validateData();
     }

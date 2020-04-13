@@ -368,11 +368,7 @@ const userSchema = new Schema({
         },
     },
     basic_info: {
-        first_name: {
-            type: String,
-            required: true
-        },
-        last_name: {
+        user_name: {
             type: String,
             required: true
         },

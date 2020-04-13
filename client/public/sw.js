@@ -1,7 +1,7 @@
 
 
-var CACHE_STATIC_NAME = 'static-v1586775278123';
-var CACHE_DYNAMIC_NAME = 'dynamic-v1586775278123';
+var CACHE_STATIC_NAME = 'static-v1586781271590';
+var CACHE_DYNAMIC_NAME = 'dynamic-v1586781271590';
 
 var STATIC_FILES = [
     '/',
@@ -32,11 +32,14 @@ self.addEventListener('install', function (event) {
 });
 
 self.addEventListener('activate', function (event) {
+    console.log(CACHE_DYNAMIC_NAME)
+    console.log(CACHE_STATIC_NAME)
     console.log('[Service Worker] Activating Service Worker ....', event);
     event.waitUntil(
         caches.keys()
             .then(function (keyList) {
                 return Promise.all(keyList.map(function (key) {
+                    console.log(key)
                     if (key !== CACHE_STATIC_NAME && key !== CACHE_DYNAMIC_NAME) {
                         console.log('[Service Worker] Removing old cache.', key);
                         return caches.delete(key);
