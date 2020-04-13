@@ -11,6 +11,13 @@ html {
   font-size: 62.5%;
 
 }
+.app-brand{
+  color primaryButton
+  font-weight 800
+  font-family: 'Baloo Bhai 2', cursive;
+  font-size 3.5rem
+  cursor pointer
+}
 body {
   font-family: "Roboto", sans-serif;
   box-sizing: border-box;
@@ -21,6 +28,14 @@ body {
   line-height: 1.6;
   color: dark-text
   min-height: 100vh;
+}
+.btn-common-primary{
+  background-color primaryButton
+  color white
+  &:hover{
+    background-color darken(primaryButton, 10%)
+    color white !important
+  }
 }
 
 .btn-disabled{
@@ -55,7 +70,6 @@ button
 
 a
   text-decoration none !important
-  color inherit !important
 
 ul{
   padding 0

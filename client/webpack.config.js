@@ -117,6 +117,7 @@ module.exports = {
         inline: true,
         writeToDisk: true,
         disableHostCheck: true,
+        historyApiFallback: true,
         watchContentBase: true,
         watchOptions: {
             ignored: ['node_modules', 'scripts', "public"],

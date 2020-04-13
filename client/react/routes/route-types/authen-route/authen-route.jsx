@@ -3,10 +3,10 @@ import {Route, Redirect} from "react-router-dom"
 import {KComponent} from "../../../common/k-component";
 import {authenCache} from "../../../../common/cache/authen-cache";
 import {KappaErrorBoundary} from "../../../common/kappa-error-boundary/kappa-error-boundary";
-import {GuestLayout} from "../../../layout/guest-layout/guest-layout";
+import {AuthenLayout} from "../../../layout/authen-layout/authen-layout";
 
 
-export class GuestRoute extends KComponent {
+export class AuthenRoute extends KComponent {
     constructor(props) {
         super(props);
         this.state = {};
@@ -17,8 +17,8 @@ export class GuestRoute extends KComponent {
         return (
             <Route
                 {...rest}
-                render={props => !authenCache.getAuthen() ? (
-                    <GuestLayout
+                render={props => authenCache.getAuthen() ? (
+                    <AuthenLayout
                         {...props}
                     >
                         {layoutProps => (
@@ -28,7 +28,7 @@ export class GuestRoute extends KComponent {
                                 )}
                             </KappaErrorBoundary>
                         )}
-                    </GuestLayout>
+                    </AuthenLayout>
                 ) : (
                     <Redirect
                         to={{

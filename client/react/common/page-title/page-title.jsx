@@ -6,13 +6,13 @@ export class PageTitle extends React.Component {
 
     let title = props.title;
     if (document.title != title) {
-      document.title = "Đăng ký học | " + title;
+      document.title = "Kappa | " + title;
     }
   }
 
   componentWillReceiveProps(nextProps) {
     if (nextProps.title != this.props.title) {
-      document.title = "Đăng ký học | " + nextProps.title;
+      document.title = "Kappa | " + nextProps.title;
     }
   }
 

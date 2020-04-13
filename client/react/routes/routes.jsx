@@ -11,13 +11,15 @@ import {userInfo} from "../../common/states/common";
 import {offlineApi} from "../../api/api";
 import {FlexibleRoute} from "./route-types/flexible-route";
 import {authenCache} from "../../common/cache/authen-cache";
+import {GuestRoute} from "./route-types/guest-route/guest-route";
 const FeedRoute = lazy(delayLoad(() => import("./authen-routes/feed-route/feed-route")));
 const LoginRoute = lazy(delayLoad(() => import("./guest-routes/login-route/login-route")));
+const ForgotPasswordRoute = lazy(delayLoad(() => import("./guest-routes/forgot-password-route/forgot-password-route")));
 
 class MainRoute extends React.Component {
     constructor(props) {
         super(props);
-        fetch("https://raw.githubusercontent.com/madnh/hanhchinhvn/master/dist/tinh_tp.json")
+        // fetch("https://raw.githubusercontent.com/madnh/hanhchinhvn/master/dist/tinh_tp.json")
     };
 
 
@@ -45,6 +47,11 @@ class MainRoute extends React.Component {
                                 />
                             )
                         }
+                    />
+                    <GuestRoute
+                        path={"/quen-mat-khau"}
+                        exact
+                        component={ForgotPasswordRoute}
                     />
                 </CustomSwitch>
 
@@ -92,7 +99,7 @@ class NotificationPrompt extends React.Component {
     render() {
         return this.state.showNotificationPrompt ? (
             <div className="notification-prompt">
-                Kappa cần sự cho phép của bạn để <span onClick={this.enableNotification}>Gửi thông báo</span>.
+                Kappa cần sự cho phép của bạn để <span onClick={this.enableNotification}>Bật thông báo</span>.
             </div>
         ) : null;
     }

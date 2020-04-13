@@ -32,11 +32,13 @@ export class FlexibleRoute extends Component {
                                 <Layout
                                     {...props}
                                 >
-                                    {(layoutProps) => render ? render(layoutProps) : (
+                                    {(layoutProps) =>  (
                                         <KappaErrorBoundary>
-                                            <Component
-                                                {...layoutProps}
-                                            />
+                                            {render ? render(layoutProps) : (
+                                                <Component
+                                                    {...layoutProps}
+                                                />
+                                            )}
                                         </KappaErrorBoundary>
                                     )}
                                 </Layout>
