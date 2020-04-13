@@ -118,6 +118,10 @@ const postSchema = {
         type: ObjectId,
         ref: "PersonPost"
     },
+    comment_disabled: {
+        type: Boolean,
+        default: false
+    },
     shared_page: {
         type: ObjectId,
         ref: "Page"
