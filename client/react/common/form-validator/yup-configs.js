@@ -1,5 +1,6 @@
 import * as yup from "yup";
 import isEmpty from "lodash/isEmpty";
+import {isEmail, isPhone} from "../../../common/validator";
 
 yup.addMethod(yup.string, "isTax", function (message) {
   return this.test("isTax", message, function (val) {
@@ -20,7 +21,13 @@ yup.addMethod(yup.object, "notEmpty", function (message = "no data") {
 });
 yup.addMethod(yup.string, "isPhone", function (message = "no data") {
   return this.test("isPhone", message, function (val) {
-    return /\D/gi.test(val) === false
+    return isPhone(val)
+  })
+});
+yup.addMethod(yup.string, "isPhoneOrEmail", function (message = "no data") {
+  return this.test("isPhoneOrEmail", message, function (val) {
+
+    return isPhone(val) || isEmail(val)
   })
 });
 yup.addMethod(yup.string, "onlyWord", function (message) {

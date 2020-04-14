@@ -368,7 +368,7 @@ const userSchema = new Schema({
         },
     },
     basic_info: {
-        user_name: {
+        username: {
             type: String,
             required: true
         },
@@ -385,6 +385,7 @@ const userSchema = new Schema({
             default: Date.now
         },
     },
+    isVerify: {type: Boolean, default: false, required: true},
     contact: {
         address: AddressSchema,
         login_username: {

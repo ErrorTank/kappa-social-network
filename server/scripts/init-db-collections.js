@@ -9,6 +9,7 @@ const initDbCollections = appDb => {
     const GroupPost = require("../db/model/group-post")(appDb);
     const Group = require("../db/model/group")(appDb);
     const ChatRoom = require("../db/model/chat-room")(appDb);
+    const ConfirmToken = require("../db/model/confirm-token")(appDb);
     const {City, Ward, District} = require("../db/model/location")(appDb);
     console.log("Initialize Db collections successfully!");
     return feed({

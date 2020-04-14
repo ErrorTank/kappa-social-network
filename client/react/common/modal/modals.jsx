@@ -5,10 +5,10 @@ import remove from "lodash/remove";
 import classnames from "classnames"
 
 export const appModal = {
-  alert({text, title, btnText = "OK", style}) {
+  alert({text, title, btnText = "OK", style, className}) {
     const modal = modals.openModal({
       content: (
-        <div className={classnames("alert-modal common-modal", style + "-modal")}>
+        <div className={classnames("alert-modal common-modal", style + "-modal", className)}>
           <div className="modal-header">
             <div className="modal-title">
               {title}
@@ -21,7 +21,7 @@ export const appModal = {
             <div>{text}</div>
           </div>
           <div className="modal-footer">
-            <button type="button" className="btn btn-confirm" onClick={() => modal.close()}>
+            <button type="button" className="btn modal-btn btn-cancel" onClick={() => modal.close()}>
               {btnText}
             </button>
           </div>
@@ -46,12 +46,12 @@ export const appModal = {
             {text}
           </div>
           <div className="modal-footer">
-            <button className="btn modal-btn btn-cancel cancel-btn ml-3"
+            <button className="btn modal-btn btn-cancel  ml-3"
                     onClick={() => modal.close(false)}
             >
               {cancelText}
             </button>
-            <button className="btn modal-btn btn-confirm confirm-btn ml-3"
+            <button className="btn modal-btn btn-common-primary ml-3"
                     onClick={() => modal.close(true)}
             >
               {btnText}

@@ -1,7 +1,12 @@
+var exceptionRequests = [
+    {
+        endpoint: "/api/register",
+        method: "POST"
+    }
+];
 
-
-var CACHE_STATIC_NAME = 'static-v1586866366768';
-var CACHE_DYNAMIC_NAME = 'dynamic-v1586866366768';
+var CACHE_STATIC_NAME = 'static-v1586883100854';
+var CACHE_DYNAMIC_NAME = 'dynamic-v1586883100854';
 
 var STATIC_FILES = [
     '/',
@@ -16,7 +21,32 @@ var STATIC_FILES = [
     "/assets/images/icons/app-icon-32x32.png",
     "/assets/images/icons/app-icon-192x192.png",
     'https://fonts.googleapis.com/css?family=Lato:300,300i,400,400i,700,700i|Montserrat:400,400i,500,500i,600,600i,700,700i|Open+Sans:400,400i,600,600i,700,700i|Roboto:400,400i,500,500i,700,700i&display=swap&subset=latin-ext,vietnamese',
-    'https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css'
+    'https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css',
+    "/assets/vendor/fonts/webfonts/fa-brands-400.eot",
+    "/assets/vendor/fonts/webfonts/fa-brands-400.svg",
+    "/assets/vendor/fonts/webfonts/fa-brands-400.ttf",
+    "/assets/vendor/fonts/webfonts/fa-brands-400.woff",
+    "/assets/vendor/fonts/webfonts/fa-brands-400.woff2",
+    "/assets/vendor/fonts/webfonts/fa-duotone-900.eot",
+    "/assets/vendor/fonts/webfonts/fa-duotone-900.svg",
+    "/assets/vendor/fonts/webfonts/fa-duotone-900.ttf",
+    "/assets/vendor/fonts/webfonts/fa-duotone-900.woff",
+    "/assets/vendor/fonts/webfonts/fa-duotone-900.woff2",
+    "/assets/vendor/fonts/webfonts/fa-light-300.eot",
+    "/assets/vendor/fonts/webfonts/fa-light-300.svg",
+    "/assets/vendor/fonts/webfonts/fa-light-300.ttf",
+    "/assets/vendor/fonts/webfonts/fa-light-300.woff",
+    "/assets/vendor/fonts/webfonts/fa-light-300.woff2",
+    "/assets/vendor/fonts/webfonts/fa-regular-400.eot",
+    "/assets/vendor/fonts/webfonts/fa-regular-400.svg",
+    "/assets/vendor/fonts/webfonts/fa-regular-400.ttf",
+    "/assets/vendor/fonts/webfonts/fa-regular-400.woff",
+    "/assets/vendor/fonts/webfonts/fa-regular-400.woff2",
+    "/assets/vendor/fonts/webfonts/fa-solid-900.eot",
+    "/assets/vendor/fonts/webfonts/fa-solid-900.svg",
+    "/assets/vendor/fonts/webfonts/fa-solid-900.ttf",
+    "/assets/vendor/fonts/webfonts/fa-solid-900.woff",
+    "/assets/vendor/fonts/webfonts/fa-solid-900.woff2",
 ];
 
 
@@ -60,16 +90,28 @@ function isInArray(string, array) {
     return array.indexOf(cachePath) > -1;
 }
 
-self.addEventListener('fetch', function (event) {
+function isExceptionRequest(request) {
 
-    if (isInArray(event.request.url, STATIC_FILES)) {
+    return isInArray(request.url, exceptionRequests
+        .filter(function (each) {
+            return each.method == request.method;
+        })
+        .map(function (each) {
+            return each.endpoint;
+        }));
+}
+
+self.addEventListener('fetch', function (event) {
+    if (isExceptionRequest(event.request.clone())) {
+        return;
+    } else if (isInArray(event.request.url, STATIC_FILES)) {
         event.respondWith(
             caches.match(event.request)
         );
     } else {
-        if(event.request.url.indexOf("/sockjs-node/info?") > -1){
-           return;
-        }else{
+        if (event.request.url.indexOf("/sockjs-node/info?") > -1) {
+            return;
+        } else {
             event.respondWith(
                 caches.match(event.request)
                     .then(function (response) {
@@ -137,7 +179,7 @@ self.addEventListener('fetch', function (event) {
 //     }
 // });
 
-self.addEventListener('notificationclick', function(event) {
+self.addEventListener('notificationclick', function (event) {
     var notification = event.notification;
     var action = event.action;
 
@@ -150,8 +192,8 @@ self.addEventListener('notificationclick', function(event) {
         console.log(action);
         event.waitUntil(
             clients.matchAll()
-                .then(function(clis) {
-                    var client = clis.find(function(c) {
+                .then(function (clis) {
+                    var client = clis.find(function (c) {
                         return c.visibilityState === 'visible';
                     });
 
@@ -167,11 +209,11 @@ self.addEventListener('notificationclick', function(event) {
     }
 });
 
-self.addEventListener('notificationclose', function(event) {
+self.addEventListener('notificationclose', function (event) {
     console.log('Notification was closed', event);
 });
 
-self.addEventListener('push', function(event) {
+self.addEventListener('push', function (event) {
     console.log('Push Notification received', event);
 
     var data = {title: 'New!', content: 'Something new happened!', openUrl: '/'};

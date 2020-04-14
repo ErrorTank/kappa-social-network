@@ -50,16 +50,9 @@
 }
 
 .k-modal{
-  .alert-modal
-  .confirm-modal{
-    &.danger-modal{
-      .modal-title{
-        color danger
-      }
-    }
-  }
+
   display block
-  color inverse
+  color #1a1a1a
   background-color rgba(black, 0.7)
   //.modal-overlay{
   //  max-width 1200px !important
@@ -72,7 +65,7 @@
   }
 
   .modal-header{
-    padding 15px 20px !important
+    padding 10px 20px !important
 
     .close-modal{
       font-size 18px
@@ -83,25 +76,23 @@
       }
     }
     .modal-title{
-      color inverse
-      font-size 25px !important
+      color #1a1a1a
+      font-size 22px !important
       font-weight 550 !important
     }
   }
   .modal-footer{
-    padding 15px 20px !important
+    padding 10px 20px !important
     button{
-      font-size 16px !important
-      padding 7px 25px !important
+      font-size 15px !important
+      padding 5px 20px !important
       &.btn-confirm{
         position relative
-        background-color info !important
-        color white !important
       }
     }
   }
   .modal-body{
-    color #3f4047
+    color titleColor
     font-size 16px
     padding 15px 20px !important
     text-align left
