@@ -4,6 +4,8 @@ import * as yup from "yup";
 import {createSimpleForm} from "../../../../common/form-validator/form-validator";
 import {CommonInput} from "../../../../common/common-input/common-input";
 import {BirthdayPicker} from "../../../../common/birthday-picker/birthday-picker";
+import {RadioGroup} from "../../../../common/radio-group/radio-group";
+import {genders} from "../../../../../const/genders";
 
 export class SignUpForm extends KComponent {
     constructor(props) {
@@ -36,10 +38,6 @@ export class SignUpForm extends KComponent {
             }
         });
         this.onUnmount(this.form.on("enter", () => this.handleSignUp()));
-        this.onUnmount(this.form.on("enter", () => {
-            if(this.form.isValid())
-                this.handleSignUp();
-        }));
         this.onUnmount(this.form.on("change", () => {
             this.forceUpdate()
         }));
@@ -47,7 +45,12 @@ export class SignUpForm extends KComponent {
     }
 
     handleSignUp = () => {
-
+        if(!this.form.isValid()){
+            this.form.touchPaths([
+                "username", "login_username", "password", "gender", "dob"
+            ]);
+            return;
+        }
     };
 
     render() {
@@ -113,6 +116,28 @@ export class SignUpForm extends KComponent {
                         />
                     ), true)}
                 </div>
+                <div className="sign-up-form-row">
+
+                    {this.form.enhanceComponent("gender", ({error, onChange, onEnter, value}) => {
+                        let currentGender = genders.find(each => each.value === value);
+                        return (
+                            <RadioGroup
+                                label={"Giới tính"}
+                                className="pt-0"
+                                error={error}
+                                onChange={val => {
+                                    console.log(val)
+                                    onChange(val.value);
+                                }}
+                                value={currentGender}
+                                displayAs={each => each.label}
+                                isChecked={each => each.value === currentGender.value}
+                                options={genders}
+                            />
+                        )
+                    }, true)}
+                </div>
+                <button className="btn btn-common-primary register-btn" onClick={this.handleSignUp}>Đăng ký</button>
             </div>
         );
     }

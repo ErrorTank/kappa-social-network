@@ -12,7 +12,7 @@ export class Select extends React.Component {
 
 
     render() {
-        let {className, label, options, value, onChange, displayAs = (val) => val.label, disabled = false, error, placeholder, isSelected = option => false, getOptionKey = (each, index) => index} = this.props;
+        let {className, label, options, value, onChange, displayAs = (val) => val, disabled = false, error, placeholder, isSelected = option => false, getOptionKey = (each, index) => index} = this.props;
         return (
             <div className={classnames("common-select m-0", className, {error: !!error})}>
                 {label && (
@@ -20,7 +20,7 @@ export class Select extends React.Component {
                 )}
                 <ClickOutside onClickOut={() => this.setState({show: false})}>
                     <div className="select-wrapper">
-                        <div className={classnames("select-toggle", {disabled})}>
+                        <div className={classnames("select-toggle", {disabled})} onClick={() => this.setState({show: !this.state.show})}>
                             {value ? displayAs(value) : placeholder ? placeholder : "Chọn"}
                         </div>
                         {this.state.show && (
@@ -28,10 +28,14 @@ export class Select extends React.Component {
                                 {options.map((each, i) => (
                                     <div
                                         key={getOptionKey(each, i)}
-                                        className={classnames("select-option", {disabled: each?.isDisabled() || false, selected: isSelected(each)})}
-                                        onClick={() => onChange(each)}
+                                        className={classnames("select-option", {disabled: each.isDisabled?.() || false, selected: isSelected(each)})}
+                                        onClick={(e) => {
+                                            e.stopPropagation();
+                                            onChange(each);
+                                            this.setState({show: false});
+                                        }}
                                     >
-                                        {displayAs(value)}
+                                        {displayAs(each)}
                                     </div>
                                 ))}
                             </div>

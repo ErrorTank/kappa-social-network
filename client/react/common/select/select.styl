@@ -11,7 +11,46 @@
       color #495057
       font-weight 400
       border 1px solid #ced4da
+      background-color white
       border-radius 0.25rem
+      cursor pointer
+      &:hover{
+        border-color primaryButton
+      }
+      &.disabled{
+        background-color darken(white, 5%)
+        pointer-events none
+        cursor none
+      }
+    }
+    .select-dropdown{
+      position absolute
+      top 101%
+      left 0
+      width 100%
+      overflow-y auto
+      max-height 200px
+      background-color white
+      border 1px solid common-border
+      color #1a1a1a
+      font-size 1.4rem
+      z-index 1
+      .select-option{
+        padding 5px 10px
+        cursor pointer
+        &:hover{
+          background-color darken(white, 5%)
+        }
+        &.disabled{
+          background-color darken(white, 5%)
+          pointer-events none
+          cursor none
+        }
+        &.selected{
+          background-color primaryButton
+          color white
+        }
+      }
     }
   }
   .select-label{
@@ -19,9 +58,5 @@
     font-weight 500
     font-size 1.4rem
   }
-  .invalid-feedback {
-      font-size 1.2rem
-      color danger
-      margin-top 8px
-    }
+
 }

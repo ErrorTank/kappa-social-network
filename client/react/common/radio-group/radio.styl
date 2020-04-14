@@ -1,0 +1,75 @@
+.radio-group{
+  .radio-group-label{
+    color #1a1a1a
+    font-weight 500
+    font-size 1.4rem
+  }
+  .radio-list{
+    margin-top 5px
+    display flex
+    justify-content space-between
+  }
+}
+.kappa-radio{
+  font-size 1.4rem !important
+  display inline-block
+  padding-left 30px
+  position relative
+  &:hover{
+    input{
+      &:not(:checked){
+        & ~ .kappa-radio-label{
+          &:before{
+            border-color primaryButton
+          }
+        }
+      }
+    }
+
+
+  }
+  input{
+    display none
+
+    &:checked{
+      & ~ .kappa-radio-label{
+        &:before{
+          background-color primaryButton
+        }
+      }
+    }
+  }
+
+  .kappa-radio-label{
+    color #1a1a1a
+    margin-bottom 0 !important
+    cursor pointer
+
+    &:before{
+      content: ""
+      position absolute
+      left 0
+      transition all 0.1s ease
+      width 25px
+      height 25px
+      top 50%
+      transform translateY(-50%)
+      border 1px solid common-border
+      border-radius 50%
+      background-color white
+
+    }
+    &:after{
+      content: ""
+      position absolute
+      left 7px
+      transition all 0.1s ease
+      width 11px
+      height 11px
+      top 50%
+      transform translateY(-50%)
+      background-color white
+      border-radius 50%
+    }
+  }
+}

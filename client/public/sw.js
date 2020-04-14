@@ -1,7 +1,7 @@
 
 
-var CACHE_STATIC_NAME = 'static-v1586841804601';
-var CACHE_DYNAMIC_NAME = 'dynamic-v1586841804601';
+var CACHE_STATIC_NAME = 'static-v1586866366768';
+var CACHE_DYNAMIC_NAME = 'dynamic-v1586866366768';
 
 var STATIC_FILES = [
     '/',

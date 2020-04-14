@@ -6,16 +6,24 @@
     font-weight 500
     font-size 1.4rem
   }
-  .invalid-feedback
-  .valid-feedback {
-    font-size 1rem
-  }
+
   input{
     width 100%
     outline none
     font-size 1.4rem
     height auto !important
     padding 6px 12px  !important
+    &:disabled{
+      pointer-events none
+    }
+    &:not(.is-invalid):hover{
+      border-color primaryButton !important
+    }
+    &:not(.is-invalid):focus{
+      border-color primaryButton !important
+      outline none !important
+      box-shadow none !important
+    }
   }
   .input-wrapper{
     position relative
