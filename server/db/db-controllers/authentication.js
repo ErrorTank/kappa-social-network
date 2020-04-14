@@ -8,7 +8,7 @@ const {ApplicationError} = require("../../utils/error/error-types");
 const omit = require("lodash/omit");
 const pick = require("lodash/pick");
 const {getUnverifiedUserRegisterType} = require("../../utils/user-utils");
-const {getRandomToken} = require("../../utils/common-utils");
+const {createNewConfirmToken} = require("./confirm-token");
 
 const register = (data) => {
     let registerType = data.contact.login_username.phone ? "PHONE" : "EMAIL";
@@ -23,17 +23,24 @@ const register = (data) => {
             if(user){
                 return new ApplicationError("account_not_verified", {userID: user._id, registerType: getUnverifiedUserRegisterType(user)});
             }
-            return new User(data)
+            return new User(data).save()
                 .then(nu => {
                     let newUser = nu.toObject();
-
+                    return createNewConfirmToken({userID: newUser._id, registerType})
                 })
+                .then(credentials => ({
+                    sessionID: credentials._id,
+                    registerType: credentials.registerType
+                }))
 
         })
 };
 
+const resendAccountConfirmationToken = ({userID, registerType}) => {
 
+};
 
 module.exports = {
-    register
+    register,
+    resendAccountConfirmationToken
 };
