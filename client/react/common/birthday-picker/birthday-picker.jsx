@@ -3,7 +3,9 @@ import {generateArrayFromRange} from "../../../common/utils/array-utils";
 
 const currentYear = new Date().getFullYear();
 
-const years = generateArrayFromRange(currentYear - 10, currentYear - 80);
+console.log(currentYear)
+
+const years = generateArrayFromRange(currentYear - 80, currentYear - 10);
 
 const months =  generateArrayFromRange(1, 12);
 

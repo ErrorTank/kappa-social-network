@@ -7,7 +7,6 @@ export class Select extends React.Component {
         this.state = {};
     };
 
-    //todo create tooltip
 
     render() {
         let {className, label, id, options, value, onChange, displayAs = null, getValue = null, disabled = false, error} = this.props;
