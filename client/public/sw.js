@@ -5,8 +5,8 @@ var exceptionRequests = [
     }
 ];
 
-var CACHE_STATIC_NAME = 'static-v1586883100854';
-var CACHE_DYNAMIC_NAME = 'dynamic-v1586883100854';
+var CACHE_STATIC_NAME = 'static-v1586884142076';
+var CACHE_DYNAMIC_NAME = 'dynamic-v1586884142076';
 
 var STATIC_FILES = [
     '/',

@@ -14,7 +14,7 @@ export class Select extends React.Component {
     render() {
         let {className, label, options, value, onChange, displayAs = (val) => val, disabled = false, error, placeholder, isSelected = option => false, getOptionKey = (each, index) => index} = this.props;
         return (
-            <div className={classnames("common-select m-0", className, {error: !!error})}>
+            <div className={classnames("common-select m-0", className, {error: !!error, focus: this.state.show})}>
                 {label && (
                     <div className="select-label">{label}</div>
                 )}

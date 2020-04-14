@@ -1,29 +1,40 @@
-.common-select{
+.common-select {
   font-size 1.3rem
   margin-bottom 1.2rem
-  .select-wrapper{
+
+  &.focus {
+    .select-toggle {
+      border-color primaryButton !important
+    }
+  }
+
+  .select-wrapper {
     position relative
-    .select-toggle{
+
+    .select-toggle {
       width 100%
       font-size 1.4rem
       height auto !important
-      padding 6px 12px  !important
+      padding 6px 12px !important
       color #495057
       font-weight 400
       border 1px solid #ced4da
       background-color white
       border-radius 0.25rem
       cursor pointer
-      &:hover{
+
+      &:hover {
         border-color primaryButton
       }
-      &.disabled{
+
+      &.disabled {
         background-color darken(white, 5%)
         pointer-events none
         cursor none
       }
     }
-    .select-dropdown{
+
+    .select-dropdown {
       position absolute
       top 101%
       left 0
@@ -35,25 +46,30 @@
       color #1a1a1a
       font-size 1.4rem
       z-index 1
-      .select-option{
+
+      .select-option {
         padding 5px 10px
         cursor pointer
-        &:hover{
+
+        &:hover {
           background-color darken(white, 5%)
         }
-        &.disabled{
+
+        &.disabled {
           background-color darken(white, 5%)
           pointer-events none
           cursor none
         }
-        &.selected{
+
+        &.selected {
           background-color primaryButton
           color white
         }
       }
     }
   }
-  .select-label{
+
+  .select-label {
     color #1a1a1a
     font-weight 500
     font-size 1.4rem
