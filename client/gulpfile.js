@@ -37,7 +37,8 @@ const stylusCompiler = {
 
 gulp.task("dev", (done) => {
     rimraf('./build/**/*', () => {
-       stylusCompiler.watch("build", done).then(() => {
+        console.log("Delete old build successfully!");
+        stylusCompiler.watch("build", done).then(() => {
             // spawn("node", ["./scripts/copy-assets", "dev"], {stdio: "inherit"})
             if (!/^win/.test(process.platform)) { // linux
                 return spawn("webpack-dev-server", {stdio: "inherit"});
@@ -53,6 +54,7 @@ gulp.task("dev", (done) => {
 
 gulp.task("build-prod", (done) => {
     rimraf('./dist/**/*', () => {
+        console.log("Delete old build successfully!");
         return stylusCompiler.compile("dist", done).then(() => {
             // spawn("node", ["./scripts/copy-assets", "prod"], {stdio: "inherit"})
             if (!/^win/.test(process.platform)) { // linux
