@@ -11,6 +11,7 @@ import {guestApi} from "../../../../../api/common/guest-api";
 import {customHistory} from "../../../routes";
 import {appModal} from "../../../../common/modal/modals";
 import {openConnectionModal} from "../../../../common/connection-modal/connection-modal";
+import {Button} from "../../../../common/button/button";
 
 export class SignUpForm extends KComponent {
     constructor(props) {
@@ -211,7 +212,7 @@ export class SignUpForm extends KComponent {
                         )
                     }, true)}
                 </div>
-                <button className="btn btn-common-primary register-btn" onClick={this.handleSignUp}>Đăng ký</button>
+                <Button className="btn-common-primary register-btn" onClick={this.handleSignUp} loading={this.state.creating}>Đăng ký</Button>
             </div>
         );
     }

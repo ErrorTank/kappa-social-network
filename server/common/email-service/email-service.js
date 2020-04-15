@@ -29,8 +29,7 @@ const createEmailService = (config) => {
     }
   };
 };
-console.log(process.env.GMAIL_AUTH_USERNAME)
-console.log(process.env.GMAIL_AUTH_PASSWORD)
+
 const emailService = createEmailService({
   service: 'gmail',
   auth: {

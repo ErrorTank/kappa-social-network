@@ -1,0 +1,22 @@
+button
+  cursor pointer
+  font-size 1.4rem !important
+  padding 8px 15px !important
+  position relative
+  &:disabled{
+    cursor none
+    pointer-events none
+  }
+  &.loading{
+    pointer-events none
+    .loading-inline{
+      background-color inherit
+      .overlay{
+        background-color inherit
+        i{
+          color white
+        }
+      }
+
+    }
+  }
