@@ -38,7 +38,6 @@ const register = (data) => {
 
                 })
                 .then(({credentials, user}) => {
-                    console.log(credentials)
                     if(credentials.register_type === "PHONE"){
 
                         return smsService.sendSms(
@@ -47,6 +46,8 @@ const register = (data) => {
                         )
                             .then(() => credentials)
                             .catch(() => new ApplicationError("send_sms_failed"))
+                    }else{
+
                     }
 
                 })
