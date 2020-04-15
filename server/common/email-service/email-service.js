@@ -18,7 +18,14 @@ const createEmailService = (config) => {
 
   return {
     sendEmail: (options) => {
-      return transporter.sendMail(options)
+      return transporter.sendMail(options).then((arg) => {
+        console.log(`Send email to ${options.to} successfully!`);
+        console.log(arg);
+        return;
+      }).catch(err =>{
+        console.log(err);
+        return Promise.reject(err);
+      })
     }
   };
 };

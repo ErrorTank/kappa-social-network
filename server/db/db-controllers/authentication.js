@@ -59,10 +59,9 @@ const register = (data) => {
                                 token: `${credentials.token}`
                             }
                         }).then(() => {
-                            console.log("Send email successfully")
+
                             return credentials;
                         }).catch(err =>{
-                            console.log(err);
                             return Promise.reject(new ApplicationError("send_email_failed"))
                         })
                     }
