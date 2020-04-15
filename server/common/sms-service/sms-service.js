@@ -13,9 +13,7 @@ const createSmsService = (options, senderID) => {
 
     return {
         sendSms: (toPhone, content) => new Promise((resolve, reject) => {
-            console.log("84" + toPhone.substring(1))
             nexmo.message.sendSms(senderID, "+84" + toPhone.substring(1), content, options, (err, responseData) => {
-                console.log(responseData)
                 if (err) {
                     console.log(err);
                     reject(err);
