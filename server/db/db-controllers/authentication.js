@@ -28,6 +28,9 @@ const register = (data) => {
                     let newUser = nu.toObject();
                     return createNewConfirmToken({userID: newUser._id, registerType})
                 })
+                .then(credentials => {
+
+                })
                 .then(credentials => ({
                     sessionID: credentials._id,
                     registerType: credentials.registerType
