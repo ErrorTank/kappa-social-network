@@ -4,7 +4,7 @@ const Schema = mongoose.Schema;
 const tokenSchema =  new Schema({
   user: { type: mongoose.Schema.Types.ObjectId, required: true, ref: 'User' },
   token: { type: String, required: true },
-  created_at: { type: Date, expires: '20s', default: Date.now },
+  created_at: { type: Date, expires: '30m', default: Date.now },
   register_type: {
     type: String,
     enum: ["PHONE", "EMAIL"]

@@ -2,7 +2,16 @@ var exceptionRequestsDev = [
     {
         endpoint: "http://localhost:4000/api/register",
         method: "POST"
-    }
+    }, {
+        endpoint: "http://localhost:4000/api/session/check",
+        method: "POST"
+    }, {
+        endpoint: "http://localhost:4000/api/confirm-token/resend",
+        method: "POST"
+    },{
+        endpoint: "http://localhost:4000/api/verify-user",
+        method: "POST"
+    },
 ];
 
 var exceptionRequestsProd = [
@@ -12,8 +21,8 @@ var exceptionRequestsProd = [
     }
 ];
 
-var CACHE_STATIC_NAME = 'static-v1586952920041';
-var CACHE_DYNAMIC_NAME = 'dynamic-v1586952920041';
+var CACHE_STATIC_NAME = 'static-v1586966608221';
+var CACHE_DYNAMIC_NAME = 'dynamic-v1586966608221';
 
 var STATIC_FILES = [
     '/',

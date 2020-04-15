@@ -9,4 +9,10 @@ export const guestApi = {
     resendAccountConfirmationToken(data) {
         return offlineApi.post("/confirm-token/resend", data);
     },
+    checkSessionID(sessionID){
+        return offlineApi.post("/session/check", {sessionID});
+    },
+    verifyUser(payload){
+        return offlineApi.post("/verify-user", payload);
+    }
 };

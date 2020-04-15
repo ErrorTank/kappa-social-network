@@ -54,7 +54,7 @@ export class SignUpForm extends KComponent {
     getRegisterAccountConfirmationCredentials = (data) => {
         guestApi.resendAccountConfirmationToken(data)
             .then(({registerType, sessionID}) => {
-                customHistory.push(`/xac-nhan-dang-ky?sessionID=${sessionID}&registerType=${registerType}`);
+                customHistory.push(`/xac-thuc-tai-khoan?sessionID=${sessionID}`);
             })
             .catch(err => {
                 openConnectionModal();
@@ -90,7 +90,7 @@ export class SignUpForm extends KComponent {
         };
         guestApi.register(finalData)
             .then(({registerType, sessionID}) => {
-                customHistory.push(`/xac-nhan-dang-ky?sessionID=${sessionID}&registerType=${registerType}`);
+                customHistory.push(`/xac-thuc-tai-khoan?sessionID=${sessionID}&registerType=${registerType}`);
             })
             .catch(err => {
                 this.setState({creating: false});

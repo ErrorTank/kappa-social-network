@@ -79,7 +79,42 @@ const resendAccountConfirmationToken = ({userID, registerType}) => {
 
 };
 
+const sessionCheck = ({sessionID}) => {
+    if(!ObjectId.isValid(sessionID)){
+        return Promise.reject();
+    }
+    return ConfirmToken.findById(sessionID)
+        .populate("user", "contact")
+        .then(data => {
+            if(!data){
+                return Promise.reject();
+            }
+            return data;
+        })
+};
+
+const verifyUser = ({token, sessionID}) => {
+    return ConfirmToken.findOne({
+        token: token.toLowerCase(),
+        sessionID: ObjectId(sessionID)
+    }).lean()
+        .then(data => {
+            if(!data){
+                return Promise.reject(new ApplicationError("wrong_token"))
+            }
+            return Promise.all([
+                ConfirmToken.findOneAndDelete({sessionID: ObjectId(sessionID)}),
+                User.findOneAndUpdate({_id: ObjectId(data.user)}, {$set: {isVerify: true}}).lean()
+            ])
+        })
+        .then(([_, user]) => {
+
+        })
+};
+
 module.exports = {
     register,
-    resendAccountConfirmationToken
+    resendAccountConfirmationToken,
+    sessionCheck,
+    verifyUser
 };

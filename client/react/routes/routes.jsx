@@ -15,6 +15,7 @@ import {GuestRoute} from "./route-types/guest-route/guest-route";
 const FeedRoute = lazy(delayLoad(() => import("./authen-routes/feed-route/feed-route")));
 const LoginRoute = lazy(delayLoad(() => import("./guest-routes/login-route/login-route")));
 const ForgotPasswordRoute = lazy(delayLoad(() => import("./guest-routes/forgot-password-route/forgot-password-route")));
+const AccountConfirmationRoute = lazy(delayLoad(() => import("./guest-routes/account-confirmation/account-confirmation")));
 
 class MainRoute extends React.Component {
     constructor(props) {
@@ -52,6 +53,11 @@ class MainRoute extends React.Component {
                         path={"/quen-mat-khau"}
                         exact
                         component={ForgotPasswordRoute}
+                    />
+                    <GuestRoute
+                        path={"/xac-thuc-tai-khoan"}
+                        exact
+                        component={AccountConfirmationRoute}
                     />
                 </CustomSwitch>
 

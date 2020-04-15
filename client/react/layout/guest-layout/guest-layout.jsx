@@ -6,7 +6,7 @@ export class GuestLayout extends Component {
         return (
             <div className="guest-layout">
                 <GuestNavbar/>
-                {this.props.children()}
+                {this.props.children(this.props)}
             </div>
         );
     }

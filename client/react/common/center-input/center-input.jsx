@@ -15,7 +15,7 @@ export class CenterInput extends Component {
                 <input
                     className={classnames("center-input", {"is-invalid": error})}
                     id={id}
-                    autoComplete={false}
+                    autoComplete={`false`}
                     {...rest}
                 />
                 {(error) && (
