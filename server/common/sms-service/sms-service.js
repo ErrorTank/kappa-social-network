@@ -32,6 +32,6 @@ const createSmsService = (options, senderID) => {
 };
 
 const smsService = createSmsService(opts, process.env.NEXMO_SMS_SENDER_ID);
-smsService.sendSms("0343999482", `Mã xác nhận đăng ký tài khoản của bạn là: dasdsa`)
+
 
 module.exports = smsService;

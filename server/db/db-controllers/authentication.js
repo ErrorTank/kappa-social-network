@@ -20,10 +20,10 @@ const register = (data) => {
     return User.findOne(userQuery).lean()
         .then((user) => {
             if(user && user.isVerify){
-                return new ApplicationError("account_existed");
+                return Promise.reject(new ApplicationError("account_existed"));
             }
             if(user){
-                return new ApplicationError("account_not_verified", {userID: user._id, registerType: getUnverifiedUserRegisterType(user)});
+                return Promise.reject(new ApplicationError("account_not_verified", {userID: user._id, registerType: getUnverifiedUserRegisterType(user)}));
             }
             return new User(data).save()
                 .then(nu => {
@@ -45,9 +45,26 @@ const register = (data) => {
                             `Mã xác nhận đăng ký tài khoản của bạn là: ${credentials.token}`
                         )
                             .then(() => credentials)
-                            .catch(() => new ApplicationError("send_sms_failed"))
+                            .catch(() => Promise.reject(new ApplicationError("send_sms_failed")))
                     }else{
-
+                        return emailService.sendEmail({
+                            from: "Kappa Support",
+                            to: user.contact.login_username.email,
+                            subject: "Xác nhận đăng ký",
+                            template: "account-confirmation",
+                            context: {
+                                name: `${user.basic_info.username}`,
+                                appUrl: `${process.env.APP_URI}`,
+                                email: `${user.contact.login_username.email}`,
+                                token: `${credentials.token}`
+                            }
+                        }).then(() => {
+                            console.log("Send email successfully")
+                            return credentials;
+                        }).catch(err =>{
+                            console.log(err);
+                            return Promise.reject(new ApplicationError("send_email_failed"))
+                        })
                     }
 
                 })

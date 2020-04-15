@@ -21,7 +21,7 @@ export class SignUpForm extends KComponent {
 
         const signUpSchema = yup.object().shape({
             username: yup.string().min(6, "Tên người dùng phải lớn hơn 4 kí tự").max(50, "Tên người dùng phải nhỏ hơn 50 kí tự").required("Tên người dùng không được để trống"),
-            login_username: yup.string().isPhoneOrEmail("Số điện thoại hoặc email-service không hợp lệ").required("Email hoặc số điện thoại không được để trống"),
+            login_username: yup.string().isPhoneOrEmail("Số điện thoại hoặc email không hợp lệ").required("Email hoặc số điện thoại không được để trống"),
             password: yup.string().min(6, "Mật khẩu bắt buộc từ 4 ký tự trở lên").noSpecialChar("Mật khẩu không được có kí tự đặc biệt").required("Mật khẩu không được để trống"),
             gender: yup.string().oneOf(["MALE", "FEMALE", "OTHERS"]),
             dob: yup.object().shape({
@@ -93,7 +93,7 @@ export class SignUpForm extends KComponent {
             })
             .catch(err => {
                 this.setState({creating: false});
-                this.form.resetData();
+                // this.form.resetData();
                 let matcher = {
                     "account_existed": () => appModal.alert({
                         title: "Không thể tạo mới tài khoản",
