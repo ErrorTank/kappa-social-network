@@ -9,6 +9,8 @@ const omit = require("lodash/omit");
 const pick = require("lodash/pick");
 const {getUnverifiedUserRegisterType} = require("../../utils/user-utils");
 const {createNewConfirmToken} = require("./confirm-token");
+const smsService = require("../../common/sms-service/sms-service");
+const emailService = require("../../common/email-service/email-service");
 
 const register = (data) => {
     let registerType = data.contact.login_username.phone ? "PHONE" : "EMAIL";
@@ -27,13 +29,30 @@ const register = (data) => {
                 .then(nu => {
                     let newUser = nu.toObject();
                     return createNewConfirmToken({userID: newUser._id, registerType})
+                        .then((credentials) => {
+                            return {
+                                credentials,
+                                user: newUser
+                        }
+                        })
+
                 })
-                .then(credentials => {
+                .then(({credentials, user}) => {
+                    console.log(credentials)
+                    if(credentials.register_type === "PHONE"){
+
+                        return smsService.sendSms(
+                            user.contact.login_username.phone,
+                            `Mã xác nhận đăng ký tài khoản của bạn là: ${credentials.token}`
+                        )
+                            .then(() => credentials)
+                            .catch(() => new ApplicationError("send_sms_failed"))
+                    }
 
                 })
                 .then(credentials => ({
                     sessionID: credentials._id,
-                    registerType: credentials.registerType
+                    registerType: credentials.register_type
                 }))
 
         })

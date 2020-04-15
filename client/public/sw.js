@@ -1,12 +1,19 @@
-var exceptionRequests = [
+var exceptionRequestsDev = [
     {
-        endpoint: "/api/register",
+        endpoint: "http://localhost:4000/api/register",
         method: "POST"
     }
 ];
 
-var CACHE_STATIC_NAME = 'static-v1586928277471';
-var CACHE_DYNAMIC_NAME = 'dynamic-v1586928277471';
+var exceptionRequestsProd = [
+    {
+        endpoint: "http://localhost:4000/api/register",
+        method: "POST"
+    }
+];
+
+var CACHE_STATIC_NAME = 'static-v1586934257329';
+var CACHE_DYNAMIC_NAME = 'dynamic-v1586934257329';
 
 var STATIC_FILES = [
     '/',
@@ -81,18 +88,30 @@ self.addEventListener('activate', function (event) {
 });
 
 function isInArray(string, array) {
+    let host = self.location.host;
+    let sliceIndex = string.indexOf(host) + host.length;
+    console.log(sliceIndex)
     var cachePath;
-    if (string.indexOf(self.origin) === 0) {
-        cachePath = string.substring(self.origin.length);
+    if (string.indexOf(self.location.host) === self.location.protocol.length + 2) {
+        cachePath = string.substring(sliceIndex);
     } else {
         cachePath = string;
     }
+    console.log(cachePath)
     return array.indexOf(cachePath) > -1;
 }
 
 function isExceptionRequest(request) {
+    console.log(request.url)
 
-    return isInArray(request.url, exceptionRequests
+    let arr = request.url.indexOf("localhost") > -1 ? exceptionRequestsDev : exceptionRequestsProd;
+    console.log(arr.filter(function (each) {
+            return each.method == request.method;
+        })
+        .map(function (each) {
+            return each.endpoint;
+        }))
+    return isInArray(request.url, arr
         .filter(function (each) {
             return each.method == request.method;
         })
@@ -102,7 +121,9 @@ function isExceptionRequest(request) {
 }
 
 self.addEventListener('fetch', function (event) {
+    console.log("dau xanh")
     if (isExceptionRequest(event.request.clone())) {
+        console.log("dech")
         return;
     } else if (isInArray(event.request.url, STATIC_FILES)) {
         event.respondWith(

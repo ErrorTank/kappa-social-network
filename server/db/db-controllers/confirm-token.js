@@ -15,8 +15,8 @@ const createNewConfirmToken = (data) => {
     })
         .then(() => new ConfirmToken({
                 user: ObjectId(data.userID),
-                token: getRandomToken(5),
-                registerType: data.registerType
+                token: getRandomToken(3).toUpperCase(),
+                register_type: data.registerType
             }).save()
         )
         .then(data => data.toObject())
