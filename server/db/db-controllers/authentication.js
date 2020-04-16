@@ -11,6 +11,8 @@ const {getUnverifiedUserRegisterType} = require("../../utils/user-utils");
 const {createNewConfirmToken} = require("./confirm-token");
 const smsService = require("../../common/sms-service/sms-service");
 const emailService = require("../../common/email-service/email-service");
+const {getPrivateKey, getPublicKey} = require("../../authorization/keys/keys");
+const {createAuthToken} = require("../../authorization/auth");
 
 const sendAccountConfirmationToken = ({credentials, user}) => {
     if(credentials.register_type === "PHONE"){
@@ -112,21 +114,31 @@ const sessionCheck = ({sessionID}) => {
 };
 
 const verifyUser = ({token, sessionID}) => {
+    console.log(token)
+    console.log(sessionID)
     return ConfirmToken.findOne({
-        token: token.toLowerCase(),
-        sessionID: ObjectId(sessionID)
+        token: token.toUpperCase(),
+        _id: ObjectId(sessionID)
     }).lean()
         .then(data => {
             if(!data){
                 return Promise.reject(new ApplicationError("wrong_token"))
             }
             return Promise.all([
-                ConfirmToken.findOneAndDelete({sessionID: ObjectId(sessionID)}),
-                User.findOneAndUpdate({_id: ObjectId(data.user)}, {$set: {isVerify: true}}).lean()
+                ConfirmToken.findOneAndDelete({_id: ObjectId(sessionID)}),
+                User.findOneAndUpdate({_id: ObjectId(data.user)}, {$set: {isVerify: true}}, {new: true, select: "_id contact basic_info joined_at isVerify last_active_at dark_mode"}).lean()
             ])
         })
         .then(([_, user]) => {
-
+            console.log(user);
+            return createAuthToken(pick(user, ["_id", "contact"]), getPrivateKey(), {
+                algorithm: "RS256"
+            }).then(token => {
+                return {
+                    token,
+                    user
+                }
+            })
         })
 };
 

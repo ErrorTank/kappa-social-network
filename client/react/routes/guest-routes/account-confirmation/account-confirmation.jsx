@@ -8,6 +8,7 @@ import {guestApi} from "../../../../api/common/guest-api";
 import {appModal} from "../../../common/modal/modals";
 import {openConnectionModal} from "../../../common/connection-modal/connection-modal";
 import {resendConfirmTokenModal} from "../../../common/modal/resend-confirm-token/resend-confirm-token";
+import {initializeAuthenticateUser} from "../../../../common/app-services";
 
 class AccountConfirmation extends Component {
     constructor(props) {
@@ -59,8 +60,11 @@ class AccountConfirmation extends Component {
     handleConfirm = (token) => {
         let queryStringParams = parseQueryString(this.props.location.search);
         return guestApi.verifyUser({token, sessionID: queryStringParams.sessionID})
-            .then(() => {
-
+            .then(({user, token}) => {
+                initializeAuthenticateUser({
+                    userInfo: user,
+                    authToken: token
+                }).then(() => customHistory.push("/"));
             })
             .catch((err) => {
                 if(err.message === "wrong_token"){

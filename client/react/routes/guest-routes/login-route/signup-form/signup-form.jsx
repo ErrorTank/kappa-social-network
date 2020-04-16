@@ -52,12 +52,14 @@ export class SignUpForm extends KComponent {
     }
 
     getRegisterAccountConfirmationCredentials = (data) => {
+        this.setState({creating: true});
         guestApi.resendAccountConfirmationToken(data)
-            .then(({registerType, sessionID}) => {
-                customHistory.push(`/xac-thuc-tai-khoan?sessionID=${sessionID}`);
+            .then((data) => {
+                customHistory.push(`/xac-thuc-tai-khoan?sessionID=${data._id}`);
             })
             .catch(err => {
                 openConnectionModal();
+                this.setState({creating: false});
             })
     };
 

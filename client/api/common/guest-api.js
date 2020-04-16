@@ -14,5 +14,5 @@ export const guestApi = {
     },
     verifyUser(payload){
         return offlineApi.post("/verify-user", payload);
-    }
+    },
 };

@@ -11,6 +11,12 @@ var exceptionRequestsDev = [
     },{
         endpoint: "http://localhost:4000/api/verify-user",
         method: "POST"
+    },{
+        endpoint: "http://localhost:4000/api/user/init-credentials",
+        method: "GET"
+    },{
+        endpoint: "http://localhost:4000/api/login",
+        method: "POST"
     },
 ];
 
@@ -21,8 +27,8 @@ var exceptionRequestsProd = [
     }
 ];
 
-var CACHE_STATIC_NAME = 'static-v1587015036703';
-var CACHE_DYNAMIC_NAME = 'dynamic-v1587015036703';
+var CACHE_STATIC_NAME = 'static-v1587028041231';
+var CACHE_DYNAMIC_NAME = 'dynamic-v1587028041231';
 
 var STATIC_FILES = [
     '/',
