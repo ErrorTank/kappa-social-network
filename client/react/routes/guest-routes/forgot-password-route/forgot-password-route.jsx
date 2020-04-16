@@ -6,6 +6,9 @@ import * as yup from "yup";
 import {createSimpleForm} from "../../../common/form-validator/form-validator";
 import {CenterInput} from "../../../common/center-input/center-input";
 import classnames from "classnames"
+import {userApi} from "../../../../api/common/user-api";
+import {customHistory} from "../../routes";
+import {openConnectionModal} from "../../../common/connection-modal/connection-modal";
 
 class ChangePasswordByEmail extends KComponent {
     constructor(props) {
@@ -154,7 +157,17 @@ class ForgotPasswordRoute extends Component {
 
     }
 
-    next = () => {
+    next = (data) => {
+        userApi.sendChangePasswordToken(data)
+            .then(({sessionID}) => {
+                this.setState({step: 1});
+            })
+            .catch(err => {
+                if(err.message){
+                    return Promise.reject(err)
+                }
+                return openConnectionModal();
+            })
 
     };
 
@@ -195,7 +208,6 @@ class ForgotPasswordRoute extends Component {
                             </div>
                         ) : (
                             <div className="forgot-password-step-1">
-
                             </div>
                         )}
                     </div>

@@ -17,7 +17,11 @@ var exceptionRequestsDev = [
     },{
         endpoint: "http://localhost:4000/api/user/login",
         method: "POST"
+    },{
+        endpoint: "http://localhost:4000/api/user/send-change-password-email",
+        method: "POST"
     },
+
 ];
 
 var exceptionRequestsProd = [
@@ -27,8 +31,8 @@ var exceptionRequestsProd = [
     }
 ];
 
-var CACHE_STATIC_NAME = 'static-v1587031127295';
-var CACHE_DYNAMIC_NAME = 'dynamic-v1587031127295';
+var CACHE_STATIC_NAME = 'static-v1587033487013';
+var CACHE_DYNAMIC_NAME = 'dynamic-v1587033487013';
 
 var STATIC_FILES = [
     '/',

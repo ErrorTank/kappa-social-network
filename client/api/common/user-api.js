@@ -8,5 +8,8 @@ export const userApi = {
     },
     login(payload){
         return offlineApi.post("/user/login", payload);
+    },
+    sendChangePasswordToken(payload){
+        return offlineApi.post("/user/send-change-password-email", payload);
     }
 };
