@@ -6,4 +6,7 @@ export const userApi = {
     getAuthenticateUserInitCredentials(){
         return authenApi.get("/user/init-credentials");
     },
+    login(payload){
+        return offlineApi.post("/user/login", payload);
+    }
 };

@@ -4,6 +4,14 @@ import {KComponent} from "../../../../common/k-component";
 import * as yup from "yup"
 import {createSimpleForm} from "../../../../common/form-validator/form-validator";
 import {CommonInput} from "../../../../common/common-input/common-input";
+import {userApi} from "../../../../../api/common/user-api";
+import {initializeAuthenticateUser} from "../../../../../common/app-services";
+import {customHistory} from "../../../../routes/routes";
+import {appModal} from "../../../../common/modal/modals";
+import {isPhone} from "../../../../../common/validator";
+import {openConnectionModal} from "../../../../common/connection-modal/connection-modal";
+import {guestApi} from "../../../../../api/common/guest-api";
+import {Button} from "../../../../common/button/button";
 
 export class GuestNavbarLoginWidget extends KComponent {
     constructor(props) {
@@ -12,12 +20,12 @@ export class GuestNavbarLoginWidget extends KComponent {
             logging: false
         };
         const loginSchema = yup.object().shape({
-            username: yup.string().required("Tên đăng nhập không được để trống"),
+            login_username: yup.string().required("Tên đăng nhập không được để trống"),
             password: yup.string().min(4, "Mật khẩu phải nhiều hơn 4 kí tự").noSpecialChar("Mật khẩu không được chứa kí tự đặc biệt")
         });
         this.form = createSimpleForm(loginSchema, {
             initData: {
-                username: "",
+                login_username: "",
                 password: ""
             }
         });
@@ -31,8 +39,60 @@ export class GuestNavbarLoginWidget extends KComponent {
         this.form.validateData();
     }
 
-    handleLogin = () => {
+    getRegisterAccountConfirmationCredentials = (data) => {
+        this.setState({logging: true});
+        guestApi.resendAccountConfirmationToken(data)
+            .then((data) => {
+                customHistory.push(`/xac-thuc-tai-khoan?sessionID=${data._id}`);
+            })
+            .catch(err => {
+                openConnectionModal();
+                this.setState({logging: false});
+            })
+    };
 
+    handleLogin = () => {
+        let data = this.form.getData();
+        userApi.login(data)
+            .then(({token, user}) => {
+                initializeAuthenticateUser({
+                    userInfo: user,
+                    authToken: token
+                }).then(() => customHistory.push("/"));
+            })
+            .catch(err => {
+                let matcher = {
+                    "account_not_existed": () => appModal.alert({
+                        title: "Không thể đăng nhập",
+                        text: (
+                            <p>
+                                Tài khoản hoặc mật khẩu chưa chính xác. Vui lòng kiểm tra lại
+                            </p>
+                        ),
+                        btnText: "Đóng",
+                        className: "create-account-result-modal"
+                    }),
+                    "account_not_verified": () => appModal.confirm({
+                        title: "Không thể đăng nhập",
+                        text:  (
+                            <div>
+                                Tài khoản với {isPhone(data.login_username) ? `số điện thoại` : `địa chỉ email`} <span className="high-light">{data.login_username}</span> chưa được xác thực.
+                                <p className="question">Bạn có muốn xác thực ngay?</p>
+                            </div>
+                        ),
+                        btnText: "Đồng ý",
+                        cancelText: "Hủy bỏ",
+                        className: "create-account-result-modal"
+                    }).then(result => {
+                        if(result){
+                            this.getRegisterAccountConfirmationCredentials(err.extra)
+                        }
+                    })
+
+                };
+                let modalAction = matcher[err?.message] || openConnectionModal;
+                modalAction();
+            });
     };
 
     render() {
@@ -41,11 +101,11 @@ export class GuestNavbarLoginWidget extends KComponent {
         return (
             <div className="guest-navbar-login-widget">
                 <div className="gnlw-input-wrapper">
-                    {this.form.enhanceComponent("username", ({error, onChange, onEnter, ...others}) => (
+                    {this.form.enhanceComponent("login_username", ({error, onChange, onEnter, ...others}) => (
                         <CommonInput
                             className="pt-0"
                             error={error}
-                            id={"username"}
+                            id={"login_username"}
                             onKeyDown={onEnter}
                             type={"text"}
                             label={"Email/Số điện thoại"}
@@ -75,7 +135,7 @@ export class GuestNavbarLoginWidget extends KComponent {
                         />
                     ), true)}
                 </div>
-                <button className="btn btn-common-primary login-btn" disabled={disabledBtn} onClick={this.handleLogin}>Đăng nhập</button>
+                <Button className="btn-common-primary login-btn" disabled={disabledBtn} loading={logging} onClick={this.handleLogin}>Đăng nhập</Button>
             </div>
         );
     }

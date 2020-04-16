@@ -112,8 +112,8 @@ export class SignUpForm extends KComponent {
                         title: "Không thể tạo mới tài khoản",
                         text:  (
                             <div>
-                                Tài khoản với {phone ? `số điện thoại` : `địa chỉ email`} <span className="high-light">{phone || email}</span> chưa được xác nhận.
-                                <p className="question">Bạn có muốn xác nhận ngay?</p>
+                                Tài khoản với {phone ? `số điện thoại` : `địa chỉ email`} <span className="high-light">{phone || email}</span> chưa được xác thực.
+                                <p className="question">Bạn có muốn xác thực ngay?</p>
                             </div>
                         ),
                         btnText: "Đồng ý",
