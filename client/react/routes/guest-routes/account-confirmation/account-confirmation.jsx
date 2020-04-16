@@ -7,13 +7,14 @@ import {LoadingInline} from "../../../common/loading-inline/loading-inline";
 import {guestApi} from "../../../../api/common/guest-api";
 import {appModal} from "../../../common/modal/modals";
 import {openConnectionModal} from "../../../common/connection-modal/connection-modal";
+import {resendConfirmTokenModal} from "../../../common/modal/resend-confirm-token/resend-confirm-token";
 
 class AccountConfirmation extends Component {
     constructor(props) {
         super(props);
         this.state = {
             loading: true,
-            session: null
+            session: null,
         };
         let queryStringParams = parseQueryString(props.location.search);
         if(!props.location.search || !queryStringParams.sessionID){
@@ -25,6 +26,34 @@ class AccountConfirmation extends Component {
             customHistory.push("/");
         })
 
+    };
+
+    componentDidUpdate(prevProps) {
+        let queryStringParams = parseQueryString(this.props.location.search);
+        let lastQueryStringParams = parseQueryString(prevProps.location.search);
+        if(!this.props.location.search || !queryStringParams.sessionID){
+            return customHistory.push("/");
+        }
+        if (queryStringParams.sessionID !== lastQueryStringParams.sessionID) {
+            this.setState({loading: true});
+            guestApi.checkSessionID(queryStringParams.sessionID).then((session) => {
+                this.setState({session, loading: false});
+            }).catch(() => {
+                customHistory.push("/");
+            })
+        }
+    }
+
+    handleResendConfirmToken = () => {
+        resendConfirmTokenModal.open({
+            onRequestEnd: (sessionID) => {
+                if(sessionID){
+                    customHistory.push(`/xac-thuc-tai-khoan?sessionID=${sessionID}`);
+                }
+            },
+            session: this.state.session,
+            disabledClose: true
+        })
     };
 
     handleConfirm = (token) => {
@@ -58,9 +87,13 @@ class AccountConfirmation extends Component {
                         {this.state.loading ? (
                             <LoadingInline/>
                         ) : (
-                            <ConfirmAccountWidget
-                                onConfirm={this.handleConfirm}
-                            />
+                            <>
+                                <ConfirmAccountWidget
+                                    onConfirm={this.handleConfirm}
+                                    session={this.state.session}
+                                />
+                                <div className="resend-token">Chưa nhận được mã? <span className="high-light" onClick={this.handleResendConfirmToken}>Gửi lại</span></div>
+                            </>
                         )}
 
                     </div>

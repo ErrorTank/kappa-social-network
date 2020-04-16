@@ -126,6 +126,7 @@ export class ModalsRegistry extends React.Component {
               isStack={modalList.length > 1}
               className={modal.options.className}
               content={modal.options.content}
+              disabledOverlayClose={modal.options.disabledOverlayClose}
               onDismiss={() => this.dismiss(modal)}
             />
           </CSSTransition>

@@ -12,6 +12,37 @@ const {createNewConfirmToken} = require("./confirm-token");
 const smsService = require("../../common/sms-service/sms-service");
 const emailService = require("../../common/email-service/email-service");
 
+const sendAccountConfirmationToken = ({credentials, user}) => {
+    if(credentials.register_type === "PHONE"){
+
+        return smsService.sendSms(
+            user.contact.login_username.phone,
+            `Mã xác nhận đăng ký tài khoản của bạn là: ${credentials.token}`
+        )
+            .then(() => credentials)
+            .catch(() => Promise.reject(new ApplicationError("send_sms_failed")))
+    }else{
+        return emailService.sendEmail({
+            from: "Kappa Support",
+            to: user.contact.login_username.email,
+            subject: "Xác nhận đăng ký",
+            template: "account-confirmation",
+            context: {
+                name: `${user.basic_info.username}`,
+                appUrl: `${process.env.APP_URI}`,
+                email: `${user.contact.login_username.email}`,
+                token: `${credentials.token}`
+            }
+        }).then(() => {
+
+            return credentials;
+        }).catch(err =>{
+            return Promise.reject(new ApplicationError("send_email_failed"))
+        })
+    }
+
+};
+
 const register = (data) => {
     let registerType = data.contact.login_username.phone ? "PHONE" : "EMAIL";
     let userQuery = registerType === "PHONE" ?
@@ -37,36 +68,7 @@ const register = (data) => {
                         })
 
                 })
-                .then(({credentials, user}) => {
-                    if(credentials.register_type === "PHONE"){
-
-                        return smsService.sendSms(
-                            user.contact.login_username.phone,
-                            `Mã xác nhận đăng ký tài khoản của bạn là: ${credentials.token}`
-                        )
-                            .then(() => credentials)
-                            .catch(() => Promise.reject(new ApplicationError("send_sms_failed")))
-                    }else{
-                        return emailService.sendEmail({
-                            from: "Kappa Support",
-                            to: user.contact.login_username.email,
-                            subject: "Xác nhận đăng ký",
-                            template: "account-confirmation",
-                            context: {
-                                name: `${user.basic_info.username}`,
-                                appUrl: `${process.env.APP_URI}`,
-                                email: `${user.contact.login_username.email}`,
-                                token: `${credentials.token}`
-                            }
-                        }).then(() => {
-
-                            return credentials;
-                        }).catch(err =>{
-                            return Promise.reject(new ApplicationError("send_email_failed"))
-                        })
-                    }
-
-                })
+                .then(sendAccountConfirmationToken)
                 .then(credentials => ({
                     sessionID: credentials._id,
                     registerType: credentials.register_type
@@ -75,8 +77,24 @@ const register = (data) => {
         })
 };
 
-const resendAccountConfirmationToken = ({userID, registerType}) => {
 
+const resendAccountConfirmationToken = ({userID, registerType}) => {
+    return User.findOne({_id: ObjectId(userID), isVerify: false}, "contact basic_info")
+        .lean()
+        .then((data) => {
+            if(!data){
+                return Promise.reject(new ApplicationError("user_not_existed"));
+            }
+            return createNewConfirmToken({userID, registerType})
+                .then((credentials) => {
+                    return {
+                        credentials,
+                        user: data
+                    }
+                })
+
+        })
+        .then(sendAccountConfirmationToken)
 };
 
 const sessionCheck = ({sessionID}) => {
@@ -84,7 +102,7 @@ const sessionCheck = ({sessionID}) => {
         return Promise.reject();
     }
     return ConfirmToken.findById(sessionID)
-        .populate("user", "contact")
+        .populate("user", "contact _id")
         .then(data => {
             if(!data){
                 return Promise.reject();

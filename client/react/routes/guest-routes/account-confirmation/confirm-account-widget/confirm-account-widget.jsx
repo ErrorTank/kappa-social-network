@@ -48,16 +48,14 @@ export class ConfirmAccountWidget extends KComponent {
     render() {
         // userBrief.contact.login_username.phone
         // userBrief.contact.login_username.email
-        let {registerType, userBrief} = this.props;
-        console.log(this.form.getInvalidPaths())
-        console.log(this.state.loading)
+        let {session} = this.props;
         return (
             <div className="confirm-account-widget">
                 <div className="confirm-account-widget-title">
-                    Sắp tới rồi! Hãy nhập mã xác thực(gồm 6 kí tự) được gửi qua {registerType === "PHONE" ? (
-                    <>số điện thoại<span className="high-light"> {"3123123"}</span></>
+                    Sắp tới rồi! Hãy nhập mã xác thực(gồm 6 kí tự) được gửi qua {session.register_type === "PHONE" ? (
+                    <>số điện thoại<span className="high-light"> {session.user.contact.login_username.phone}</span></>
                 ) : (
-                    <>địa chỉ email<span className="high-light"> {"dá@gmail.com"}</span></>
+                    <>địa chỉ email<span className="high-light"> {session.user.contact.login_username.email}</span></>
                 )} vào ô dưới đây:
                 </div>
                 {this.form.enhanceComponent("token", ({error, onChange, onEnter, ...others}) => (
