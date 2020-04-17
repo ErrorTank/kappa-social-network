@@ -42,7 +42,7 @@ class ResendConfirmTokenModal extends Component{
         })
             .then((data) => {
                 this.setState({loading: false});
-                props.onRequestEnd(data._id);
+                props.onRequestEnd(data);
             })
             .catch((err) =>{
                 this.setState({loading: false, errorCode: err.message || true});

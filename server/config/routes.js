@@ -3,6 +3,6 @@ const router = express.Router();
 
 module.exports = (db, namespacesIO) => {
     router.use("/api", require("../controllers/guest-controller")(db));
-    router.use("/api", require("../controllers/user-controller")(db));
+    router.use("/api/user", require("../controllers/user-controller")(db));
     return router;
 };

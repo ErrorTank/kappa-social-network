@@ -87,7 +87,6 @@ export const createSimpleForm = (schema, _options) => {
                 await validatePath(path);
             }
 
-
             eventManagement.emit("change", state);
         }
     };

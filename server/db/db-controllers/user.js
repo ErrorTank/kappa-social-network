@@ -1,6 +1,7 @@
 const dbManager = require("../../config/db");
 const appDb = dbManager.getConnections()[0];
 const User = require("../model/user")(appDb);
+const ResetPasswordToken = require("../model/reset-password-token")(appDb);
 const mongoose = require("mongoose");
 const {getUnverifiedUserRegisterType} = require("../../utils/user-utils");
 const ObjectId = mongoose.Types.ObjectId;
@@ -119,8 +120,80 @@ const sendChangePasswordToken = ({email = "", phone = ""}) => {
 
 };
 
+const resendChangePasswordToken = ({userID, registerType}) => {
+
+    return User.findOne({_id: userID}).lean()
+        .then(data => {
+            if(!data){
+                return Promise.reject(new ApplicationError("account_not_existed"));
+            }
+
+            return createNewConfirmToken({
+                userID: data._id,
+                registerType
+            }, "password")
+                .then((credentials) => {
+                    return {
+                        credentials,
+                        user: data
+                    }
+                })
+                .then(sendResetPasswordToken)
+                .then(credentials => ({
+                    sessionID: credentials._id,
+                    register_type: credentials.register_type,
+                    user: pick(data, ["_id", "contact", "basic_info"])
+                }))
+        })
+};
+
+const verifyChangePasswordToken = ({token, sessionID}) => {
+  return ResetPasswordToken.findOne({
+      token: token.toUpperCase(),
+      _id: ObjectId(sessionID)
+  }).lean()
+      .then(data => {
+          if(!data){
+              return Promise.reject(new ApplicationError("wrong_token"))
+          }
+          return ResetPasswordToken.findOneAndUpdate({_id: ObjectId(sessionID)}, {$set: {isVerify: true}} ,{new: true}).lean()
+      })
+};
+
+const getChangePasswordUserBrief = sessionID => {
+    console.log(sessionID)
+    return ResetPasswordToken.findOne({
+        _id: ObjectId(sessionID),
+        isVerify: true
+    }).populate("user", "private_info _id")
+        .then(data => {
+            console.log(data)
+            if(!data){
+                return Promise.reject();
+            }
+            return data.toObject();
+        })
+};
+
+const changePassword = ({sessionID, newPassword}) => {
+    return ResetPasswordToken.findOneAndDelete({
+        _id: ObjectId(sessionID)
+    }).lean()
+        .then(data => {
+            if(!data){
+                return Promise.reject();
+            }
+            return User.findOneAndUpdate({_id: ObjectId(data.user)}, {$set: {"private_info.password": newPassword.trim()}})
+                .then(() => null);
+        })
+};
+
 module.exports = {
     getAuthenticateUserInitCredentials,
     login,
-    sendChangePasswordToken
+    sendChangePasswordToken,
+    resendChangePasswordToken,
+    verifyChangePasswordToken,
+    getChangePasswordUserBrief,
+    changePassword
 };

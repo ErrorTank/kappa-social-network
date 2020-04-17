@@ -18,4 +18,10 @@ export const userApi = {
     resendResetPasswordToken(payload){
         return offlineApi.post("/user/resend-change-password-token", payload);
     },
+    getChangePasswordUserBrief(sessionID){
+        return offlineApi.get("/user/change-password/brief/session/" + sessionID);
+    },
+    changePassword(sessionID ,newPassword){
+        return offlineApi.put("/user/change-password", {newPassword, sessionID});
+    },
 };

@@ -16,6 +16,7 @@ const FeedRoute = lazy(delayLoad(() => import("./authen-routes/feed-route/feed-r
 const LoginRoute = lazy(delayLoad(() => import("./guest-routes/login-route/login-route")));
 const ForgotPasswordRoute = lazy(delayLoad(() => import("./guest-routes/forgot-password-route/forgot-password-route")));
 const AccountConfirmationRoute = lazy(delayLoad(() => import("./guest-routes/account-confirmation/account-confirmation")));
+const ChangePasswordRoute = lazy(delayLoad(() => import("./guest-routes/change-password-route/change-password-route")));
 
 class MainRoute extends React.Component {
     constructor(props) {
@@ -58,6 +59,11 @@ class MainRoute extends React.Component {
                         path={"/xac-thuc-tai-khoan"}
                         exact
                         component={AccountConfirmationRoute}
+                    />
+                    <GuestRoute
+                        path={"/doi-mat-khau"}
+                        exact
+                        component={ChangePasswordRoute}
                     />
                 </CustomSwitch>
 

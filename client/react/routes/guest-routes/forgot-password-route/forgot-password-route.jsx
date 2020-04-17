@@ -51,22 +51,24 @@ class ChangePasswordByEmail extends KComponent {
         this.props.onNext(this.form.getData())
             .catch(err => {
                 console.log(err);
-                if(err.message === "account_not_existed"){
+                if (err.message === "account_not_existed") {
                     appModal.alert({
                         title: "Thông báo",
                         text: (
                             <>
-                                Tài khoản với địa chỉ email <span className="high-light">{this.form.getData().email}</span> không tồn tại
+                                Tài khoản với địa chỉ email <span
+                                className="high-light">{this.form.getData().email}</span> không tồn tại
                             </>
                         ),
                         btnText: "Đóng",
                     });
-                }else{
+                } else {
                     appModal.alert({
                         title: "Thông báo",
                         text: (
                             <>
-                                Không thể gửi mã xác thực đến địa chỉ emai <span className="high-light">{this.form.getData().email}</span>
+                                Không thể gửi mã xác thực đến địa chỉ emai <span
+                                className="high-light">{this.form.getData().email}</span>
                             </>
                         ),
                         btnText: "Đóng",
@@ -100,7 +102,9 @@ class ChangePasswordByEmail extends KComponent {
                         {...others}
                     />
                 ), true)}
-                <Button className="btn-common-primary next-btn" loading={loading} disabled={loading || this.form.getInvalidPaths().length} onClick={this.handleClickNext}>Tiếp tục</Button>
+                <Button className="btn-common-primary next-btn" loading={loading}
+                        disabled={loading || this.form.getInvalidPaths().length} onClick={this.handleClickNext}>Tiếp
+                    tục</Button>
             </div>
         );
     }
@@ -140,22 +144,24 @@ class ChangePasswordBySms extends KComponent {
         this.props.onNext(this.form.getData())
             .catch(err => {
                 console.log(err);
-                if(err.message === "account_not_existed"){
+                if (err.message === "account_not_existed") {
                     appModal.alert({
                         title: "Thông báo",
                         text: (
                             <>
-                                Tài khoản với số điện thoại <span className="high-light">{this.form.getData().phone}</span> không tồn tại
-                             </>
+                                Tài khoản với số điện thoại <span
+                                className="high-light">{this.form.getData().phone}</span> không tồn tại
+                            </>
                         ),
                         btnText: "Đóng",
                     });
-                }else{
+                } else {
                     appModal.alert({
                         title: "Thông báo",
                         text: (
                             <>
-                                Không thể gửi mã xác thực đến số điện thoại <span className="high-light">{this.form.getData().phone}</span>
+                                Không thể gửi mã xác thực đến số điện thoại <span
+                                className="high-light">{this.form.getData().phone}</span>
                             </>
                         ),
                         btnText: "Đóng",
@@ -189,7 +195,9 @@ class ChangePasswordBySms extends KComponent {
                         {...others}
                     />
                 ), true)}
-                <Button className="btn-common-primary next-btn" loading={loading} disabled={loading || this.form.getInvalidPaths().length} onClick={this.handleClickNext}>Tiếp tục</Button>
+                <Button className="btn-common-primary next-btn" loading={loading}
+                        disabled={loading || this.form.getInvalidPaths().length} onClick={this.handleClickNext}>Tiếp
+                    tục</Button>
             </div>
         );
     }
@@ -212,7 +220,7 @@ class ForgotPasswordRoute extends Component {
     handleResendConfirmToken = () => {
         resendConfirmTokenModal.open({
             onRequestEnd: (session) => {
-                if(session){
+                if (session) {
                     this.setState({session});
                 }
             },
@@ -228,7 +236,7 @@ class ForgotPasswordRoute extends Component {
                 this.setState({session, step: 1});
             })
             .catch(err => {
-                if(err.message === "account_not_existed"){
+                if (err.message === "account_not_existed") {
                     return Promise.reject(err)
                 }
 
@@ -240,17 +248,17 @@ class ForgotPasswordRoute extends Component {
     handleConfirmToken = (token) => {
         let {session} = this.state;
         return userApi.verifyChangePasswordToken({token, sessionID: session.sessionID})
-            .then(() => {
-                customHistory.push("/")
+            .then((data) => {
+                customHistory.push("/doi-mat-khau?sessionID=" + data._id)
             })
             .catch((err) => {
-                if(err.message === "wrong_token"){
+                if (err.message === "wrong_token") {
                     appModal.alert({
                         title: "Thông báo",
                         text: "Mã xác thực sai hoặc đã hết hạn.",
                         btnText: "Đóng",
                     });
-                }else{
+                } else {
                     openConnectionModal();
                 }
                 return Promise.reject();
@@ -266,7 +274,10 @@ class ForgotPasswordRoute extends Component {
             >
                 <div className="forgot-password-route">
                     <div className="forgot-password-widget">
-                        <h1 className="forgot-password-title">Lấy lại mật khẩu bằng <span className={classnames({email: mode === "EMAIL", phone: mode === "PHONE"})}>{mode === "EMAIL" ? (
+                        <h1 className="forgot-password-title">Lấy lại mật khẩu bằng <span className={classnames({
+                            email: mode === "EMAIL",
+                            phone: mode === "PHONE"
+                        })}>{mode === "EMAIL" ? (
                             <>
                                 <i className="fad fa-envelope-square"></i> Email
                             </>
@@ -277,7 +288,10 @@ class ForgotPasswordRoute extends Component {
                         )}</span></h1>
                         {step === 0 ? (
                             <div className="forgot-password-step-0">
-                                <div className={classnames("toggle-mode", {email: mode === "PHONE", phone: mode === "EMAIL"})}
+                                <div className={classnames("toggle-mode", {
+                                    email: mode === "PHONE",
+                                    phone: mode === "EMAIL"
+                                })}
                                      onClick={() => this.setState({mode: mode === "EMAIL" ? "PHONE" : "EMAIL"})}
                                 >
                                     Sử dụng {mode === 'EMAIL' ? "SMS" : "Email"} <i className="fas fa-repeat-alt"></i>
@@ -298,7 +312,9 @@ class ForgotPasswordRoute extends Component {
                                     session={this.state.session || {}}
                                     onConfirm={this.handleConfirmToken}
                                 />
-                                <div className="resend-token">Chưa nhận được mã? <span className="high-light" onClick={this.handleResendConfirmToken}>Gửi lại</span></div>
+                                <div className="resend-token">Chưa nhận được mã? <span className="high-light"
+                                                                                       onClick={this.handleResendConfirmToken}>Gửi lại</span>
+                                </div>
                             </div>
                         )}
                     </div>

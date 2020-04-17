@@ -47,7 +47,7 @@ class AccountConfirmation extends Component {
 
     handleResendConfirmToken = () => {
         resendConfirmTokenModal.open({
-            onRequestEnd: (sessionID) => {
+            onRequestEnd: ({_id: sessionID}) => {
                 if(sessionID){
                     customHistory.push(`/xac-thuc-tai-khoan?sessionID=${sessionID}`);
                 }

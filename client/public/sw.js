@@ -26,6 +26,12 @@ var exceptionRequestsDev = [
     },{
         endpoint: "http://localhost:4000/api/user/resend-change-password-token",
         method: "POST"
+    },{
+        endpoint: /http:\/\/localhost:4000\/api\/user\/change-password\/brief\/session\//,
+        method: "GET"
+    },{
+        endpoint: "http://localhost:4000/api/user/change-password",
+        method: "PUT"
     },
 
 ];
@@ -37,8 +43,8 @@ var exceptionRequestsProd = [
     }
 ];
 
-var CACHE_STATIC_NAME = 'static-v1587102049986';
-var CACHE_DYNAMIC_NAME = 'dynamic-v1587102049986';
+var CACHE_STATIC_NAME = 'static-v1587112615939';
+var CACHE_DYNAMIC_NAME = 'dynamic-v1587112615939';
 
 var STATIC_FILES = [
     '/',
@@ -121,13 +127,21 @@ function isInArray(string, array) {
     } else {
         cachePath = string;
     }
-    return array.indexOf(cachePath) > -1;
+    for(var path of array){
+        if(typeof path === "string" && path === cachePath){
+            return true;
+        }
+        if(typeof path === "object" && path.test(string)){
+            return true;
+        }
+    }
+    return false;
 }
 
 function isExceptionRequest(request) {
 
     let arr = request.url.indexOf("localhost") > -1 ? exceptionRequestsDev : exceptionRequestsProd;
-
+    console.log(request.url)
     return isInArray(request.url, arr
         .filter(function (each) {
             return each.method == request.method;
