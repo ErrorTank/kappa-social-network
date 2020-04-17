@@ -9,6 +9,7 @@ import {CommonInput} from "../../common-input/common-input";
 import {commonPopup} from "../../common-popup/common-popup";
 import {CommonModalLayout} from "../common-modal-layout";
 import {guestApi} from "../../../../api/common/guest-api";
+import {userApi} from "../../../../api/common/user-api";
 
 export const resendConfirmTokenModal = {
     open(config) {
@@ -33,7 +34,9 @@ class ResendConfirmTokenModal extends Component{
             loading: true,
             errorCode: null,
         };
-        guestApi.resendAccountConfirmationToken({
+
+        let api = props.type === "account" ? guestApi.resendAccountConfirmationToken : userApi.resendResetPasswordToken
+        api({
             userID: props.session.user._id,
             registerType: props.session.register_type
         })
@@ -53,9 +56,9 @@ class ResendConfirmTokenModal extends Component{
     render(){
         let {loading, errorCode} = this.state;
         console.log(errorCode)
-        let {onClose, disabledClose} = this.props;
+        let {onClose, disabledClose, type = "account"} = this.props;
         let matcher = {
-            "user_not_existed": "Tài khoản này không tồn tại hoặc đã được xác thực.",
+            "user_not_existed": type === "account" ? "Tài khoản này không tồn tại hoặc đã được xác thực." : "Tài khoản này không tồn tại",
         };
         let content = errorCode ? matcher[errorCode] ?
             <p className="failed status"><i className="fal fa-times-circle"></i><span>{matcher[errorCode]}</span></p> :

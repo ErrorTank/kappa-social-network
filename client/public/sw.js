@@ -18,7 +18,13 @@ var exceptionRequestsDev = [
         endpoint: "http://localhost:4000/api/user/login",
         method: "POST"
     },{
-        endpoint: "http://localhost:4000/api/user/send-change-password-email",
+        endpoint: "http://localhost:4000/api/user/send-change-password-token",
+        method: "POST"
+    },{
+        endpoint: "http://localhost:4000/api/user/verify-change-password-token",
+        method: "POST"
+    },{
+        endpoint: "http://localhost:4000/api/user/resend-change-password-token",
         method: "POST"
     },
 
@@ -31,8 +37,8 @@ var exceptionRequestsProd = [
     }
 ];
 
-var CACHE_STATIC_NAME = 'static-v1587033487013';
-var CACHE_DYNAMIC_NAME = 'dynamic-v1587033487013';
+var CACHE_STATIC_NAME = 'static-v1587102049986';
+var CACHE_DYNAMIC_NAME = 'dynamic-v1587102049986';
 
 var STATIC_FILES = [
     '/',

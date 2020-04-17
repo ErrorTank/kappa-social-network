@@ -10,6 +10,12 @@ export const userApi = {
         return offlineApi.post("/user/login", payload);
     },
     sendChangePasswordToken(payload){
-        return offlineApi.post("/user/send-change-password-email", payload);
-    }
+        return offlineApi.post("/user/send-change-password-token", payload);
+    },
+    verifyChangePasswordToken(payload){
+        return offlineApi.post("/user/verify-change-password-token", payload);
+    },
+    resendResetPasswordToken(payload){
+        return offlineApi.post("/user/resend-change-password-token", payload);
+    },
 };

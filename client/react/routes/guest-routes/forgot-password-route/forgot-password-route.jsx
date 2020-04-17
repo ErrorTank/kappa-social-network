@@ -9,6 +9,13 @@ import classnames from "classnames"
 import {userApi} from "../../../../api/common/user-api";
 import {customHistory} from "../../routes";
 import {openConnectionModal} from "../../../common/connection-modal/connection-modal";
+import {ResetPasswordWidget} from "./reset-password-widget";
+import {appModal} from "../../../common/modal/modals";
+import {Button} from "../../../common/button/button";
+import {parseQueryString} from "../../../../common/utils/string-utils";
+import {guestApi} from "../../../../api/common/guest-api";
+import {initializeAuthenticateUser} from "../../../../common/app-services";
+import {resendConfirmTokenModal} from "../../../common/modal/resend-confirm-token/resend-confirm-token";
 
 class ChangePasswordByEmail extends KComponent {
     constructor(props) {
@@ -26,7 +33,7 @@ class ChangePasswordByEmail extends KComponent {
             }
         });
         this.onUnmount(this.form.on("enter", () => {
-            if (this.form.isValid())
+            if (this.form.isValid() && !this.state.loading)
                 this.handleClickNext();
 
         }));
@@ -44,6 +51,28 @@ class ChangePasswordByEmail extends KComponent {
         this.props.onNext(this.form.getData())
             .catch(err => {
                 console.log(err);
+                if(err.message === "account_not_existed"){
+                    appModal.alert({
+                        title: "Thông báo",
+                        text: (
+                            <>
+                                Tài khoản với địa chỉ email <span className="high-light">{this.form.getData().email}</span> không tồn tại
+                            </>
+                        ),
+                        btnText: "Đóng",
+                    });
+                }else{
+                    appModal.alert({
+                        title: "Thông báo",
+                        text: (
+                            <>
+                                Không thể gửi mã xác thực đến địa chỉ emai <span className="high-light">{this.form.getData().email}</span>
+                            </>
+                        ),
+                        btnText: "Đóng",
+                    });
+                }
+
                 this.setState({
                     loading: false
                 });
@@ -71,7 +100,7 @@ class ChangePasswordByEmail extends KComponent {
                         {...others}
                     />
                 ), true)}
-                <button className="btn btn-common-primary next-btn" disabled={loading || this.form.getInvalidPaths().length} onClick={this.handleClickNext}>Tiếp tục</button>
+                <Button className="btn-common-primary next-btn" loading={loading} disabled={loading || this.form.getInvalidPaths().length} onClick={this.handleClickNext}>Tiếp tục</Button>
             </div>
         );
     }
@@ -94,7 +123,7 @@ class ChangePasswordBySms extends KComponent {
             }
         });
         this.onUnmount(this.form.on("enter", () => {
-            if (this.form.isValid())
+            if (this.form.isValid() && !this.state.loading)
                 this.handleClickNext();
         }));
         this.onUnmount(this.form.on("change", () => {
@@ -111,6 +140,28 @@ class ChangePasswordBySms extends KComponent {
         this.props.onNext(this.form.getData())
             .catch(err => {
                 console.log(err);
+                if(err.message === "account_not_existed"){
+                    appModal.alert({
+                        title: "Thông báo",
+                        text: (
+                            <>
+                                Tài khoản với số điện thoại <span className="high-light">{this.form.getData().phone}</span> không tồn tại
+                             </>
+                        ),
+                        btnText: "Đóng",
+                    });
+                }else{
+                    appModal.alert({
+                        title: "Thông báo",
+                        text: (
+                            <>
+                                Không thể gửi mã xác thực đến số điện thoại <span className="high-light">{this.form.getData().phone}</span>
+                            </>
+                        ),
+                        btnText: "Đóng",
+                    });
+                }
+
                 this.setState({
                     loading: false
                 });
@@ -138,7 +189,7 @@ class ChangePasswordBySms extends KComponent {
                         {...others}
                     />
                 ), true)}
-                <button className="btn btn-common-primary next-btn" disabled={loading || this.form.getInvalidPaths().length} onClick={this.handleClickNext}>Tiếp tục</button>
+                <Button className="btn-common-primary next-btn" loading={loading} disabled={loading || this.form.getInvalidPaths().length} onClick={this.handleClickNext}>Tiếp tục</Button>
             </div>
         );
     }
@@ -151,24 +202,59 @@ class ForgotPasswordRoute extends Component {
         super(props);
         this.state = {
             mode: "EMAIL",
-            step: 0
+            step: 0,
+            session: null
         };
 
 
     }
 
+    handleResendConfirmToken = () => {
+        resendConfirmTokenModal.open({
+            onRequestEnd: (session) => {
+                if(session){
+                    this.setState({session});
+                }
+            },
+            session: this.state.session,
+            disabledClose: true
+        })
+    };
+
     next = (data) => {
-        userApi.sendChangePasswordToken(data)
-            .then(({sessionID}) => {
-                this.setState({step: 1});
+        return userApi.sendChangePasswordToken(data)
+            .then((session) => {
+
+                this.setState({session, step: 1});
             })
             .catch(err => {
-                if(err.message){
+                if(err.message === "account_not_existed"){
                     return Promise.reject(err)
                 }
+
                 return openConnectionModal();
             })
 
+    };
+
+    handleConfirmToken = (token) => {
+        let {session} = this.state;
+        return userApi.verifyChangePasswordToken({token, sessionID: session.sessionID})
+            .then(() => {
+                customHistory.push("/")
+            })
+            .catch((err) => {
+                if(err.message === "wrong_token"){
+                    appModal.alert({
+                        title: "Thông báo",
+                        text: "Mã xác thực sai hoặc đã hết hạn.",
+                        btnText: "Đóng",
+                    });
+                }else{
+                    openConnectionModal();
+                }
+                return Promise.reject();
+            })
     };
 
     render() {
@@ -208,6 +294,11 @@ class ForgotPasswordRoute extends Component {
                             </div>
                         ) : (
                             <div className="forgot-password-step-1">
+                                <ResetPasswordWidget
+                                    session={this.state.session || {}}
+                                    onConfirm={this.handleConfirmToken}
+                                />
+                                <div className="resend-token">Chưa nhận được mã? <span className="high-light" onClick={this.handleResendConfirmToken}>Gửi lại</span></div>
                             </div>
                         )}
                     </div>
