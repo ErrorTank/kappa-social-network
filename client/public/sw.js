@@ -43,8 +43,8 @@ var exceptionRequestsProd = [
     }
 ];
 
-var CACHE_STATIC_NAME = 'static-v1587112615939';
-var CACHE_DYNAMIC_NAME = 'dynamic-v1587112615939';
+var CACHE_STATIC_NAME = 'static-v1587372683139';
+var CACHE_DYNAMIC_NAME = 'dynamic-v1587372683139';
 
 var STATIC_FILES = [
     '/',

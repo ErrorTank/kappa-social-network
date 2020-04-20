@@ -12,11 +12,13 @@ import {offlineApi} from "../../api/api";
 import {FlexibleRoute} from "./route-types/flexible-route";
 import {authenCache} from "../../common/cache/authen-cache";
 import {GuestRoute} from "./route-types/guest-route/guest-route";
+
 const FeedRoute = lazy(delayLoad(() => import("./authen-routes/feed-route/feed-route")));
 const LoginRoute = lazy(delayLoad(() => import("./guest-routes/login-route/login-route")));
 const ForgotPasswordRoute = lazy(delayLoad(() => import("./guest-routes/forgot-password-route/forgot-password-route")));
 const AccountConfirmationRoute = lazy(delayLoad(() => import("./guest-routes/account-confirmation/account-confirmation")));
 const ChangePasswordRoute = lazy(delayLoad(() => import("./guest-routes/change-password-route/change-password-route")));
+export const NotificationStateContext = React.createContext();
 
 class MainRoute extends React.Component {
     constructor(props) {
@@ -26,6 +28,7 @@ class MainRoute extends React.Component {
 
 
     render() {
+
         const {location} = this.props;
         const isError = !!(
             location.state &&
@@ -76,9 +79,7 @@ class MainRoute extends React.Component {
 class NotificationPrompt extends React.Component {
     constructor(props) {
         super(props);
-        this.state = {
-            showNotificationPrompt: 'Notification' in window && 'serviceWorker' in navigator && Notification.permission !== "granted"
-        }
+        this.state = {}
 
     };
 
@@ -89,7 +90,7 @@ class NotificationPrompt extends React.Component {
                 console.log('No notification permission granted!');
             } else {
                 // configurePushSub();
-                this.setState({showNotificationPrompt: false});
+                this.props.onChange(false);
                 let options = {
                     body: 'Các thông báo quan trọng của bạn sẽ được hiển thị ở đây.',
                     icon: '/assets/images/icons/app-icon-192x192.png',
@@ -109,7 +110,7 @@ class NotificationPrompt extends React.Component {
     };
 
     render() {
-        return this.state.showNotificationPrompt ? (
+        return this.props.value ? (
             <div className="notification-prompt">
                 Kappa cần sự cho phép của bạn để <span onClick={this.enableNotification}>Bật thông báo</span>.
             </div>
@@ -120,6 +121,10 @@ class NotificationPrompt extends React.Component {
 export class App extends React.Component {
     constructor(props) {
         super(props);
+        this.state = {
+            showNotificationPrompt: 'Notification' in window && 'serviceWorker' in navigator && Notification.permission !== "granted"
+        }
+
     };
 
 
@@ -127,12 +132,24 @@ export class App extends React.Component {
 
         return (
             <div className="app">
-                <NotificationPrompt/>
+                <NotificationPrompt
+                    value={this.state.showNotificationPrompt}
+                    onChange={value => this.setState({showNotificationPrompt: value})}
+
+                />
                 <div id="main-route">
                     <Router
                         history={customHistory}
                     >
-                        <Route component={MainRoute}/>
+
+
+                        <Route render={props => (
+                            <NotificationStateContext.Provider value={this.state.showNotificationPrompt}>
+                                <MainRoute
+                                    {...props}
+                                />
+                            </NotificationStateContext.Provider>
+                        )}/>
                     </Router>
 
                     <ModalsRegistry/>

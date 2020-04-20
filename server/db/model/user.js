@@ -16,6 +16,30 @@ const userSchema = new Schema({
         type: Boolean,
         default: false
     },
+    search_history: {
+        type: [
+            {
+                related_group: {
+                    type: ObjectId,
+                    ref: "Group"
+                },
+                related_page: {
+                    type: ObjectId,
+                    ref: "Group"
+                },
+                related_person: {
+                    type: ObjectId,
+                    ref: "Group"
+                },
+                content: String,
+                search_at: {
+                    type: Date,
+                    default: Date.now
+                }
+            },
+        ],
+        default: []
+    },
     chat_rooms: {
         type: [
             {
