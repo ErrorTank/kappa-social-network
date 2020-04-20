@@ -1,6 +1,7 @@
 import React from 'react';
 
 export const GlobalSearchResult = ({config, isSearchHistoryMode, keyword, maxItem}) => {
+    console.log(config.getList())
     let list = config.getList().slice(0, maxItem);
     console.log(list);
     return (

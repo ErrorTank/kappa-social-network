@@ -25,7 +25,7 @@ export const authenCache = (() => {
                     reject();
                 } else {
                     resolve();
-                    userApi.getAuthenticateUserInitCredentials().then(({user}) => {
+                    userApi.getAuthenticateUserInitCredentials().then((user) => {
                         if (!user) {
                             reject();
                         } else {

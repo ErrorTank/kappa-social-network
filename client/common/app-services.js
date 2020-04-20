@@ -8,7 +8,8 @@ const initializeAuthenticateUser = ({userInfo: uInfo, authToken}) => {
     }
     return Promise.all([
         userInfo.setState(omit(uInfo, "search_history")),
-        userSearchHistory.setState(uInfo.search_history || [
+
+        userSearchHistory.setState([
             {
                 _id: 1,
                 content: "Dau xanh",
@@ -16,7 +17,7 @@ const initializeAuthenticateUser = ({userInfo: uInfo, authToken}) => {
                 _id: 2,
                 related_group: {
                     basic_info: {
-                        name: "Group máy bay tìm phi công trẻ"
+                        name: "Group máy bay tìm phi công trẻssssssssssssssssssssssssssssssssssssssss"
                     }
                 }
             }, {
@@ -31,7 +32,15 @@ const initializeAuthenticateUser = ({userInfo: uInfo, authToken}) => {
                 related_person: {
                     basic_info: {
                         username: "Huấn hoa hồng"
-                    }
+                    },
+                    avatar: "https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcTyBhPOufBhMuKyHyuJn242217FsWK_H3eEa-18CaNii30RG854&usqp=CAU"
+                }
+            },{
+                _id: 11,
+                related_person: {
+                    basic_info: {
+                        username: "Mr Tam"
+                    },
                 }
             },
             {
