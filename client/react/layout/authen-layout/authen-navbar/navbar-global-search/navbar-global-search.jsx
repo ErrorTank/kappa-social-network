@@ -7,7 +7,10 @@ export class NavbarGlobalSearch extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            keyword: ""
+            keyword: "",
+            showResult: false,
+            results: [],
+            loading: false
         }
     }
 
@@ -16,7 +19,7 @@ export class NavbarGlobalSearch extends Component {
     };
 
     render() {
-        let {keyword} = this.props;
+        let {keyword, showResult, results, loading} = this.props;
         return (
             <div className="navbar-global-search">
                 <IconRoundBorderInput
@@ -27,10 +30,17 @@ export class NavbarGlobalSearch extends Component {
                             this.handleSubmitSearch();
                         }
                     }}
+                    onFocus={() => this.setState({showResult: true})}
+                    onBlur={() => this.setState({showResult: false})}
                     onChange={e => this.setState({keyword: e.target.value.trim()})}
                     placeholder={"Tìm kiếm..."}
                     icon={<i className="far fa-search"></i>}
                 />
+                {showResult && (
+                    <div className="global-search-result">
+
+                    </div>
+                )}
             </div>
         );
     }
