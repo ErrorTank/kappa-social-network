@@ -1,3 +1,38 @@
 .navbar-global-search{
-
+  .global-search-result{
+    position absolute
+    width 100%
+    left 0
+    top 100%
+    border 1px solid common-border
+    background-color white
+    border-radius 5px
+    box-shadow 0 0 15px 1px rgba(69, 65, 78, 0.2)
+    .search-empty{
+      padding 8px 16px
+      color subTitle
+      font-size 14px
+    }
+    .result-title{
+      padding 8px 16px
+      font-weight 500
+      font-size 16px
+      color inverse
+    }
+    .result-list{
+      margin-top 6px
+      .result-row{
+        padding 8px
+        .row-box{
+          border-radius 5px
+          padding 8px
+          cursor: pointer;
+          transition background-color 0.1s ease
+          &:hover{
+            background-color darken(white, 3%)
+          }
+        }
+      }
+    }
+  }
 }

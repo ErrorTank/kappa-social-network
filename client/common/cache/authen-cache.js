@@ -2,7 +2,7 @@ import {Cache} from "./cache"
 import Cookies from "js-cookie";
 import {userInfo} from "../states/common";
 import {userApi} from "../../api/common/user-api";
-import {clearAuthenticateUserSession} from "../app-services";
+import {clearAuthenticateUserSession, initializeAuthenticateUser} from "../app-services";
 import {customHistory} from "../../react/routes/routes";
 
 const cookiesEngine = {
@@ -29,7 +29,7 @@ export const authenCache = (() => {
                         if (!user) {
                             reject();
                         } else {
-                            return resolve(Promise.all([userInfo.setState(user)]));
+                            return resolve(initializeAuthenticateUser({userInfo: user}));
                         }
                     }).catch(err => {
                         clearAuthenticateUserSession().then(() => {

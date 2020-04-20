@@ -32,6 +32,9 @@ var exceptionRequestsDev = [
     },{
         endpoint: "http://localhost:4000/api/user/change-password",
         method: "PUT"
+    },{
+        endpoint: "http://localhost:4000/api/utility/search-global",
+        method: "GET"
     },
 
 ];
@@ -43,8 +46,8 @@ var exceptionRequestsProd = [
     }
 ];
 
-var CACHE_STATIC_NAME = 'static-v1587377720593';
-var CACHE_DYNAMIC_NAME = 'dynamic-v1587377720593';
+var CACHE_STATIC_NAME = 'static-v1587383767708';
+var CACHE_DYNAMIC_NAME = 'dynamic-v1587383767708';
 
 var STATIC_FILES = [
     '/',
