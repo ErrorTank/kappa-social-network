@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import {IconRoundBorderInput} from "../../../../common/icon-round-border-input/icon-round-border-input";
 import {keyEvents} from "../../../../../common/events/events";
 import {customHistory} from "../../../../routes/routes";
+import {userSearchHistory} from "../../../../../common/states/common";
 
 export class NavbarGlobalSearch extends Component {
     constructor(props) {
@@ -18,8 +19,39 @@ export class NavbarGlobalSearch extends Component {
 
     };
 
+    resultConfigs = [
+        {
+            title: "Kết quả gợi ý",
+            getList: () => this.state.result,
+            renderRow: rowData => {
+                return (
+                    <div>
+
+                    </div>
+                )
+            },
+            getRowKey: (rowData) => rowData._id
+        }, {
+            title: "Tìm kiếm gần đây",
+            getList: () => {
+                return userSearchHistory.getState();
+            },
+            renderRow: rowData => {
+                return (
+                    <div>
+
+                    </div>
+                )
+            },
+            getRowKey: (rowData) => rowData._id
+        },
+    ];
+
     render() {
         let {keyword, showResult, results, loading} = this.props;
+
+        let resultConfig = (keyword || loading) ? this.resultConfigs[0] : this.resultConfigs[1];
+
         return (
             <div className="navbar-global-search">
                 <IconRoundBorderInput
@@ -38,7 +70,23 @@ export class NavbarGlobalSearch extends Component {
                 />
                 {showResult && (
                     <div className="global-search-result">
-
+                        <div className="result-title">
+                            {resultConfig.title}
+                        </div>
+                        <div className="result-list">
+                            {resultConfig.getList().map((each) => {
+                                return (
+                                    <div className="result-row" key={resultConfig.getRowKey(each)}>
+                                        {resultConfig.renderRow(each)}
+                                    </div>
+                                )
+                            })}
+                            {(keyword || loading) && (
+                                <div className="suggestion">
+                                    Xem kết quả cho <span className="high-light">{keyword}</span>
+                                </div>
+                            )}
+                        </div>
                     </div>
                 )}
             </div>
