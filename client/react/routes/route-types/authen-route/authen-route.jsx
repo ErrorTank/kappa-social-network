@@ -18,17 +18,12 @@ export class AuthenRoute extends KComponent {
             <Route
                 {...rest}
                 render={props => authenCache.getAuthen() ? (
-                    <AuthenLayout
-                        {...props}
-                    >
-                        {layoutProps => (
-                            <KappaErrorBoundary>
-                                {render ? render(props) : (
-                                    <Component {...layoutProps} />
-                                )}
-                            </KappaErrorBoundary>
+                    <KappaErrorBoundary>
+                        {render ? render(props) : (
+                            <Component {...props} />
                         )}
-                    </AuthenLayout>
+                    </KappaErrorBoundary>
+
                 ) : (
                     <Redirect
                         to={{

@@ -12,12 +12,15 @@ import {offlineApi} from "../../api/api";
 import {FlexibleRoute} from "./route-types/flexible-route";
 import {authenCache} from "../../common/cache/authen-cache";
 import {GuestRoute} from "./route-types/guest-route/guest-route";
+import {AuthenRoute} from "./route-types/authen-route/authen-route";
+import {WithRouterKappaLayout} from "../layout/kappa-layout";
 
 const FeedRoute = lazy(delayLoad(() => import("./authen-routes/feed-route/feed-route")));
 const LoginRoute = lazy(delayLoad(() => import("./guest-routes/login-route/login-route")));
 const ForgotPasswordRoute = lazy(delayLoad(() => import("./guest-routes/forgot-password-route/forgot-password-route")));
 const AccountConfirmationRoute = lazy(delayLoad(() => import("./guest-routes/account-confirmation/account-confirmation")));
 const ChangePasswordRoute = lazy(delayLoad(() => import("./guest-routes/change-password-route/change-password-route")));
+const GlobalSearchResult = lazy(delayLoad(() => import("./authen-routes/global-search-result/global-search-result")));
 export const NotificationStateContext = React.createContext();
 
 class MainRoute extends React.Component {
@@ -29,47 +32,78 @@ class MainRoute extends React.Component {
 
     render() {
 
-        const {location} = this.props;
-        const isError = !!(
-            location.state &&
-            location.state.error
-        );
-
         return (
             <Suspense fallback={<OverlayLoading/>}>
-                <CustomSwitch>
-                    <FlexibleRoute
-                        path={"/"}
-                        exact
-                        render={props => !authenCache.getAuthen() ?
-                            (
-                                <LoginRoute
-                                    {...props}
-                                />
-                            ) : (
-                                <FeedRoute
-                                    {...props}
-                                />
-                            )
-                        }
-                    />
-                    <GuestRoute
-                        path={"/quen-mat-khau"}
-                        exact
-                        component={ForgotPasswordRoute}
-                    />
-                    <GuestRoute
-                        path={"/xac-thuc-tai-khoan"}
-                        exact
-                        component={AccountConfirmationRoute}
-                    />
-                    <GuestRoute
-                        path={"/doi-mat-khau"}
-                        exact
-                        component={ChangePasswordRoute}
-                    />
-                </CustomSwitch>
+                <WithRouterKappaLayout>
+                    {layoutProps => (
+                        <CustomSwitch>
+                            <FlexibleRoute
+                                {...layoutProps}
+                                path={"/"}
+                                exact
 
+                                render={props => !authenCache.getAuthen() ?
+                                    (
+                                        <LoginRoute
+                                            {...props}
+
+                                        />
+                                    ) : (
+                                        <FeedRoute
+
+                                            {...props}
+                                        />
+                                    )
+                                }
+                            />
+                            <AuthenRoute
+                                {...layoutProps}
+                                path={"/tim-kiem"}
+                                exact
+
+                                render={props => (
+                                    <GlobalSearchResult
+
+                                        {...props}
+                                    />
+                                )}
+                            />
+                            <GuestRoute
+                                {...layoutProps}
+                                path={"/quen-mat-khau"}
+                                exact
+                                render={props => (
+                                    <ForgotPasswordRoute
+
+                                        {...props}
+                                    />
+                                )}
+                            />
+                            <GuestRoute
+                                {...layoutProps}
+                                path={"/xac-thuc-tai-khoan"}
+                                exact
+                                render={props => (
+                                    <AccountConfirmationRoute
+
+                                        {...props}
+                                    />
+                                )}
+                            />
+                            <GuestRoute
+                                {...layoutProps}
+                                path={"/doi-mat-khau"}
+                                exact
+                                render={props => (
+                                    <ChangePasswordRoute
+
+                                        {...props}
+                                    />
+                                )}
+                            />
+                        </CustomSwitch>
+                    )}
+                </WithRouterKappaLayout>
             </Suspense>
 
         )
@@ -143,13 +177,9 @@ export class App extends React.Component {
                     >
 
 
-                        <Route render={props => (
-                            <NotificationStateContext.Provider value={this.state.showNotificationPrompt}>
-                                <MainRoute
-                                    {...props}
-                                />
-                            </NotificationStateContext.Provider>
-                        )}/>
+                        <NotificationStateContext.Provider value={this.state.showNotificationPrompt}>
+                            <MainRoute/>
+                        </NotificationStateContext.Provider>
                     </Router>
 
                     <ModalsRegistry/>

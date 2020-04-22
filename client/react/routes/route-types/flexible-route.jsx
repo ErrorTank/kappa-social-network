@@ -24,24 +24,17 @@ export class FlexibleRoute extends Component {
             <Route
                 {...rest}
                 render={props => {
-                    let Layout = this.getComponentLayout();
                     return (
                         <TrackLocation
                             location={window.location.href.replace(document.location.origin, "")}
                             render={() => (
-                                <Layout
-                                    {...props}
-                                >
-                                    {(layoutProps) =>  (
-                                        <KappaErrorBoundary>
-                                            {render ? render(layoutProps) : (
-                                                <Component
-                                                    {...layoutProps}
-                                                />
-                                            )}
-                                        </KappaErrorBoundary>
+                                <KappaErrorBoundary>
+                                    {render ? render(props) : (
+                                        <Component
+                                            {...props}
+                                        />
                                     )}
-                                </Layout>
+                                </KappaErrorBoundary>
                             )}
                         />
 

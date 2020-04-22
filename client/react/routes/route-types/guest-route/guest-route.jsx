@@ -18,17 +18,11 @@ export class GuestRoute extends KComponent {
             <Route
                 {...rest}
                 render={props => !authenCache.getAuthen() ? (
-                    <GuestLayout
-                        {...props}
-                    >
-                        {layoutProps => (
-                            <KappaErrorBoundary>
-                                {render ? render(props) : (
-                                    <Component {...layoutProps} />
-                                )}
-                            </KappaErrorBoundary>
+                    <KappaErrorBoundary>
+                        {render ? render(props) : (
+                            <Component {...props} />
                         )}
-                    </GuestLayout>
+                    </KappaErrorBoundary>
                 ) : (
                     <Redirect
                         to={{

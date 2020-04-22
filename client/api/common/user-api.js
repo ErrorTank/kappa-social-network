@@ -24,4 +24,5 @@ export const userApi = {
     changePassword(sessionID ,newPassword){
         return offlineApi.put("/user/change-password", {newPassword, sessionID});
     },
+
 };

@@ -15,7 +15,7 @@ const smsService = require("../../common/sms-service/sms-service");
 const emailService = require("../../common/email-service/email-service");
 
 const sendResetPasswordToken = ({credentials, user}) => {
-    if(credentials.register_type === "PHONE"){
+    if (credentials.register_type === "PHONE") {
 
         return smsService.sendSms(
             user.contact.login_username.phone,
@@ -23,7 +23,7 @@ const sendResetPasswordToken = ({credentials, user}) => {
         )
             .then(() => credentials)
             .catch(() => Promise.reject(new ApplicationError("send_sms_failed")))
-    }else{
+    } else {
         return emailService.sendEmail({
             from: "Kappa Support",
             to: user.contact.login_username.email,
@@ -38,7 +38,7 @@ const sendResetPasswordToken = ({credentials, user}) => {
         }).then(() => {
 
             return credentials;
-        }).catch(err =>{
+        }).catch(err => {
             return Promise.reject(new ApplicationError("send_email_failed"))
         })
     }
@@ -52,7 +52,10 @@ const getAuthenticateUserInitCredentials = (userID) => {
                 return Promise.reject(new ApplicationError("account_not_existed"))
             }
 
-            return data;
+            return {
+                ...data,
+                search_history: data.search_history.sort((a,b) => new Date(b.search_at).getTime() - new Date(a.search_at).getTime())
+            };
 
         })
 
@@ -82,7 +85,10 @@ const login = ({login_username, password}) => {
             }).then(token => {
                 return {
                     token,
-                    user: omit(data, "private_info")
+                    user: {
+                        ...omit(data, "private_info"),
+                        search_history: data.search_history.sort((a,b) => new Date(b.search_at).getTime() - new Date(a.search_at).getTime())
+                    }
                 }
             })
         });
@@ -96,7 +102,7 @@ const sendChangePasswordToken = ({email = "", phone = ""}) => {
     };
     return User.findOne(query).lean()
         .then(data => {
-            if(!data){
+            if (!data) {
                 return Promise.reject(new ApplicationError("account_not_existed"));
             }
             console.log(data);
@@ -124,7 +130,7 @@ const resendChangePasswordToken = ({userID, registerType}) => {
 
     return User.findOne({_id: userID}).lean()
         .then(data => {
-            if(!data){
+            if (!data) {
                 return Promise.reject(new ApplicationError("account_not_existed"));
             }
 
@@ -148,16 +154,16 @@ const resendChangePasswordToken = ({userID, registerType}) => {
 };
 
 const verifyChangePasswordToken = ({token, sessionID}) => {
-  return ResetPasswordToken.findOne({
-      token: token.toUpperCase(),
-      _id: ObjectId(sessionID)
-  }).lean()
-      .then(data => {
-          if(!data){
-              return Promise.reject(new ApplicationError("wrong_token"))
-          }
-          return ResetPasswordToken.findOneAndUpdate({_id: ObjectId(sessionID)}, {$set: {isVerify: true}} ,{new: true}).lean()
-      })
+    return ResetPasswordToken.findOne({
+        token: token.toUpperCase(),
+        _id: ObjectId(sessionID)
+    }).lean()
+        .then(data => {
+            if (!data) {
+                return Promise.reject(new ApplicationError("wrong_token"))
+            }
+            return ResetPasswordToken.findOneAndUpdate({_id: ObjectId(sessionID)}, {$set: {isVerify: true}}, {new: true}).lean()
+        })
 };
 
 const getChangePasswordUserBrief = sessionID => {
@@ -168,7 +174,7 @@ const getChangePasswordUserBrief = sessionID => {
     }).populate("user", "private_info _id")
         .then(data => {
             console.log(data)
-            if(!data){
+            if (!data) {
                 return Promise.reject();
             }
             return data.toObject();
@@ -180,12 +186,44 @@ const changePassword = ({sessionID, newPassword}) => {
         _id: ObjectId(sessionID)
     }).lean()
         .then(data => {
-            if(!data){
+            if (!data) {
                 return Promise.reject();
             }
             return User.findOneAndUpdate({_id: ObjectId(data.user)}, {$set: {"private_info.password": newPassword.trim()}})
                 .then(() => null);
         })
+};
+
+const addNewSearchHistory = (userID, data) => {
+    console.log(data)
+    if (!data) {
+        return Promise.reject(new ApplicationError());
+    }
+    return User.findOneAndUpdate({_id: ObjectId(userID)},
+        {
+            $pull: {
+                search_history: {
+                    content: data.content,
+                    related_person: null,
+                    related_group: null,
+                    related_page: null
+                }
+            },
+        })
+        .then(() => User.findOneAndUpdate({_id: ObjectId(userID)},
+            {
+                $push: {
+                    search_history: data
+                }
+            },
+            {new: true, select: "_id search_history"}).lean())
+        .then(data => {
+            return {
+                ...data,
+                search_history: data.search_history.sort((a,b) => new Date(b.search_at).getTime() - new Date(a.search_at).getTime())
+            }
+        })
+
 };
 
 module.exports = {
@@ -195,5 +233,6 @@ module.exports = {
     resendChangePasswordToken,
     verifyChangePasswordToken,
     getChangePasswordUserBrief,
-    changePassword
+    changePassword,
+    addNewSearchHistory
 };

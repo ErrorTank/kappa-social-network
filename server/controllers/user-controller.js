@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const {authorizationUserMiddleware} = require("../common/middlewares/common");
-const {getAuthenticateUserInitCredentials, login, sendChangePasswordToken, resendChangePasswordToken, verifyChangePasswordToken, getChangePasswordUserBrief, changePassword} = require("../db/db-controllers/user");
+const {getAuthenticateUserInitCredentials, login, sendChangePasswordToken, resendChangePasswordToken, verifyChangePasswordToken, getChangePasswordUserBrief, changePassword, addNewSearchHistory} = require("../db/db-controllers/user");
 
 module.exports = () => {
     router.get("/init-credentials", authorizationUserMiddleware, (req, res, next) => {
@@ -50,6 +50,13 @@ module.exports = () => {
     router.put("/change-password", (req, res, next) => {
 
         return changePassword(req.body).then((data) => {
+            return res.status(200).json(data);
+        }).catch(err => next(err));
+
+    });
+    router.post("/search-history/create",authorizationUserMiddleware, (req, res, next) => {
+
+        return addNewSearchHistory(req.user._id, req.body).then((data) => {
             return res.status(200).json(data);
         }).catch(err => next(err));
 

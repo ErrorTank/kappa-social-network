@@ -10,7 +10,7 @@ export class AuthenNavbar extends Component {
     }
 
     render() {
-        let {showNotificationPrompt} = this.props;
+        let {showNotificationPrompt, ...rest} = this.props;
         return (
             <div className={classnames("authen-navbar", {"stay-top": !showNotificationPrompt})}>
                 <div className="authen-navbar-container">
@@ -21,7 +21,9 @@ export class AuthenNavbar extends Component {
                             </Link>
                         </div>
                         <div className="search-container">
-                            <NavbarGlobalSearch/>
+                            <NavbarGlobalSearch
+                                {...rest}
+                            />
                         </div>
                     </div>
                 </div>

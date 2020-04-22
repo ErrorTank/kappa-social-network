@@ -136,7 +136,10 @@ const verifyUser = ({token, sessionID}) => {
             }).then(token => {
                 return {
                     token,
-                    user
+                    user :{
+                        ...user,
+                        search_history: user.search_history.sort((a,b) => new Date(b.search_at).getTime() - new Date(a.search_at).getTime())
+                    }
                 }
             })
         })

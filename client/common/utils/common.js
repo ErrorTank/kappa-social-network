@@ -91,6 +91,14 @@ const getStudentGroup = (schoolYear, department, latestSchoolYear) => {
     return 2;
 };
 
+const getNamePrefix = (name) => {
+
+    if(!name) return "";
+    let wordArr = name.split(" ").filter(each => each !== " ");
+    let arrLength = wordArr.length;
+    return (arrLength >= 2 ? `${wordArr[arrLength - 2][0]}${wordArr[arrLength - 1][0]}` : `${wordArr[0].slice(0, 2)}`).toUpperCase().replace(/[-!$%^&*()_+|~=`{}\[\]:";'<>?,.\/]/gi, "");
+};
+
 export {
     wait1,
     wait2,
@@ -103,6 +111,7 @@ export {
     parseYear,
     convertTextMoneyToNumber,
     mergeYear,
-    getStudentGroup
+    getStudentGroup,
+    getNamePrefix
 
 }

@@ -12,7 +12,7 @@ module.exports = () => {
 
     });
     router.get("/pre-search", authorizationUserMiddleware, (req, res, next) => {
-        return preSearch(req.user._id, req.query.keyword).then((data) => {
+        return preSearch(req.user._id, decodeURIComponent(req.query.keyword)).then((data) => {
             return res.status(200).json(data);
         }).catch(err => next(err));
 

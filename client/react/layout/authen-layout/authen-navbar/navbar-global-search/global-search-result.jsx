@@ -1,9 +1,10 @@
 import React from 'react';
 import {LoadingInline} from "../../../../common/loading-inline/loading-inline";
+import Skeleton from 'react-loading-skeleton';
 import classnames from "classnames";
 
-export const GlobalSearchResult = ({config, isSearchHistoryMode, keyword, maxItem, loading}) => {
-    console.log(config.getList())
+export const GlobalSearchResult = ({config, keyword, maxItem, loading, onClickSearchAll}) => {
+
     let list = config.getList().slice(0, maxItem);
     console.log(list);
     return (
@@ -31,26 +32,27 @@ export const GlobalSearchResult = ({config, isSearchHistoryMode, keyword, maxIte
                     </>
                 ) : (
                     <div className="result-loading">
-                        <LoadingInline/>
-                    </div>
-                )}
-
-                {isSearchHistoryMode && (
-                    <div className="suggestion result-row">
-                        <div className="row-box">
-                            <div className={classnames("search-row-detail search-history-row")}>
-                                <div className="round-wrapper">
-                                    <i className="far fa-search"></i>
-                                </div>
-                                <div className="content">
-                                    Xem kết quả cho <span className="high-light">{keyword}</span>
+                        <div className="result-row">
+                            <div className="row-box">
+                                <div className={classnames("search-row-detail")}>
+                                    <Skeleton count={1} height={35} width={35} duration={1} circle={true}/>
+                                    <Skeleton count={1} height={35} width={250} duration={1}/>
                                 </div>
                             </div>
-
+                        </div>
+                        <div className="result-row">
+                            <div className="row-box">
+                                <div className={classnames("search-row-detail")}>
+                                    <Skeleton count={1} height={35} width={35} duration={1} circle={true}/>
+                                    <Skeleton count={1} height={35} width={250} duration={1}/>
+                                </div>
+                            </div>
                         </div>
 
                     </div>
                 )}
+
+                {config.renderSearchAllBtn && config.renderSearchAllBtn()}
             </div>
         </div>
     );

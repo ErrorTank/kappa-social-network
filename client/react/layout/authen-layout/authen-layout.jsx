@@ -5,6 +5,7 @@ import classnames from "classnames"
 
 export class AuthenLayout extends Component {
     render() {
+        console.log("cac")
         return (
             <NotificationStateContext.Consumer>
                 {showNotificationPrompt => {
@@ -12,10 +13,11 @@ export class AuthenLayout extends Component {
                         <div className={classnames("authen-layout", {"stay-down": showNotificationPrompt})}>
 
                             <AuthenNavbar
+                                {...this.props}
                                 showNotificationPrompt={showNotificationPrompt}
                             />
                             <div className="children-wrapper">
-                                {this.props.children()}
+                                {this.props.children(this.props)}
                             </div>
 
                         </div>
