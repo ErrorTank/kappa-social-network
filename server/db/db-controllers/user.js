@@ -249,14 +249,24 @@ const deleteSearchHistory = (userID, historyID) => {
 
 const updateSearchHistory = (userID, historyID, data) => {
     console.log(data);
+    let updatedQuery = {
+        "search_history.$.search_at": Date.now()
+    };
+    if(data.related_person){
+        updatedQuery["search_history.$.related_person"] = ObjectId(data.related_person)
+    }
+    else if(data.related_page){
+        updatedQuery["search_history.$.related_page"] = ObjectId(data.related_page)
+    }
+    else if(data.related_group){
+        updatedQuery["search_history.$.related_group"] = ObjectId(data.related_group)
+    }
     if (!historyID) {
         return Promise.reject(new ApplicationError());
     }
     return User.findOneAndUpdate({_id: ObjectId(userID), "search_history._id": ObjectId(historyID)},
         {
-            $set: {
-                "search_history.$.search_at": Date.now()
-            }
+            $set: updatedQuery
         },
         {new: true, select: "_id search_history"}).lean()
         .then(data => {
