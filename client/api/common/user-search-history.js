@@ -8,5 +8,8 @@ export const userSearchHistoryApi = {
     },
     deleteHistory(historyID){
         return authenApi.delete("/user/search-history/history/" + historyID);
+    },
+    updateHistory(historyID, data){
+        return authenApi.put("/user/search-history/history/" + historyID, data);
     }
 };

@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const {authorizationUserMiddleware} = require("../common/middlewares/common");
-const {getAuthenticateUserInitCredentials, login, sendChangePasswordToken, resendChangePasswordToken, verifyChangePasswordToken, getChangePasswordUserBrief, changePassword, addNewSearchHistory, deleteNewSearchHistory} = require("../db/db-controllers/user");
+const {getAuthenticateUserInitCredentials, login, sendChangePasswordToken, resendChangePasswordToken, verifyChangePasswordToken, getChangePasswordUserBrief, changePassword, addNewSearchHistory, deleteSearchHistory, updateSearchHistory} = require("../db/db-controllers/user");
 
 module.exports = () => {
     router.get("/init-credentials", authorizationUserMiddleware, (req, res, next) => {
@@ -63,7 +63,14 @@ module.exports = () => {
     });
     router.delete("/search-history/history/:historyID",authorizationUserMiddleware, (req, res, next) => {
 
-        return deleteNewSearchHistory(req.user._id, req.params.historyID).then((data) => {
+        return deleteSearchHistory(req.user._id, req.params.historyID).then((data) => {
+            return res.status(200).json(data);
+        }).catch(err => next(err));
+
+    });
+    router.put("/search-history/history/:historyID",authorizationUserMiddleware, (req, res, next) => {
+
+        return updateSearchHistory(req.user._id, req.params.historyID, req.body).then((data) => {
             return res.status(200).json(data);
         }).catch(err => next(err));
 

@@ -226,11 +226,11 @@ const addNewSearchHistory = (userID, data) => {
 
 };
 
-const deleteNewSearchHistory = (userID, historyID) => {
+const deleteSearchHistory = (userID, historyID) => {
     if (!historyID) {
         return Promise.reject(new ApplicationError());
     }
-    return  User.findOneAndUpdate({_id: ObjectId(userID)},
+    return User.findOneAndUpdate({_id: ObjectId(userID)},
         {
             $pull: {
                 search_history: {
@@ -247,6 +247,27 @@ const deleteNewSearchHistory = (userID, historyID) => {
         })
 };
 
+const updateSearchHistory = (userID, historyID, data) => {
+    console.log(data);
+    if (!historyID) {
+        return Promise.reject(new ApplicationError());
+    }
+    return User.findOneAndUpdate({_id: ObjectId(userID), "search_history._id": ObjectId(historyID)},
+        {
+            $set: {
+                "search_history.$.search_at": Date.now()
+            }
+        },
+        {new: true, select: "_id search_history"}).lean()
+        .then(data => {
+            return {
+                ...data,
+                search_history: data.search_history.sort((a,b) => new Date(b.search_at).getTime() - new Date(a.search_at).getTime())
+            }
+        })
+
+};
+
 module.exports = {
     getAuthenticateUserInitCredentials,
     login,
@@ -256,5 +277,6 @@ module.exports = {
     getChangePasswordUserBrief,
     changePassword,
     addNewSearchHistory,
-    deleteNewSearchHistory
+    deleteSearchHistory,
+    updateSearchHistory
 };
