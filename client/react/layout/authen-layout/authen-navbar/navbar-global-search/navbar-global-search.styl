@@ -39,6 +39,28 @@
             align-items center
             justify-content space-between
             position relative
+            .delete-history{
+              position absolute
+              top 50%
+              transform translateY(-50%)
+              right 6px
+              width 20px
+              height 20px
+              border-radius 50%
+              display flex
+              justify-content center
+              &:hover{
+                background-color danger
+                i{
+                  color white
+                }
+              }
+              i{
+                align-self center
+                font-size 15px
+                color #1a1a1a
+              }
+            }
             &.recommend{
               .round-wrapper{
                 background-color #1a1a1a
@@ -46,7 +68,7 @@
             }
             &.search-history-row{
               .content{
-                padding-right 15px
+                padding-right 35px
               }
             }
             .round-wrapper{

@@ -39,6 +39,9 @@ var exceptionRequestsDev = [
         endpoint: /http:\/\/localhost:4000\/api\/utility\/pre-search/,
         method: "GET"
     },{
+        endpoint: /http:\/\/localhost:4000\/api\/user\/search-history\/history/,
+        method: "DELETE"
+    },{
         endpoint: "http://localhost:4000/api/user/search-history/create",
         method: "POST"
     },
@@ -52,8 +55,8 @@ var exceptionRequestsProd = [
     }
 ];
 
-var CACHE_STATIC_NAME = 'static-v1587546264465';
-var CACHE_DYNAMIC_NAME = 'dynamic-v1587546264465';
+var CACHE_STATIC_NAME = 'static-v1587549349801';
+var CACHE_DYNAMIC_NAME = 'dynamic-v1587549349801';
 
 var STATIC_FILES = [
     '/',

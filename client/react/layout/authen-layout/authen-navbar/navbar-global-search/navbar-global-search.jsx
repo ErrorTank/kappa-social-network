@@ -9,6 +9,7 @@ import debounce from "lodash/debounce";
 import {utilityApi} from "../../../../../api/common/utilities-api";
 import {userSearchHistoryApi} from "../../../../../api/common/user-search-history";
 import {getNamePrefix} from "../../../../../common/utils/common";
+import {KComponent} from "../../../../common/k-component";
 
 const iconMatcher = {
     group: () => (
@@ -25,6 +26,7 @@ const iconMatcher = {
     )
 };
 const RowDetail = ({rowData, renderAction}) => {
+
     let imgUrl = rowData?.related_person?.avatar || rowData?.related_page?.avatar;
     let content = rowData?.related_person?.basic_info.username || rowData?.related_page?.basic_info.name || rowData?.related_group?.basic_info.name || rowData.content;
     let icon = iconMatcher[rowData.related_person ? "person" : rowData.related_page ? "page" : rowData.related_group ? "group" : "history"];
@@ -46,7 +48,7 @@ const RowDetail = ({rowData, renderAction}) => {
     )
 };
 
-export class NavbarGlobalSearch extends Component {
+export class NavbarGlobalSearch extends KComponent {
     constructor(props) {
         super(props);
         this.state = {
@@ -55,7 +57,10 @@ export class NavbarGlobalSearch extends Component {
             results: [],
             loading: false,
             fetching: false
-        }
+        };
+        this.onUnmount(userSearchHistory.onChange(() => {
+          this.forceUpdate();
+        }));
 
     }
 
@@ -79,6 +84,11 @@ export class NavbarGlobalSearch extends Component {
 
 
     }, 500);
+
+    deleteHistory = (historyID) => {
+        userSearchHistoryApi.deleteHistory(historyID);
+        userSearchHistory.setState(userSearchHistory.getState().filter(each => each._id !== historyID));
+    };
 
     resultConfigs = [
         {
@@ -117,9 +127,13 @@ export class NavbarGlobalSearch extends Component {
             renderRow: rowData => (
                 <RowDetail
                     rowData={rowData}
-                    renderAction={() => {
-
-                    }}
+                    renderAction={() =>
+                        <div className="delete-history"
+                             onClick={() => this.deleteHistory(rowData._id)}
+                        >
+                            <i className="fal fa-times"></i>
+                        </div>
+                    }
                 />
             ),
             getRowKey: (rowData) => rowData._id,
