@@ -52,6 +52,7 @@ export class GuestNavbarLoginWidget extends KComponent {
     };
 
     handleLogin = () => {
+        this.setState({logging: true});
         let data = this.form.getData();
         userApi.login(data)
             .then(({token, user}) => {

@@ -126,7 +126,6 @@ let buildingRecursive = (structure, pathname, result) => {
         for (let str of structure.childrens) {
 
             result = buildingRecursive(str, pathname, result);
-            // console.log(result)
             if (result.length) {
                 if(structure.hasOwnProperty("label")){
                     result = result.concat(omit(structure, ["childrens"]));

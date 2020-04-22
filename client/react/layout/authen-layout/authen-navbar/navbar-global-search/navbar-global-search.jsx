@@ -5,7 +5,8 @@ import {customHistory} from "../../../../routes/routes";
 import {userInfo, userSearchHistory} from "../../../../../common/states/common";
 import {GlobalSearchResult} from "./global-search-result";
 import classnames from "classnames";
-
+import debounce from "lodash/debounce";
+import {utilityApi} from "../../../../../api/common/utilities-api";
 
 const iconMatcher = {
     group: () => (
@@ -50,21 +51,28 @@ export class NavbarGlobalSearch extends Component {
             keyword: "",
             showResult: false,
             results: [],
-            loading: false
+            loading: false,
+            fetching: false
         }
-        setInterval(() => console.log(userInfo.getState()),1000)
+
     }
 
     handleSubmitSearch = () => {
 
     };
 
-
+    debouncePreSearch = debounce(() => {
+        this.setState({fetching: true});
+        let {keyword} = this.state;
+        if(keyword)
+            utilityApi.preSearch(keyword)
+                .then(results => this.setState({results, loading: false, fetching: false}))
+    }, 500);
 
     resultConfigs = [
         {
             title: "Kết quả gợi ý",
-            getList: () => this.state.result,
+            getList: () => this.state.results,
             renderRow: rowData => (
                 <RowDetail
                     rowData={rowData}
@@ -88,7 +96,7 @@ export class NavbarGlobalSearch extends Component {
     ];
 
     render() {
-        let {keyword, showResult, results, loading} = this.state;
+        let {keyword, showResult, results, loading, fetching} = this.state;
 
         let resultConfig = (keyword || loading) ? this.resultConfigs[0] : this.resultConfigs[1];
 
@@ -106,9 +114,13 @@ export class NavbarGlobalSearch extends Component {
                         this.setState({showResult: true});
                     }}
                     onBlur={() => this.setState({showResult: true})}
-                    onChange={e => this.setState({keyword: e.target.value.trim()})}
+                    onChange={e => {
+                        this.setState({loading: true});
+                        this.debouncePreSearch();
+                        this.setState({keyword: e.target.value.trim()});
+                    }}
                     placeholder={"Tìm kiếm..."}
-                    icon={<i className="far fa-search"></i>}
+                    icon={!loading ? <i className="far fa-search"></i> : <i className={classnames("far fa-spinner-third spin-icon common-spin")}/>}
                 />
                 {showResult && (
                     <GlobalSearchResult
@@ -116,6 +128,7 @@ export class NavbarGlobalSearch extends Component {
                         isSearchHistoryMode={(keyword || loading)}
                         keyword={keyword}
                         maxItem={6}
+                        loading={fetching}
                     />
                 )}
             </div>

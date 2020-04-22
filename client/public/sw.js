@@ -35,6 +35,9 @@ var exceptionRequestsDev = [
     },{
         endpoint: "http://localhost:4000/api/utility/search-global",
         method: "GET"
+    },{
+        endpoint: /http:\/\/localhost:4000\/api\/utility\/pre-search/,
+        method: "GET"
     },
 
 ];
@@ -46,8 +49,8 @@ var exceptionRequestsProd = [
     }
 ];
 
-var CACHE_STATIC_NAME = 'static-v1587390950509';
-var CACHE_DYNAMIC_NAME = 'dynamic-v1587390950509';
+var CACHE_STATIC_NAME = 'static-v1587533715775';
+var CACHE_DYNAMIC_NAME = 'dynamic-v1587533715775';
 
 var STATIC_FILES = [
     '/',
