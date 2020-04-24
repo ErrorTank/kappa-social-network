@@ -1,37 +1,36 @@
-const Nexmo = require('nexmo');
 
-const nexmo = new Nexmo({
-    apiKey: process.env.NEXMO_API_KEY,
-    apiSecret: process.env.NEXMO_API_SECRET,
-});
 
-const opts = {
-    "type": "unicode"
-};
+const formatPhone = (phone, prefix = "+84") => prefix + phone.substring(1);
 
-const createSmsService = (options, senderID) => {
+const services = {
+    "twilio": () => {
+        const client = require('twilio')(process.env.TWILIO_ACCOUNTID, process.env.TWILIO_TOKEN);
 
-    return {
-        sendSms: (toPhone, content) => new Promise((resolve, reject) => {
-            nexmo.message.sendSms(senderID, "+84" + toPhone.substring(1), content, options, (err, responseData) => {
-                if (err) {
-                    console.log(err);
-                    reject(err);
-                } else {
-                    if(responseData.messages[0]['status'] === "0") {
-                        console.log("Message sent successfully.");
-                        resolve();
-                    } else {
-                        console.log(`Message failed with error: ${responseData.messages[0]['error-text']}`);
-                        reject();
-                    }
-                }
-            })
-        })
+        return {
+            sendSms: (toPhone, content) => client.messages
+                .create({
+                    body: content,
+                    from: process.env.TWILIO_SENDER,
+                    to: formatPhone(toPhone)
+                })
+                .then(message => {
+                    console.log("Send Message successfully!");
+                    return Promise.resolve();
+                })
+
+        }
     }
 };
 
-const smsService = createSmsService(opts, process.env.NEXMO_SMS_SENDER_ID);
+const createSmsService = (type) => {
+
+    return services[type]();
+
+};
+
+const twilioSmsService = createSmsService("twilio");
 
 
-module.exports = smsService;
+module.exports = {
+    twilioSmsService
+};
