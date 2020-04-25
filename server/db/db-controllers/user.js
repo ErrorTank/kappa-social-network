@@ -61,6 +61,33 @@ const getAuthenticateUserInitCredentials = (userID) => {
 
 };
 
+const shortLogin = ({_id, password}) => {
+    return User.findOne({
+        _id: ObjectId(_id),
+        "private_info.password": password.trim()
+    }, "_id contact basic_info joined_at isVerify last_active_at dark_mode private_info search_history").lean()
+        .then((data) => {
+            if (!data) {
+                return Promise.reject(new ApplicationError("wrong_password"));
+            }
+
+            if (!data.isVerify) {
+                return Promise.reject(new ApplicationError("account_not_verified"));
+            }
+            return createAuthToken(pick(data, ["_id", "contact"]), getPrivateKey(), {
+                algorithm: "RS256"
+            }).then(token => {
+                return {
+                    token,
+                    user: {
+                        ...omit(data, "private_info"),
+                        search_history: data.search_history.sort((a,b) => new Date(b.search_at).getTime() - new Date(a.search_at).getTime())
+                    }
+                }
+            })
+        });
+};
+
 const login = ({login_username, password}) => {
 
     return User.findOne({
@@ -288,5 +315,6 @@ module.exports = {
     changePassword,
     addNewSearchHistory,
     deleteSearchHistory,
-    updateSearchHistory
+    updateSearchHistory,
+    shortLogin
 };

@@ -59,7 +59,8 @@ export class GuestNavbarLoginWidget extends KComponent {
         userApi.login(data)
             .then(({token, user}) => {
                 loginSessionCache.addNewSession({
-                    _id: user._id
+                    _id: user._id,
+                    login_at: new Date().getTime()
                 });
                 initializeAuthenticateUser({
                     userInfo: omit(user, "avatar"),

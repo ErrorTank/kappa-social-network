@@ -66,6 +66,7 @@ class AccountConfirmation extends Component {
             .then(({user, token}) => {
                 loginSessionCache.addNewSession({
                     _id: user._id,
+                    login_at: new Date().getTime()
                 });
                 topFloatNotifications.push({
                     content: (

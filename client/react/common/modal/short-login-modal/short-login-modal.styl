@@ -1,0 +1,72 @@
+.short-login-modal{
+  margin auto
+  width 300px
+  padding 15px
+  position relative
+  .forgot-password{
+    margin-top 8px
+    font-size 14px
+    text-align left
+  }
+  .modal-close{
+    position absolute
+    top 15px
+    right 15px
+    font-size 16px
+    color #1a1a1a
+    opacity 0.5
+    transition opacity 0.1s ease
+    &:hover{
+      opacity 1
+    }
+  }
+  .modal-title{
+    font-size 17px
+    color titleColor
+    font-weight 500
+    margin-bottom 15px
+    text-align left
+  }
+
+  .login-form{
+    .invalid-feedback{
+      display block
+      text-align left
+    }
+    border-bottom 1px solid common-border
+    margin-bottom 15px
+    .username{
+      padding 6px 10px
+      text-align center
+      font-size 15px
+      font-weight 500
+    }
+    .avatar-wrapper{
+      width 150px
+      height 150px
+      overflow hidden
+      border-radius 5px
+      margin auto
+      position relative
+      .avatar-holder{
+
+        width 100%
+        height 100%
+        display flex
+        justify-content center
+        align-items center
+        background-color primaryButton
+        span{
+          color white
+          font-weight 600
+          font-size 40px
+        }
+      }
+      img{
+        absoluteMiddle()
+        width 151px
+        height 151px
+      }
+    }
+  }
+}

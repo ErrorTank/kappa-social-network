@@ -1,12 +1,19 @@
 const express = require('express');
 const router = express.Router();
 const {authorizationUserMiddleware} = require("../common/middlewares/common");
-const {getAuthenticateUserInitCredentials, login, sendChangePasswordToken, resendChangePasswordToken, verifyChangePasswordToken, getChangePasswordUserBrief, changePassword, addNewSearchHistory, deleteSearchHistory, updateSearchHistory} = require("../db/db-controllers/user");
+const {getAuthenticateUserInitCredentials, login, sendChangePasswordToken, resendChangePasswordToken, verifyChangePasswordToken, getChangePasswordUserBrief, changePassword, addNewSearchHistory, deleteSearchHistory, updateSearchHistory, shortLogin} = require("../db/db-controllers/user");
 
 module.exports = () => {
     router.get("/init-credentials", authorizationUserMiddleware, (req, res, next) => {
 
         return getAuthenticateUserInitCredentials(req.user._id).then((data) => {
+            return res.status(200).json(data);
+        }).catch(err => next(err));
+
+    });
+    router.post("/short-login", (req, res, next) => {
+
+        return shortLogin(req.body).then((data) => {
             return res.status(200).json(data);
         }).catch(err => next(err));
 

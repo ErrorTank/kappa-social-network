@@ -185,9 +185,10 @@ export class App extends React.Component {
                         <NotificationStateContext.Provider value={this.state.showNotificationPrompt}>
                             <MainRoute/>
                         </NotificationStateContext.Provider>
+                        <ModalsRegistry/>
                     </Router>
 
-                    <ModalsRegistry/>
+
                 </div>
             </div>
 

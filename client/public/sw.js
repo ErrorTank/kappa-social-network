@@ -50,6 +50,9 @@ var exceptionRequestsDev = [
     },{
         endpoint: "http://localhost:4000/api/utility/login-sessions/brief",
         method: "POST"
+    },{
+        endpoint: "http://localhost:4000/api/user/short-login",
+        method: "POST"
     },
 
 ];
@@ -61,8 +64,8 @@ var exceptionRequestsProd = [
     }
 ];
 
-var CACHE_STATIC_NAME = 'static-v1587798184899';
-var CACHE_DYNAMIC_NAME = 'dynamic-v1587798184899';
+var CACHE_STATIC_NAME = 'static-v1587804281526';
+var CACHE_DYNAMIC_NAME = 'dynamic-v1587804281526';
 
 var STATIC_FILES = [
     '/',
