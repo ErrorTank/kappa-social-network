@@ -1,12 +1,7 @@
 import React, {Component} from "react";
 import {LoadingInline} from "../../loading-inline/loading-inline";
 import {modals} from "../modals";
-import classnames from "classnames";
-import uniq from "lodash/uniq"
-import {createSimpleForm} from "../../form-validator/form-validator";
-import * as yup from "yup";
-import {CommonInput} from "../../common-input/common-input";
-import {commonPopup} from "../../common-popup/common-popup";
+
 import {CommonModalLayout} from "../common-modal-layout";
 import {guestApi} from "../../../../api/common/guest-api";
 import {userApi} from "../../../../api/common/user-api";

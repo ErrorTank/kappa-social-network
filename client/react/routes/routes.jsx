@@ -14,6 +14,7 @@ import {authenCache} from "../../common/cache/authen-cache";
 import {GuestRoute} from "./route-types/guest-route/guest-route";
 import {AuthenRoute} from "./route-types/authen-route/authen-route";
 import {WithRouterKappaLayout} from "../layout/kappa-layout";
+import {TopFloatNotificationRegistry} from "../common/float-top-notification/float-top-notification";
 
 const FeedRoute = lazy(delayLoad(() => import("./authen-routes/feed-route/feed-route")));
 const LoginRoute = lazy(delayLoad(() => import("./guest-routes/login-route/login-route")));
@@ -166,12 +167,16 @@ export class App extends React.Component {
 
         return (
             <div className="app">
+
                 <NotificationPrompt
                     value={this.state.showNotificationPrompt}
                     onChange={value => this.setState({showNotificationPrompt: value})}
 
                 />
                 <div id="main-route">
+                    <TopFloatNotificationRegistry
+                        timeout={5000}
+                    />
                     <Router
                         history={customHistory}
                     >

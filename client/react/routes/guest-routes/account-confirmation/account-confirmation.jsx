@@ -9,6 +9,7 @@ import {appModal} from "../../../common/modal/modals";
 import {openConnectionModal} from "../../../common/connection-modal/connection-modal";
 import {resendConfirmTokenModal} from "../../../common/modal/resend-confirm-token/resend-confirm-token";
 import {initializeAuthenticateUser} from "../../../../common/app-services";
+import {topFloatNotifications} from "../../../common/float-top-notification/float-top-notification";
 
 class AccountConfirmation extends Component {
     constructor(props) {
@@ -61,6 +62,14 @@ class AccountConfirmation extends Component {
         let queryStringParams = parseQueryString(this.props.location.search);
         return guestApi.verifyUser({token, sessionID: queryStringParams.sessionID})
             .then(({user, token}) => {
+                topFloatNotifications.push({
+                    content: (
+                        <p className="common-noti-layout success">
+                            <i className="fal fa-check"></i>
+                            <span>Xác thực tài khoản thành công</span>
+                        </p>
+                    )
+                });
                 initializeAuthenticateUser({
                     userInfo: user,
                     authToken: token

@@ -16,6 +16,7 @@ import {parseQueryString} from "../../../../common/utils/string-utils";
 import {guestApi} from "../../../../api/common/guest-api";
 import {initializeAuthenticateUser} from "../../../../common/app-services";
 import {resendConfirmTokenModal} from "../../../common/modal/resend-confirm-token/resend-confirm-token";
+import {topFloatNotifications} from "../../../common/float-top-notification/float-top-notification";
 
 class ChangePasswordByEmail extends KComponent {
     constructor(props) {
@@ -249,6 +250,7 @@ class ForgotPasswordRoute extends Component {
         let {session} = this.state;
         return userApi.verifyChangePasswordToken({token, sessionID: session.sessionID})
             .then((data) => {
+
                 customHistory.push("/doi-mat-khau?sessionID=" + data._id)
             })
             .catch((err) => {

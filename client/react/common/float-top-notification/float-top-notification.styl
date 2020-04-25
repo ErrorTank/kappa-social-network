@@ -1,0 +1,76 @@
+.common-noti-layout{
+  &.success{
+    i{
+      color success
+    }
+  }
+  &.danger{
+    i{
+      color danger
+    }
+  }
+  i{
+    font-size 2rem
+  }
+  span{
+    margin-left 6px
+  }
+}
+.float-top-notifications{
+  position absolute
+  z-index 4
+  left 0
+  width 100%
+  top 0
+  .float-top-notification{
+    display flex
+    justify-content center
+    margin-top 10px
+    .ftn-content{
+      background-color white
+      border 1px solid common-border
+      border-radius 4px
+      cursor pointer
+      font-size 14px
+      text-align center
+      &:hover{
+        border-color primaryButton
+      }
+      color #1a1a1a
+      margin auto
+      width 300px
+      padding 6px 10px
+      padding-right 50px
+      position relative
+      .close-noti{
+        position absolute
+        top 50%
+        transform translateY(-50%)
+        right 10px
+        font-size 1.6rem
+        &:hover{
+          color danger
+        }
+      }
+    }
+
+  }
+}
+.slide-down-enter {
+  height: 0;
+}
+.slide-down-enter-active {
+  height: 40px;
+  transition: height 500ms;
+}
+.slide-down-enter-done{
+  overflow visible
+}
+.slide-down-exit {
+  height: 40px;
+  overflow hidden
+}
+.slide-down-exit-active {
+  height: 0;
+  transition: height 500ms;
+}

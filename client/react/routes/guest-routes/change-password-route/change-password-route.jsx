@@ -10,6 +10,7 @@ import {guestApi} from "../../../../api/common/guest-api";
 import {Button} from "../../../common/button/button";
 import {LoadingInline} from "../../../common/loading-inline/loading-inline";
 import {ChangePasswordForm} from "../../../common/change-password-form/change-password-form";
+import {topFloatNotifications} from "../../../common/float-top-notification/float-top-notification";
 
 export default class ChangePasswordRoute extends KComponent {
     constructor(props) {
@@ -51,9 +52,25 @@ export default class ChangePasswordRoute extends KComponent {
         this.setState({creating: true});
         return userApi.changePassword(this.state.session._id, this.form.getPathData("newPassword").trim())
             .then(() => {
+                topFloatNotifications.push({
+                    content: (
+                        <p className="common-noti-layout success">
+                            <i className="fal fa-check"></i>
+                            <span>Đổi mật khẩu thành công</span>
+                        </p>
+                    )
+                });
                 customHistory.push("/");
             })
             .catch(() => {
+                topFloatNotifications.push({
+                    content: (
+                        <p className="common-noti-layout danger">
+                            <i className="far fa-exclamation-circle"></i>
+                            <span>Có lỗi xảy ra</span>
+                        </p>
+                    )
+                });
                 customHistory.push("/");
             })
     };
@@ -63,13 +80,24 @@ export default class ChangePasswordRoute extends KComponent {
 
         return userApi.getChangePasswordUserBrief(sessionID)
             .then(session => this.setState({loading: false, session}))
-            .catch(() => customHistory.push("/"))
+            .catch(() => {
+                    topFloatNotifications.push({
+                        content: (
+                            <p className="common-noti-layout danger">
+                                <i className="far fa-exclamation-circle"></i>
+                                <span>Có lỗi xảy ra</span>
+                            </p>
+                        )
+                    });
+                    customHistory.push("/")
+                }
+            )
     };
 
     componentDidUpdate(prevProps, prevState, snapshot) {
         let queryStringParams = parseQueryString(this.props.location.search);
         let lastQueryStringParams = parseQueryString(prevProps.location.search);
-        if(!this.props.location.search || !queryStringParams.sessionID){
+        if (!this.props.location.search || !queryStringParams.sessionID) {
             return customHistory.push("/");
         }
         if (queryStringParams.sessionID !== lastQueryStringParams.sessionID) {
@@ -80,7 +108,8 @@ export default class ChangePasswordRoute extends KComponent {
 
     componentDidMount() {
         let params = parseQueryString(this.props.location.search);
-        if(!this.props.location.search || !params.sessionID){
+        if (!this.props.location.search || !params.sessionID) {
+
             return customHistory.push("/");
         }
         this.getUserBrief(params.sessionID)
@@ -111,7 +140,8 @@ export default class ChangePasswordRoute extends KComponent {
                         </div>
                         <div className="form-footer">
                             <Button className="btn-common-primary next-btn btn-block" loading={creating}
-                                    disabled={creating || this.form.getInvalidPaths().length} onClick={this.changePassword}>Hoàn tất</Button>
+                                    disabled={creating || this.form.getInvalidPaths().length}
+                                    onClick={this.changePassword}>Hoàn tất</Button>
                         </div>
                     </div>
                 </div>
