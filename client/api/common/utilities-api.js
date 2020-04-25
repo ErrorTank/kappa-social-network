@@ -8,5 +8,8 @@ export const utilityApi = {
     },
     preSearch(keyword){
         return authenApi.get("/utility/pre-search?keyword=" + encodeURIComponent(keyword));
+    },
+    getLoginSessionBrief(sessions){
+        return offlineApi.post("/utility/login-sessions/brief", {sessions})
     }
 };

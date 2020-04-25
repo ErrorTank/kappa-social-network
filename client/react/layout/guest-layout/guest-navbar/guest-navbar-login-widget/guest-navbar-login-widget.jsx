@@ -12,6 +12,8 @@ import {isPhone} from "../../../../../common/validator";
 import {openConnectionModal} from "../../../../common/connection-modal/connection-modal";
 import {guestApi} from "../../../../../api/common/guest-api";
 import {Button} from "../../../../common/button/button";
+import omit from "lodash/omit"
+import {loginSessionCache} from "../../../../../common/cache/login-session-cache";
 
 export class GuestNavbarLoginWidget extends KComponent {
     constructor(props) {
@@ -56,12 +58,16 @@ export class GuestNavbarLoginWidget extends KComponent {
         let data = this.form.getData();
         userApi.login(data)
             .then(({token, user}) => {
+                loginSessionCache.addNewSession({
+                    _id: user._id
+                });
                 initializeAuthenticateUser({
-                    userInfo: user,
+                    userInfo: omit(user, "avatar"),
                     authToken: token
                 }).then(() => customHistory.push("/"));
             })
             .catch(err => {
+                console.log(err)
                 let matcher = {
                     "account_not_existed": () => appModal.alert({
                         title: "Không thể đăng nhập",

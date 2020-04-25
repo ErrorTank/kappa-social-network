@@ -126,7 +126,7 @@ const verifyUser = ({token, sessionID}) => {
             }
             return Promise.all([
                 ConfirmToken.findOneAndDelete({_id: ObjectId(sessionID)}),
-                User.findOneAndUpdate({_id: ObjectId(data.user)}, {$set: {isVerify: true}}, {new: true, select: "_id contact basic_info joined_at isVerify last_active_at dark_mode search_history"}).lean()
+                User.findOneAndUpdate({_id: ObjectId(data.user)}, {$set: {isVerify: true}}, {new: true, select: "_id contact basic_info joined_at isVerify last_active_at dark_mode search_history avatar"}).lean()
             ])
         })
         .then(([_, user]) => {

@@ -10,6 +10,8 @@ import {openConnectionModal} from "../../../common/connection-modal/connection-m
 import {resendConfirmTokenModal} from "../../../common/modal/resend-confirm-token/resend-confirm-token";
 import {initializeAuthenticateUser} from "../../../../common/app-services";
 import {topFloatNotifications} from "../../../common/float-top-notification/float-top-notification";
+import {loginSessionCache} from "../../../../common/cache/login-session-cache";
+import omit from "lodash/omit"
 
 class AccountConfirmation extends Component {
     constructor(props) {
@@ -62,6 +64,9 @@ class AccountConfirmation extends Component {
         let queryStringParams = parseQueryString(this.props.location.search);
         return guestApi.verifyUser({token, sessionID: queryStringParams.sessionID})
             .then(({user, token}) => {
+                loginSessionCache.addNewSession({
+                    _id: user._id,
+                });
                 topFloatNotifications.push({
                     content: (
                         <p className="common-noti-layout success">
@@ -71,11 +76,12 @@ class AccountConfirmation extends Component {
                     )
                 });
                 initializeAuthenticateUser({
-                    userInfo: user,
+                    userInfo: omit(user, "avatar"),
                     authToken: token
                 }).then(() => customHistory.push("/"));
             })
             .catch((err) => {
+                console.log(err)
                 if(err.message === "wrong_token"){
                     appModal.alert({
                         title: "Thông báo",

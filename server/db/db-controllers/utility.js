@@ -21,7 +21,14 @@ const globalSearch = (userID, keyword) => {
 
 };
 
+const getLoginSessionsBrief = ({sessions}) => {
+    return User.find({
+        _id: {$in: sessions.map(each => ObjectId(each._id))}
+    }, "_id avatar basic_info").lean()
+
+};
 
 module.exports = {
     preSearch,
+    getLoginSessionsBrief
 };

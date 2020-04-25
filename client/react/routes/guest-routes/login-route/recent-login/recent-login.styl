@@ -1,4 +1,78 @@
 .recent-login{
+  position relative
+  min-height 200px
+  .recent-login-loading{
+    font-size 35px !important
+  }
+  .sessions{
+    display flex
+
+    .session{
+      flex 0 0 150px
+      margin-right 20px
+      &:nth-of-type(3n){
+        margin-right 0
+      }
+      margin-top 20px
+      border-radius 5px
+      background-color white
+      cursor pointer
+      transition all 0.1s ease
+      &:hover{
+        box-shadow 2px 3px 5px rgba(21, 35, 46, 0.15);
+      }
+      border 1px solid common-border
+      overflow hidden
+      .username{
+        padding 6px 10px
+        text-align center
+        font-size 15px
+        font-weight 500
+      }
+      .avatar-wrapper{
+        width 100%
+        height 150px
+        overflow hidden
+
+        position relative
+        .avatar-holder{
+
+          width 100%
+          height 100%
+          display flex
+          justify-content center
+          align-items center
+          background-color primaryButton
+          span{
+            color white
+            font-weight 600
+            font-size 40px
+          }
+        }
+        i{
+          position absolute
+          top 6px
+          left 6px
+          color #1a1a1a
+          font-size 1.8rem
+          z-index 2
+          transition all 0.1s ease
+          opacity 0.4
+          cursor pointer
+          &:hover{
+            color white
+            opacity: 1 !important;
+          }
+        }
+        img{
+          absoluteMiddle()
+          width 161px
+          height 161px
+        }
+      }
+    }
+  }
+
   .empty-sessions-notify{
     text-align center
     margin-top 50px

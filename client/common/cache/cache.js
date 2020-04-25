@@ -29,6 +29,7 @@ export class Cache {
       try {
         this.engine.setItem(key, JSON.stringify(value), options);
       } catch (e) {
+        console.log(e)
         // May throw exception if not enough memory allocated or in Safari's private mode
       }
     }

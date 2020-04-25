@@ -47,6 +47,9 @@ var exceptionRequestsDev = [
     },{
         endpoint: "http://localhost:4000/api/user/search-history/create",
         method: "POST"
+    },{
+        endpoint: "http://localhost:4000/api/utility/login-sessions/brief",
+        method: "POST"
     },
 
 ];
@@ -58,8 +61,8 @@ var exceptionRequestsProd = [
     }
 ];
 
-var CACHE_STATIC_NAME = 'static-v1587788596268';
-var CACHE_DYNAMIC_NAME = 'dynamic-v1587788596268';
+var CACHE_STATIC_NAME = 'static-v1587798184899';
+var CACHE_DYNAMIC_NAME = 'dynamic-v1587798184899';
 
 var STATIC_FILES = [
     '/',
