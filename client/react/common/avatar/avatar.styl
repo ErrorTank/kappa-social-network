@@ -1,52 +1,29 @@
-.avatar{
-  width 65px
-  height 65px
-  border-radius 50%
-  &.round{
-    border-radius 4px
-  }
-  &.small{
-    height 40px
-    width 40px
-    img{
-      max-height 41px
-    }
-    .fake-ava{
-      height 40px
-      width 40px
-      font-size 1.8rem
-      line-height 40px
-    }
-
-  }
-  overflow hidden
+.common-avatar{
   display inline-block
+  vertical-align middle
+  width 40px
+  height 40px
+  overflow hidden
+  border-radius 50%
+  margin auto
   position relative
-  img{
-    top 50%
-    left 50%
-    max-height 66px
+  .avatar-holder{
 
-    transform translate(-50%, -50%)
-    position absolute
+    width 100%
+    height 100%
+    display flex
+    justify-content center
+    align-items center
+    background-color primaryButton
+    span{
+      color white
+      font-weight 600
+      font-size 20px
+    }
   }
-  .fake-ava{
-    top 50%
-    left 50%
-    width 65px
-    height 65px
-
-    transform translate(-50%, -50%)
-    position absolute
-    font-size 2.6rem
-
-    text-align center
-    font-weight bold
-    line-height 65px
-    display inline-block
-    //background-color #d3d2d3
-    //color #919090
-    background-color info
-    color white
+  img{
+    absoluteMiddle()
+    width 101%
+    height 101%
   }
 }

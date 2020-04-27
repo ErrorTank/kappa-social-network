@@ -6,6 +6,8 @@ const initializeAuthenticateUser = ({userInfo: uInfo, authToken}) => {
     if(authToken){
         authenCache.setAuthen(authToken);
     }
+    console.log("cac")
+    console.log( uInfo)
     return Promise.all([
         userInfo.setState(omit(uInfo, "search_history")),
         userSearchHistory.setState(uInfo.search_history)

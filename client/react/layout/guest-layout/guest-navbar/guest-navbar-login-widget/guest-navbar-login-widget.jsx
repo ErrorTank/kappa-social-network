@@ -63,7 +63,7 @@ export class GuestNavbarLoginWidget extends KComponent {
                     login_at: new Date().getTime()
                 });
                 initializeAuthenticateUser({
-                    userInfo: omit(user, "avatar"),
+                    userInfo: user,
                     authToken: token
                 }).then(() => customHistory.push("/"));
             })

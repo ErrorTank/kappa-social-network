@@ -17,7 +17,7 @@ export const loginSessionCache = (() => {
         addNewSession(payload) {
             let items = cache.get("recent-login-sessions");
 
-            cache.set(items ? items.concat(payload) : [payload], "recent-login-sessions");
+            cache.set(items ? items.filter(each => each._id !== payload._id).concat(payload) : [payload], "recent-login-sessions");
         },
 
         removeAllSessions() {

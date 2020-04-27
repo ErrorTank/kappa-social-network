@@ -77,7 +77,7 @@ class ShortLoginModal extends KComponent {
                     login_at: new Date().getTime()
                 });
                 initializeAuthenticateUser({
-                    userInfo: omit(user, "avatar"),
+                    userInfo:user,
                     authToken: token
                 }).then(() => {
                     onClose();
@@ -91,7 +91,6 @@ class ShortLoginModal extends KComponent {
 
     render() {
         let {loading, error} = this.state;
-        console.log(error)
         let {user, onClose} = this.props;
         const getErrorMessage = {
             "wrong_password": "Sai mật khẩu",

@@ -77,7 +77,7 @@ class AccountConfirmation extends Component {
                     )
                 });
                 initializeAuthenticateUser({
-                    userInfo: omit(user, "avatar"),
+                    userInfo: user,
                     authToken: token
                 }).then(() => customHistory.push("/"));
             })

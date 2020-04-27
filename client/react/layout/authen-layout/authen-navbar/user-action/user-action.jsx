@@ -3,6 +3,8 @@ import classnames from "classnames";
 import {getNamePrefix} from "../../../../../common/utils/common";
 import {KComponent} from "../../../../common/k-component";
 import {userInfo} from "../../../../../common/states/common";
+import {ClickOutside} from "../../../../common/click-outside/click-outside";
+import {UserSpecificAction} from "./user-specific-action";
 
 class UserActionDropdownable extends Component {
     constructor(props) {
@@ -15,16 +17,22 @@ class UserActionDropdownable extends Component {
     render() {
         let {toggleRender, dropdownRender} = this.props;
         return (
-            <div className="user-action-dropdownable">
-                <div className={classnames("toggle", {active: this.state.show})} onClick={() => this.setState({show: true})}>
-                    {toggleRender()}
+            <ClickOutside onClickOut={() => this.setState({show: false})}>
+                <div className="user-action-dropdownable">
+                    <div className={classnames("toggle", {active: this.state.show})}
+                         onClick={() => this.setState({show: !this.state.show})}>
+                        {toggleRender()}
+                    </div>
+                    {this.state.show && (
+
+                        <div className="dropdown">
+                            {dropdownRender()}
+                        </div>
+
+
+                    )}
                 </div>
-                {/*{this.state.show && (*/}
-                {/*    <div className="dropdown">*/}
-                {/*        {dropdownRender()}*/}
-                {/*    </div>*/}
-                {/*)}*/}
-            </div>
+            </ClickOutside>
         )
     }
 }
@@ -42,7 +50,7 @@ export class UserAction extends KComponent {
             <div className="user-action">
                 <UserActionDropdownable
                     toggleRender={() => (
-                        <div className="user-specific-action">
+
                             <div className="avatar-wrapper">
                                 {user.avatar ? (
                                     <img src={user.avatar}/>
@@ -53,7 +61,6 @@ export class UserAction extends KComponent {
                                     </div>
                                 )}
                             </div>
-                        </div>
                     )}
                 />
                 <UserActionDropdownable
@@ -74,9 +81,14 @@ export class UserAction extends KComponent {
                 />
                 <UserActionDropdownable
                     toggleRender={() => (
+
                         <div className="circle-action">
                             <i className="fas fa-caret-down"></i>
                         </div>
+
+                    )}
+                    dropdownRender={() => (
+                        <UserSpecificAction/>
                     )}
                 />
             </div>

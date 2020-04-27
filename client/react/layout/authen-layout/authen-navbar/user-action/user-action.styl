@@ -1,82 +1,171 @@
-.user-action{
+.user-action {
   display flex
   justify-content flex-end
   align-items center
   height 100%
-  .user-action-dropdownable{
+  position relative
+
+  .user-action-dropdownable {
     flex 0
     margin-left 15px
-    .toggle{
+
+    .dropdown {
+      position absolute
+      top 100%
+      right 0
+      background-color white
+      width 100%
+      border-radius 5px
+      border 1px solid common-border
+      box-shadow 0 0 15px 1px rgba(69, 65, 78, 0.2)
+    }
+
+    .toggle {
       cursor pointer
-      &:not(.active){
-        .circle-action{
-          &:hover{
+
+      &:not(.active) {
+        .circle-action {
+          &:hover {
             border-color primaryButton
           }
         }
       }
-      &.active{
-        .circle-action{
+
+      &.active {
+        .circle-action {
           border-color lighten(#1a1a1a, 20%)
           background-color lighten(#1a1a1a, 20%)
-          i{
+
+          i {
             color white
           }
         }
       }
     }
-    .circle-action{
+
+    .circle-action {
       border-radius 50%
       width 40px
       border 1px solid common-border
     }
-    .user-specific-action{
-      white-space nowrap
-      .avatar-wrapper{
-        display inline-block
-        vertical-align middle
-        width 40px
-        height 40px
-        overflow hidden
-        border-radius 50%
-        margin auto
-        position relative
-        .avatar-holder{
 
-          width 100%
-          height 100%
-          display flex
-          justify-content center
-          align-items center
-          background-color primaryButton
-          span{
-            color white
-            font-weight 600
-            font-size 20px
-          }
-        }
-        img{
-          absoluteMiddle()
-          width 41px
-          height 41px
+    .avatar-wrapper {
+      display inline-block
+      vertical-align middle
+      width 40px
+      height 40px
+      overflow hidden
+      border-radius 50%
+      margin auto
+      position relative
+
+      .avatar-holder {
+
+        width 100%
+        height 100%
+        display flex
+        justify-content center
+        align-items center
+        background-color primaryButton
+
+        span {
+          color white
+          font-weight 600
+          font-size 15px
         }
       }
+
+      img {
+        absoluteMiddle()
+        width 41px
+        height 41px
+      }
     }
-    .user-specific-action
-    .circle-action{
+
+    .circle-action {
+
 
       height 40px
-
       position relative
       background-color white
 
       transition all 0.1s ease
 
-      i{
+      i {
         absoluteMiddle()
         font-size 20px
         color lighten(#1a1a1a, 20%)
 
+      }
+    }
+  }
+}
+.user-specific-action{
+  .nav-dropdown-row{
+    .icon-wrapper{
+      border-radius 50%
+      background-color white
+      border 1px solid common-border
+      width 35px
+      height 35px
+      display inline-block
+      vertical-align middle
+      position relative
+      i{
+        absoluteMiddle()
+        font-size 18px
+        color lighten(#1a1a1a, 20%)
+      }
+    }
+    .content{
+      width calc(100% - 40px)
+      display inline-block
+      vertical-align middle
+      padding-left 10px
+      color #1a1a1a
+      font-size 15px
+      font-weight 500
+
+    }
+  }
+}
+.nav-dropdown {
+  padding 8px
+  .separate{
+    margin 8px 8px
+    height 1px
+    background-color common-border
+  }
+  .nav-dropdown-row {
+    padding 8px
+    border-radius 5px
+    cursor pointer
+    transition all 0.1s ease
+
+    &:hover {
+      background-color darken(white, 5%)
+    }
+
+    &.profile-navigator {
+      text-align center
+      .username{
+        color #1a1a1a
+        font-size 18px
+        text-align center
+        margin 5px 0
+        font-weight 700
+      }
+      .sub{
+        color lighten(#1a1a1a, 20%)
+        font-size 13px
+      }
+      .nav-dropdown-avatar {
+        width 70px
+        height 70px
+        display inline-block
+        span{
+          font-size 26px
+        }
       }
     }
   }

@@ -46,7 +46,7 @@ const sendResetPasswordToken = ({credentials, user}) => {
 };
 
 const getAuthenticateUserInitCredentials = (userID) => {
-    return User.findOne({_id: ObjectId(userID)}, "_id contact basic_info joined_at isVerify last_active_at dark_mode search_history").lean()
+    return User.findOne({_id: ObjectId(userID)}, "_id contact basic_info joined_at isVerify last_active_at dark_mode search_history avatar").lean()
         .then(data => {
             if (!data) {
                 return Promise.reject(new ApplicationError("account_not_existed"))
@@ -65,7 +65,7 @@ const shortLogin = ({_id, password}) => {
     return User.findOne({
         _id: ObjectId(_id),
         "private_info.password": password.trim()
-    }, "_id contact basic_info joined_at isVerify last_active_at dark_mode private_info search_history").lean()
+    }, "_id contact basic_info joined_at isVerify last_active_at dark_mode private_info search_history avatar").lean()
         .then((data) => {
             if (!data) {
                 return Promise.reject(new ApplicationError("wrong_password"));
