@@ -2,12 +2,29 @@ import React, {Component} from 'react';
 import {Link} from "react-router-dom";
 import classnames from "classnames";
 import {NavbarGlobalSearch} from "./navbar-global-search/navbar-global-search";
+import {Navigation} from "./navigation/navigation";
 
 export class AuthenNavbar extends Component {
     constructor(props) {
         super(props);
         this.state = {}
     }
+
+    navigations = [
+        {
+            url: "/",
+            icon: <i className="fal fa-home-lg-alt"></i>,
+        },{
+            url: "/pages",
+            icon: <i className="fal fa-flag"></i>,
+        },{
+            url: "/watch",
+            icon: <i className="fal fa-home-lg-alt"></i>,
+        },{
+            url: "/",
+            icon: <i className="fal fa-home-lg-alt"></i>,
+        },
+    ];
 
     render() {
         let {showNotificationPrompt, ...rest} = this.props;
@@ -24,6 +41,14 @@ export class AuthenNavbar extends Component {
                             <NavbarGlobalSearch
                                 {...rest}
                             />
+                        </div>
+                    </div>
+                    <div className="authen-navbar-center">
+                        <Navigation/>
+                    </div>
+                    <div className="authen-navbar-right">
+                        <div className="feed-navigation">
+
                         </div>
                     </div>
                 </div>

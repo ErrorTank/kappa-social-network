@@ -5,7 +5,7 @@ import classnames from "classnames"
 
 export class AuthenLayout extends Component {
     render() {
-        console.log("cac")
+
         return (
             <NotificationStateContext.Consumer>
                 {showNotificationPrompt => {
