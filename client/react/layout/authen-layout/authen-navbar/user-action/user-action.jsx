@@ -5,6 +5,7 @@ import {KComponent} from "../../../../common/k-component";
 import {userInfo} from "../../../../../common/states/common";
 import {ClickOutside} from "../../../../common/click-outside/click-outside";
 import {UserSpecificAction} from "./user-specific-action";
+import {Tooltip} from "../../../../common/tooltip/tooltip";
 
 class UserActionDropdownable extends Component {
     constructor(props) {
@@ -51,41 +52,56 @@ export class UserAction extends KComponent {
                 <UserActionDropdownable
                     toggleRender={() => (
 
-                            <div className="avatar-wrapper">
-                                {user.avatar ? (
-                                    <img src={user.avatar}/>
+                        <div className="avatar-wrapper">
+                            {user.avatar ? (
+                                <img src={user.avatar}/>
 
-                                ) : (
-                                    <div className="avatar-holder">
-                                        <span>{getNamePrefix(user.basic_info.username)}</span>
-                                    </div>
-                                )}
+                            ) : (
+                                <div className="avatar-holder">
+                                    <span>{getNamePrefix(user.basic_info.username)}</span>
+                                </div>
+                            )}
+                        </div>
+                    )}
+                />
+                <UserActionDropdownable
+                    toggleRender={() => (
+                        <Tooltip
+                            className={"user-action-tooltip"}
+                            text={() => "Chat"}
+                        >
+                            <div className="circle-action">
+                                <i className="fas fa-comment"></i>
                             </div>
-                    )}
-                />
-                <UserActionDropdownable
-                    toggleRender={() => (
-                        <div className="circle-action">
-                            <i className="fas fa-comment"></i>
-                        </div>
+                        </Tooltip>
+
 
                     )}
 
                 />
                 <UserActionDropdownable
                     toggleRender={() => (
-                        <div className="circle-action">
-                            <i className="fas fa-bell"></i>
-                        </div>
+                        <Tooltip
+                            className={"user-action-tooltip"}
+                            text={() => "Thông báo"}
+                        >
+                            <div className="circle-action">
+                                <i className="fas fa-bell"></i>
+                            </div>
+                        </Tooltip>
                     )}
                 />
                 <UserActionDropdownable
                     toggleRender={() => (
-
-                        <div className="circle-action">
-                            <i className="fas fa-caret-down"></i>
-                        </div>
-
+                        <Tooltip
+                            className={"user-action-tooltip"}
+                            text={() => "Tài khoản"}
+                            position={"bottom-left"}
+                        >
+                            <div className="circle-action">
+                                <i className="fas fa-caret-down"></i>
+                            </div>
+                        </Tooltip>
                     )}
                     dropdownRender={() => (
                         <UserSpecificAction/>
