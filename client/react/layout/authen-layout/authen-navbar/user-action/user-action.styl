@@ -1,0 +1,83 @@
+.user-action{
+  display flex
+  justify-content flex-end
+  align-items center
+  height 100%
+  .user-action-dropdownable{
+    flex 0
+    margin-left 15px
+    .toggle{
+      cursor pointer
+      &:not(.active){
+        .circle-action{
+          &:hover{
+            border-color primaryButton
+          }
+        }
+      }
+      &.active{
+        .circle-action{
+          border-color lighten(#1a1a1a, 20%)
+          background-color lighten(#1a1a1a, 20%)
+          i{
+            color white
+          }
+        }
+      }
+    }
+    .circle-action{
+      border-radius 50%
+      width 40px
+      border 1px solid common-border
+    }
+    .user-specific-action{
+      white-space nowrap
+      .avatar-wrapper{
+        display inline-block
+        vertical-align middle
+        width 40px
+        height 40px
+        overflow hidden
+        border-radius 50%
+        margin auto
+        position relative
+        .avatar-holder{
+
+          width 100%
+          height 100%
+          display flex
+          justify-content center
+          align-items center
+          background-color primaryButton
+          span{
+            color white
+            font-weight 600
+            font-size 20px
+          }
+        }
+        img{
+          absoluteMiddle()
+          width 41px
+          height 41px
+        }
+      }
+    }
+    .user-specific-action
+    .circle-action{
+
+      height 40px
+
+      position relative
+      background-color white
+
+      transition all 0.1s ease
+
+      i{
+        absoluteMiddle()
+        font-size 20px
+        color lighten(#1a1a1a, 20%)
+
+      }
+    }
+  }
+}

@@ -24,12 +24,11 @@ export const authenCache = (() => {
                 if (!authen) {
                     reject();
                 } else {
-                    resolve();
                     userApi.getAuthenticateUserInitCredentials().then((user) => {
                         if (!user) {
                             reject();
                         } else {
-                            return resolve(initializeAuthenticateUser({userInfo: user}));
+                            return initializeAuthenticateUser({userInfo: user}).then(() => resolve());
                         }
                     }).catch(err => {
                         clearAuthenticateUserSession().then(() => {

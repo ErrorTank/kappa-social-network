@@ -3,6 +3,7 @@ import {Link} from "react-router-dom";
 import classnames from "classnames";
 import {NavbarGlobalSearch} from "./navbar-global-search/navbar-global-search";
 import {Navigation} from "./navigation/navigation";
+import {UserAction} from "./user-action/user-action";
 
 export class AuthenNavbar extends Component {
     constructor(props) {
@@ -47,9 +48,7 @@ export class AuthenNavbar extends Component {
                         <Navigation/>
                     </div>
                     <div className="authen-navbar-right">
-                        <div className="feed-navigation">
-
-                        </div>
+                        <UserAction/>
                     </div>
                 </div>
             </div>
