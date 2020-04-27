@@ -7,7 +7,7 @@ const app = createExpressServer({useCors: true});
 const dbManager = require("./config/db");
 const createRoutes = require("./config/routes");
 const createErrorHandlersMiddleware = require("./utils/error/error-handlers");
-
+const {createSocketNamespaces} = require("./config/socket/socket");
 
 dbManager.init()
     .then((dbs) => {
@@ -16,7 +16,8 @@ dbManager.init()
     })
     .then((appDb) => {
         let server = http.createServer(app);
-        app.use("/", createRoutes(appDb));
+        const namespacesIO = createSocketNamespaces(server, {db: appDb});
+        app.use("/", createRoutes(appDb, namespacesIO));
         app.use(createErrorHandlersMiddleware);
         const port = process.env.PORT || 4000;
         server.listen(port, () => {
