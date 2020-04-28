@@ -1,3 +1,5 @@
+importScripts('/assets/vendor/idb.js');
+importScripts('/assets/vendor/sw-utilities.js');
 var exceptionRequestsDev = [
     {
         endpoint: "http://localhost:4000/api/register",
@@ -48,24 +50,23 @@ var exceptionRequestsDev = [
         endpoint: "http://localhost:4000/api/user/search-history/create",
         method: "POST"
     },{
-        endpoint: "http://localhost:4000/api/utility/login-sessions/brief",
-        method: "POST"
-    },{
         endpoint: "http://localhost:4000/api/user/short-login",
         method: "POST"
     },
 
 ];
 
-var exceptionRequestsProd = [
+
+var notGetRequests = [
     {
-        endpoint: "http://localhost:4000/api/register",
-        method: "POST"
+        endpoint: "http://localhost:4000/api/utility/login-sessions/brief",
+        method: "POST",
+        dbCollectionName: "login-sessions"
     }
 ];
 
-var CACHE_STATIC_NAME = 'static-v1587981314369';
-var CACHE_DYNAMIC_NAME = 'dynamic-v1587981314369';
+var CACHE_STATIC_NAME = 'static-v1588054397039';
+var CACHE_DYNAMIC_NAME = 'dynamic-v1588054397039';
 
 var STATIC_FILES = [
     '/',
@@ -161,9 +162,17 @@ function isInArray(string, array) {
 
 function isExceptionRequest(request) {
 
-    let arr = request.url.indexOf("localhost") > -1 ? exceptionRequestsDev : exceptionRequestsProd;
-    console.log(request.url)
-    return isInArray(request.url, arr
+    return isInArray(request.url, exceptionRequestsDev
+        .filter(function (each) {
+            return each.method == request.method;
+        })
+        .map(function (each) {
+            return each.endpoint;
+        }));
+}
+function isNotGetRequest(request) {
+
+    return isInArray(request.url, notGetRequests
         .filter(function (each) {
             return each.method == request.method;
         })
@@ -172,9 +181,56 @@ function isExceptionRequest(request) {
         }));
 }
 
+function getEndpointConfig(request, arr){
+    let array = arr
+        .filter(function (each) {
+            return each.method == request.method;
+        })
+        .map(function (each) {
+            return each;
+        });
+    let string = request.url;
+    let host = self.location.host;
+    let sliceIndex = string.indexOf(host) + host.length;
+    var cachePath;
+    if (string.indexOf(self.location.host) === self.location.protocol.length + 2) {
+        cachePath = string.substring(sliceIndex);
+    } else {
+        cachePath = string;
+    }
+    for(var path of array){
+        if(typeof path.endpoint === "string" && path.endpoint === cachePath){
+            return path;
+        }
+        if(typeof path.endpoint === "object" && path.endpoint.test(string)){
+            return path;
+        }
+    }
+    return null;
+}
+
 self.addEventListener('fetch', function (event) {
-    if (isExceptionRequest(event.request.clone())) {
-        console.log("dech")
+    var notGetEndpointConfig = getEndpointConfig(event.request.clone(), notGetRequests);
+    if (notGetEndpointConfig){
+        event.respondWith(fetch(event.request)
+            .then(function (res) {
+                var clonedRes = res.clone();
+                clearAllData(notGetEndpointConfig.dbCollectionName)
+                    .then(function () {
+                        return clonedRes.json();
+                    })
+                    .then(function (data) {
+                        console.log(data)
+                        for (var key in data) {
+                            writeData(notGetEndpointConfig.dbCollectionName, data[key])
+                        }
+
+                    });
+                return res;
+            })
+        );
+    }
+    else if (isExceptionRequest(event.request.clone())) {
         return;
     } else if (isInArray(event.request.url, STATIC_FILES)) {
         event.respondWith(
@@ -184,9 +240,11 @@ self.addEventListener('fetch', function (event) {
         if (event.request.url.indexOf("/sockjs-node/info?") > -1) {
             return;
         } else {
+            console.log(event.request.url)
             event.respondWith(
                 caches.match(event.request)
                     .then(function (response) {
+                        console.log(response)
                         if (response) {
                             return response;
                         } else {
@@ -200,6 +258,7 @@ self.addEventListener('fetch', function (event) {
                                         })
                                 })
                                 .catch(function (err) {
+                                    console.log(err)
                                     return caches.open(CACHE_STATIC_NAME)
                                         .then(function (cache) {
                                             if (event.request.headers.get('accept').includes('text/html')) {

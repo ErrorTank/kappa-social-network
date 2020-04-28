@@ -16,7 +16,11 @@ export class RecentLogin extends Component {
 
         if(sessionsCached && sessionsCached.length){
 
-            utilityApi.getLoginSessionBrief(sessionsCached).then(sessions => this.setState({sessions: sessionsCached.sort((a,b) => b.login_at - a.login_at).map(each => sessions.find(s => s._id === each._id)), loading: false}))
+            utilityApi.getLoginSessionBrief(sessionsCached)
+                .then(sessions => this.setState({sessions: sessionsCached.sort((a,b) => b.login_at - a.login_at).map(each => sessions.find(s => s._id === each._id)), loading: false}))
+                .catch(err => {
+                    readAllData("login-sessions").then(sessions => this.setState({loading: false, sessions: sessionsCached.sort((a,b) => b.login_at - a.login_at).map(each => sessions.find(s => s._id === each._id))}));
+                })
         }
 
     }

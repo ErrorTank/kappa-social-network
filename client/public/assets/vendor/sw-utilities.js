@@ -1,7 +1,8 @@
 
 var dbPromise = idb.open('kappa-index-db', 1, function (db) {
     if (!db.objectStoreNames.contains('sync-chats')) {
-        db.createObjectStore('sync-chats', {keyPath: 'id'});
+        db.createObjectStore('sync-chats', {keyPath: '_id'});
+        db.createObjectStore('login-sessions', {keyPath: '_id'});
     }
 });
 
