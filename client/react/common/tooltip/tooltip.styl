@@ -1,45 +1,56 @@
-.tooltip-container{
+.tooltip-container {
   position relative
   display inline-block
-  .tool-tip{
+  &.darkMode {
+    .tooltip-content {
+      color commonTextLight !important
+      background-color commonTextDark !important
+    }
+  }
+  .tool-tip {
     position absolute
 
+
     z-index 1
-    &.bottom{
+
+    &.bottom {
       top 100%
       left 50%
       transform translateX(-50%)
 
 
-      .tooltip-content{
+      .tooltip-content {
         margin-top 0px
 
       }
     }
-    &.bottom-left{
+
+    &.bottom-left {
       top 100%
       right 0
 
 
-      .tooltip-content{
+      .tooltip-content {
         margin-top 0px
 
       }
     }
-    &.left{
+
+    &.left {
       top 50%
       transform translateY(-50%)
       right 100%
 
 
-      .tooltip-content{
+      .tooltip-content {
         margin-top 0px
 
       }
     }
-    .tooltip-content{
+
+    .tooltip-content {
       transition background-color 300ms ease
-      background-color #1a1a1a
+      background-color commonTextLight
       color white
       font-size 13px
       padding 5px 20px

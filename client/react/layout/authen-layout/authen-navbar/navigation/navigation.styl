@@ -4,7 +4,25 @@
   align-items flex-end
   height 100%
   &.darkMode{
+    .navigation{
+      &:not(.active) {
+        .icon-wrapper {
+          &:hover {
+            background-color lighten(darkNav, 15%) !important
+          }
+        }
 
+      }
+      .icon-wrapper {
+
+
+        i {
+          color commonTextDark
+
+        }
+
+      }
+    }
   }
   .navigation-tooltip{
     height 100%

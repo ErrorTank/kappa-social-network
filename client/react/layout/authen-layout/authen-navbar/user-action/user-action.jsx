@@ -48,7 +48,7 @@ export class UserAction extends KComponent {
         let user = userInfo.getState();
         console.log(user)
         return (
-            <div className="user-action">
+            <div className={classnames("user-action", {darkMode: this.props.darkMode})}>
                 <UserActionDropdownable
                     toggleRender={() => (
 
@@ -104,7 +104,9 @@ export class UserAction extends KComponent {
                         </Tooltip>
                     )}
                     dropdownRender={() => (
-                        <UserSpecificAction/>
+                        <UserSpecificAction
+                            darkMode={this.props.darkMode}
+                        />
                     )}
                 />
             </div>

@@ -9,11 +9,11 @@ export class ThemeController extends KComponent{
     constructor(props) {
         super(props);
         this.state = {
-            darkMode: userInfo.getState().dark_mode === false
+            darkMode: userInfo.getState().dark_mode === true
         };
         this.onUnmount(userInfo.onChange((nextState, oldState) => {
             if(nextState?.dark_mode || oldState?.dark_mode){
-                this.setState({darkMode: nextState.dark_mode === false});
+                this.setState({darkMode: nextState.dark_mode === true});
             }
 
 

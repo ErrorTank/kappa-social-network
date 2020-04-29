@@ -3,6 +3,8 @@ import {Avatar} from "../../../../common/avatar/avatar";
 import {userInfo} from "../../../../../common/states/common";
 import {clearAuthenticateUserSession} from "../../../../../common/app-services";
 import {customHistory} from "../../../../routes/routes";
+import {SwitchBtn} from "../../../../common/switch/switch-btn";
+import {userApi} from "../../../../../api/common/user-api";
 
 export class UserSpecificAction extends Component {
     constructor(props) {
@@ -26,6 +28,27 @@ export class UserSpecificAction extends Component {
             },{
                 icon: <i className="fal fa-flag"></i>,
                 label: "Quản lý trang",
+
+            },{
+                icon: <i className="fas fa-moon"></i>,
+
+                customRender: () => (
+                    <div className="night-mode">
+                        Chế độ đêm
+                        <SwitchBtn
+                            className={"night-mode-toggle"}
+                            value={this.props.darkMode}
+                            onToggle={value => {
+                                userApi.toggleDarkMode({value})
+                                    .then((data) => {
+                                        userInfo.setState(data)
+                                    });
+
+                            }}
+                        />
+                    </div>
+
+                )
 
             },  {
                 icon: <i className="fas fa-sign-out-alt"></i>,
@@ -55,7 +78,7 @@ export class UserSpecificAction extends Component {
                             {each.icon}
                         </div>
                         <div className="content">
-                            {each.label}
+                            {each.customRender ? each.customRender() : each.label}
                         </div>
                     </div>
                 ))}

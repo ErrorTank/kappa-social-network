@@ -1,9 +1,13 @@
 .switch-btn {
+  display inline-block
+  label{
+    margin 0 !important
+  }
   .switch-label{
     font-size 1.6rem
     margin-bottom 0.5rem
     font-weight 500
-    color comm
+    color commonTextLight
   }
   label {
     cursor pointer
@@ -19,23 +23,23 @@
       & + span {
         position: relative;
         display: inline-block;
-        margin-right: 10px;
         width: 56px;
         height: 28px;
-        background: #f2f2f2;
-        border: 1px solid #eee;
+        background: #ced0d4;
         border-radius: 50px;
         transition: all 0.2s ease-in-out;
 
         small {
           position: absolute;
           display: block;
-          width: 50%;
-          height: 100%;
+          width: 23px;
+          height: 23px;
           background: #fff;
           border-radius: 50%;
           transition: all 0.2s ease-in-out;
-          left: 0;
+          left: 2.5px;
+          top 50%
+          transform translateY(-50%)
         }
       }
 
@@ -44,7 +48,7 @@
         border-color: primaryButton;
 
         small {
-          left: 50%;
+          left 29.5px
         }
       }
     }

@@ -5,15 +5,93 @@
   height 100%
   position relative
 
+  &.darkMode {
+    .user-action-dropdownable{
+      .dropdown{
+        border 1px solid darkNav;
+      }
+    }
+    .nav-dropdown {
+      background-color darkNav
+      .separate{
+        background-color common-border-dark
+      }
+      color commonTextDark !important
+      .nav-dropdown-row {
+        &.profile-navigator{
+          .sub {
+            color lighten(commonTextDark, 20%)
+            font-size 13px
+          }
+        }
+        &:hover{
+          background-color lighten(darkNav, 5%)
+        }
+      }
+    }
+
+    .user-specific-action {
+
+      .content{
+        color commonTextDark
+      }
+      .icon-wrapper {
+        background-color lighten(darkNav, 15%)
+        border none !important
+        i{
+          color commonTextDark
+        }
+
+      }
+    }
+
+    .toggle {
+      .circle-action {
+        border none !important
+        background-color lighten(darkNav, 20%)
+
+        i {
+          color commonTextDark !important
+        }
+      }
+
+      &:not(.active) {
+        .circle-action {
+          &:hover {
+            background-color lighten(darkNav, 10%) !important
+          }
+
+        }
+      }
+
+      &.active {
+        .circle-action {
+
+          border-color lighten(darkNav, 20%)
+          background-color lighten(darkNav, 20%)
+
+          i {
+            color primaryButton !important
+          }
+        }
+      }
+    }
+
+
+  }
+
   .user-action-dropdownable {
     flex 0
     margin-left 15px
-    .user-action-tooltip{
+
+    .user-action-tooltip {
       height 100%
-      .tooltip-content{
+
+      .tooltip-content {
         margin-top 6px !important
       }
     }
+
     .dropdown {
       position absolute
       top 100%
@@ -105,9 +183,46 @@
     }
   }
 }
-.user-specific-action{
-  .nav-dropdown-row{
-    .icon-wrapper{
+
+.user-specific-action {
+
+  .nav-dropdown-row {
+    .night-mode{
+      position relative
+      .night-mode-toggle{
+        position absolute
+        top 50%
+        transform translateY(-50%)
+        right 0
+      }
+    }
+    &.profile-navigator {
+      text-align center
+
+      .username {
+        color inherit
+        font-size 18px
+        text-align center
+        margin 5px 0
+        font-weight 700
+      }
+
+      .sub {
+        color lighten(commonTextLight, 20%)
+        font-size 13px
+      }
+
+      .nav-dropdown-avatar {
+        width 70px
+        height 70px
+        display inline-block
+
+        span {
+          font-size 26px
+        }
+      }
+    }
+    .icon-wrapper {
       border-radius 50%
       background-color white
       border 1px solid common-border
@@ -116,13 +231,15 @@
       display inline-block
       vertical-align middle
       position relative
-      i{
+
+      i {
         absoluteMiddle()
         font-size 18px
         color lighten(#1a1a1a, 20%)
       }
     }
-    .content{
+
+    .content {
       width calc(100% - 40px)
       display inline-block
       vertical-align middle
@@ -134,44 +251,26 @@
     }
   }
 }
+
 .nav-dropdown {
   padding 8px
-  .separate{
+  color commonTextLight
+  .separate {
     margin 8px 8px
     height 1px
     background-color common-border
   }
+
   .nav-dropdown-row {
     padding 8px
     border-radius 5px
     cursor pointer
     transition all 0.1s ease
-
+    color inherit
     &:hover {
       background-color darken(white, 5%)
     }
 
-    &.profile-navigator {
-      text-align center
-      .username{
-        color #1a1a1a
-        font-size 18px
-        text-align center
-        margin 5px 0
-        font-weight 700
-      }
-      .sub{
-        color lighten(#1a1a1a, 20%)
-        font-size 13px
-      }
-      .nav-dropdown-avatar {
-        width 70px
-        height 70px
-        display inline-block
-        span{
-          font-size 26px
-        }
-      }
-    }
+
   }
 }

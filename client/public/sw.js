@@ -52,6 +52,9 @@ var exceptionRequestsDev = [
     },{
         endpoint: "http://localhost:4000/api/user/short-login",
         method: "POST"
+    },{
+        endpoint: "http://localhost:4000/api/user/toggle-dark-mode",
+        method: "PUT"
     },
 
 ];
@@ -65,8 +68,8 @@ var notGetRequests = [
     }
 ];
 
-var CACHE_STATIC_NAME = 'static-v1588133736510';
-var CACHE_DYNAMIC_NAME = 'dynamic-v1588133736510';
+var CACHE_STATIC_NAME = 'static-v1588140113461';
+var CACHE_DYNAMIC_NAME = 'dynamic-v1588140113461';
 
 var STATIC_FILES = [
     '/',

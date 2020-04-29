@@ -51,7 +51,7 @@ export class AuthenNavbar extends Component {
                         />
                     </div>
                     <div className="authen-navbar-right">
-                        <UserAction/>
+                        <UserAction  darkMode={darkMode}/>
                     </div>
                 </div>
             </div>

@@ -25,7 +25,10 @@ export const userApi = {
         return offlineApi.put("/user/change-password", {newPassword, sessionID});
     },
     shortLogin(payload){
-        return offlineApi.post("/user/short-login", payload);
+        return offlineApi.post("/user/short-login", payload);user/toggle-dark-mode
+    },
+    toggleDarkMode(payload){
+        return authenApi.put("/user/toggle-dark-mode", payload);
     }
 
 };

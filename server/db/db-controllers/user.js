@@ -305,6 +305,10 @@ const updateSearchHistory = (userID, historyID, data) => {
 
 };
 
+const simpleUpdateUser = (userID, data) => {
+  return User.findOneAndUpdate({_id: ObjectId(userID)}, data, {new: true, select: "_id contact basic_info joined_at isVerify last_active_at dark_mode private_info search_history avatar"}).lean()
+};
+
 module.exports = {
     getAuthenticateUserInitCredentials,
     login,
@@ -316,5 +320,6 @@ module.exports = {
     addNewSearchHistory,
     deleteSearchHistory,
     updateSearchHistory,
-    shortLogin
+    shortLogin,
+    simpleUpdateUser
 };
