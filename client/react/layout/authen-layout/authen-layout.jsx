@@ -10,7 +10,7 @@ export class AuthenLayout extends Component {
             <NotificationStateContext.Consumer>
                 {showNotificationPrompt => {
                     return (
-                        <div className={classnames("authen-layout", {"stay-down": showNotificationPrompt})}>
+                        <div className={classnames("authen-layout", {"stay-down": showNotificationPrompt, darkMode: this.props.darkMode})}>
 
                             <AuthenNavbar
                                 {...this.props}

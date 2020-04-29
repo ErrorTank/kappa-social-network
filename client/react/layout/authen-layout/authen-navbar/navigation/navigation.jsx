@@ -32,7 +32,7 @@ export class Navigation extends Component {
     render() {
         let {location} = customHistory;
         return (
-            <div className={classnames("navigations",)}>
+            <div className={classnames("navigations", {darkMode: this.props.darkMode})}>
                 {this.navigations.map((each, i) => {
                     return (
                         <Tooltip

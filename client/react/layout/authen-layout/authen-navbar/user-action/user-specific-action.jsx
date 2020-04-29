@@ -23,7 +23,11 @@ export class UserSpecificAction extends Component {
                 icon: <i className="far fa-window"></i>,
                 label: "Ưu tiên hiển thị",
 
-            }, {
+            },{
+                icon: <i className="fal fa-flag"></i>,
+                label: "Quản lý trang",
+
+            },  {
                 icon: <i className="fas fa-sign-out-alt"></i>,
                 label: "Đăng xuất",
                 onClick: () => {

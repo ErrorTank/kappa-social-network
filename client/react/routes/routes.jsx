@@ -15,6 +15,7 @@ import {GuestRoute} from "./route-types/guest-route/guest-route";
 import {AuthenRoute} from "./route-types/authen-route/authen-route";
 import {WithRouterKappaLayout} from "../layout/kappa-layout";
 import {TopFloatNotificationRegistry} from "../common/float-top-notification/float-top-notification";
+import {ThemeContext, ThemeController} from "../context/theme-context";
 
 const FeedRoute = lazy(delayLoad(() => import("./authen-routes/feed-route/feed-route")));
 const LoginRoute = lazy(delayLoad(() => import("./guest-routes/login-route/login-route")));
@@ -34,78 +35,82 @@ class MainRoute extends React.Component {
     render() {
 
         return (
-            <Suspense fallback={<OverlayLoading/>}>
-                <WithRouterKappaLayout>
-                    {layoutProps => (
-                        <CustomSwitch>
-                            <FlexibleRoute
-                                {...layoutProps}
-                                path={"/"}
-                                exact
+            <ThemeController>
+                {({darkMode}) => (
+                    <Suspense fallback={<OverlayLoading darkMode={darkMode}/>}>
+                        <WithRouterKappaLayout>
+                            {layoutProps => (
+                                <CustomSwitch>
+                                    <FlexibleRoute
+                                        {...layoutProps}
+                                        path={"/"}
+                                        exact
 
-                                render={props => !authenCache.getAuthen() ?
-                                    (
-                                        <LoginRoute
-                                            {...props}
+                                        render={props => !authenCache.getAuthen() ?
+                                            (
+                                                <LoginRoute
+                                                    {...props}
 
-                                        />
-                                    ) : (
-                                        <FeedRoute
+                                                />
+                                            ) : (
+                                                <FeedRoute
 
-                                            {...props}
-                                        />
-                                    )
-                                }
-                            />
-                            <AuthenRoute
-                                {...layoutProps}
-                                path={"/tim-kiem"}
-                                exact
-
-                                render={props => (
-                                    <GlobalSearchResult
-
-                                        {...props}
+                                                    {...props}
+                                                />
+                                            )
+                                        }
                                     />
-                                )}
-                            />
-                            <GuestRoute
-                                {...layoutProps}
-                                path={"/quen-mat-khau"}
-                                exact
-                                render={props => (
-                                    <ForgotPasswordRoute
+                                    <AuthenRoute
+                                        {...layoutProps}
+                                        path={"/tim-kiem"}
+                                        exact
 
-                                        {...props}
-                                    />
-                                )}
-                            />
-                            <GuestRoute
-                                {...layoutProps}
-                                path={"/xac-thuc-tai-khoan"}
-                                exact
-                                render={props => (
-                                    <AccountConfirmationRoute
+                                        render={props => (
+                                            <GlobalSearchResult
 
-                                        {...props}
+                                                {...props}
+                                            />
+                                        )}
                                     />
-                                )}
-                            />
-                            <GuestRoute
-                                {...layoutProps}
-                                path={"/doi-mat-khau"}
-                                exact
-                                render={props => (
-                                    <ChangePasswordRoute
+                                    <GuestRoute
+                                        {...layoutProps}
+                                        path={"/quen-mat-khau"}
+                                        exact
+                                        render={props => (
+                                            <ForgotPasswordRoute
 
-                                        {...props}
+                                                {...props}
+                                            />
+                                        )}
                                     />
-                                )}
-                            />
-                        </CustomSwitch>
-                    )}
-                </WithRouterKappaLayout>
-            </Suspense>
+                                    <GuestRoute
+                                        {...layoutProps}
+                                        path={"/xac-thuc-tai-khoan"}
+                                        exact
+                                        render={props => (
+                                            <AccountConfirmationRoute
+
+                                                {...props}
+                                            />
+                                        )}
+                                    />
+                                    <GuestRoute
+                                        {...layoutProps}
+                                        path={"/doi-mat-khau"}
+                                        exact
+                                        render={props => (
+                                            <ChangePasswordRoute
+
+                                                {...props}
+                                            />
+                                        )}
+                                    />
+                                </CustomSwitch>
+                            )}
+                        </WithRouterKappaLayout>
+                    </Suspense>
+                )}
+            </ThemeController>
 
         )
     };

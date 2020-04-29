@@ -1,5 +1,16 @@
 .navbar-global-search{
-
+  &.darkMode{
+    .global-search-result{
+      background-color #3a3b3c
+      color commonTextDark !important
+      border-color transparent !important
+    }
+    .row-box{
+      &:hover{
+        background-color lighten(#3a3b3c, 10%) !important
+      }
+    }
+  }
   .global-search-result{
     padding-bottom 8px
     position absolute
@@ -12,7 +23,7 @@
     box-shadow 0 0 15px 1px rgba(69, 65, 78, 0.2)
     .search-empty{
       padding 8px 16px
-      color #1a1a1a
+      color inherit
       font-size 14px
     }
     .result-title{
@@ -20,7 +31,7 @@
       font-weight 500
       font-size 16px
       padding-top 16px
-      color #1a1a1a
+      color inherit
     }
     .result-list{
       .result-loading{
@@ -59,7 +70,7 @@
               i{
                 align-self center
                 font-size 15px
-                color #1a1a1a
+                color inherit
               }
             }
             &.recommend{

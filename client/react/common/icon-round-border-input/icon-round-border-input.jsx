@@ -9,9 +9,9 @@ export class IconRoundBorderInput extends Component {
         }
     }
     render() {
-        const {className, id, icon,  ...others} = this.props;
+        const {className, id, icon,darkMode,  ...others} = this.props;
         return (
-            <div className={classnames("icon-round-border-input")}>
+            <div className={classnames("icon-round-border-input", {darkMode})}>
                 <div className="input-wrapper">
                     {icon && <span className="irbi-icon">{icon}</span>}
                     <input className={classnames("irbi-input")} type={"text"} id={id} {...others}/>

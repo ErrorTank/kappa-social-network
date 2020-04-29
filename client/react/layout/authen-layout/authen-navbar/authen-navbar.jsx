@@ -28,9 +28,9 @@ export class AuthenNavbar extends Component {
     ];
 
     render() {
-        let {showNotificationPrompt, ...rest} = this.props;
+        let {showNotificationPrompt, darkMode, ...rest} = this.props;
         return (
-            <div className={classnames("authen-navbar", {"stay-top": !showNotificationPrompt})}>
+            <div className={classnames("authen-navbar", {"stay-top": !showNotificationPrompt, darkMode})}>
                 <div className="authen-navbar-container">
                     <div className="authen-navbar-left">
                         <div className="app-brand-container">
@@ -41,11 +41,14 @@ export class AuthenNavbar extends Component {
                         <div className="search-container">
                             <NavbarGlobalSearch
                                 {...rest}
+                                darkMode={darkMode}
                             />
                         </div>
                     </div>
                     <div className="authen-navbar-center">
-                        <Navigation/>
+                        <Navigation
+                            darkMode={darkMode}
+                        />
                     </div>
                     <div className="authen-navbar-right">
                         <UserAction/>

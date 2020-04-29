@@ -179,10 +179,11 @@ export class NavbarGlobalSearch extends KComponent {
            <ClickOutside onClickOut={() => {
                this.setState({showResult: false})
            }}>
-               <div className="navbar-global-search">
+               <div className={classnames("navbar-global-search", {darkMode: this.props.darkMode})}>
                    <IconRoundBorderInput
                        id={"global-search"}
                        value={keyword}
+                       darkMode={this.props.darkMode}
                        onKeyDown={(e) => {
                            if(keyEvents.isEnter(e)){
                                this.handleSubmitSearch();

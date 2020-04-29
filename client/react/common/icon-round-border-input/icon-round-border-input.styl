@@ -1,7 +1,23 @@
 .icon-round-border-input{
+  &.darkMode{
+    border-left-color lighten(#242526, 15%)
+    .irbi-input{
+      color commonTextDark
+      &:not(:focus):hover{
+        background-color #3a3b3c !important
+      }
+    }
+    .irbi-icon{
 
+      i{
+        color commonTextDark
+      }
+    }
+  }
   padding-left 10px
   border-left 1px solid common-border
+
+
   .input-wrapper{
     position relative
     .irbi-icon{
@@ -22,6 +38,7 @@
       outline none
       border 1px solid transparent
       transition all 0.1s ease
+      background-color transparent
       &:not(:focus):hover{
         background-color darken(white, 5%)
       }
