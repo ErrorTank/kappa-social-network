@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import {AuthenNavbar} from "./authen-navbar/authen-navbar";
 import {NotificationStateContext} from "../../routes/routes";
 import classnames from "classnames"
+import {CreateMessageWidget} from "./create-message-widget/create-message-widget";
 
 export class AuthenLayout extends Component {
     render() {
@@ -19,7 +20,9 @@ export class AuthenLayout extends Component {
                             <div className="children-wrapper">
                                 {this.props.children(this.props)}
                             </div>
-
+                            <CreateMessageWidget
+                                {...this.props}
+                            />
                         </div>
                     )
                 }}

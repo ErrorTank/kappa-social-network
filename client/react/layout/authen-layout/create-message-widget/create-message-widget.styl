@@ -1,0 +1,42 @@
+.create-message-widget{
+  position fixed
+  bottom 15px
+  right 15px
+  &.darkMode{
+    .cmw-container {
+      .cmw-toggle {
+        background-color lightGrey
+
+        &:hover{
+          background-color lighten(lightGrey, 15%)
+        }
+        i{
+          color commonTextDark
+        }
+
+      }
+    }
+  }
+  .cmw-container{
+    .cmw-toggle{
+      position relative
+      width 50px
+      height 50px
+      border-radius 50%
+      background-color white
+      cursor pointer
+      transition background-color 0.1s ease
+      box-shadow 0px 0px 15px 1px rgba(69, 65, 78, 0.2)
+      i{
+          absoluteMiddle()
+          font-size 25px
+          color commonTextLight
+      }
+      &:hover{
+        background-color darken(white, 3%)
+      }
+
+    }
+  }
+
+}

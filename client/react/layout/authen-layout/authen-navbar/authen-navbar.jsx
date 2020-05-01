@@ -13,8 +13,8 @@ export class AuthenNavbar extends Component {
 
     navigations = [
         {
-            url: "/",
             icon: <i className="fal fa-home-lg-alt"></i>,
+            url: "/",
         },{
             url: "/pages",
             icon: <i className="fal fa-flag"></i>,
