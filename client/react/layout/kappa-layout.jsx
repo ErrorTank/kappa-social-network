@@ -24,7 +24,7 @@ class KappaLayout extends KComponent {
         return (
             <ThemeContext.Consumer>
                 {({darkMode}) => (
-                    <Layout darkMode={darkMode}>
+                    <Layout darkMode={darkMode} {...this.props}>
                         {props => this.props.children(props)}
                     </Layout>
                 )}

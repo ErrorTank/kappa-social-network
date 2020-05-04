@@ -1,0 +1,39 @@
+.common-layout {
+  &.stay-down {
+    .left-widget
+    .right-widget
+    .main-widget
+    {
+      padding-top 96px
+    }
+
+  }
+
+  .left-widget
+  .right-widget {
+
+    position fixed
+    height 100vh
+    padding-top 56px
+  }
+
+  .left-widget {
+    left 0
+    top 0
+    width 340px
+  }
+
+  .right-widget {
+    width 310px
+    right 0
+    top 0
+  }
+
+  .main-widget {
+    width calc(100% - 650px)
+    height 100vh
+    overflow-y auto
+    margin auto
+    padding-top 56px
+  }
+}

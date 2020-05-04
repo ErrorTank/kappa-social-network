@@ -1,5 +1,5 @@
 import {authenCache} from "./cache/authen-cache";
-import {userInfo, userSearchHistory} from "./states/common";
+import {userChatSettings, userInfo, userSearchHistory} from "./states/common";
 import omit from "lodash/omit";
 
 const initializeAuthenticateUser = ({userInfo: uInfo, authToken}) => {
@@ -9,8 +9,9 @@ const initializeAuthenticateUser = ({userInfo: uInfo, authToken}) => {
     console.log("cac")
     console.log( uInfo)
     return Promise.all([
-        userInfo.setState(omit(uInfo, "search_history")),
-        userSearchHistory.setState(uInfo.search_history)
+        userInfo.setState(omit(uInfo, ["search_history", "chat_settings"])),
+        userSearchHistory.setState(uInfo.search_history),
+        userChatSettings.setState(uInfo.chat_settings)
         // userSearchHistory.setState([
         //     {
         //         _id: 1,
@@ -64,7 +65,8 @@ const clearAuthenticateUserSession = () => {
     authenCache.clearAuthen();
     return Promise.all([
         userInfo.setState(null),
-        userSearchHistory.setState([])
+        userSearchHistory.setState([]),
+        userChatSettings.setState(null)
     ]);
 };
 

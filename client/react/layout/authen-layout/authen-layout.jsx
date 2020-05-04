@@ -20,6 +20,7 @@ export class AuthenLayout extends Component {
                             <div className="children-wrapper">
                                 {this.props.children(this.props)}
                             </div>
+
                             <CreateMessageWidget
                                 {...this.props}
                             />

@@ -68,8 +68,8 @@ var notGetRequests = [
     }
 ];
 
-var CACHE_STATIC_NAME = 'static-v1588303928820';
-var CACHE_DYNAMIC_NAME = 'dynamic-v1588303928820';
+var CACHE_STATIC_NAME = 'static-v1588588630046';
+var CACHE_DYNAMIC_NAME = 'dynamic-v1588588630046';
 
 var STATIC_FILES = [
     '/',
@@ -125,14 +125,11 @@ self.addEventListener('install', function (event) {
 });
 
 self.addEventListener('activate', function (event) {
-    console.log(CACHE_DYNAMIC_NAME)
-    console.log(CACHE_STATIC_NAME)
     console.log('[Service Worker] Activating Service Worker ....', event);
     event.waitUntil(
         caches.keys()
             .then(function (keyList) {
                 return Promise.all(keyList.map(function (key) {
-                    console.log(key)
                     if (key !== CACHE_STATIC_NAME && key !== CACHE_DYNAMIC_NAME) {
                         console.log('[Service Worker] Removing old cache.', key);
                         return caches.delete(key);
@@ -223,7 +220,6 @@ self.addEventListener('fetch', function (event) {
                         return clonedRes.json();
                     })
                     .then(function (data) {
-                        console.log(data)
                         for (var key in data) {
                             writeData(notGetEndpointConfig.dbCollectionName, data[key])
                         }
@@ -243,11 +239,9 @@ self.addEventListener('fetch', function (event) {
         if (event.request.url.indexOf("/sockjs-node/info?") > -1) {
             return;
         } else {
-            console.log(event.request.url)
             event.respondWith(
                 caches.match(event.request)
                     .then(function (response) {
-                        console.log(response)
                         if (response) {
                             return response;
                         } else {
@@ -261,7 +255,6 @@ self.addEventListener('fetch', function (event) {
                                         })
                                 })
                                 .catch(function (err) {
-                                    console.log(err)
                                     return caches.open(CACHE_STATIC_NAME)
                                         .then(function (cache) {
                                             if (event.request.headers.get('accept').includes('text/html')) {

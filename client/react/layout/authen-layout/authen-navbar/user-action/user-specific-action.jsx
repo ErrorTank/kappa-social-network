@@ -72,8 +72,8 @@ export class UserSpecificAction extends Component {
                 <div className="separate">
 
                 </div>
-                {actions.map(each => (
-                    <div className={"nav-dropdown-row"} key={each.label} onClick={each.onClick}>
+                {actions.map((each, i) => (
+                    <div className={"nav-dropdown-row"} key={i} onClick={each.onClick}>
                         <div className="icon-wrapper">
                             {each.icon}
                         </div>

@@ -484,6 +484,33 @@ const userSchema = new Schema({
 
         ]
     },
+    chat_settings: {
+        turn_off_active: {
+            all_contacts: {
+                type: Boolean,
+                default: false
+            },
+            all_contacts_but: {
+                type: [
+                    {
+                        type: ObjectId,
+                        ref: "User"
+                    }
+                ],
+                default: []
+            },
+            specific_contacts: {
+                type: [
+                    {
+                        type: ObjectId,
+                        ref: "User"
+                    }
+                ],
+                default: []
+            }
+        },
+
+    }
 });
 
 
