@@ -5,7 +5,14 @@
     display flex
     justify-content flex-end
     align-items center
-
+    .chat-settings-dropdown{
+      .content-wrapper{
+        .arrow{
+          right 8px !important
+          left unset
+        }
+      }
+    }
     .action {
       margin-left 5px
 
@@ -17,7 +24,7 @@
         cursor pointer
         transition all 0.1s ease
         &:hover{
-          background-color darken(white, 8%)
+          background-color darken(white, 15%)
         }
         i {
           absoluteMiddle()

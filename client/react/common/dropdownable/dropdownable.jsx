@@ -11,7 +11,7 @@ export class Dropdownable extends Component {
     }
 
     render() {
-        let {className, toggle, content, showArrow} = this.props;
+        let {className, toggle, content, showArrow = true} = this.props;
 
         return (
             <ClickOutside onClickOut={() => this.setState({show: false})}>

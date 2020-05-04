@@ -1,4 +1,28 @@
 .dropdownable{
   position relative
   display inline-block
+  .dropdown {
+    position absolute
+    top 150%
+    right 0
+    background-color white
+
+    border-radius 5px
+    box-shadow 0 0 15px 1px rgba(69, 65, 78, 0.2)
+    .content-wrapper{
+      height 50px
+      position relative
+      min-width 150px
+      .arrow{
+        position absolute
+        width 15px
+        height 15px
+        z-index 0
+        left 0
+        top -7.5px
+        transform rotateZ(45deg)
+        background-color white
+      }
+    }
+  }
 }
