@@ -51,6 +51,21 @@ export class UserAction extends KComponent {
             <div className={classnames("user-action", {darkMode: this.props.darkMode})}>
                 <UserActionDropdownable
                     toggleRender={() => (
+                        <Tooltip
+                            className={"user-action-tooltip"}
+                            text={() => "Tạo Trang hoặc Nhóm"}
+                        >
+                            <div className="circle-action">
+                                <i className="far fa-plus"></i>
+                            </div>
+                        </Tooltip>
+
+
+                    )}
+
+                />
+                <UserActionDropdownable
+                    toggleRender={() => (
 
                         <div className="avatar-wrapper">
                             {user.avatar ? (
