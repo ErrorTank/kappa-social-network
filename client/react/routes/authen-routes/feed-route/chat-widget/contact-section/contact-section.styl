@@ -1,0 +1,22 @@
+.contact-section{
+  .contact{
+    display flex
+    align-items center
+    transition all 0.1s ease
+    cursor pointer
+    padding 8px
+    border-radius 5px
+    &:hover{
+      background-color darken(bgLight, 5%)
+    }
+    p{
+      flex-grow 1
+      margin-left 12px
+      font-size 1.4rem
+      font-weight 500
+      white-space nowrap
+      overflow hidden
+      text-overflow ellipsis
+    }
+  }
+}

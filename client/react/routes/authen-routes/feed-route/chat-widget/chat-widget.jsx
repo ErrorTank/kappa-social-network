@@ -47,6 +47,14 @@ export class ChatWidget extends Component {
                 <ChatSettings
                     {...this.state}
                 />
+                {this.chatSections.map((each, i) => (
+                    <div className="chat-widget-section" key={i}>
+                        <p className="cws-title">{each.title}</p>
+                        <div className="cws-body">
+                            {each.render()}
+                        </div>
+                    </div>
+                ))}
             </div>
         );
     }
