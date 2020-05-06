@@ -99,6 +99,29 @@ const getNamePrefix = (name) => {
     return (arrLength >= 2 ? `${wordArr[arrLength - 2][0]}${wordArr[arrLength - 1][0]}` : `${wordArr[0].slice(0, 2)}`).toUpperCase().replace(/[-!$%^&*()_+|~=`{}\[\]:";'<>?,.\/]/gi, "");
 };
 
+const getUsernamePresent = (name, max = 7) => {
+    let nameArr = name.split(" ");
+    return nameArr[nameArr.length - 1].slice(0, max)
+};
+
+const generateGroupChatName = (group) => {
+    if(group.group_name){
+        return group.group_name;
+    }
+    if(group.users.length === 1){
+        return group.users[0].basic_info.username;
+    }
+    let nameArr = group.users.slice(0, 2).reduce((result, each) => {
+        let {basic_info} = each;
+        return [...result, getUsernamePresent(basic_info.username)]
+    }, []);
+    console.log(nameArr)
+    if(group.users.length === 2){
+        return nameArr.join(" và ");
+    }
+    return nameArr.join(", ") + " và " + group.users.slice(2).length + " người khác";
+};
+
 export {
     wait1,
     wait2,
@@ -112,6 +135,7 @@ export {
     convertTextMoneyToNumber,
     mergeYear,
     getStudentGroup,
-    getNamePrefix
+    getNamePrefix,
+    generateGroupChatName
 
 }

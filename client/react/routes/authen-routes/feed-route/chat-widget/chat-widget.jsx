@@ -32,7 +32,7 @@ export class ChatWidget extends Component {
                 )
             }
         },{
-            title: "Nhóm",
+            title: "Nhóm Chat",
             render: () => {
                 return (
                     <GroupSection  {...this.state}/>

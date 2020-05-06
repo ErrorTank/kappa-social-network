@@ -8,6 +8,10 @@ const chatRoomSchema = new Schema({
       type: Date,
       default: Date.now
    },
+   last_active: {
+      type: Date,
+      default: Date.now
+   },
    involve_person: {
       default: [],
       type: [
@@ -38,6 +42,18 @@ const chatRoomSchema = new Schema({
             }
          }
       ]
+   },
+   admins: {
+      type: [
+         {
+            type: ObjectId,
+            ref:"User"
+         }
+      ],
+      default: []
+   },
+   group_name: {
+      type: String,
    },
    context: {
       default: [],
