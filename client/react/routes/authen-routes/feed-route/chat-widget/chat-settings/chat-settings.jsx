@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import {Dropdownable} from "../../../../../common/dropdownable/dropdownable";
+import classnames from "classnames";
 
 export class ChatSettings extends Component {
     constructor(props) {
@@ -9,7 +10,7 @@ export class ChatSettings extends Component {
         }
     }
     render() {
-        let {turn_off_active} = this.props;
+        let {turn_off_active, darkMode} = this.props;
         let settings = [
             {
                 icon: <i className="fal fa-do-not-enter"></i>,
@@ -26,7 +27,7 @@ export class ChatSettings extends Component {
             },
         ];
         return (
-            <div className="chat-settings">
+            <div className={classnames("chat-settings", {darkMode})}>
                 <div className="actions">
                     <div className="action">
                         <div className="icon-wrapper ">

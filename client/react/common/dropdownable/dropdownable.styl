@@ -1,18 +1,33 @@
-.dropdownable{
+.dropdownable {
   position relative
   display inline-block
+
+  &.darkMode {
+    .dropdown {
+      box-shadow: unset
+      background-color darkNav
+
+      .arrow {
+        background-color darkNav !important
+      }
+    }
+  }
+
   .dropdown {
     position absolute
     top 150%
     right 0
+    z-index 1
     background-color white
 
     border-radius 5px
-    box-shadow:0px 7px 10px #C2C2C2
-    .content-wrapper{
+    box-shadow: 0px 7px 10px #C2C2C2
+
+    .content-wrapper {
       position relative
       min-width 150px
-      .arrow{
+
+      .arrow {
         position absolute
         width 15px
         height 15px

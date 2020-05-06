@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import classnames from "classnames"
 import {ClickOutside} from "../click-outside/click-outside";
+import {ThemeContext} from "../../context/theme-context";
 
 export class Dropdownable extends Component {
     constructor(props) {
@@ -14,30 +15,36 @@ export class Dropdownable extends Component {
         let {className, toggle, content, showArrow = true} = this.props;
 
         return (
-            <ClickOutside onClickOut={() => this.setState({show: false})}>
-                <div className={classnames("dropdownable", className)}>
-                    <div className={classnames("dropdownable-toggle", {active: this.state.show})}
-                         onClick={() => this.setState({show: !this.state.show})}>
+            <ThemeContext.Consumer>
+                {({darkMode}) => (
+                    <ClickOutside onClickOut={() => this.setState({show: false})}>
+                        <div className={classnames("dropdownable", className, {darkMode})}>
+                            <div className={classnames("dropdownable-toggle", {active: this.state.show})}
+                                 onClick={() => this.setState({show: !this.state.show})}>
 
-                        {toggle()}
-                    </div>
-                    {this.state.show && (
-
-                        <div className="dropdown">
-                            <div className="content-wrapper">
-                                {showArrow && (
-                                    <div className="arrow"/>
-
-                                )}
-                                {content()}
+                                {toggle()}
                             </div>
+                            {this.state.show && (
 
+                                <div className="dropdown">
+                                    <div className="content-wrapper">
+                                        {showArrow && (
+                                            <div className="arrow"/>
+
+                                        )}
+                                        {content()}
+                                    </div>
+
+                                </div>
+
+
+                            )}
                         </div>
+                    </ClickOutside>
+                )}
 
+            </ThemeContext.Consumer>
 
-                    )}
-                </div>
-            </ClickOutside>
         );
     }
 }

@@ -1,20 +1,50 @@
 .chat-settings {
   padding 16px 8px
+  &.darkMode{
+    .chat-settings-dropdown-content{
+      color commonTextDark
+      .setting-row{
+
+
+
+        &:hover{
+          background-color lighten(darkNav, 10%)
+        }
+      }
+    }
+    .actions{
+      .action{
+        .icon-wrapper {
+          &:hover{
+            background-color lightGrey
+          }
+          i {
+
+            color commonTextDark
+          }
+        }
+      }
+    }
+  }
   .chat-settings-dropdown-content{
     padding 8px
+    color commonTextLight
     .setting-row{
       padding 8px
       transition  all 0.1s ease
-      background-color white
+      background-color transparent
+      border-radius 5px
       display flex
       cursor pointer
       align-items center
       i{
         font-size 2.2rem
+        color inherit
 
       }
       p{
         margin-left 15px
+        color inherit
         font-size 1.5rem
         font-weight 500
         white-space nowrap
@@ -41,8 +71,8 @@
 
       .icon-wrapper {
         position relative
-        width 32px
-        height 32px
+        width 35px
+        height 35px
         border-radius 50%
         cursor pointer
         transition all 0.1s ease

@@ -2,6 +2,42 @@
   height 100%
   padding 0 8px
   overflow-y auto
+  &.darkMode{
+    .chat-widget-section{
+      border-top-color common-border-dark
+      .cws-title{
+        color greyTextDark
+
+      }
+    }
+    &::-webkit-scrollbar-thumb {
+      background: lighten(black, 30%);
+    }
+
+    /* Handle on hover */
+    &::-webkit-scrollbar-thumb:hover {
+      background: lighten(black, 35%);
+    }
+  }
+  &::-webkit-scrollbar {
+    width: 7px;
+  }
+
+  /* Track */
+  &::-webkit-scrollbar-track {
+    box-shadow: inset 0 0 5px transparent;
+  }
+
+  /* Handle */
+  &::-webkit-scrollbar-thumb {
+    background: common-border;
+    border-radius 5px
+  }
+
+  /* Handle on hover */
+  &::-webkit-scrollbar-thumb:hover {
+    background: darken(common-border, 5%)
+  }
   .chat-widget-section{
     padding 15px 0
     border-top 1px solid common-border

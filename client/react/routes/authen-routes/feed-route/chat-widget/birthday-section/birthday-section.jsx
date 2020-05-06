@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import {Link} from "react-router-dom"
+import classnames from "classnames"
 
 export class BirthdaySection extends Component {
     constructor(props) {
@@ -10,7 +11,7 @@ export class BirthdaySection extends Component {
     }
     render() {
         return (
-            <div className="birthday-section">
+            <div className={classnames("birthday-section", {darkMode: this.props.darkMode})}>
                 <i className="fad fa-birthday-cake"></i>
                 <p>
                     <span style={{marginRight: "4px"}}>

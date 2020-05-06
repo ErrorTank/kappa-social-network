@@ -17,8 +17,19 @@ class KappaLayout extends KComponent {
             }
             this.setState({darkMode: nextState.dark_mode === false});
 
+
         }));
     }
+
+    setHtmlDarkMode = (isDarkMode) => {
+        console.log(isDarkMode)
+        if(isDarkMode){
+            document.querySelector("html").classList.add("dark-mode")
+        }else{
+            document.querySelector("html").classList.remove("dark-mode")
+        }
+    };
+
     render() {
         let Layout = authenCache.getAuthen() ? AuthenLayout : GuestLayout;
         return (

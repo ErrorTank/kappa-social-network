@@ -4,6 +4,8 @@ import {ContactSection} from "./contact-section/contact-section";
 import {GroupSection} from "./group-section/group-section";
 import {ChatSettings} from "./chat-settings/chat-settings";
 import {userChatSettings} from "../../../../../common/states/common";
+import {ThemeContext} from "../../../../context/theme-context";
+import classnames from "classnames"
 
 export class ChatWidget extends Component {
     constructor(props) {
@@ -17,25 +19,26 @@ export class ChatWidget extends Component {
     chatSections = [
         {
             title: "Sinh nhật",
-            render: () => {
+            render: ({darkMode}) => {
                 return (
                     <BirthdaySection
                         {...this.state}
+                        darkMode={darkMode}
                     />
                 )
             }
         },{
             title: "Liên lạc",
-            render: () => {
+            render: ({darkMode}) => {
                 return (
-                    <ContactSection  {...this.state}/>
+                    <ContactSection  {...this.state}   darkMode={darkMode}/>
                 )
             }
         },{
             title: "Nhóm Chat",
-            render: () => {
+            render: ({darkMode}) => {
                 return (
-                    <GroupSection  {...this.state}/>
+                    <GroupSection  {...this.state}   darkMode={darkMode}/>
                 )
             }
         },
@@ -43,19 +46,26 @@ export class ChatWidget extends Component {
 
     render() {
         return (
-            <div className="chat-widget">
-                <ChatSettings
-                    {...this.state}
-                />
-                {this.chatSections.map((each, i) => (
-                    <div className="chat-widget-section" key={i}>
-                        <p className="cws-title">{each.title}</p>
-                        <div className="cws-body">
-                            {each.render()}
-                        </div>
+            <ThemeContext.Consumer>
+                {({darkMode}) => (
+                    <div className={classnames("chat-widget", {darkMode})}>
+                        <ChatSettings
+                            {...this.state}
+                            darkMode={darkMode}
+                        />
+                        {this.chatSections.map((each, i) => (
+                            <div className="chat-widget-section" key={i}>
+                                <p className="cws-title">{each.title}</p>
+                                <div className="cws-body">
+                                    {each.render({darkMode})}
+                                </div>
+                            </div>
+                        ))}
                     </div>
-                ))}
-            </div>
+                )}
+
+            </ThemeContext.Consumer>
+
         );
     }
 }

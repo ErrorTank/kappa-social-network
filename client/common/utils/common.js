@@ -1,4 +1,4 @@
-import {appConfigCache} from "../cache/api-cache/common-cache";
+import moment from "moment";
 
 const wait1 = (fn, amount = 2000) => new Promise((res, rej) => {
     setTimeout(() => {
@@ -115,12 +115,28 @@ const generateGroupChatName = (group) => {
         let {basic_info} = each;
         return [...result, getUsernamePresent(basic_info.username)]
     }, []);
-    console.log(nameArr)
+
     if(group.users.length === 2){
         return nameArr.join(" và ");
     }
     return nameArr.join(", ") + " và " + group.users.slice(2).length + " người khác";
 };
+
+const formatMomentTimeRange = (value) =>
+    value
+        .toLowerCase()
+        .replace(/(hours|hour)/gi, "h")
+        .replace(/(minutes|minute)/gi, "m")
+        .replace(/(seconds|second)/gi, "s")
+        .replace(/(days|day)/gi, "d")
+        .replace(/(years|year)/gi, "y")
+        .replace(/(a |an )/gi, "1")
+        .replace(" ago", "")
+        .replace("few", "")
+        .replace(" ", "")
+;
+
+
 
 export {
     wait1,
@@ -136,6 +152,6 @@ export {
     mergeYear,
     getStudentGroup,
     getNamePrefix,
-    generateGroupChatName
-
+    generateGroupChatName,
+    formatMomentTimeRange
 }

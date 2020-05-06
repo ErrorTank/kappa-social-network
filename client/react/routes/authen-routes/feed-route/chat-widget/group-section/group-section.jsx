@@ -1,7 +1,9 @@
 import React, {Component} from 'react';
 import {StatusAvatar} from "../../../../../common/status-avatar/status-avatar";
-import {generateGroupChatName} from "../../../../../../common/utils/common";
+import {formatMomentTimeRange, generateGroupChatName} from "../../../../../../common/utils/common";
 import {GroupChatAvatar} from "../../../../../common/group-chat-avatar/group-chat-avatar";
+import moment from "moment";
+import classnames from "classnames";
 
 export class GroupSection extends Component {
     constructor(props) {
@@ -12,7 +14,7 @@ export class GroupSection extends Component {
     }
     render() {
         return (
-            <div className="group-section">
+            <div className={classnames("group-section", {darkMode: this.props.darkMode})}>
                 {[{
                     _id: "1",
                     group_name: "Con Nghien",
@@ -77,7 +79,7 @@ export class GroupSection extends Component {
                             />
                         </div>
                         <p className="username">{generateGroupChatName(each)}</p>
-
+                        <span className="last-active">{formatMomentTimeRange(moment(each.last_active).fromNow())}</span>
                     </div>
                 ))}
             </div>
