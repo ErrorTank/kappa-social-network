@@ -4,7 +4,16 @@ import {urlUtils} from "../../common/utils/url-utils";
 
 export const userApi = {
     getAuthenticateUserInitCredentials(){
-        return authenApi.get("/user/init-credentials");
+        return authenApi.get("/user/init-credentials")
+            .catch(err => {
+                
+                if(!err || !err.message){
+                    return readAllData("user-info").then(data => data[0])
+
+                }
+                return Promise.reject(err);
+
+            });
     },
     login(payload){
         return offlineApi.post("/user/login", payload);

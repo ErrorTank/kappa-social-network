@@ -18,7 +18,7 @@ import {TopFloatNotificationRegistry} from "../common/float-top-notification/flo
 import {ThemeContext, ThemeController} from "../context/theme-context";
 
 const FeedRoute = lazy(delayLoad(() => import("./authen-routes/feed-route/feed-route")));
-const LoginRoute = lazy(delayLoad(() => import("./guest-routes/login-route/login-route")));
+import LoginRoute from "./guest-routes/login-route/login-route";
 const ForgotPasswordRoute = lazy(delayLoad(() => import("./guest-routes/forgot-password-route/forgot-password-route")));
 const AccountConfirmationRoute = lazy(delayLoad(() => import("./guest-routes/account-confirmation/account-confirmation")));
 const ChangePasswordRoute = lazy(delayLoad(() => import("./guest-routes/change-password-route/change-password-route")));
