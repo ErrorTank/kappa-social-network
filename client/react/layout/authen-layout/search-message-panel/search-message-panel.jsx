@@ -9,7 +9,7 @@ export class SearchMessagePanel extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            showSearchPanel: true,
+            showSearchPanel: false,
         };
         searchMessageWidgetController.open = () => {
             this.setState({showSearchPanel: true});

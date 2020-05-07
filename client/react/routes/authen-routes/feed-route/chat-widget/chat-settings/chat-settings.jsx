@@ -1,14 +1,15 @@
 import React, {Component} from 'react';
 import {Dropdownable} from "../../../../../common/dropdownable/dropdownable";
 import classnames from "classnames";
+import {searchMessageWidgetController} from "../../../../../layout/authen-layout/search-message-panel/search-message-panel";
+import {Tooltip} from "../../../../../common/tooltip/tooltip";
 
 export class ChatSettings extends Component {
     constructor(props) {
         super(props);
-        this.state = {
-
-        }
+        this.state = {}
     }
+
     render() {
         let {turn_off_active, darkMode} = this.props;
         let settings = [
@@ -18,7 +19,7 @@ export class ChatSettings extends Component {
                 onClick: () => {
 
                 }
-            },{
+            }, {
                 icon: <i className="fal fa-sliders-h"></i>,
                 label: "Cài đặt trạng thái",
                 onClick: () => {
@@ -30,9 +31,14 @@ export class ChatSettings extends Component {
             <div className={classnames("chat-settings", {darkMode})}>
                 <div className="actions">
                     <div className="action">
-                        <div className="icon-wrapper ">
-                            <i className="fal fa-search"></i>
-                        </div>
+                        <Tooltip text={() => "Tìm hội thoại"}>
+                            <div className="icon-wrapper"
+                                 onClick={() => searchMessageWidgetController.open()}
+                            >
+                                <i className="fal fa-search"></i>
+                            </div>
+                        </Tooltip>
+
                     </div>
 
                     <Dropdownable
