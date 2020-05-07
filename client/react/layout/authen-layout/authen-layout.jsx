@@ -3,6 +3,7 @@ import {AuthenNavbar} from "./authen-navbar/authen-navbar";
 import {NotificationStateContext} from "../../routes/routes";
 import classnames from "classnames"
 import {CreateMessageWidget} from "./create-message-widget/create-message-widget";
+import {SearchMessagePanel} from "./search-message-panel/search-message-panel";
 
 export class AuthenLayout extends Component {
     render() {
@@ -22,6 +23,9 @@ export class AuthenLayout extends Component {
                             </div>
 
                             <CreateMessageWidget
+                                {...this.props}
+                            />
+                            <SearchMessagePanel
                                 {...this.props}
                             />
                         </div>
