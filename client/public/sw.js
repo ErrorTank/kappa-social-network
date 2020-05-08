@@ -55,6 +55,9 @@ var exceptionRequestsDev = [
     },{
         endpoint: "http://localhost:4000/api/user/toggle-dark-mode",
         method: "PUT"
+    },{
+        endpoint: /http:\/\/localhost:4000\/api\/utility\/search\/dialogs/,
+        method: "GET"
     },
 
 ];
@@ -68,8 +71,8 @@ var notGetRequests = [
     }
 ];
 
-var CACHE_STATIC_NAME = 'static-v1588913169292';
-var CACHE_DYNAMIC_NAME = 'dynamic-v1588913169292';
+var CACHE_STATIC_NAME = 'static-v1588922515028';
+var CACHE_DYNAMIC_NAME = 'dynamic-v1588922515028';
 
 var STATIC_FILES = [
     '/',

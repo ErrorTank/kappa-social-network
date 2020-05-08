@@ -11,5 +11,8 @@ export const utilityApi = {
     },
     getLoginSessionBrief(sessions){
         return offlineApi.post("/utility/login-sessions/brief", {sessions})
+    },
+    searchForDialogsByKeyword(keyword){
+        return authenApi.get(`/utility/search/dialogs?keyword=${keyword}`)
     }
 };
