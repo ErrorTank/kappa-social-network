@@ -8,6 +8,49 @@
       position absolute
       right 70px
       bottom 0
+      .search-message-header{
+        padding 8px 16px !important
+        .search-message-title{
+          color commonTextLight
+          font-size 1.6rem
+          font-weight 500
+        }
+
+      }
+    }
+  }
+  .message-widget-header{
+    display flex
+    align-items center
+    padding 8px
+
+    .left-panel{
+      flex 0 0 60%
+    }
+    .right-panel{
+      flex 0 0 40%
+      .actions{
+        display flex
+        align-items center
+        justify-content flex-end
+        .icon-wrapper{
+          width 30px
+          height 30px
+          border-radius 50%
+          cursor pointer
+          position relative
+          margin-left 5px
+          transition background-color 0.1s ease
+          &:hover{
+            background-color darken(white, 8%)
+          }
+          i{
+            absoluteMiddle()
+            font-size 2.4rem
+            color primaryButton
+          }
+        }
+      }
     }
   }
 }

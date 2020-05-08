@@ -2,8 +2,10 @@ import React, {Component} from 'react';
 import classnames from "classnames";
 import FloatBottomWidget from "../float-bottom-widget/float-bottom-widget";
 import {MessageBoxLayout} from "../message-box-layout/message-box-layout";
+import {messageWidgetController} from "../create-message-widget/create-message-widget";
+import {SearchMessageBox} from "./search-message-box/search-message-box";
 
-export const searchMessageWidgetController = {};
+export let searchMessageWidgetController = {};
 
 export class SearchMessagePanel extends Component {
     constructor(props) {
@@ -11,9 +13,15 @@ export class SearchMessagePanel extends Component {
         this.state = {
             showSearchPanel: false,
         };
-        searchMessageWidgetController.open = () => {
-            this.setState({showSearchPanel: true});
-        };
+        searchMessageWidgetController = {
+            open: () => {
+                messageWidgetController.close();
+                this.setState({showSearchPanel: true});
+            },
+            close: () => {
+                this.setState({showSearchPanel: false});
+            }
+        }
     }
 
     createNewChatRoom = () => {
@@ -32,8 +40,23 @@ export class SearchMessagePanel extends Component {
                 renderBox={() => {
                     return showSearchPanel ? (
                         <MessageBoxLayout
-                            renderHeader={() => null}
-                            renderBody={() => null}
+                            renderHeader={() => (
+                                <div className="message-widget-header search-message-header">
+                                    <div className="search-message-title left-panel">
+                                        Tìm kiếm hội thoại
+                                    </div>
+                                    <div className="right-panel">
+                                        <div className="actions">
+                                            <div className="icon-wrapper" onClick={() => this.setState({showSearchPanel: false})}>
+                                                <i className="fal fa-times"></i>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            )}
+                            renderBody={() => (
+                                <SearchMessageBox/>
+                            )}
                         />
                     ) : null
                 }}
