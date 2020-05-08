@@ -3,7 +3,62 @@
     padding 8px
     position: relative;
     height 360px
+    overflow-y auto
+    &::-webkit-scrollbar {
+      width: 7px;
+    }
+
+    /* Track */
+    &::-webkit-scrollbar-track {
+      box-shadow: inset 0 0 5px transparent;
+    }
+
+    /* Handle */
+    &::-webkit-scrollbar-thumb {
+      background: common-border;
+      border-radius 5px
+    }
+
+    /* Handle on hover */
+    &::-webkit-scrollbar-thumb:hover {
+      background: darken(common-border, 5%)
+    }
     .results{
+      .result-list{
+        &:not(:last-of-type){
+          margin-bottom 8px
+        }
+        .list-title{
+          color greyTextLight
+          font-size 1.5rem
+          font-weight bold
+          margin 8px
+        }
+        .list{
+          .list-row{
+            display flex
+            align-items center
+            transition all 0.1s ease
+            cursor pointer
+            padding 8px
+            position relative
+            border-radius 5px
+            &:hover{
+              background-color darken(bgLight, 5%)
+            }
+            p{
+              flex-grow 1
+              margin-left 12px
+              font-size 1.4rem
+              padding-right 20px
+              white-space pre-wrap
+              overflow hidden
+              text-overflow ellipsis
+            }
+
+          }
+        }
+      }
       .empty-panel{
         padding 16px
         padding-top 50px

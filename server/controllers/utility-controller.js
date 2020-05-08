@@ -31,8 +31,8 @@ module.exports = () => {
                 {_id: "9", last_active: new Date(), basic_info: {username: "Bitchesssssssssssssssssssssssssssssss"}, active: true},
             ],
             pages: [
-                {_id: "6", last_active: new Date(), basic_info: {username: "Ngoc"}},
-                {_id: "8", last_active: new Date(), basic_info: {username: "Tuan Trung"}, active: true},
+                {_id: "6",  basic_info: {name: "GearVN"}},
+                {_id: "8",  basic_info: {name: "Aha"}},
             ],
             chat_groups: [{
                 _id: "1",
