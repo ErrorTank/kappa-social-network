@@ -10,16 +10,25 @@ export class SearchMessageBox extends Component {
             keyword: ""
         }
     }
+
+    componentDidMount() {
+        this.searchInput.focus();
+    }
+
     render() {
         let {results, loading, keyword} = this.state;
         return (
             <div className="search-message-box">
                 <div className="search-box">
                     <CommonInput
+                        ref={searchInput => this.searchInput = searchInput}
                         value={keyword}
                         placeholder={"Tìm kiếm theo tên"}
                         onChange={e => this.setState({keyword: e.target.value})}
                     />
+                </div>
+                <div className="results-box">
+
                 </div>
             </div>
         );

@@ -7,6 +7,10 @@ export class CommonInput extends React.Component {
         this.state = {};
     };
 
+    focus = () => {
+        this.input.focus();
+    };
+
     render() {
         const {className, textArea = false, success = false, extraDisplay,  error = false, label = null, displayErr = true, helper = null, id, icon, inputType = "input", ...others} = this.props;
         return (
@@ -19,11 +23,11 @@ export class CommonInput extends React.Component {
                     <textarea className="form-control" id={id} {...others}></textarea>
                 )  : extraDisplay ? (
                     <div className="input-wrapper">
-                        <input className={classnames("form-control", {"is-invalid": error, "is-valid": success})} id={id} {...others}/>
+                        <input className={classnames("form-control", {"is-invalid": error, "is-valid": success})} id={id} {...others} ref={input => this.input = input}/>
                         {extraDisplay}
                     </div>
                 ) : (
-                    <input className={classnames("form-control", {"is-invalid": error, "is-valid": success})} id={id} {...others}/>
+                    <input className={classnames("form-control", {"is-invalid": error, "is-valid": success})} ref={input => this.input = input} id={id} {...others}/>
                 )
 
                 }
