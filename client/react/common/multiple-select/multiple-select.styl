@@ -1,6 +1,76 @@
 .multiple-select{
 
   position relative
+  &.darkMode{
+    .search-result{
+      background-color darkNav
+      box-shadow  0 2px 9px 0 rgba(255, 255, 255, 0.05)
+
+
+      color commonTextDark
+
+
+
+
+
+      &::-webkit-scrollbar-thumb {
+        background: common-border-dark;
+      }
+
+      /* Handle on hover */
+
+      &::-webkit-scrollbar-thumb:hover {
+        background: darken(common-border-dark, 5%)
+      }
+      .result-item{
+
+        &.picked{
+          background-color lighten(darkNav, 10%)
+
+        }
+        &:not(.picked):hover{
+          background-color lighten(darkNav, 10%)
+        }
+      }
+      .result-summary{
+
+
+        .value{
+          color primaryButton
+
+        }
+      }
+    }
+    .empty-notify{
+
+      color commonTextDark
+    }
+    .tags-container{
+      border-color common-border-dark
+      .tag{
+        background-color lighten(darkNav, 10%)
+
+        &:hover{
+          background-color lighten(darkNav, 20%)
+
+        }
+        color primaryButton
+
+      }
+      .content{
+        color commonTextDark
+
+        i{
+
+          background-color: common-border-dark;
+
+        }
+
+      }
+
+
+    }
+  }
   .empty-notify{
     padding 6px 15px
     font-size 1.4rem
@@ -79,8 +149,7 @@
     color commonTextLight
     .results{
       position relative
-      min-height 100px
-      max-height 200px
+      height 200px
       .loading-inline{
         i{
           font-size 2.2rem
