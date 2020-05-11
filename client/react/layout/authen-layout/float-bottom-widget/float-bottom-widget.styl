@@ -2,6 +2,40 @@
   position fixed
   bottom 15px
   right 15px
+  &.darkMode{
+    .message-widget-header{
+
+      .right-panel{
+        .actions{
+          .icon-wrapper{
+
+            &:hover{
+                background-color lighten(darkNav, 10%)
+            }
+            i{
+              absoluteMiddle()
+              font-size 2.4rem
+              color primaryButton
+            }
+          }
+        }
+      }
+    }
+    .fbw-container{
+
+      .fbw-box{
+
+        .search-message-header{
+
+          .search-message-title{
+            color commonTextDark
+
+          }
+
+        }
+      }
+    }
+  }
   .fbw-container{
     position relative
     .fbw-box{

@@ -1,18 +1,24 @@
 import React from "react";
 import classnames from "classnames";
+import {ThemeContext} from "../../context/theme-context";
+
 
 export function LoadingInline({className}) {
     return (
-        <div className="loading-inline"
-             onClick={e => {
-                 e.stopPropagation()
-             }}
-        >
-            <div className="overlay row justify-content-center align-items-center">
-                <i className={classnames("far fa-spinner-third spin-icon spin", className)}/>
-            </div>
+        <ThemeContext.Consumer>
+            {({darkMode}) => (
+                <div className={classnames("loading-inline", {darkMode})}
+                     onClick={e => {
+                         e.stopPropagation()
+                     }}
+                >
+                    <div className="overlay row justify-content-center align-items-center">
+                        <i className={classnames("far fa-spinner-third spin-icon spin", className)}/>
+                    </div>
 
-        </div>
+                </div>
+            )}
 
+        </ThemeContext.Consumer>
     );
 }
