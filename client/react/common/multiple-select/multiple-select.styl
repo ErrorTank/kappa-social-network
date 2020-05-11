@@ -4,11 +4,11 @@
   .empty-notify{
     padding 6px 15px
     font-size 1.4rem
-    color commonText
+    color commonTextLight
   }
   .tags-container{
     padding 6px 15px
-    border 1px solid lightgray
+    border 1px solid common-border
     border-radius 4px
     cursor text
     font-size 1.4rem
@@ -18,17 +18,17 @@
     vertical-align middle
     .tag{
       margin-right 6px
-      background-color success
+      background-color lightPrimary
       border-radius 4px
       font-weight 500
       white-space nowrap
       font-size 1.3rem
       &:hover{
-        background-color darken(success, 10%)
+        background-color darken(lightPrimary, 10%)
 
       }
       padding 5px 8px
-      color white
+      color primaryButton
       i{
         cursor pointer
         margin-left 10px
@@ -43,7 +43,7 @@
         position: absolute;
         width: 1px;
         height: 80%;
-        background-color: gray;
+        background-color: common-border;
         left: 5px;
         top: 10%;
         animation-name: blink;
@@ -73,15 +73,49 @@
     width 100%
     border-radius 4px
     box-shadow 0px 0px 15px 1px rgba(69, 65, 78, 0.2)
+
+    overflow-y auto
+
     color commonTextLight
+    .results{
+      position relative
+      min-height 100px
+      max-height 200px
+      .loading-inline{
+        i{
+          font-size 2.2rem
+        }
+      }
+    }
+    &::-webkit-scrollbar {
+      width: 7px;
+    }
+
+    /* Track */
+
+    &::-webkit-scrollbar-track {
+      box-shadow: inset 0 0 5px transparent;
+    }
+
+    /* Handle */
+
+    &::-webkit-scrollbar-thumb {
+      background: common-border;
+      border-radius 5px
+    }
+
+    /* Handle on hover */
+
+    &::-webkit-scrollbar-thumb:hover {
+      background: darken(common-border, 5%)
+    }
     .result-item{
       font-size 1.4rem
       padding 6px 15px
       cursor pointer
       margin-bottom 3px
       &.picked{
-        background-color success
-        color white
+        background-color lightPrimary
       }
       &:not(.picked):hover{
         background-color darken(white, 5%)

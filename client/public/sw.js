@@ -58,6 +58,9 @@ var exceptionRequestsDev = [
     },{
         endpoint: /http:\/\/localhost:4000\/api\/utility\/search\/dialogs/,
         method: "GET"
+    },{
+        endpoint: /http:\/\/localhost:4000\/api\/utility\/search-for-create\/dialogs/,
+        method: "GET"
     },
 
 ];
@@ -71,8 +74,8 @@ var notGetRequests = [
     }
 ];
 
-var CACHE_STATIC_NAME = 'static-v1589181948712';
-var CACHE_DYNAMIC_NAME = 'dynamic-v1589181948712';
+var CACHE_STATIC_NAME = 'static-v1589191193706';
+var CACHE_DYNAMIC_NAME = 'dynamic-v1589191193706';
 
 var STATIC_FILES = [
     '/',

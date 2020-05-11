@@ -10,7 +10,7 @@ export class MultipleSelect extends Component {
         this.state = {
             keyword: "",
             isFocus: false
-        }
+        };
         this.input = React.createRef();
     }
 
@@ -22,8 +22,7 @@ export class MultipleSelect extends Component {
 
     handleAddItem = item => {
         let {onChange, values} = this.props;
-        console.log(item)
-        console.log(values)
+
         onChange(values.concat(item))
     };
 
@@ -32,7 +31,7 @@ export class MultipleSelect extends Component {
 
         let {displayTagAs = (each, index) => "Item " + (index + 1), displayAs = () => "displayAs function is not defined yet!", values, list, filterFunc, listKey = (each, index) => index, tagKey = (each, index) => index, emptyNotify = () => "Không có kết quả tương ứng", isPicked = (each, index) => false} = this.props;
         let filterList = filterFunc(list, keyword);
-        console.log(keyword)
+
         return (
             <ClickOutside
                 onClickOut={() => {

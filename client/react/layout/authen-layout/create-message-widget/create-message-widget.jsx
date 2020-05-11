@@ -76,7 +76,11 @@ export class CreateMessageWidget extends Component {
                                     </div>
                                 </div>
                             )}
-                            renderBody={() => null}
+                            renderBody={() => (
+                                <CreatePanel
+
+                                />
+                            )}
                         />
                     ) : null
                 }}

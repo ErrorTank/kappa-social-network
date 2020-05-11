@@ -1,6 +1,15 @@
 .common-input {
   font-size 1.3rem
   margin-bottom 1.2rem
+  &.darkMode{
+    input{
+      color commonTextDark !important
+      &::placeholder{
+        color commonTextDark !important
+      }
+    }
+
+  }
   label{
     color #1a1a1a
     font-weight 500

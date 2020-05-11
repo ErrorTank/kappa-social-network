@@ -1,0 +1,70 @@
+.create-panel {
+  height 350px
+  .actions{
+    button{
+      width 200px
+      margin auto
+      display block
+      margin-top 80px
+    }
+  }
+  .search-box {
+    padding 8px 16px
+    display flex
+    align-items flex-start
+
+    .search-label {
+      flex 0 0 40px
+      font-size 1.5rem
+      color commonTextLight
+    }
+
+    .create-panel-input {
+      flex 0 0 calc(100% - 40px)
+
+      .dialog-display {
+        display flex
+        align-items center
+        transition all 0.1s ease
+        cursor pointer
+        position relative
+        border-radius 5px
+        .user-avatar{
+          .group-chat-avatar{
+            width 30px
+            height 30px
+            .common-avatar{
+              width 20px
+              height 20px
+              .avatar-holder{
+                span{
+                  font-size 1.1rem
+                }
+              }
+            }
+          }
+          .common-avatar{
+            width 30px
+            height 30px
+            .avatar-holder{
+              span{
+                font-size 1.4rem
+              }
+            }
+          }
+        }
+
+        p {
+          flex-grow 1
+          margin-left 12px
+          font-size 1.4rem
+          padding-right 15px
+          white-space nowrap
+          overflow hidden
+          text-overflow ellipsis
+        }
+      }
+    }
+
+  }
+}

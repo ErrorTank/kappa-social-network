@@ -14,5 +14,8 @@ export const utilityApi = {
     },
     searchForDialogsByKeyword(keyword){
         return authenApi.get(`/utility/search/dialogs?keyword=${keyword}`)
-    }
+    },
+    searchDialogsForCreateByKeyword(keyword){
+        return authenApi.get(`/utility/search-for-create/dialogs?keyword=${keyword}`)
+    },
 };
