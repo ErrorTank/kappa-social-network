@@ -16,8 +16,8 @@ export class CommonInput extends React.Component {
         const {className, textArea = false, success = false, extraDisplay, error = false, label = null, displayErr = true, helper = null, id, icon, inputType = "input", ...others} = this.props;
         return (
             <ThemeContext.Consumer>
-               {({darkMode}) => (
-                   <div className={classnames("common-input", className, {darkMode})}>
+               {(theme) => (
+                   <div className={classnames("common-input", className, {darkMode: theme?.darkMode})}>
                        {
                            label && <label htmlFor={id}>{label}</label>
                        }

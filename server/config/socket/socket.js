@@ -7,6 +7,7 @@ const createNamespaceHandler = (io, nsp, context) => {
     if(nsp.authenticated){
 
         ioNamespace.on('connect', function(socket){
+
             if (!socket.auth) {
                 console.log("Removing socket from", ioNamespace.name);
                 delete nsp.connected[socket.id];
@@ -14,6 +15,12 @@ const createNamespaceHandler = (io, nsp, context) => {
         });
     }
     nsp.io.on('connection', function (socket) {
+        socket.on('manual-disconnect', function(){
+
+            socket.auth = false;
+            socket.disconnect();
+            console.log("Manual disconnect ", socket.id);
+        });
         if(nsp.authenticated){
             socket.auth = false;
             socket.on('authenticate', function(data){
@@ -26,6 +33,7 @@ const createNamespaceHandler = (io, nsp, context) => {
 
             setTimeout(function(){
                 if (!socket.auth) {
+                    console.log(socket.auth)
                     console.log("Disconnecting socket ", socket.id);
                     socket.disconnect('Unauthorized');
                 }

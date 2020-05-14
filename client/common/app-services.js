@@ -1,17 +1,18 @@
 import {authenCache} from "./cache/authen-cache";
 import {userChatSettings, userInfo, userSearchHistory} from "./states/common";
 import omit from "lodash/omit";
+import { messengerIO} from "../socket/sockets";
 
 const initializeAuthenticateUser = ({userInfo: uInfo, authToken}) => {
     if(authToken){
         authenCache.setAuthen(authToken);
     }
-    console.log("cac")
-    console.log( uInfo)
+
     return Promise.all([
         userInfo.setState(omit(uInfo, ["search_history", "chat_settings"])),
         userSearchHistory.setState(uInfo.search_history),
-        userChatSettings.setState(uInfo.chat_settings)
+        userChatSettings.setState(uInfo.chat_settings),
+        messengerIO.connect({token: authToken})
         // userSearchHistory.setState([
         //     {
         //         _id: 1,
@@ -63,10 +64,12 @@ const initializeAuthenticateUser = ({userInfo: uInfo, authToken}) => {
 
 const clearAuthenticateUserSession = () => {
     authenCache.clearAuthen();
+    messengerIO.disconnect();
     return Promise.all([
         userInfo.setState(null),
         userSearchHistory.setState([]),
-        userChatSettings.setState(null)
+        userChatSettings.setState(null),
+
     ]);
 };
 

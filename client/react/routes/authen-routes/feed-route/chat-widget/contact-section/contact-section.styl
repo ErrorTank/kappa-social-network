@@ -1,20 +1,25 @@
-.contact-section{
-  &.darkMode{
-    .contact{
+.contact-section {
 
-      .last-active{
+
+  &.darkMode {
+    .contact {
+
+      .last-active {
 
         color greyTextDark
       }
-      &:hover{
+
+      &:hover {
         background-color lighten(bgDark, 10%)
       }
-      p{
-       color commonTextDark
+
+      .username {
+        color commonTextDark
       }
     }
   }
-  .contact{
+
+  .contact {
     display flex
     align-items center
     transition all 0.1s ease
@@ -22,7 +27,8 @@
     padding 8px
     position relative
     border-radius 5px
-    .last-active{
+
+    .last-active {
       position absolute
       right 8px
       font-weight 450
@@ -31,10 +37,12 @@
       transform translateY(-50%)
       color greyTextLight
     }
-    &:hover{
+
+    &:hover {
       background-color darken(bgLight, 5%)
     }
-    p{
+
+    .username {
       flex-grow 1
       margin-left 12px
       font-size 1.4rem

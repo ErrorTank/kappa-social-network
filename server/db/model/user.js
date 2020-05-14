@@ -289,8 +289,14 @@ const userSchema = new Schema({
     friends: {
         type: [
             {
-                type: ObjectId,
-                ref: "User"
+                info: {
+                    type: ObjectId,
+                    ref: "User"
+                },
+                last_interact: {
+                    type: Date,
+                    default: Date.now
+                }
             }
         ]
     },

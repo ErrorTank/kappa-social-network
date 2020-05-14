@@ -15,7 +15,7 @@ class KappaLayout extends KComponent {
             if(!nextState || !oldState){
                 this.forceUpdate();
             }
-            this.setState({darkMode: nextState.dark_mode === false});
+            this.setState({darkMode: nextState?.dark_mode === false});
 
 
         }));

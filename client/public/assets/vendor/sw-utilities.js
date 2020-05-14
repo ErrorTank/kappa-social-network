@@ -10,6 +10,15 @@ var dbPromise = idb.open('kappa-index-db', 1, function (db) {
     if (!db.objectStoreNames.contains('user-info')) {
         db.createObjectStore('user-info', {keyPath: '_id'});
     }
+    if (!db.objectStoreNames.contains('contacts')) {
+        db.createObjectStore('contacts', {keyPath: '_id'});
+    }
+    if (!db.objectStoreNames.contains('birthdays')) {
+        db.createObjectStore('birthdays', {keyPath: '_id'});
+    }
+    if (!db.objectStoreNames.contains('group_chats')) {
+        db.createObjectStore('group_chats', {keyPath: '_id'});
+    }
 });
 
 function writeData(st, data) {

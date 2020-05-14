@@ -6,8 +6,8 @@ import {ThemeContext} from "../../context/theme-context";
 export function LoadingInline({className}) {
     return (
         <ThemeContext.Consumer>
-            {({darkMode}) => (
-                <div className={classnames("loading-inline", {darkMode})}
+            {(theme) => (
+                <div className={classnames("loading-inline", {darkMode: theme?.darkMode})}
                      onClick={e => {
                          e.stopPropagation()
                      }}

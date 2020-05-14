@@ -71,11 +71,15 @@ var notGetRequests = [
         endpoint: "http://localhost:4000/api/utility/login-sessions/brief",
         method: "POST",
         dbCollectionName: "login-sessions"
-    }
+    },{
+        endpoint: "http://localhost:4000/api/chat/contacts",
+        method: "GET",
+        dbCollectionName: "contacts"
+    },
 ];
 
-var CACHE_STATIC_NAME = 'static-v1589195807699';
-var CACHE_DYNAMIC_NAME = 'dynamic-v1589195807699';
+var CACHE_STATIC_NAME = 'static-v1589453583915';
+var CACHE_DYNAMIC_NAME = 'dynamic-v1589453583915';
 
 var STATIC_FILES = [
     '/',
@@ -240,9 +244,17 @@ self.addEventListener('fetch', function (event) {
     } else if (isInArray(event.request.url, STATIC_FILES)) {
         event.respondWith(
             caches.match(event.request)
+                .then(function (response) {
+                    if (response) {
+                        return response;
+                    } else {
+                        return fetch(event.request)
+
+                    }
+                })
         );
     } else {
-        if (event.request.url.indexOf("/sockjs-node/info?") > -1) {
+        if (event.request.url.indexOf("/sockjs-node/info?") > -1 || event.request.url.indexOf("/socket.io")) {
             return;
         } else {
             event.respondWith(
