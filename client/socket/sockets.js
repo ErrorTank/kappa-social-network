@@ -16,7 +16,7 @@ const createAppIO = (namespace) => {
                        appIO.emit("authenticate", {token});
 
                    }
-                   res();
+                   res(appIO);
                });
            })
         },

@@ -2,6 +2,7 @@ import {authenCache} from "./cache/authen-cache";
 import {userChatSettings, userInfo, userSearchHistory} from "./states/common";
 import omit from "lodash/omit";
 import { messengerIO} from "../socket/sockets";
+import {messengerApi} from "../api/common/messenger-api";
 
 const initializeAuthenticateUser = ({userInfo: uInfo, authToken}) => {
     if(authToken){
@@ -13,6 +14,10 @@ const initializeAuthenticateUser = ({userInfo: uInfo, authToken}) => {
         userSearchHistory.setState(uInfo.search_history),
         userChatSettings.setState(uInfo.chat_settings),
         messengerIO.connect({token: authToken})
+            .then((appIO) => {
+                messengerApi.sendActiveStatusToAllRelations();
+                appIO.emit("join-own-room");
+            })
         // userSearchHistory.setState([
         //     {
         //         _id: 1,

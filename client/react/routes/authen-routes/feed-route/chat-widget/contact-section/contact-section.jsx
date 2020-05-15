@@ -6,6 +6,7 @@ import Skeleton, {SkeletonTheme} from 'react-loading-skeleton';
 import classnames from "classnames";
 import {chatApi} from "../../../../../../api/common/chat-api";
 import {Contact} from "./contact";
+import {messengerApi} from "../../../../../../api/common/messenger-api";
 
 // [
 //     {_id: "1", last_active: new Date("12/01/1998"), basic_info: {username: "Tuan Anh"}, avatar: "https://lucloi.vn/wp-content/uploads/2020/02/218_copy.jpg", active: true},
@@ -26,6 +27,7 @@ export class ContactSection extends Component {
             loading: true
         };
         chatApi.getChatContacts().then((list) => this.setState({list, loading: false}));
+
     }
     render() {
         let {list, loading} = this.state;
