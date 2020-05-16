@@ -16,7 +16,7 @@ const initializeAuthenticateUser = ({userInfo: uInfo, authToken}) => {
         messengerIO.connect({token: authToken})
             .then((appIO) => {
                 messengerApi.sendActiveStatusToAllRelations();
-                appIO.emit("join-own-room");
+                appIO.emit("join-own-room", {userID: uInfo._id});
             })
         // userSearchHistory.setState([
         //     {
