@@ -19,7 +19,7 @@ const getChatContacts = (userID) => {
 
                 return new Date(a.last_interact).getTime() - new Date(b.last_interact).getTime();
             }).slice(0, 10).map(each => ({
-                ...(pick(each.info, ["_id", "basic_info", "avatar", "last_active_at"]))
+                ...(pick(each.info, ["_id", "basic_info", "avatar", "last_active_at", "active"]))
             }))
         })
 };

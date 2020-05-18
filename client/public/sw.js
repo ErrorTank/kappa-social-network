@@ -61,6 +61,9 @@ var exceptionRequestsDev = [
     },{
         endpoint: /http:\/\/localhost:4000\/api\/utility\/search-for-create\/dialogs/,
         method: "GET"
+    },{
+        endpoint: /http:\/\/localhost:4000\/api\/messenger\/status\/active/,
+        method: "GET"
     },
 
 ];
@@ -78,8 +81,8 @@ var notGetRequests = [
     },
 ];
 
-var CACHE_STATIC_NAME = 'static-v1589612789506';
-var CACHE_DYNAMIC_NAME = 'dynamic-v1589612789506';
+var CACHE_STATIC_NAME = 'static-v1589803090945';
+var CACHE_DYNAMIC_NAME = 'dynamic-v1589803090945';
 
 var STATIC_FILES = [
     '/',

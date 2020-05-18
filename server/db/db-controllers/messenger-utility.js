@@ -10,15 +10,15 @@ const omit = require("lodash/omit");
 const pick = require("lodash/pick");
 const {getRandomToken} = require("../../utils/common-utils");
 
-const getAllUserRelations = (userID) => {
+const getAllUserActiveRelations = (userID) => {
     return User.findOne({_id: ObjectId(userID)})
         .populate("friends.info")
         .then(user => {
-            return user.friends;
+            return user.friends.filter(each => each.active);
         })
 };
 
 
 module.exports = {
-    getAllUserRelations,
+    getAllUserActiveRelations,
 };

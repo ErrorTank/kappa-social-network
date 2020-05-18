@@ -4,6 +4,10 @@ const ObjectId = mongoose.Schema.Types.ObjectId;
 const {AddressSchema} = require("./common-schema/common");
 
 const userSchema = new Schema({
+    active: {
+        type: Boolean,
+        default: false
+    },
     last_active_at: {
         type: Date,
         default: Date.now

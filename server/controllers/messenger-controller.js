@@ -1,12 +1,13 @@
 const express = require('express');
 const router = express.Router();
 const {authorizationUserMiddleware} = require("../common/middlewares/common");
-const {getAllUserRelations} = require("../db/db-controllers/messenger-utility");
+const {getAllUserActiveRelations} = require("../db/db-controllers/messenger-utility");
+const {simpleUpdateUser} = require("../db/db-controllers/user");
 
 module.exports = (db, namespacesIO) => {
-    router.get("/status/activate", authorizationUserMiddleware, (req, res, next) => {
+    router.get("/status/active/:status", authorizationUserMiddleware, (req, res, next) => {
 
-        return getAllUserRelations(req.user._id).then((data) => {
+        return Promise.all([simpleUpdateUser(req.user._id, {active: req.params.status === "true"}), getAllUserActiveRelations(req.user._id)]).then(([_ ,data]) => {
             let relationIds = data.map(each => each._id);
             return res.status(200).json(data);
         }).catch(err => next(err));

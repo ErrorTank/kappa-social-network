@@ -4,8 +4,8 @@ import {urlUtils} from "../../common/utils/url-utils";
 
 export const messengerApi = {
 
-    sendActiveStatusToAllRelations(){
-        return authenApi.get("/messenger/status/activate")
+    sendActiveStatusToAllRelations(status){
+        return authenApi.get("/messenger/status/active/" + status)
     }
 
 };
