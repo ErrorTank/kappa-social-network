@@ -5,7 +5,6 @@ const createAppIO = (namespace) => {
     let appIO = null;
     let isConnected = false;
 
-
     return {
         connect: ({token}) => {
            return new Promise((res, rej) => {
@@ -26,7 +25,8 @@ const createAppIO = (namespace) => {
             isConnected = false;
             appIO = null;
         },
-        isConnected: () => isConnected
+        isConnected: () => isConnected,
+
     };
 
 };

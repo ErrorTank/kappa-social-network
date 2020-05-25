@@ -4,19 +4,24 @@ import {formatMomentTimeRange} from "../../../../../../common/utils/common";
 import moment from "moment";
 import {messengerIO} from "../../../../../../socket/sockets";
 
-export class Contact extends Component {
+export class Contact extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            active: props.user._id,
+            active: props.user.active,
             last_active_at: props.user.last_active_at,
         };
-        let io = messengerIO.getIOInstance();
-        io.on("change-contact-status", ({active, userID, last_active_at}) => {
+        this.io = messengerIO.getIOInstance();
+        this.io.on("change-contact-status", ({active, userID, last_active_at}) => {
             if(userID === props.user._id){
                 this.setState({last_active_at, active});
             }
         });
+
+    }
+
+    componentWillUnmount() {
+        this.io.off("change-contact-status");
     }
 
     render() {
