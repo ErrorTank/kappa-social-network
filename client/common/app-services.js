@@ -6,7 +6,7 @@ import {messengerApi} from "../api/common/messenger-api";
 
 const initializeAuthenticateUser = ({userInfo: uInfo, authToken}) => {
     if(authToken){
-        authenCache.setAuthen(authToken);
+        authenCache.setAuthen(authToken, {expires: 7});
     }
 
     return Promise.all([
@@ -68,14 +68,23 @@ const initializeAuthenticateUser = ({userInfo: uInfo, authToken}) => {
 };
 
 const clearAuthenticateUserSession = () => {
-    authenCache.clearAuthen();
-    messengerIO.disconnect();
-    return Promise.all([
-        userInfo.setState(null),
-        userSearchHistory.setState([]),
-        userChatSettings.setState(null),
+    console.log("dasdas")
 
-    ]);
+    return messengerApi.sendActiveStatusToAllRelations(false)
+        .then(() => {
+            authenCache.clearAuthen();
+            messengerIO.disconnect();
+            return Promise.all([
+                userInfo.setState(null),
+                userSearchHistory.setState([]),
+                userChatSettings.setState(null),
+
+            ]);
+        });
+
+
+
+
 };
 
 

@@ -11,7 +11,7 @@ fs.readFile(filePath, 'utf8', function (err,data) {
         return console.log(err);
     }
     var newVersion = new Date().getTime();
-    console.log(newVersion)
+
     var result = data.replace(/static-v\d+/, 'static-v' + newVersion).replace(/dynamic-v\d+/, 'dynamic-v' + newVersion);
 
 

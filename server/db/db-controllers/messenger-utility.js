@@ -14,7 +14,8 @@ const getAllUserActiveRelations = (userID) => {
     return User.findOne({_id: ObjectId(userID)})
         .populate("friends.info")
         .then(user => {
-            return user.friends.filter(each => each.active);
+
+            return user.friends.filter(each => each.info.active).map(each => each.info);
         })
 };
 

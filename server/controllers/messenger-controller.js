@@ -7,8 +7,12 @@ const {simpleUpdateUser} = require("../db/db-controllers/user");
 module.exports = (db, namespacesIO) => {
     router.get("/status/active/:status", authorizationUserMiddleware, (req, res, next) => {
 
-        return Promise.all([simpleUpdateUser(req.user._id, {active: req.params.status === "true"}), getAllUserActiveRelations(req.user._id)]).then(([_ ,data]) => {
+        return Promise.all([simpleUpdateUser(req.user._id, {active: req.params.status === "true", last_active_at: new Date().getTime()}), getAllUserActiveRelations(req.user._id)]).then(([_ ,data]) => {
             let relationIds = data.map(each => each._id);
+            for(let roomName of relationIds){
+                console.log(`/messenger-user-room/user/${roomName}`)
+                namespacesIO.messenger.to(`/messenger-user-room/user/${roomName}`).emit('change-contact-status', {userID: req.user._id, active: req.params.status === "true"});
+            }
             return res.status(200).json(data);
         }).catch(err => next(err));
 
