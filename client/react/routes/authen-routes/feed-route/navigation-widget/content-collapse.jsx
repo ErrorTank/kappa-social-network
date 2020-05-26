@@ -22,7 +22,7 @@ export class ContentCollapse extends Component {
                     </div>
                 )))}
                 <div className="more-toggle"
-                     onClick={() => this.setState({more})}
+                     onClick={() => this.setState({more: !more})}
                 >
                     <span>{btnText}</span>
                     {btnIcon}
