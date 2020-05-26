@@ -7,11 +7,12 @@ export class ChatRoomBubble extends Component {
         super(props);
         this.state = {
             user: null,
+            active: false
         };
     };
 
     render() {
-        let {user} = this.state;
+        let {user, active} = this.state;
         return (
             <div className="chat-room-bubble">
                 {!user ? (
@@ -20,7 +21,8 @@ export class ChatRoomBubble extends Component {
                     </SkeletonTheme>
                 ) : (
                     <StatusAvatar
-
+                        active={active}
+                        user={user}
                     />
                 )}
             </div>
