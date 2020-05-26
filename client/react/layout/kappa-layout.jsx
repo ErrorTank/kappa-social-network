@@ -22,7 +22,7 @@ class KappaLayout extends KComponent {
     }
 
     setHtmlDarkMode = (isDarkMode) => {
-        console.log(isDarkMode)
+
         if(isDarkMode){
             document.querySelector("html").classList.add("dark-mode")
         }else{
