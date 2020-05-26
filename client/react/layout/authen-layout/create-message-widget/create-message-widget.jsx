@@ -8,11 +8,15 @@ import {searchMessageWidgetController} from "../search-message-panel/search-mess
 
 export let messageWidgetController = {};
 
+
+
 export class CreateMessageWidget extends Component {
     constructor(props) {
         super(props);
         this.state = {
             showCreatePanel: false,
+            currentChatBox: null,
+            bubbleList: []
         };
         messageWidgetController = {
             open: () => {
@@ -21,7 +25,10 @@ export class CreateMessageWidget extends Component {
             },
             close: () => {
                 this.setState({showCreatePanel: false});
-            }
+            },
+            createNewChatBox: ({userID}) => {
+                this.setState({currentChatBox: userID, bubbleList: this.state.bubbleList.concat(userID)});
+            },
         };
     }
 
@@ -31,7 +38,7 @@ export class CreateMessageWidget extends Component {
 
 
     render() {
-        let {showCreatePanel} = this.state;
+        let {showCreatePanel, bubbleList} = this.state;
         let {darkMode} = this.props;
         return (
 
@@ -55,7 +62,7 @@ export class CreateMessageWidget extends Component {
                                 </div>
                             </Tooltip>
                         </div>
-
+                        {}
                     </div>
 
                 )}
