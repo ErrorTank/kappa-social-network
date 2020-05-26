@@ -3,6 +3,7 @@ import {StatusAvatar} from "../../../../../common/status-avatar/status-avatar";
 import {formatMomentTimeRange} from "../../../../../../common/utils/common";
 import moment from "moment";
 import {messengerIO} from "../../../../../../socket/sockets";
+import {messageWidgetController} from "../../../../../layout/authen-layout/create-message-widget/create-message-widget";
 
 export class Contact extends React.Component {
     constructor(props) {
@@ -27,7 +28,9 @@ export class Contact extends React.Component {
     render() {
         let {user} = this.props;
         return (
-            <div className="contact">
+            <div className="contact"
+                 onClick={() => messageWidgetController.createNewChatBox({userID: user._id})}
+            >
                 <div className="user-avatar">
                     <StatusAvatar
                         active={this.state.active}

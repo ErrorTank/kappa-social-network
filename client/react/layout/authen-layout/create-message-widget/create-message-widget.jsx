@@ -5,6 +5,7 @@ import FloatBottomWidget from "../float-bottom-widget/float-bottom-widget";
 import {MessageBoxLayout} from "../message-box-layout/message-box-layout";
 import {Tooltip} from "../../../common/tooltip/tooltip";
 import {searchMessageWidgetController} from "../search-message-panel/search-message-panel";
+import {ChatRoomBubble} from "./chat-room-bubble/chat-room-bubble";
 
 export let messageWidgetController = {};
 
@@ -21,19 +22,29 @@ export class CreateMessageWidget extends Component {
         messageWidgetController = {
             open: () => {
                 searchMessageWidgetController.close();
-                this.setState({showCreatePanel: true});
+                this.setState({showCreatePanel: true, currentChatBox: null});
             },
             close: () => {
                 this.setState({showCreatePanel: false});
             },
             createNewChatBox: ({userID}) => {
-                this.setState({currentChatBox: userID, bubbleList: this.state.bubbleList.concat(userID)});
+                let {bubbleList} = this.state;
+                this.setState({currentChatBox: userID, showCreatePanel: false});
+                searchMessageWidgetController.close();
+                if(bubbleList.indexOf(userID) === -1){
+                    this.setState({bubbleList: bubbleList.concat(userID)});
+                }
+
             },
         };
     }
 
     createNewChatRoom = () => {
 
+    };
+
+    closeChatBox = ({userID}) => {
+        this.setState({currentChatBox: null, bubbleList: this.state.bubbleList.filter(each => each !== userID)});
     };
 
 
@@ -46,6 +57,14 @@ export class CreateMessageWidget extends Component {
                 className={classnames("create-message-widget", {darkMode})}
                 renderSide={() => (
                     <div className="cmw-side">
+                        {bubbleList.reverse().map(each => (
+                            <div className="cmw-round-stack bubble-chat-wrapper" key={each}>
+                                <ChatRoomBubble
+                                    userID={each}
+                                    onClose={() => this.closeChatBox({userID: each})}
+                                />
+                            </div>
+                        ))}
                         <div className="cmw-round-stack">
                             <Tooltip
                                 position={"left"}
@@ -62,7 +81,7 @@ export class CreateMessageWidget extends Component {
                                 </div>
                             </Tooltip>
                         </div>
-                        {}
+
                     </div>
 
                 )}
