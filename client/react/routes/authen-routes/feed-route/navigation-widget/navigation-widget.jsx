@@ -108,6 +108,7 @@ export class NavigationWidget extends Component {
                 {({darkMode}) => (
                     <div className={classnames("navigation-widget", {darkMode})}>
                         <ContentCollapse
+                            darkMode={darkMode}
                             list={this.routesNavigator}
                             render={({url, className, left, right}) => {
                                 return (
