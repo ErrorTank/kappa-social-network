@@ -11,22 +11,6 @@ export class AuthenNavbar extends Component {
         this.state = {}
     }
 
-    navigations = [
-        {
-            icon: <i className="fal fa-home-lg-alt"></i>,
-            url: "/",
-        },{
-            url: "/pages",
-            icon: <i className="fal fa-flag"></i>,
-        },{
-            url: "/watch",
-            icon: <i className="fal fa-home-lg-alt"></i>,
-        },{
-            url: "/",
-            icon: <i className="fal fa-home-lg-alt"></i>,
-        },
-    ];
-
     render() {
         let {showNotificationPrompt, darkMode, ...rest} = this.props;
         return (

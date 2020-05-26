@@ -1,6 +1,10 @@
 import React, {Component} from 'react';
 import {userInfo} from "../../../../../common/states/common";
 import {Avatar} from "../../../../common/avatar/avatar";
+import {ThemeContext} from "../../../../context/theme-context";
+import classnames from "classnames";
+import {ContentCollapse} from "./content-collapse";
+import {customHistory} from "../../../routes";
 
 export class NavigationWidget extends Component {
     constructor(props) {
@@ -14,61 +18,114 @@ export class NavigationWidget extends Component {
                 let {_id} = userInfo.getState();
                 return `/profile/${_id}`
             },
-            render: () => {
+            className: "profile",
+            left: () => {
                 let user = userInfo.getState();
                 return (
-                    <div className="navigation-widget-row">
-                        <div className="left-side">
-                            <Avatar
-                                user={user}
-                            />
-                        </div>
-                        <div className="right-side">
-                            {user.basic_info.username}
-                        </div>
-                    </div>
+                    <Avatar
+                        user={user}
+                    />
                 )
-            }
+            },
+            right: () => {
+                return userInfo.getState().basic_info.username
+            },
+
         }, {
             url: () => {
                 return `/marketplace`
             },
-            render: () => {
+            className: "shop",
+            left: () => {
                 return (
-                    <div className="navigation-widget-row">
-                        <div className="left-side">
-                            <i className="fas fa-store"></i>
-                        </div>
-                        <div className="right-side">
-                            Chợ mua bán
-                        </div>
-                    </div>
+                    <i className="fad fa-store"></i>
                 )
-            }
+            },
+            right: () => {
+                return `Chợ mua bán`
+            },
         }, {
             url: () => {
-                return `/marketplace`
+                return `/pages`
             },
-            render: () => {
+            className: "page",
+            left: () => {
                 return (
-                    <div className="navigation-widget-row">
-                        <div className="left-side">
-                            <i className="fas fa-store"></i>
-                        </div>
-                        <div className="right-side">
-                            Chợ mua bán
-                        </div>
-                    </div>
+                    <i className="fad fa-flag"></i>
                 )
-            }
+            },
+            right: () => {
+                return `Trang`
+            },
+
+        },{
+            url: () => {
+                return `/groups`
+            },
+            className: "group",
+            left: () => {
+                return (
+                    <i className="fad fa-users"></i>
+                )
+            },
+            right: () => {
+                return `Nhóm`
+            },
+
+        },{
+            url: () => {
+                return `/watch`
+            },
+            className: "watch",
+            left: () => {
+                return (
+                    <i className="fad fa-video"></i>
+                )
+            },
+            right: () => {
+                return `Videos`
+            },
+        },{
+            url: () => {
+                return `/dating`
+            },
+            className: "dating",
+            left: () => {
+                return (
+                    <i className="fad fa-heart"></i>
+                )
+            },
+            right: () => {
+                return `Hẹn hò`
+            },
+
         },
     ];
 
     render() {
         return (
-            <div className="navigation-widget">
+            <ThemeContext.Consumer>
+                {({darkMode}) => (
+                    <div className={classnames("navigation-widget", {darkMode})}>
+                        <ContentCollapse
+                            list={this.routesNavigator}
+                            render={({url, className, left, right}) => {
+                                return (
+                                    <div className={classnames("navigation-widget-row", className)} onClick={() => customHistory.push(url())}>
+                                        <div className="left-side">
+                                            {left()}
+                                        </div>
+                                        <div className="right-side">
+                                            {right()}
+                                        </div>
+                                    </div>
+                                )
+                            }}
+                        />
+                    </div>
+                )}
+            </ThemeContext.Consumer>
 
-            </div>
         );
     }
 }

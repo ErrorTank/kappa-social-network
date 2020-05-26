@@ -26,6 +26,10 @@ export class Navigation extends Component {
             url: "/groups",
             icon: <i className="fal fa-users"></i>,
             tooltipText: "Nhóm"
+        },{
+            url: "/dating",
+            icon: <i className="fal fa-heart"></i>,
+            tooltipText: "Hẹn hò"
         },
     ];
 
