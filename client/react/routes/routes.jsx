@@ -105,6 +105,15 @@ class MainRoute extends React.Component {
                                             />
                                         )}
                                     />
+                                    <AuthenRoute
+                                        {...layoutProps}
+                                        path={"/marketplace"}
+                                        exact
+
+                                        render={props => (
+                                        <div></div>
+                                        )}
+                                    />
                                 </CustomSwitch>
                             )}
                         </WithRouterKappaLayout>
