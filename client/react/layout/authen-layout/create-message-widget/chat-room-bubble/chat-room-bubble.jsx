@@ -2,6 +2,8 @@ import React, {Component} from 'react';
 import Skeleton, {SkeletonTheme} from "react-loading-skeleton";
 import {StatusAvatar} from "../../../../common/status-avatar/status-avatar";
 import {messengerApi} from "../../../../../api/common/messenger-api";
+import {messengerIO} from "../../../../../socket/sockets";
+import {ThemeContext} from "../../../../context/theme-context";
 
 export class ChatRoomBubble extends Component {
     constructor(props){
@@ -11,36 +13,50 @@ export class ChatRoomBubble extends Component {
             showCloseIcon: false
         };
         messengerApi.getUserBubbleBriefInfo(props.userID).then(user => this.setState({user}));
+        this.io = messengerIO.getIOInstance();
+        this.io.on("change-contact-status", ({active, userID, last_active_at}) => {
+            if(userID === props.userID){
+                this.setState({user: this.state.user ? {...this.state.user, active, last_active_at} : null});
+            }
+        });
     };
+
+    componentWillUnmount() {
+        this.io.off("change-contact-status");
+    }
 
     render() {
         let {user, showCloseIcon} = this.state;
         return (
-            <div className="chat-room-bubble"
-                 onMouseEnter={() => this.setState({showCloseIcon: true})}
-                 onMouseLeave={() => this.setState({showCloseIcon: false})}
-            >
-                {showCloseIcon && (
-                    <div className="chat-box-toggle"
-                         onClick={this.props.onClose}
-                    >
-                        <div>
-                            <i className="fal fa-times"></i>
-                        </div>
+          <ThemeContext.Consumer>
+              {({darkMode}) => (
+                  <div className="chat-room-bubble"
+                       onMouseEnter={() => this.setState({showCloseIcon: true})}
+                       onMouseLeave={() => this.setState({showCloseIcon: false})}
+                  >
+                      {showCloseIcon && (
+                          <div className="chat-box-toggle"
+                               onClick={this.props.onClose}
+                          >
+                              <div>
+                                  <i className="fal fa-times"></i>
+                              </div>
 
-                    </div>
-                )}
-                {!user ? (
-                    <SkeletonTheme color="#e3e3e3" >
-                        <Skeleton count={1} height={50} width={50} duration={1} circle={true}/>
-                    </SkeletonTheme>
-                ) : (
-                    <StatusAvatar
-                        active={user.active}
-                        user={user}
-                    />
-                )}
-            </div>
+                          </div>
+                      )}
+                      {!user ? (
+                          <SkeletonTheme color={darkMode ? "#242526" : "#e3e3e3"} highlightColor={darkMode ? "#333436" : "#ebebeb"}>
+                              <Skeleton count={1} height={50} width={50} duration={1} circle={true}/>
+                          </SkeletonTheme>
+                      ) : (
+                          <StatusAvatar
+                              active={user.active}
+                              user={user}
+                          />
+                      )}
+                  </div>
+              )}
+          </ThemeContext.Consumer>
         );
     }
 }

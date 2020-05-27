@@ -38,12 +38,12 @@ export class ContactSection extends Component {
                         {[1,2,3,4,5].map((each) => (
                             <div className="contact" key={each}>
                                 <div className="user-avatar">
-                                    <SkeletonTheme color="#e3e3e3">
+                                    <SkeletonTheme color={this.props.darkMode ? "#242526" : "#e3e3e3"} highlightColor={this.props.darkMode ? "#333436" : "#ebebeb"}>
                                         <Skeleton count={1} height={40} width={40} duration={1} circle={true}/>
                                     </SkeletonTheme>
                                 </div>
                                 <div className="username">
-                                    <SkeletonTheme color="#e3e3e3">
+                                    <SkeletonTheme color={this.props.darkMode ? "#242526" : "#e3e3e3"} highlightColor={this.props.darkMode ? "#333436" : "#ebebeb"}>
                                         <Skeleton count={1} height={22} width={200} duration={1}/>
                                     </SkeletonTheme>
                                 </div>
