@@ -1,27 +1,28 @@
-import React, {lazy, Suspense} from "react";
-import {Route, Router, Redirect} from "react-router-dom"
-import {createBrowserHistory} from 'history';
-import {ModalsRegistry} from "../common/modal/modals";
+import React, { lazy, Suspense } from "react";
+import { Route, Router, Redirect } from "react-router-dom"
+import { createBrowserHistory } from 'history';
+import { ModalsRegistry } from "../common/modal/modals";
 
 export const customHistory = createBrowserHistory();
-import {OverlayLoading} from "../common/overlay-loading";
-import {delayLoad} from "../../common/utils/common";
-import {CustomSwitch} from "./route-types/custom-switch";
-import {userInfo} from "../../common/states/common";
-import {offlineApi} from "../../api/api";
-import {FlexibleRoute} from "./route-types/flexible-route";
-import {authenCache} from "../../common/cache/authen-cache";
-import {GuestRoute} from "./route-types/guest-route/guest-route";
-import {AuthenRoute} from "./route-types/authen-route/authen-route";
-import {WithRouterKappaLayout} from "../layout/kappa-layout";
-import {TopFloatNotificationRegistry} from "../common/float-top-notification/float-top-notification";
-import {ThemeContext, ThemeController} from "../context/theme-context";
+import { OverlayLoading } from "../common/overlay-loading";
+import { delayLoad } from "../../common/utils/common";
+import { CustomSwitch } from "./route-types/custom-switch";
+import { userInfo } from "../../common/states/common";
+import { offlineApi } from "../../api/api";
+import { FlexibleRoute } from "./route-types/flexible-route";
+import { authenCache } from "../../common/cache/authen-cache";
+import { GuestRoute } from "./route-types/guest-route/guest-route";
+import { AuthenRoute } from "./route-types/authen-route/authen-route";
+import { WithRouterKappaLayout } from "../layout/kappa-layout";
+import { TopFloatNotificationRegistry } from "../common/float-top-notification/float-top-notification";
+import { ThemeContext, ThemeController } from "../context/theme-context";
 
 const FeedRoute = lazy(delayLoad(() => import("./authen-routes/feed-route/feed-route")));
 import LoginRoute from "./guest-routes/login-route/login-route";
 const ForgotPasswordRoute = lazy(delayLoad(() => import("./guest-routes/forgot-password-route/forgot-password-route")));
 const AccountConfirmationRoute = lazy(delayLoad(() => import("./guest-routes/account-confirmation/account-confirmation")));
 const ChangePasswordRoute = lazy(delayLoad(() => import("./guest-routes/change-password-route/change-password-route")));
+const MarketplaceRoute = lazy(delayLoad(() => import("./authen-routes/marketplace-route/marketplace-route")));
 const GlobalSearchResult = lazy(delayLoad(() => import("./authen-routes/global-search-result/global-search-result")));
 export const NotificationStateContext = React.createContext();
 
@@ -36,8 +37,8 @@ class MainRoute extends React.Component {
 
         return (
             <ThemeController>
-                {({darkMode}) => (
-                    <Suspense fallback={<OverlayLoading darkMode={darkMode}/>}>
+                {({ darkMode }) => (
+                    <Suspense fallback={<OverlayLoading darkMode={darkMode} />}>
                         <WithRouterKappaLayout>
                             {layoutProps => (
                                 <CustomSwitch>
@@ -111,7 +112,10 @@ class MainRoute extends React.Component {
                                         exact
 
                                         render={props => (
-                                        <div></div>
+                                            <MarketplaceRoute
+
+                                                {...props}
+                                            />
                                         )}
                                     />
                                 </CustomSwitch>
@@ -184,7 +188,7 @@ export class App extends React.Component {
 
                 <NotificationPrompt
                     value={this.state.showNotificationPrompt}
-                    onChange={value => this.setState({showNotificationPrompt: value})}
+                    onChange={value => this.setState({ showNotificationPrompt: value })}
 
                 />
                 <div id="main-route">
@@ -197,9 +201,9 @@ export class App extends React.Component {
 
 
                         <NotificationStateContext.Provider value={this.state.showNotificationPrompt}>
-                            <MainRoute/>
+                            <MainRoute />
                         </NotificationStateContext.Provider>
-                        <ModalsRegistry/>
+                        <ModalsRegistry />
                     </Router>
 
 
