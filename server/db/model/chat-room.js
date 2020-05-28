@@ -12,6 +12,10 @@ const chatRoomSchema = new Schema({
       type: Date,
       default: Date.now
    },
+   is_group_chat: {
+      type: Boolean,
+      default: false
+   },
    involve_person: {
       default: [],
       type: [
@@ -54,11 +58,16 @@ const chatRoomSchema = new Schema({
    },
    group_name: {
       type: String,
+      default: ""
    },
    context: {
       default: [],
       type: [
          {
+            sentBy: {
+               type: ObjectId,
+               ref: "User"
+            },
             seenBy: {
                default: [],
                type: [
