@@ -6,6 +6,7 @@ import {MessageBoxLayout} from "../message-box-layout/message-box-layout";
 import {Tooltip} from "../../../common/tooltip/tooltip";
 import {searchMessageWidgetController} from "../search-message-panel/search-message-panel";
 import {ChatRoomBubble} from "./chat-room-bubble/chat-room-bubble";
+import {ChatBox} from "./chat-box/chat-box";
 
 export let messageWidgetController = {};
 
@@ -49,7 +50,7 @@ export class CreateMessageWidget extends Component {
 
 
     render() {
-        let {showCreatePanel, bubbleList} = this.state;
+        let {showCreatePanel, bubbleList, currentChatBox} = this.state;
         let {darkMode} = this.props;
         return (
 
@@ -107,6 +108,11 @@ export class CreateMessageWidget extends Component {
 
                                 />
                             )}
+                        />
+                    ) : currentChatBox ? (
+                        <ChatBox
+                            userID={currentChatBox}
+                            onClose={() => this.setState({currentChatBox: null})}
                         />
                     ) : null
                 }}

@@ -13,7 +13,7 @@ export class ContentCollapse extends Component {
         let {more} = this.state;
         let renderList = !more ? list.slice(0, minItems) : list;
         let btnText = !more ? "Nhiều hơn" : "Ít đi";
-        let btnIcon = !more ? <i className="fal fa-angle-down"></i> : <i class="fal fa-angle-up"></i>;
+        let btnIcon = !more ? <i className="fal fa-angle-down"></i> : <i className="fal fa-angle-up"></i>;
         return (
             <div className={classnames("content-collapse", {darkMode})}>
                 {renderList.map(((each, i) => (
