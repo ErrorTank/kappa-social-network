@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import { PageTitle } from '../../../common/page-title/page-title';
 import { KComponent } from '../../../common/k-component';
+import { CommonLayout } from '../../../layout/common-layout/common-layout';
+import { CategoriesWidget } from './categories-widget/categories-widget';
 
 class MarketplaceRoute extends KComponent {
   constructor(props) {
@@ -8,7 +10,17 @@ class MarketplaceRoute extends KComponent {
     this.state = {};
   }
   render() {
-    return <div>hello</div>;
+    return (
+      <PageTitle title={'Trang chủ'}>
+        <div className='feed-route'>
+          <CommonLayout
+            mainRender={() => <div>hello</div>}
+            haveRightRender={false}
+            leftRender={() => <CategoriesWidget />}
+          />
+        </div>
+      </PageTitle>
+    );
   }
 }
 export default MarketplaceRoute;
