@@ -1,14 +1,14 @@
 import React, { Component } from 'react';
 
-export class MarketplaceSearchSection extends Component {
+export class CategoriesSection extends Component {
   constructor(props) {
     super(props);
     this.state = {};
   }
   render() {
     return (
-      <div className='market-search-section'>
-        <h1>Marketplace</h1>
+      <div className='marketplace-menu-section'>
+        <h1>Danh muc</h1>
       </div>
     );
   }
