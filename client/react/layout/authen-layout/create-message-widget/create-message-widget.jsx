@@ -48,6 +48,10 @@ export class CreateMessageWidget extends Component {
         this.setState({currentChatBox: null, bubbleList: this.state.bubbleList.filter(each => each !== userID)});
     };
 
+    handleClickBubbleBox = ({userID}) => {
+        this.setState({currentChatBox: userID, showCreatePanel: false});
+        searchMessageWidgetController.close();
+    };
 
     render() {
         let {showCreatePanel, bubbleList, currentChatBox} = this.state;
@@ -63,6 +67,7 @@ export class CreateMessageWidget extends Component {
                                 <ChatRoomBubble
                                     userID={each}
                                     onClose={() => this.closeChatBox({userID: each})}
+                                    onClick={() => this.handleClickBubbleBox({userID: each})}
                                 />
                             </div>
                         ))}
@@ -109,12 +114,16 @@ export class CreateMessageWidget extends Component {
                                 />
                             )}
                         />
-                    ) : currentChatBox ? (
+                    ) : bubbleList.map((each) => (
                         <ChatBox
-                            userID={currentChatBox}
-                            onClose={() => this.setState({currentChatBox: null})}
+                            key={each}
+                            userID={each}
+                            active={each === currentChatBox}
+                            onClose={() => this.closeChatBox({userID: each})}
+                            onMinimize={() => this.setState({currentChatBox: null})}
+
                         />
-                    ) : null
+                    ))
                 }}
 
             />

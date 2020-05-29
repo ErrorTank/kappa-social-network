@@ -330,6 +330,19 @@ const userSchema = new Schema({
             ]
         }
     },
+    current_chat_box: {
+        type: ObjectId,
+        ref: "User"
+    },
+    bubble_list: {
+        type: [
+            {
+                type: ObjectId,
+                ref: "User"
+            }
+        ],
+        default: []
+    },
     mute_chat_rooms: {
         type: [
             {
