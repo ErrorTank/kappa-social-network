@@ -3,11 +3,12 @@ import {ThemeContext} from "../../../context/theme-context";
 import classnames from "classnames";
 
 export const MessageBoxLayout = (props) => {
-    let {renderHeader, renderBody} = props;
+    let {renderHeader, renderBody, className} = props;
+    console.log(className)
     return (
         <ThemeContext.Consumer>
             {({darkMode}) => (
-                <div className={classnames("message-box-layout", {darkMode})}>
+                <div className={classnames("message-box-layout", {darkMode}, className)}>
                     <div className="mbl-container">
                         <div className="mbl-header">
                             {renderHeader()}
