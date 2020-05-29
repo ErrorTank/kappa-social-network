@@ -18,14 +18,14 @@ export class ChatBox extends Component {
             toolTipContent: () => "Bắt đầu gọi video"
         },
         {
-            icon: <i className="fal fa-times"></i>,
+            icon: <i className="fas fa-phone-alt"></i>,
             onClick: () => this.props.onClose(),
-            toolTipContent: () => "Đóng tab"
+            toolTipContent: () => "Bắt đầu gọi thoại"
         },
         {
-            icon: <i className="fal fa-times"></i>,
+            icon: <i className="far fa-window-minimize"></i>,
             onClick: () => this.props.onClose(),
-            toolTipContent: () => "Đóng tab"
+            toolTipContent: () => "Thu nhỏ tab"
         },
         {
             icon: <i className="fal fa-times"></i>,
