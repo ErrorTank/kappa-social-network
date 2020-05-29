@@ -10,6 +10,30 @@ export class ChatBox extends Component {
             
         }
     }
+
+    headerActions = [
+        {
+            icon: <i className="fas fa-video"></i>,
+            onClick: () => this.props.onClose(),
+            toolTipContent: () => "Bắt đầu gọi video"
+        },
+        {
+            icon: <i className="fal fa-times"></i>,
+            onClick: () => this.props.onClose(),
+            toolTipContent: () => "Đóng tab"
+        },
+        {
+            icon: <i className="fal fa-times"></i>,
+            onClick: () => this.props.onClose(),
+            toolTipContent: () => "Đóng tab"
+        },
+        {
+            icon: <i className="fal fa-times"></i>,
+            onClick: () => this.props.onClose(),
+            toolTipContent: () => "Đóng tab"
+        },
+    ];
+
     render() {
         let {onClose} = this.props;
         return (
@@ -21,9 +45,11 @@ export class ChatBox extends Component {
                         </div>
                         <div className="right-panel">
                             <div className="actions">
-                                <div className="icon-wrapper" onClick={onClose}>
-                                    <i className="fal fa-times"></i>
-                                </div>
+                                {this.headerActions.map((each, i) => (
+                                    <div className="icon-wrapper" onClick={each.onClick} key={i}>
+                                        {each.icon}
+                                    </div>
+                                ))}
                             </div>
                         </div>
                     </div>

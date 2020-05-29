@@ -26,17 +26,22 @@ export class ChatRoomBubble extends Component {
     }
 
     render() {
-        let {user, showCloseIcon} = this.state;
+        let {user, showCloseIcon, } = this.state;
+        let {onClick} = this.props;
         return (
           <ThemeContext.Consumer>
               {({darkMode}) => (
                   <div className="chat-room-bubble"
                        onMouseEnter={() => this.setState({showCloseIcon: true})}
                        onMouseLeave={() => this.setState({showCloseIcon: false})}
+                       onClick={onClick}
                   >
                       {showCloseIcon && (
                           <div className="chat-box-toggle"
-                               onClick={this.props.onClose}
+                               onClick={(e) => {
+                                   e.stopPropagation();
+                                   this.props.onClose();
+                               }}
                           >
                               <div>
                                   <i className="fal fa-times"></i>
