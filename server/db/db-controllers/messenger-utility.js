@@ -20,7 +20,7 @@ const getAllUserActiveRelations = (userID) => {
 };
 
 const getUserPersonalChatRoom = (ownerID, userID) => {
-    return  User.aggregate([
+    return User.aggregate([
         {
             $match: {
                 _id: ObjectId(ownerID)
@@ -36,7 +36,8 @@ const getUserPersonalChatRoom = (ownerID, userID) => {
         {
             $project: {
                 "_id": "$_id",
-                "chat_rooms":  { $map:
+                "chat_rooms": {
+                    $map:
                         {
                             input: "$chat_rooms",
                             as: "room",
@@ -61,7 +62,7 @@ const getUserPersonalChatRoom = (ownerID, userID) => {
 
 const getUserBubbleChatBrief = (ownerID, userID) => {
     return Promise.all([
-       getUserPersonalChatRoom(ownerID, userID),
+        getUserPersonalChatRoom(ownerID, userID),
         User.findOne({
             _id: ObjectId(userID),
             "friends.info": ObjectId(ownerID)
@@ -81,8 +82,77 @@ const getUserBubbleChatBrief = (ownerID, userID) => {
 
 };
 
+const getUserChatRoomBrief = (ownerID, userID) => {
+    return Promise.all([
+        getUserPersonalChatRoom(ownerID, userID),
+        User.findOne({
+            _id: ObjectId(userID),
+            "friends.info": ObjectId(ownerID)
+        }, "_id basic_info.username active avatar last_active_at").lean()
+    ])
+        .then(([chat_room, user]) => {
+            if (!user) {
+                return Promise.reject(new ApplicationError("cannot_reach_out"));
+            }
+            if(!chat_room){
+                return new ChatRoom({
+                    involve_person: [ObjectId(ownerID), ObjectId(userID)],
+                }).save().then(cr => ({chatRoomID: cr.toObject()._id, user}))
+            }
+            return ({chatRoomID: chat_room._id, user})
+
+        })
+        .then(({chatRoomID, user}) => {
+            return ChatRoom.aggregate([
+                {$match: {_id: ObjectId(chatRoomID)}},
+                {$unwind: "$context"},
+                {
+                    $sort: {
+                        "context.created_at": -1
+                    }
+                },
+                {$limit: 10},
+                {"$group": {"_id": "$_id",
+                        "context": {"$push": "$context"},
+                        "last_updated": {
+                            $first: "$last_updated"
+                        },
+                        "last_active": {
+                            $first: "$last_active"
+                        },
+                        "is_group_chat": {
+                            $first: "$is_group_chat"
+                        },
+                        "involve_person": {
+                            $first: "$involve_person"
+                        },
+                        "default_emoji": {
+                            $first: "$default_emoji"
+                        },
+                        "involve_page": {
+                            $first: "$involve_page"
+                        },
+                        "admins": {
+                            $first: "$admins"
+                        },
+                        "group_name": {
+                            $first: "$group_name"
+                        },
+                    }
+                }
+            ])
+                .then(cr => {
+                    return {
+                        ...user,
+                        chat_room: cr
+                    };
+                })
+        });
+};
+
 
 module.exports = {
     getAllUserActiveRelations,
-    getUserBubbleChatBrief
+    getUserBubbleChatBrief,
+    getUserChatRoomBrief
 };

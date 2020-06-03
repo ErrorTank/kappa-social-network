@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const {authorizationUserMiddleware} = require("../common/middlewares/common");
-const {getAllUserActiveRelations, getUserBubbleChatBrief} = require("../db/db-controllers/messenger-utility");
+const {getAllUserActiveRelations, getUserBubbleChatBrief, getUserChatRoomBrief} = require("../db/db-controllers/messenger-utility");
 const {simpleUpdateUser} = require("../db/db-controllers/user");
 
 module.exports = (db, namespacesIO) => {
@@ -20,6 +20,13 @@ module.exports = (db, namespacesIO) => {
 
     router.get("/bubble/user/:userID/brief", authorizationUserMiddleware, (req, res, next) => {
         return getUserBubbleChatBrief(req.user._id, req.params.userID).then((data) => {
+            return res.status(200).json(data);
+        }).catch(err => next(err));
+
+    });
+
+    router.get("/chat-room/user/:userID/brief", authorizationUserMiddleware, (req, res, next) => {
+        return getUserChatRoomBrief(req.user._id, req.params.userID).then((data) => {
             return res.status(200).json(data);
         }).catch(err => next(err));
 

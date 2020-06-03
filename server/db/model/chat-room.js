@@ -77,6 +77,9 @@ const chatRoomSchema = new Schema({
                   }
                ]
             },
+            replyFor: {
+                type: ObjectId,
+            },
             state: {
                type: String,
                enum: ["NOT_SENT", "CACHED", "SENT"]

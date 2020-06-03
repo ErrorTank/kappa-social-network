@@ -1,4 +1,75 @@
 .chat-box-header{
+  padding 4px !important
+
+  .left-panel{
+    .chat-info{
+      max-width 170px
+      transition background-color 0.1s ease
+      background-color white
+      border-radius 5px
+      cursor pointer
+      &:hover{
+        background-color darken(white, 5%)
+      }
+      & > i{
+        align-self center
+        font-size 2.2rem
+        margin-left 6px
+      }
+      padding 8px
+      display flex
+      .user-status{
+
+        height 35px
+        padding-left 8px
+        .wrapper{
+          height 35px
+          display flex
+          flex-direction column
+          justify-content center
+          .status{
+            font-size 1.3rem
+            font-weight 400
+            line-height 1.4rem
+            margin-top 2px
+            overflow hidden
+            white-space nowrap
+            text-overflow ellipsis
+          }
+          .username{
+            font-size 1.5rem
+            font-weight 500
+            overflow hidden
+            white-space nowrap
+            text-overflow ellipsis
+            line-height 1.5rem
+          }
+        }
+      }
+      .avatar-wrapper{
+        flex 0 0 35px;
+        height 35px
+
+        .status-avatar{
+          width 35px
+          height 35px
+          .common-avatar{
+            width 35px
+            height 35px
+            .avatar-holder{
+              span{
+                font-size 1.3rem
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+  .loading-wrapper{
+    display flex
+    align-items center
+  }
   .actions{
     .small-icon{
       i{

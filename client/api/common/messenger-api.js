@@ -9,6 +9,9 @@ export const messengerApi = {
     },
     getUserBubbleBriefInfo(userID){
         return authenApi.get(`/messenger/bubble/user/${userID}/brief`)
+    },
+    getUserChatRoomBrief(userID){
+        return authenApi.get(`/messenger/chat-room/user/${userID}/brief`)
     }
 
 };

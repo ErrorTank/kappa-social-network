@@ -89,6 +89,10 @@ var exceptionRequestsDev = [
     endpoint: /http:\/\/localhost:4000\/api\/messenger\/bubble\/user\/\w+\/brief/,
     method: 'GET',
   },
+  {
+    endpoint: /http:\/\/localhost:4000\/api\/messenger\/chat-room\/user\/\w+\/brief/,
+    method: 'GET',
+  },
 ];
 
 var notGetRequests = [
@@ -104,8 +108,8 @@ var notGetRequests = [
   },
 ];
 
-var CACHE_STATIC_NAME = 'static-v1590739999435';
-var CACHE_DYNAMIC_NAME = 'dynamic-v1590739999435';
+var CACHE_STATIC_NAME = 'static-v1591178511710';
+var CACHE_DYNAMIC_NAME = 'dynamic-v1591178511710';
 
 var STATIC_FILES = [
   '/',
