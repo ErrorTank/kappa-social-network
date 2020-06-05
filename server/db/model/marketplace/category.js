@@ -9,8 +9,16 @@ const categorySchema = new Schema({
   },
   parent: {
     type: ObjectId,
-    ref: 'categories',
+    ref: 'Category',
     default: null,
+  },
+  requiredField: {
+    type: [
+      {
+        type: String,
+      },
+    ],
+    default: [],
   },
 });
 
