@@ -1,0 +1,29 @@
+.message-utilities{
+  padding 8px
+  .actions-container{
+    display flex
+    justify-content space-between
+    align-items center
+    .chat-input-wrapper{
+      width 190px
+      height 10px
+      background-color red
+    }
+    .icon-wrapper{
+      position relative
+      width 35px
+      height 35px
+      transition background-color 0.1s ease
+      border-radius 50%
+      cursor pointer
+      i{
+        absoluteMiddle()
+        font-size 1.9rem !important
+        color primaryButton
+      }
+      &:hover{
+        background-color darken(white, 7%)
+      }
+    }
+  }
+}
