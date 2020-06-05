@@ -4,9 +4,7 @@ const Schema = mongoose.Schema;
 
 const listingSchema = new Schema({
   // needed information
-  photo: {
-    type: String,
-  },
+  photo: [String],
   title: {
     type: String,
     require: true,
@@ -16,9 +14,10 @@ const listingSchema = new Schema({
   },
   category: {
     type: ObjectId,
-    ref: 'categories',
+    ref: 'Category',
     default: null,
   },
+  //optional
   decription: {
     type: String,
   },
@@ -28,6 +27,32 @@ const listingSchema = new Schema({
   availability: {
     type: String,
     enum: ['single', 'instock', 'soldout'],
+  },
+  offerDelivery: {
+    type: Boolean,
+  },
+  amount: number,
+  comment: {
+    type: [
+      {
+        rating: {
+          type: Number,
+          enum: [0, 1, 2, 3, 4, 5],
+          default: 0,
+        },
+        author: {
+          type: ObjectId,
+          ref: 'User',
+        },
+        postTime: {
+          type: Date,
+          default: Date.now,
+        },
+        title: String,
+        content: String,
+        picture: [String],
+      },
+    ],
   },
   // Home & Garden
   condition: {
