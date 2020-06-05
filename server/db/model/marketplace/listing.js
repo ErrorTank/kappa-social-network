@@ -54,6 +54,7 @@ const listingSchema = new Schema({
       },
     ],
   },
+  productTag: String,
   // Home & Garden
   condition: {
     type: String,
