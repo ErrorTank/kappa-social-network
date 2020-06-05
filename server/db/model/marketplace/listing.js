@@ -11,6 +11,7 @@ const listingSchema = new Schema({
   },
   price: {
     type: Number,
+    require: true,
   },
   category: {
     type: ObjectId,
@@ -31,7 +32,7 @@ const listingSchema = new Schema({
   offerDelivery: {
     type: Boolean,
   },
-  amount: number,
+  amount: Number,
   comment: {
     type: [
       {
