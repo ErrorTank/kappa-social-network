@@ -16,11 +16,11 @@ export class ChatBox extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            brief: null
-        }
 
-        messengerApi.getUserChatRoomBrief(props.userID)
-            .then(brief => this.setState({brief}))
+        };
+
+        // messengerApi.getUserChatRoomBrief(props.userID)
+        //     .then(brief => this.setState({brief}))
 
     }
 
@@ -56,83 +56,86 @@ export class ChatBox extends Component {
     ];
 
     render() {
-        let {brief} = this.state;
-        let {onClose, active} = this.props;
-        let actions = brief ? this.headerActions : this.headerActions.slice(2);
+        let {onClose, active, userInfo, userID} = this.props;
+        let actions = userInfo ? this.headerActions : this.headerActions.slice(2);
+
         return (
             <WithUserStatus
-                userID={brief?._id}
+                userID={userInfo?._id}
                 status={{
-                    active: brief?.active,
-                    last_active_at: brief?.last_active_at
+                    active: userInfo?.active,
+                    last_active_at: userInfo?.last_active_at
                 }}
             >
-                {userStatus => (
-                    <ThemeContext.Consumer>
-                        {({darkMode}) => (
-                            <MessageBoxLayout
-                                className={classnames({hide: !active})}
-                                renderHeader={() => (
-                                    <div className="chat-box-header message-widget-header">
-                                        <div className="left-panel">
-                                            {brief ? (
-                                                <div className="chat-info">
-                                                    <div className={"avatar-wrapper"}>
-                                                        <StatusAvatar
-                                                            active={userStatus.active}
-                                                            user={brief}
-                                                        />
-                                                    </div>
-                                                    <div className="user-status">
-                                                        <div className="wrapper">
-                                                            <p className="username">{brief.basic_info.username}</p>
-                                                            <p className="status">{userStatus.active ? "Đang hoạt động" : moment(userStatus.last_active_at).fromNow()}</p>
+                {userStatus => {
+
+                    return (
+                        <ThemeContext.Consumer>
+                            {({darkMode}) => (
+                                <MessageBoxLayout
+                                    className={classnames({hide: !active})}
+                                    renderHeader={() => (
+                                        <div className="chat-box-header message-widget-header">
+                                            <div className="left-panel">
+                                                {userInfo ? (
+                                                    <div className="chat-info">
+                                                        <div className={"avatar-wrapper"}>
+                                                            <StatusAvatar
+                                                                active={userStatus.active}
+                                                                user={userInfo}
+                                                            />
                                                         </div>
+                                                        <div className="user-status">
+                                                            <div className="wrapper">
+                                                                <p className="username">{userInfo.basic_info.username}</p>
+                                                                <p className="status">{userStatus.active ? "Đang hoạt động" : moment(userStatus.last_active_at).fromNow()}</p>
+                                                            </div>
+                                                        </div>
+                                                        <i className="fal fa-angle-down"></i>
                                                     </div>
-                                                    <i className="fal fa-angle-down"></i>
+                                                ) : (
+
+                                                    <SkeletonTheme color={darkMode ? "#242526" : "#e3e3e3"}
+                                                                   highlightColor={darkMode ? "#333436" : "#ebebeb"}>
+                                                        <div className="loading-wrapper">
+                                                            <Skeleton count={1} height={32} width={32} duration={1} circle={true}/>
+                                                            <span style={{width:"5px"}}/>
+                                                            <Skeleton count={1} height={20} width={80} duration={1}/>
+                                                        </div>
+                                                    </SkeletonTheme>
+
+                                                )}
+                                            </div>
+                                            <div className="right-panel">
+                                                <div className="actions">
+                                                    {actions.map((each, i) => (
+                                                        <Tooltip
+                                                            text={() => each.toolTipContent}
+                                                            position={"top"}
+                                                            key={i}
+                                                        >
+                                                            <div className={classnames("icon-wrapper", each.className)}
+                                                                 onClick={each.onClick}>
+                                                                {each.icon}
+                                                            </div>
+                                                        </Tooltip>
+                                                    ))}
                                                 </div>
-                                            ) : (
-
-                                                <SkeletonTheme color={darkMode ? "#242526" : "#e3e3e3"}
-                                                               highlightColor={darkMode ? "#333436" : "#ebebeb"}>
-                                                    <div className="loading-wrapper">
-                                                        <Skeleton count={1} height={32} width={32} duration={1} circle={true}/>
-                                                        <span style={{width:"5px"}}/>
-                                                        <Skeleton count={1} height={20} width={80} duration={1}/>
-                                                    </div>
-                                                </SkeletonTheme>
-
-                                            )}
-                                        </div>
-                                        <div className="right-panel">
-                                            <div className="actions">
-                                                {actions.map((each, i) => (
-                                                    <Tooltip
-                                                        text={() => each.toolTipContent}
-                                                        position={"top"}
-                                                        key={i}
-                                                    >
-                                                        <div className={classnames("icon-wrapper", each.className)}
-                                                             onClick={each.onClick}>
-                                                            {each.icon}
-                                                        </div>
-                                                    </Tooltip>
-                                                ))}
                                             </div>
                                         </div>
-                                    </div>
-                                )}
-                                renderBody={() => (
-                                    <div className="chat-box-body">
-                                        <MessageSection/>
-                                        <MessageUtilities/>
-                                    </div>
-                                )}
-                            />
-                        )}
+                                    )}
+                                    renderBody={() => (
+                                        <div className="chat-box-body">
+                                            <MessageSection/>
+                                            <MessageUtilities/>
+                                        </div>
+                                    )}
+                                />
+                            )}
 
-                    </ThemeContext.Consumer>
-                )}
+                        </ThemeContext.Consumer>
+                    )
+                }}
             </WithUserStatus>
 
         );

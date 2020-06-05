@@ -4,7 +4,6 @@ import classnames from "classnames";
 
 export const MessageBoxLayout = (props) => {
     let {renderHeader, renderBody, className} = props;
-    console.log(className)
     return (
         <ThemeContext.Consumer>
             {({darkMode}) => (

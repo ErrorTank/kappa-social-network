@@ -8,7 +8,7 @@ export class WithUserStatus extends Component {
         this.state = {
             active: false,
             last_active_at: null
-        }
+        };
         this.io = messengerIO.getIOInstance();
 
     }

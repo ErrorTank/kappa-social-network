@@ -7,9 +7,10 @@ import {Tooltip} from "../../../common/tooltip/tooltip";
 import {searchMessageWidgetController} from "../search-message-panel/search-message-panel";
 import {ChatRoomBubble} from "./chat-room-bubble/chat-room-bubble";
 import {ChatBox} from "./chat-box/chat-box";
+import omit from "lodash/omit"
+import {CollapseBubbles} from "../collapse-bubble/collapse-bubbles";
 
 export let messageWidgetController = {};
-
 
 
 export class CreateMessageWidget extends Component {
@@ -18,7 +19,8 @@ export class CreateMessageWidget extends Component {
         this.state = {
             showCreatePanel: false,
             currentChatBox: null,
-            bubbleList: []
+            bubbleList: [],
+            userMap: {}
         };
         messageWidgetController = {
             open: () => {
@@ -32,7 +34,7 @@ export class CreateMessageWidget extends Component {
                 let {bubbleList} = this.state;
                 this.setState({currentChatBox: userID, showCreatePanel: false});
                 searchMessageWidgetController.close();
-                if(bubbleList.indexOf(userID) === -1){
+                if (bubbleList.indexOf(userID) === -1) {
                     this.setState({bubbleList: bubbleList.concat(userID)});
                 }
 
@@ -45,7 +47,7 @@ export class CreateMessageWidget extends Component {
     };
 
     closeChatBox = ({userID}) => {
-        this.setState({currentChatBox: null, bubbleList: this.state.bubbleList.filter(each => each !== userID)});
+        this.setState({currentChatBox: null, bubbleList: this.state.bubbleList.filter(each => each !== userID), userMap: omit(this.state.userMap, userID)});
     };
 
     handleClickBubbleBox = ({userID}) => {
@@ -53,24 +55,44 @@ export class CreateMessageWidget extends Component {
         searchMessageWidgetController.close();
     };
 
+    handleUserBriefFetch = (userID, data) => {
+        let {userMap} = this.state;
+        let newUserMap = {...userMap, [userID]: data};
+        this.setState({userMap:newUserMap });
+    };
+
     render() {
-        let {showCreatePanel, bubbleList, currentChatBox} = this.state;
+        let {showCreatePanel, bubbleList, currentChatBox, userMap} = this.state;
         let {darkMode} = this.props;
+        let reverseList = bubbleList.reverse();
+        let showBubbles = reverseList.slice(0, 4);
+        let collapseBubbles = reverseList.slice(4);
         return (
 
             <FloatBottomWidget
                 className={classnames("create-message-widget", {darkMode})}
                 renderSide={() => (
                     <div className="cmw-side">
-                        {bubbleList.reverse().map(each => (
+                        {showBubbles.map(each => (
                             <div className="cmw-round-stack bubble-chat-wrapper" key={each}>
                                 <ChatRoomBubble
                                     userID={each}
+                                    userInfo={userMap[each]}
+                                    onFetch={(data) => this.handleUserBriefFetch(each, data)}
                                     onClose={() => this.closeChatBox({userID: each})}
                                     onClick={() => this.handleClickBubbleBox({userID: each})}
                                 />
                             </div>
                         ))}
+                        {!!collapseBubbles.length  && (
+                            <div className="cmw-round-stack bubble-chat-wrapper">
+                                <CollapseBubbles
+                                    list={collapseBubbles.map(each => userMap[each])}
+                                    onClick={(userID) => this.handleClickBubbleBox({userID})}
+                                    onClose={(userID) => this.closeChatBox({userID})}
+                                />
+                            </div>
+                        )}
                         <div className="cmw-round-stack">
                             <Tooltip
                                 position={"left"}
@@ -101,7 +123,8 @@ export class CreateMessageWidget extends Component {
                                     </div>
                                     <div className="right-panel">
                                         <div className="actions">
-                                            <div className="icon-wrapper" onClick={() => this.setState({showCreatePanel: false})}>
+                                            <div className="icon-wrapper"
+                                                 onClick={() => this.setState({showCreatePanel: false})}>
                                                 <i className="fal fa-times"></i>
                                             </div>
                                         </div>
@@ -114,16 +137,21 @@ export class CreateMessageWidget extends Component {
                                 />
                             )}
                         />
-                    ) : bubbleList.map((each) => (
-                        <ChatBox
-                            key={each}
-                            userID={each}
-                            active={each === currentChatBox}
-                            onClose={() => this.closeChatBox({userID: each})}
-                            onMinimize={() => this.setState({currentChatBox: null})}
+                    ) : (
+                        <>
+                            {bubbleList.map((each) => (
+                                <ChatBox
+                                    key={each}
+                                    userID={each}
+                                    userInfo={userMap[each]}
+                                    active={each === currentChatBox}
+                                    onClose={() => this.closeChatBox({userID: each})}
+                                    onMinimize={() => this.setState({currentChatBox: null})}
 
-                        />
-                    ))
+                                />
+                            ))}
+                        </>
+                    )
                 }}
 
             />
