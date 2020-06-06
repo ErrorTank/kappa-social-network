@@ -8,7 +8,7 @@ export class MarketplaceSearchSection extends Component {
   render() {
     return (
       <div className='market-search-section'>
-        <h1>Marketplace</h1>
+        <h1 className='market-search-title'>Marketplace</h1>
       </div>
     );
   }
