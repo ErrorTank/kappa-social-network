@@ -108,8 +108,8 @@ var notGetRequests = [
   },
 ];
 
-var CACHE_STATIC_NAME = 'static-v1591347901300';
-var CACHE_DYNAMIC_NAME = 'dynamic-v1591347901300';
+var CACHE_STATIC_NAME = 'static-v1591423623520';
+var CACHE_DYNAMIC_NAME = 'dynamic-v1591423623520';
 
 var STATIC_FILES = [
   '/',
