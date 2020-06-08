@@ -1,0 +1,46 @@
+.emoji-picker {
+  position absolute
+  left 50%
+  transform translateX(-50%)
+  bottom 45px
+
+  .emoji-mart {
+    width auto !important
+  }
+}
+
+.chat-input {
+  width 100%
+  position relative
+  border-radius 20px
+  background-color bgLight
+  padding 6px 12px
+  font-size 1.4rem
+
+  .emoji-mart-emoji {
+    font-size inherit
+  }
+  padding-right 45px
+
+  .emoji-select {
+    position absolute
+    right 0
+    bottom 0
+    height 34px
+    width 34px
+    line-height 3
+    text-align center
+    border-radius 50%
+    cursor pointer
+    transition background-color 0.1s ease
+
+    i {
+      font-size 2.2rem
+      color lightIcon
+    }
+
+    &:hover {
+      background-color darken(bgLight, 5%)
+    }
+  }
+}

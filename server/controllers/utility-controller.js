@@ -74,7 +74,7 @@ module.exports = () => {
                 last_active: new Date()
             }, {
                 _id: "3",
-                group_name: "Dit con me group nhu con cacccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc",
+                group_name: "Tét group",
                 users: [
                     {
                         _id: "1",
@@ -148,7 +148,7 @@ module.exports = () => {
                 is_group_chat: true
             }, {
                 _id: "33123",
-                group_name: "Dit con me group nhu con cacccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc",
+                group_name: "heheheehe",
                 users: [
                     {
                         _id: "1",
