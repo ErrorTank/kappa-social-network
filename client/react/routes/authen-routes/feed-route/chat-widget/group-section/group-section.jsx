@@ -55,7 +55,7 @@ export class GroupSection extends Component {
                     last_active: new Date()
                 }, {
                     _id: "3",
-                    group_name: "Dit con me group nhu con cacccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc",
+                    group_name: "Tét griyp",
                     users: [
                         {
                             _id: "1",
