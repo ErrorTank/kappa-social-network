@@ -84,7 +84,15 @@ module.exports = {
                     }
                 ],
                 exclude: /node_modules/
-            }, {
+            },  {
+                test: /plugin\.css$/,
+                include: [
+                    path.resolve(__dirname, "not_exist_path")
+                ],
+                loaders: [
+                    'style-loader', 'css-loader',
+                ],
+            },{
                 test: /\.styl$/,
                 use: [
                     "style-loader",

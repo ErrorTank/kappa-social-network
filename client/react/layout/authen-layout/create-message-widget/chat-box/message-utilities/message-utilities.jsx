@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import {Tooltip} from "../../../../../common/tooltip/tooltip";
+import {ChatInput} from "./chat-input/chat-input";
 
 
 export class MessageUtilities extends Component {
@@ -23,7 +24,7 @@ export class MessageUtilities extends Component {
                         </div>
                     </Tooltip>
                     <div className="chat-input-wrapper">
-
+                        <ChatInput/>
                     </div>
                     <Tooltip text={() => "Gửi"} position={"top"}>
                         <div className="icon-wrapper react">
