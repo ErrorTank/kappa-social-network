@@ -10,14 +10,14 @@ export class MarketplaceMenuSection extends Component {
     return (
       <div className='marketplace-menu-section'>
         <MenuNavigationWithIcon
-          // icon={<i className='fas fa-store'></i>}
+          icon={<i className='fas fa-store'></i>}
           title={'Lướt xem tất cả'}
-          icon={
-            <span className='fa-stack fa-2x'>
-              <i className='fa fa-circle fa-stack-2x'></i>
-              <i className='fa fas fa-store fa-stack-1x fa-inverse'></i>
-            </span>
-          }
+          // icon={
+          //   <span className='fa-stack fa-2x'>
+          //     <i className='fa fa-circle fa-stack-2x'></i>
+          //     <i className='fa fas fa-store fa-stack-1x fa-inverse'></i>
+          //   </span>
+          // }
         />
         {/* <MenuNavigationWithIcon
           icon={<i className='fas fa-store'></i>}
