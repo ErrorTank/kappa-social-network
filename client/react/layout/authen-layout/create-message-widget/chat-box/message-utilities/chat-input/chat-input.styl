@@ -16,7 +16,37 @@
   background-color bgLight
   padding 6px 12px
   font-size 1.4rem
+  .chat-input-mention-popover{
+    overflow: hidden;
+    border-radius: 5px;
+    position: absolute;
+    top: -100%;
+    width: 100%;
+    left: 0;
+    background-color white
+    box-shadow 0 5px 6px #D1D1D1
+    .chat-input-entry{
+      cursor pointer
+      padding 8px
+      &:hover{
+        background-color darken(white, 3%)
+      }
+    }
+  }
+  .chat-input-mention{
+    color lightMentionText
+    background-color lightMentionBg
+    padding 1px 0
+    &:hover{
+      color lightMentionText !important
+      background-color lightMentionBg !important
+    }
+    &:focus{
+      color lightMentionText !important
+      background-color lightMentionBg !important
+    }
 
+  }
   .emoji-mart-emoji {
     font-size inherit
   }

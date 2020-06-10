@@ -1,10 +1,14 @@
 import React, {Component} from 'react';
 import Editor, {createEditorStateWithText} from 'draft-js-plugins-editor';
 import createEmojiMartPlugin from 'draft-js-emoji-mart-plugin';
+import createMentionPlugin from 'draft-js-mention-plugin';
+import classnames from "classnames"
+
 import data from 'emoji-mart/data/apple.json';
 
 import 'emoji-mart/css/emoji-mart.css'
 import {ClickOutside} from "../../../../../../common/click-outside/click-outside";
+import {chatApi} from "../../../../../../../api/common/chat-api";
 
 const emojiPlugin = createEmojiMartPlugin({
     data,
@@ -13,15 +17,30 @@ const emojiPlugin = createEmojiMartPlugin({
 
 
 const {Picker} = emojiPlugin;
-const plugins = [emojiPlugin];
+
 
 export class ChatInput extends Component {
     constructor(props) {
         super(props);
         this.state = {
             editorState: createEditorStateWithText(""),
-            showEmojiPicker: false
+            showEmojiPicker: false,
+            suggestions: []
         }
+        this.mentionPlugin = createMentionPlugin({
+            entityMutability: 'IMMUTABLE',
+            supportWhitespace: true,
+            positionSuggestions: () =>({}),
+            mentionPrefix: "@",
+            mentions: [],
+            mentionComponent: (mentionProps) => {
+                return (
+                    <span className={classnames("chat-input-mention", mentionProps.className)}>
+          {mentionProps.children}
+        </span>
+                )
+            },
+        });
     }
 
     onChange = (editorState) => {
@@ -37,8 +56,22 @@ export class ChatInput extends Component {
         this.editor.focus();
     };
 
+    onSearchChange = ({ value }) => {
+        this.setState({
+            loadSuggestion: true
+        })
+        chatApi.getMentionsByKeyword(this.props.chatRoomID, value)
+            .then((suggestions) => {
+                this.setState({
+                    suggestions,
+                    loadSuggestion: false
+                });
+            })
+
+    };
+
     render() {
-        console.log(this.state)
+        const { MentionSuggestions } = this.mentionPlugin;
         return (
 
                 <ClickOutside onClickOut={() => this.setState({showEmojiPicker: false})}>
@@ -48,13 +81,18 @@ export class ChatInput extends Component {
                               <Editor
                                   editorState={this.state.editorState}
                                   onChange={this.onChange}
-                                  plugins={plugins}
+                                  plugins={ [emojiPlugin, this.mentionPlugin]}
                                   ref={(element) => {
                                       this.editor = element;
                                   }}
                                   placeholder={"Nhập tin nhắn"}
                               />
-
+                              <MentionSuggestions
+                                  onSearchChange={this.onSearchChange}
+                                  suggestions={this.state.suggestions}
+                                  popoverComponent={<MentionPopover/>}
+                                  entryComponent={MentionEntry}
+                              />
                           </div>
                           <div className={"emoji-select"} onClick={(e) => {
                               e.stopPropagation();
@@ -79,4 +117,35 @@ export class ChatInput extends Component {
 
         );
     }
+}
+
+
+
+class MentionPopover extends React.Component{
+    render() {
+        console.log(this.props)
+        return (
+            <div className={classnames("chat-input-mention-popover")} id={this.props.id} role={"list-box"}>
+                {this.props.children}
+            </div>
+        )
+    }
+}
+const MentionEntry = props => {
+    console.log(props)
+    const {
+        mention,
+        theme,
+        searchValue,
+        isFocused,
+        className,
+        ...parentProps
+    } = props;
+
+    return (
+
+        <div className={classnames("chat-input-entry")} {...parentProps} >
+            {mention._id}
+        </div>
+    );
 }
