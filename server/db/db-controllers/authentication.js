@@ -9,7 +9,7 @@ const omit = require("lodash/omit");
 const pick = require("lodash/pick");
 const {getUnverifiedUserRegisterType} = require("../../utils/user-utils");
 const {createNewConfirmToken} = require("./confirm-token");
-const {twilioSmsService} = require("../../common/sms-service/sms-service");
+const {twilioSmsService, nexmoSmsService} = require("../../common/sms-service/sms-service");
 const emailService = require("../../common/email-service/email-service");
 const {getPrivateKey, getPublicKey} = require("../../authorization/keys/keys");
 const {createAuthToken} = require("../../authorization/auth");
@@ -17,7 +17,7 @@ const {createAuthToken} = require("../../authorization/auth");
 const sendAccountConfirmationToken = ({credentials, user}) => {
     if(credentials.register_type === "PHONE"){
 
-        return twilioSmsService.sendSms(
+        return nexmoSmsService.sendSms(
             user.contact.login_username.phone,
             `Mã xác nhận đăng ký tài khoản của bạn là: ${credentials.token}`
         )

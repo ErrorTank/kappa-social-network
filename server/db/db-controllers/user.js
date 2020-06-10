@@ -11,13 +11,13 @@ const pick = require("lodash/pick");
 const {createAuthToken} = require("../../authorization/auth");
 const {getPrivateKey, getPublicKey} = require("../../authorization/keys/keys");
 const {createNewConfirmToken} = require("./confirm-token");
-const {twilioSmsService} = require("../../common/sms-service/sms-service");
+const {twilioSmsService, nexmoSmsService} = require("../../common/sms-service/sms-service");
 const emailService = require("../../common/email-service/email-service");
 
 const sendResetPasswordToken = ({credentials, user}) => {
     if (credentials.register_type === "PHONE") {
 
-        return twilioSmsService.sendSms(
+        return nexmoSmsService.sendSms(
             user.contact.login_username.phone,
             `Mã xác nhận đổi mật khẩu của bạn là: ${credentials.token}`
         )
