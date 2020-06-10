@@ -145,7 +145,7 @@ class ChangePasswordBySms extends KComponent {
         this.props.onNext(this.form.getData())
             .catch(err => {
                 console.log(err);
-                if (err.message === "account_not_existed") {
+                if (err?.message === "account_not_existed") {
                     appModal.alert({
                         title: "Thông báo",
                         text: (
@@ -178,6 +178,7 @@ class ChangePasswordBySms extends KComponent {
 
     render() {
         let {loading} = this.state;
+        console.log(loading)
         return (
             <div className="change-password-by-sms change-password-tab">
                 <div className="change-password-tab-title">
@@ -241,7 +242,7 @@ class ForgotPasswordRoute extends Component {
                     return Promise.reject(err)
                 }
 
-                return openConnectionModal();
+                return Promise.reject();
             })
 
     };

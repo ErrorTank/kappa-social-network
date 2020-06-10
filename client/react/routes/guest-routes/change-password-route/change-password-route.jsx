@@ -21,18 +21,11 @@ export default class ChangePasswordRoute extends KComponent {
             changing: false
         };
         this.form = createSimpleForm(yup.object().shape({
-            currentPassword: yup.string().test({
-                message: "Mật khẩu hiện tại không đúng",
-                test: value => {
-                    console.log(this.state)
-                    return this.state.session ? value === this.state.session.user.private_info.password : false;
-                }
-            }),
+
             newPassword: yup.string().min(4, "Mật khẩu bắt buộc từ 4 ký tự trở lên").noSpecialChar("Mật khẩu không được có kí tự đặc biệt"),
             rePassword: yup.string().equalTo(yup.ref("newPassword"), "Mật khẩu nhập lại không trùng với mật khẩu mới").required("Mật khẩu nhập lại không trùng với mật khẩu mới")
         }), {
             initData: {
-                currentPassword: "",
                 newPassword: "",
                 rePassword: ""
             }
@@ -63,6 +56,7 @@ export default class ChangePasswordRoute extends KComponent {
                 customHistory.push("/");
             })
             .catch(() => {
+                this.setState({creating: false});
                 topFloatNotifications.push({
                     content: (
                         <p className="common-noti-layout danger">

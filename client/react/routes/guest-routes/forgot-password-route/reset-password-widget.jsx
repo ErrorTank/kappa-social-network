@@ -36,8 +36,9 @@ export class ResetPasswordWidget extends KComponent {
             this.setState({loading: true});
             this.props.onConfirm(token)
                 .catch(() => {
+
+                    this.setState({loading: false})
                     this.form.resetData()
-                        .then(() => this.setState({loading: false}));
 
                 });
         }

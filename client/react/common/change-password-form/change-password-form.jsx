@@ -13,21 +13,6 @@ export class ChangePasswordForm extends Component {
         return (
             <div className="change-password-form common-form">
                 <div className="common-form-row">
-                    {form.enhanceComponent("currentPassword", ({error, onChange, onEnter, ...others}) => (
-                        <CommonInput
-                            className="pt-0 cpw-input"
-                            error={error}
-                            id={"currentPassword"}
-                            type={"password"}
-                            label={"Mật khẩu hiện tại"}
-                            onChange={e => {
-                                onChange(e);
-                            }}
-                            {...others}
-                        />
-                    ), true)}
-                </div>
-                <div className="common-form-row">
                     {form.enhanceComponent("newPassword", ({error, onChange, onEnter, ...others}) => (
                         <CommonInput
                             className="pt-0 cpw-input"

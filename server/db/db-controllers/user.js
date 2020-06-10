@@ -198,7 +198,7 @@ const getChangePasswordUserBrief = sessionID => {
     return ResetPasswordToken.findOne({
         _id: ObjectId(sessionID),
         isVerify: true
-    }).populate("user", "private_info _id")
+    }).populate("user", "_id")
         .then(data => {
             console.log(data)
             if (!data) {
