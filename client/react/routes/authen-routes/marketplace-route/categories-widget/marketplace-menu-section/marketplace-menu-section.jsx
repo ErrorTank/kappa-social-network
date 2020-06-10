@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { MenuNavigationWithIcon } from '../../../../../common/menu-navigation-with-icon/menu-navigation-with-icon';
+import { CategoriesSection } from './categories-section/categories-section';
 
 export class MarketplaceMenuSection extends Component {
   constructor(props) {
@@ -9,6 +10,7 @@ export class MarketplaceMenuSection extends Component {
   render() {
     return (
       <div className='marketplace-menu-section'>
+        {/* <CategoriesSection darkMode={darkMode} /> */}
         <MenuNavigationWithIcon
           icon={<i className='fas fa-store'></i>}
           title={'Lướt xem tất cả'}

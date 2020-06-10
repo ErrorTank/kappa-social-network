@@ -3,7 +3,6 @@
   border-radius: 8px;
   .menu-navigation-wrapper{
     position relative
-    padding: 15px 40px;
     text-align: left;
     padding: 8px 8px 8px 0;
     border-radius: 8px;
@@ -17,12 +16,15 @@
     }
 
     .mn-icon{
+      position absolute;
       margin: 8px 12px 8px 0px;
       border-radius: 50%;
       width: 36px;
       height 36px;
       line-height: 36px;
       background-color: iconColorDark;
+      top 50%;
+      transform translateY(-50%);
       i{
         color: iconColorLight;
         font-size: 16px;

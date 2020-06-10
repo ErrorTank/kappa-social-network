@@ -11,7 +11,7 @@ export class MenuNavigationWithIcon extends Component {
     return (
       <div className={classnames('menu-navigation-with-icon')}>
         <div className='menu-navigation-wrapper'>
-          {icon && <span className='mn-icon'>{icon}</span>}
+          {icon && <div className='mn-icon'>{icon}</div>}
           <span className='mn-title'>{title}</span>
         </div>
       </div>

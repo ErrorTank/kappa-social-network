@@ -4,7 +4,6 @@ import classnames from 'classnames';
 import { ThemeContext } from '../../../../context/theme-context';
 import { MarketplaceSearchSection } from '../categories-widget/marketplace-search-section/marketplace-search-section';
 import { MarketplaceMenuSection } from '../categories-widget/marketplace-menu-section/marketplace-menu-section';
-import { CategoriesSection } from '../categories-widget/categories-section/categories-section';
 
 export class CategoriesWidget extends Component {
   constructor(props) {
@@ -18,7 +17,6 @@ export class CategoriesWidget extends Component {
           <div className={classnames('categories-widget', { darkMode })}>
             <MarketplaceSearchSection darkMode={darkMode} />
             <MarketplaceMenuSection darkMode={darkMode} />
-            <CategoriesSection darkMode={darkMode} />
           </div>
         )}
       </ThemeContext.Consumer>
