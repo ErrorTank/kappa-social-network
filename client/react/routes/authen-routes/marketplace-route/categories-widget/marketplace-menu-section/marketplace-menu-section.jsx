@@ -21,10 +21,10 @@ export class MarketplaceMenuSection extends Component {
           //   </span>
           // }
         />
-        {/* <MenuNavigationWithIcon
+        <MenuNavigationWithIcon
           icon={<i className='fas fa-store'></i>}
           title={'Tài khoản của bạn'}
-        /> */}
+        />
       </div>
     );
   }
