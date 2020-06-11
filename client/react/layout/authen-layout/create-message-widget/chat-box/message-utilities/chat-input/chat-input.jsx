@@ -9,6 +9,7 @@ import data from 'emoji-mart/data/apple.json';
 import 'emoji-mart/css/emoji-mart.css'
 import {ClickOutside} from "../../../../../../common/click-outside/click-outside";
 import {chatApi} from "../../../../../../../api/common/chat-api";
+import {Avatar} from "../../../../../../common/avatar/avatar";
 
 const emojiPlugin = createEmojiMartPlugin({
     data,
@@ -145,7 +146,20 @@ const MentionEntry = props => {
     return (
 
         <div className={classnames("chat-input-entry")} {...parentProps} >
-            {mention._id}
+            <div className="content-wrapper">
+                <Avatar user={mention}/>
+                <div className="user-info">
+                    <div className="username">
+                        {mention.basic_info.username}
+                    </div>
+                    {mention.nickname && (
+                        <div className="nickname">
+                            {mention.nickname}
+                        </div>
+                    )}
+                </div>
+            </div>
+
         </div>
     );
 }

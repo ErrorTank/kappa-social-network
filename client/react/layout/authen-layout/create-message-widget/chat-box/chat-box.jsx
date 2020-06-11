@@ -16,11 +16,11 @@ export class ChatBox extends Component {
     constructor(props) {
         super(props);
         this.state = {
-
+            chat_room_brief: null
         };
 
-        // messengerApi.getUserChatRoomBrief(props.userID)
-        //     .then(brief => this.setState({brief}))
+        messengerApi.getUserChatRoomBrief(props.userID)
+            .then(({chat_room}) => this.setState({chat_room_brief: chat_room}))
 
     }
 
