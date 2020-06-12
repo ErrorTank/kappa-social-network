@@ -11,16 +11,17 @@ import {StatusAvatar} from "../../../../common/status-avatar/status-avatar";
 const moment = require("moment");
 
 import {WithUserStatus} from "../../../../common/user-statuts-subcriber/user-status-subscriber";
+import {ChatBoxDropZone} from "./chat-box-dropzone";
 
 export class ChatBox extends Component {
     constructor(props) {
         super(props);
         this.state = {
-
+            chat_room_brief: null
         };
 
-        // messengerApi.getUserChatRoomBrief(props.userID)
-        //     .then(brief => this.setState({brief}))
+        messengerApi.getUserChatRoomBrief(props.userID)
+            .then(({chat_room}) => this.setState({chat_room_brief: chat_room}))
 
     }
 
@@ -126,6 +127,7 @@ export class ChatBox extends Component {
                                     )}
                                     renderBody={() => (
                                         <div className="chat-box-body">
+                                            <ChatBoxDropZone/>
                                             <MessageSection/>
                                             <MessageUtilities/>
                                         </div>

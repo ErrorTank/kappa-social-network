@@ -20,16 +20,49 @@
     overflow: hidden;
     border-radius: 5px;
     position: absolute;
-    top: -100%;
+    bottom: 100%;
     width: 100%;
     left: 0;
     background-color white
     box-shadow 0 5px 6px #D1D1D1
+    max-height 200px
+    overflow-y auto
     .chat-input-entry{
       cursor pointer
       padding 8px
       &:hover{
         background-color darken(white, 3%)
+      }
+      .content-wrapper{
+        display flex
+        align-items center
+        .common-avatar{
+          width 34px
+          height 34px
+          .avatar-holder{
+            span{
+              font-size 1.4rem
+            }
+          }
+        }
+        .user-info{
+          flex-grow 1
+          padding-left 10px
+          .username{
+            font-weight 500
+            color commonTextLight
+            font-size 1.4rem
+            line-height 100%
+            textOverflowEllipsis()
+          }
+          .nickname{
+            line-height 100%
+            margin-top 3px
+            font-size 1.2rem
+            color commonTextLight
+            textOverflowEllipsis()
+          }
+        }
       }
     }
   }
