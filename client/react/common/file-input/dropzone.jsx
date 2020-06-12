@@ -17,46 +17,61 @@ export class DropZone extends KComponent {
 
     componentDidMount() {
         const $elem = $(ReactDOM.findDOMNode(this));
-        const $window = $(document);
+        const $window = $(window);
         const $dropAreaOverlay = $elem.find(".drop-area-overlay");
-        console.log($dropAreaOverlay)
+
         $window.on('drag dragstart dragend dragover dragenter dragleave drop', (e) => {
 
             e.preventDefault();
             e.stopPropagation();
 
         });
-        $window
-            .on('dragenter dragover', (e) => {
-
-                $elem.addClass("window-on-drag");
-            })
-            .on('dragleave', (e) => {
-                console.log($elem.has($(e.target)))
-                // if(!$elem.is($(e.target)) && !$elem.has($(e.target))){
-                //     console.log("Sasa")
-                // }
-                // console.log("Dasdasdas")
-                // $elem.removeClass("window-on-drag");
-
-            })
-            .on('drop', (e) => {
-                $elem.removeClass("window-on-drag");
-
-            })
+        $elem.addClass("window-on-drag");
+        let counter2 = 0;
+        // $window
+        //     .on('dragenter', (e) => {
+        //         counter1 ++;
+        //         $elem.addClass("window-on-drag");
+        //     })
+        //     .on('dragover', (e) => {
+        //         $elem.addClass("window-on-drag");
+        //     })
+        //     .on('dragleave dragend', (e) => {
+        //         counter1 --;
+        //
+        //         if(counter1 === 0)
+        //             $elem.removeClass("window-on-drag");
+        //
+        //     })
+        //     .on('drop', (e) => {
+        //         counter1 --;
+        //
+        //         $elem.removeClass("window-on-drag");
+        //     })
 
 
         $dropAreaOverlay
             .on('dragenter dragover', (e) => {
+                e.preventDefault();
+                e.stopPropagation();
 
-
+                console.log("enter")
                 $elem.addClass("active-drag");
             })
-            .on('dragleave dragend', (e) => {
 
+            .on('dragleave dragend', (e) => {
+                e.preventDefault();
+                e.stopPropagation();
+
+                console.log("leave")
                 $elem.removeClass("active-drag");
+
+
             })
             .on('drop', (e) => {
+                e.preventDefault();
+                e.stopPropagation();
+
 
                 $elem.removeClass("active-drag");
 
