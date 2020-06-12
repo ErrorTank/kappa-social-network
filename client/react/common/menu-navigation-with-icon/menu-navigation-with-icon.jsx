@@ -12,7 +12,9 @@ export class MenuNavigationWithIcon extends Component {
       <div className={classnames('menu-navigation-with-icon')}>
         <div className='menu-navigation-wrapper'>
           {icon && <div className='mn-icon'>{icon}</div>}
-          <span className='mn-title'>{title}</span>
+          <div className='mn-title-wrapper'>
+            <span className='mn-title'>{title}</span>
+          </div>
         </div>
       </div>
     );

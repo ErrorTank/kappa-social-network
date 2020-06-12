@@ -1,6 +1,7 @@
-import React, { Component } from "react";
-import { MarketplaceSearch } from "./marketplace-search/marketplace-search";
-import { MarketplaceHeader } from "./marketplace-header/marketplace-header";
+import React, { Component } from 'react';
+import { MarketplaceSearch } from './marketplace-search/marketplace-search';
+import { MarketplaceHeader } from './marketplace-header/marketplace-header';
+import { LineSeperate } from '../../../../../common/line-seperate/line-seperate';
 
 export class MarketplaceSearchSection extends Component {
   constructor(props) {
@@ -12,6 +13,7 @@ export class MarketplaceSearchSection extends Component {
       <div className='market-search-section'>
         <MarketplaceHeader />
         <MarketplaceSearch />
+        <LineSeperate />
       </div>
     );
   }
