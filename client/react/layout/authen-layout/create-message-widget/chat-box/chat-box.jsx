@@ -11,6 +11,7 @@ import {StatusAvatar} from "../../../../common/status-avatar/status-avatar";
 const moment = require("moment");
 
 import {WithUserStatus} from "../../../../common/user-statuts-subcriber/user-status-subscriber";
+import {ChatBoxDropZone} from "./chat-box-dropzone";
 
 export class ChatBox extends Component {
     constructor(props) {
@@ -126,6 +127,7 @@ export class ChatBox extends Component {
                                     )}
                                     renderBody={() => (
                                         <div className="chat-box-body">
+                                            <ChatBoxDropZone/>
                                             <MessageSection/>
                                             <MessageUtilities/>
                                         </div>
