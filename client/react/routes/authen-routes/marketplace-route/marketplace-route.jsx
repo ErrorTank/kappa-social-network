@@ -12,7 +12,7 @@ class MarketplaceRoute extends KComponent {
   render() {
     return (
       <PageTitle title={'Marketplace'}>
-        <div className='feed-route'>
+        <div className='marketplace-route'>
           <CommonLayout
             mainRender={() => <div>hello</div>}
             haveRightRender={false}
