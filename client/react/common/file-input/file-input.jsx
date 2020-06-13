@@ -1,5 +1,8 @@
 
 import React from "react";
+import {appModal} from "../modal/modals";
+import {checkFileSizeExceed} from "../../../common/utils/file-upload-utils";
+import {formatBytes} from "../../../common/utils/file-upload-utils";
 
 export class InputFileWrapper extends React.Component {
     constructor(props) {
@@ -11,8 +14,7 @@ export class InputFileWrapper extends React.Component {
 
     handleSubmit = (e) => {
         const {multiple, onUploaded} = this.props;
-        console.log(e.target)
-        console.log(multiple)
+
         e.preventDefault();
         if (multiple) {
             for (let i = 0; i < e.target.files.length; i++) {
@@ -35,11 +37,13 @@ export class InputFileWrapper extends React.Component {
 
     checkFileSize = (file) => {
         const {limitSize, limitSizeMessage} = this.props;
-        if (limitSize && file.size > limitSize) {
-            // dialogs.alert({
-            //     headerText: `This file is greater than ${formatBytes(limitSize)}`,
-            //     text: limitSizeMessage || "The file must be no larger than " + formatBytes(limitSize) + "."
-            // });
+        if (limitSize && checkFileSizeExceed(file.size, limitSize)) {
+
+            appModal.alert({
+                title: "Thông báo",
+                text: limitSizeMessage || <span>Dung lượng file của bạn đã vượt quá <span className="high-light">{formatBytes(limitSize)}</span>. Vui lòng tải lên file có dung lương thấp hơn <span className="high-light">{formatBytes(limitSize)}</span></span>,
+                btnText: "Đồng ý",
+            });
             return false;
         }
 

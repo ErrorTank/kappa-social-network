@@ -18,6 +18,7 @@ export class ChatBoxDropZone extends Component {
         return (
             <DropZone
                 name="chat-box-file-upload"
+                limitSize={5 * 1024 * 1024}
                 className="background-dropzone"
                 multiple={true}
                 dropPlaceHolder={(
