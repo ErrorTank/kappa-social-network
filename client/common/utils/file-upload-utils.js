@@ -14,7 +14,12 @@ const checkFileSizeExceed = (size, limitSize) => {
     return size > limitSize
 }
 
+const isImageFile = (filename) => {
+    return (/\.(gif|jpe?g|tiff|png|webp|bmp)$/i).test(filename);
+}
+
 export {
     formatBytes,
-    checkFileSizeExceed
+    checkFileSizeExceed,
+    isImageFile
 }

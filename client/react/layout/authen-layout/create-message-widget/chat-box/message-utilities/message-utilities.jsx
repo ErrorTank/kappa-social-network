@@ -3,7 +3,11 @@ import {Tooltip} from "../../../../../common/tooltip/tooltip";
 import {ChatInput} from "./chat-input/chat-input";
 import {InputFileWrapper} from "../../../../../common/file-input/file-input";
 import {DropZone} from "../../../../../common/file-input/dropzone";
+import { v4 as uuidv4 } from 'uuid';
+import {isImageFile} from "../../../../../../common/utils/file-upload-utils";
+import {FileDisplay} from "./file-display/file-display";
 
+export const messageUtilities = {};
 
 export class MessageUtilities extends Component {
     constructor(props) {
@@ -11,27 +15,53 @@ export class MessageUtilities extends Component {
         this.state = {
             files: []
         }
+        messageUtilities.addFiles = (files) => {
+            this.addNewFiles(files)
+        }
     }
 
-    handleChangeMediaFile = (file) => {
-        console.log(file)
+    addNewFiles = (files) => {
+        let newFiles = Array.from(files).map(file => {
+            return isImageFile(file.name) ? {fileID: uuidv4(), file, type: "image"} : {fileID: uuidv4(), file, type: "common"};
+        })
+
+        this.setState({files: this.state.files.concat(newFiles)});
+    };
+
+    handleChangeMediaFiles = (files) => {
+
+        this.addNewFiles(files)
 
     };
 
-    handleChangeFile = (file) => {
-        console.log(file)
+    handleChangeFiles = (files) => {
+
+        this.addNewFiles(files)
     };
 
     render() {
+        let {files} = this.state;
+
         return (
             <div className="message-utilities">
+                <div className="files-display">
+                    <div className="files-container">
+                        {files.map(file => (
+                            <FileDisplay
+                                key={file.fileID}
+                                file={file}
+                            />
+                        ))}
+                    </div>
+                </div>
                 <div className="actions-container">
                     <InputFileWrapper
                         multiple={true}
                         accept={"image/*,image/heif,image/heic,video/*"}
-                        onUploaded={this.handleChangeMediaFile}
+                        onUploaded={this.handleChangeMediaFiles}
                         limitSize={5 * 1024 * 1024}
                     >
+
                         {({onClick}) => (
                             <Tooltip text={() => "Gắn ảnh hoặc video"} position={"top"}>
                                 <div className="icon-wrapper" onClick={onClick}>
@@ -43,7 +73,7 @@ export class MessageUtilities extends Component {
                     <InputFileWrapper
                         multiple={true}
                         accept={"*"}
-                        onUploaded={this.handleChangeFile}
+                        onUploaded={this.handleChangeFiles}
                         limitSize={5 * 1024 * 1024}
                     >
                         {({onClick}) => (
