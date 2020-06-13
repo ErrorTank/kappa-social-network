@@ -4,6 +4,9 @@ import {LoadingInline} from "../loading-inline/loading-inline";
 import {InputFileWrapper} from "./file-input";
 import classnames from "classnames"
 import ReactDOM from "react-dom"
+import {checkFileSizeExceed} from "../../../common/utils/file-upload-utils";
+import {appModal} from "../modal/modals";
+import {formatBytes} from "../../../common/utils/file-upload-utils";
 
 export class DropZone extends KComponent {
     constructor(props) {
@@ -18,7 +21,7 @@ export class DropZone extends KComponent {
     componentDidMount() {
         const $elem = $(ReactDOM.findDOMNode(this));
         const $window = $(window);
-        const $dropAreaOverlay = $elem.find(".drop-area-overlay");
+        // const $dropAreaOverlay = $elem.find(".drop-area-overlay");
 
         $window.on('drag dragstart dragend dragover dragenter dragleave drop', (e) => {
 
@@ -26,62 +29,73 @@ export class DropZone extends KComponent {
             e.stopPropagation();
 
         });
-        $elem.addClass("window-on-drag");
-        let counter2 = 0;
-        // $window
-        //     .on('dragenter', (e) => {
-        //         counter1 ++;
-        //         $elem.addClass("window-on-drag");
-        //     })
-        //     .on('dragover', (e) => {
-        //         $elem.addClass("window-on-drag");
-        //     })
-        //     .on('dragleave dragend', (e) => {
-        //         counter1 --;
-        //
-        //         if(counter1 === 0)
-        //             $elem.removeClass("window-on-drag");
-        //
-        //     })
-        //     .on('drop', (e) => {
-        //         counter1 --;
-        //
-        //         $elem.removeClass("window-on-drag");
-        //     })
-
-
-        $dropAreaOverlay
-            .on('dragenter dragover', (e) => {
-                e.preventDefault();
-                e.stopPropagation();
-
-                console.log("enter")
-                $elem.addClass("active-drag");
+        // $elem.addClass("window-on-drag");
+        let counter = 0;
+        $window
+            .on('dragenter', (e) => {
+                counter++;
+                $elem.addClass("window-on-drag");
             })
-
+            .on('dragover', (e) => {
+                $elem.addClass("window-on-drag");
+            })
             .on('dragleave dragend', (e) => {
-                e.preventDefault();
-                e.stopPropagation();
-
-                console.log("leave")
-                $elem.removeClass("active-drag");
-
+                counter--;
+                if(counter === 0)
+                    $elem.removeClass("window-on-drag");
 
             })
             .on('drop', (e) => {
-                e.preventDefault();
-                e.stopPropagation();
 
-
-                $elem.removeClass("active-drag");
+                $elem.removeClass("window-on-drag");
 
                 const dataTransfer = e.originalEvent.dataTransfer;
-                this.handleChangeFile(dataTransfer.files);
+                this.handleDropFile(dataTransfer.files);
             })
+
+
+
+
 
     }
 
+    handleDropFile = (files) => {
+        const {multiple} = this.props;
+
+        if (multiple) {
+            for (let i = 0; i < files.length; i++) {
+                const file = files[i];
+                if (!this.checkFileSize(file)) {
+                    return;
+                }
+            }
+            this.handleChangeFile(files)
+        } else {
+            const file = files[0];
+            if (file) {
+                if(this.checkFileSize(file)) {
+                    this.handleChangeFile(file);
+                }
+            }
+        }
+    };
+
+    checkFileSize = (file) => {
+        const {limitSize, limitSizeMessage} = this.props;
+        if (limitSize && checkFileSizeExceed(file.size, limitSize)) {
+            appModal.alert({
+                title: "Thông báo",
+                text: limitSizeMessage || <span>Dung lượng file của bạn đã vượt quá <span className="high-light">{formatBytes(limitSize)}</span>. Vui lòng tải lên file có dung lương thấp hơn <span className="high-light">{formatBytes(limitSize)}</span></span>,
+                btnText: "Đồng ý",
+            });
+            return false;
+        }
+
+        return true;
+    };
+
     handleChangeFile = (file) => {
+
         this.setState({uploading: true});
         this.props.onChange(file)
             .then(
@@ -92,7 +106,7 @@ export class DropZone extends KComponent {
 
     render() {
         const {
-            className, dropPlaceHolder, accept = "*", multiple = false
+            className, dropPlaceHolder, accept = "*", multiple = false, limitSize, limitSizeMessage, renderInput = false
         } = this.props;
         const {showDropArea, uploading} = this.state;
         const dropZoneWrapperClassName = classnames(
@@ -112,13 +126,22 @@ export class DropZone extends KComponent {
 
                 <div className="drop-area-overlay">
                     {dropPlaceHolder}
+                    {renderInput && (
+                        <>
 
-                    <InputFileWrapper
-                        multiple={multiple}
-                        accept={accept}
-                        className="select-file"
-                        onUploaded={this.handleChangeFile}
-                    />
+                            <InputFileWrapper
+                                multiple={multiple}
+                                accept={accept}
+                                className="select-file"
+                                onUploaded={this.handleChangeFile}
+                                limitSize={limitSize}
+                                limitSizeMessage={limitSizeMessage}
+                            >
+                                {renderInput}
+                            </InputFileWrapper>
+                        </>
+                    )}
+
                 </div>
             </div>
         );
@@ -126,14 +149,3 @@ export class DropZone extends KComponent {
 }
 
 
-function formatBytes(bytes, decimals = 2) {
-    if (bytes === 0) return '0 Bytes';
-
-    const k = 1024;
-    const dm = decimals < 0 ? 0 : decimals;
-    const sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'];
-
-    const i = Math.floor(Math.log(bytes) / Math.log(k));
-
-    return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + ' ' + sizes[i];
-}
