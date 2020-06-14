@@ -17,9 +17,17 @@ const checkFileSizeExceed = (size, limitSize) => {
 const isImageFile = (filename) => {
     return (/\.(gif|jpe?g|tiff|png|webp|bmp)$/i).test(filename);
 }
+const getBase64Image = (file)=>new Promise((resolve)=>{
+    let reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onload = () => {
+        resolve(reader.result);
+    };
+});
 
 export {
     formatBytes,
     checkFileSizeExceed,
-    isImageFile
+    isImageFile,
+    getBase64Image
 }

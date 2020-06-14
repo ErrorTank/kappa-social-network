@@ -1,5 +1,41 @@
 .file-display{
   display inline-block
   position relative
+  height 50px
 
+  .file-info{
+    width 50px
+
+  }
+  margin-right 15px
+  border-radius 5px
+  &.common-file{
+    .file-info{
+      max-width 180px
+      min-width 50px
+
+    }
+
+  }
+  .close-icon{
+    position absolute
+    top -6px
+    right -6px
+    width 22px
+    height  22px
+    border-radius 50%
+    background-color white
+    cursor: pointer;
+    display flex
+    justify-content center
+    align-items center
+    border 1px solid common-border
+    &:hover{
+      background-color darken(white, 5%)
+    }
+    i{
+      font-size 1.8rem
+      color commonTextLight
+    }
+  }
 }

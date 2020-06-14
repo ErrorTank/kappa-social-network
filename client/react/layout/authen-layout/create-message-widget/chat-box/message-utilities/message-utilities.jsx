@@ -39,6 +39,10 @@ export class MessageUtilities extends Component {
         this.addNewFiles(files)
     };
 
+    removeFile = fileID => {
+        this.setState({files: this.state.files.filter(file => file.fileID !== fileID)});
+    }
+
     render() {
         let {files} = this.state;
 
@@ -50,8 +54,24 @@ export class MessageUtilities extends Component {
                             <FileDisplay
                                 key={file.fileID}
                                 file={file}
+                                onClose={() => this.removeFile(file.fileID)}
                             />
                         ))}
+                        {!!files.length && (
+                            <InputFileWrapper
+                                multiple={true}
+                                accept={"*"}
+                                onUploaded={this.handleChangeFiles}
+                                limitSize={5 * 1024 * 1024}
+                            >
+                                {({onClick}) => (
+                                    <div className="add-file" onClick={onClick} >
+                                        <i className="fal fa-file-plus"></i>
+                                    </div>
+                                )}
+
+                            </InputFileWrapper>
+                        )}
                     </div>
                 </div>
                 <div className="actions-container">
