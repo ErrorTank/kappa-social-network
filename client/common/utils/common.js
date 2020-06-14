@@ -6,13 +6,7 @@ const wait1 = (fn, amount = 2000) => new Promise((res, rej) => {
         res();
     }, amount)
 });
-const getBase64=(file)=>new Promise((resolve)=>{
-    let reader = new FileReader();
-    reader.readAsDataURL(file);
-    reader.onload = () => {
-        resolve({file, src:reader.result, fileID: file.lastModified});
-    };
-});
+
 const parseYear = yearStr => {
   let [from, to] = yearStr.split("-");
   return {
@@ -142,7 +136,6 @@ export {
     wait1,
     wait2,
     delayLoad,
-    getBase64,
     buildParams,
     pronounce,
     formatMoney,
