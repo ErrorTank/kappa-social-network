@@ -6,6 +6,7 @@ import {DropZone} from "../../../../../common/file-input/dropzone";
 import { v4 as uuidv4 } from 'uuid';
 import {isImageFile} from "../../../../../../common/utils/file-upload-utils";
 import {FileDisplay} from "./file-display/file-display";
+import {getURLsFromText} from "../../../../../../common/utils/string-utils";
 
 export const messageUtilities = {};
 

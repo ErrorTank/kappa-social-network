@@ -10,6 +10,16 @@ const parseQueryString = (str) => {
   return params;
 };
 
+const getURLsFromText = text => {
+  let matches = text.matchAll(/(https?:\/\/[^\s]+)/gi)
+  let results = [];
+  for (const match of matches) {
+    results.push(match[0]);
+  }
+  return results;
+}
+
 export {
-  parseQueryString
+  parseQueryString,
+  getURLsFromText
 };
