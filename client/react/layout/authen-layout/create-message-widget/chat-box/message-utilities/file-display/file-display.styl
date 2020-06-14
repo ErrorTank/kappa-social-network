@@ -10,6 +10,38 @@
   }
   .file-info{
     width 50px
+    .file-wrapper{
+      padding 4px 8px
+      max-height 100%
+      height 50px
+      display flex
+      align-items center
+      justify-content center
+      .icon-wrapper{
+        height  33px
+        flex 0 0 33px
+        vertical-align middle
+        background-color white
+        border-radius 50%
+        position relative
+        i{
+          color commonTextLight
+          font-size 2rem
+          absoluteMiddle()
+        }
+
+      }
+      .filename{
+        white-space pre-wrap
+        overflow hidden
+        text-overflow ellipsis
+        padding-left 8px
+        font-size 1.4rem
+        font-weight 500
+        flex 0 0 calc(100% - 33px)
+
+      }
+    }
     .img-wrapper{
       width 50px
       height 50px
@@ -26,9 +58,9 @@
   border-radius 5px
   &.common-file{
     .file-info{
-      max-width 180px
-      min-width 50px
 
+
+      width 160px
     }
 
   }

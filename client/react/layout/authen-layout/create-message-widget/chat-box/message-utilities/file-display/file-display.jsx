@@ -19,7 +19,7 @@ export class FileDisplay extends Component {
         }
     }
     render() {
-        let {onClose} = this.props;
+        let {onClose, file} = this.props;
         let {base64Image, loading} = this.state;
         return (
             <div className={classnames("file-display", {"common-file": this.props.file.type !== "image"})}>
@@ -34,6 +34,12 @@ export class FileDisplay extends Component {
                         </div>
                     ) : (
                         <div className="file-wrapper">
+                            <div className="icon-wrapper">
+                                <i className="fas fa-file-alt"></i>
+                            </div>
+                            <div className="filename">
+                                {file.file.name}
+                            </div>
                         </div>
                     )}
                 </div>
