@@ -41,12 +41,13 @@ export class DropZone extends KComponent {
             })
             .on('dragleave dragend', (e) => {
                 counter--;
+                console.log(counter)
                 if(counter === 0)
                     $elem.removeClass("window-on-drag");
 
             })
             .on('drop', (e) => {
-
+                counter--;
                 $elem.removeClass("window-on-drag");
 
                 const dataTransfer = e.originalEvent.dataTransfer;

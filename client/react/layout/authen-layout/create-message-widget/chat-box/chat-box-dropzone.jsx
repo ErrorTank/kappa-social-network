@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import {DropZone} from "../../../../common/file-input/dropzone";
+import {messageUtilities} from "./message-utilities/message-utilities";
 
 export class ChatBoxDropZone extends Component {
     constructor(props) {
@@ -9,8 +10,8 @@ export class ChatBoxDropZone extends Component {
         }
     }
 
-    handleUploadFiles = (file) => {
-        console.log(file)
+    handleUploadFiles = (files) => {
+        messageUtilities.addFiles(files);
         return Promise.resolve();
     }
 

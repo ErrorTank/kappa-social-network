@@ -12,6 +12,7 @@ export class InputFileWrapper extends React.Component {
 
     inputElem = null;
 
+
     handleSubmit = (e) => {
         const {multiple, onUploaded} = this.props;
 
@@ -58,7 +59,9 @@ export class InputFileWrapper extends React.Component {
         const {children, multiple = false, disabled = false, accept = ""} = this.props;
         return (
             <>
-                {children && children({onClick: () => (this.inputElem && !disabled) && this.inputElem.click()})}
+                {children && children({
+                    onClick: () => (this.inputElem && !disabled) && this.inputElem.click()
+                })}
                 <input
                     type="file"
                     multiple={multiple}

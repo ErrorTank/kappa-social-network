@@ -1,6 +1,36 @@
 .message-utilities{
   padding 8px
   position relative
+  .files-display{
+    margin-bottom 6px
+    overflow-x auto
+    .files-container{
+
+
+      display flex
+      align-items center
+      height 65px
+      .add-file{
+        background-color bgLight
+        width 50px
+        height 50px
+        border-radius 5px
+        display flex
+        align-items center
+        justify-content center
+        cursor pointer
+        transition background-color 0.1s ease
+        &:hover{
+          background-color darken(bgLight, 5%)
+        }
+        i{
+          font-size 3rem
+          color commonTextLight
+
+        }
+      }
+    }
+  }
   .actions-container{
     display flex
     justify-content space-between
