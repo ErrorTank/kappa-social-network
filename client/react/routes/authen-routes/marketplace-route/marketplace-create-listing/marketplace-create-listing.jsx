@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import { KComponent } from '../../../../common/k-component';
 import { CommonLayout } from '../../../../layout/common-layout/common-layout';
 import { CreateListingWidget } from './create-listing-widget/create-listing-widget';
+import { PageTitle } from '../../../../common/page-title/page-title';
+import { PickListingTypeWidget } from './pick-listing-type-widget/pick-listing-type-widget';
 
 class MarketplaceCreateListing extends KComponent {
   constructor(props) {
@@ -11,11 +13,13 @@ class MarketplaceCreateListing extends KComponent {
   render() {
     return (
       <div className='marketplace-create-listing'>
-        <CommonLayout
-          mainRender={() => <div>hello</div>}
-          haveRightRender={false}
-          leftRender={() => <CreateListingWidget />}
-        />
+        <PageTitle title={'Tạo niêm yết'}>
+          <CommonLayout
+            mainRender={() => <PickListingTypeWidget />}
+            haveRightRender={false}
+            leftRender={() => <CreateListingWidget />}
+          />
+        </PageTitle>
       </div>
     );
   }

@@ -20,7 +20,6 @@ export class MarketplaceMenuSection extends Component {
         <MenuNavigationWithIcon
           icon={<i className='fas fa-user'></i>}
           title={'Tài khoản của bạn'}
-          type={'sup'}
         />
         <div
           className='create-listing-button'

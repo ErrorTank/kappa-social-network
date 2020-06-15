@@ -26,12 +26,10 @@ export class CreateListingWidget extends Component {
             <MenuNavigationWithIcon
               icon={<i className='fas fa-user'></i>}
               title={'Bài niêm yết của bạn'}
-              type={'sup'}
             />
             <MenuNavigationWithIcon
               icon={<i className='fas fa-question-circle'></i>}
               title={'Trợ giúp người bán'}
-              type={'sup'}
             />
           </div>
         </div>
