@@ -15,10 +15,12 @@ export class MarketplaceMenuSection extends Component {
         <MenuNavigationWithIcon
           icon={<i className='fas fa-store'></i>}
           title={'Lướt xem tất cả'}
+          type={'main'}
         />
         <MenuNavigationWithIcon
           icon={<i className='fas fa-user'></i>}
           title={'Tài khoản của bạn'}
+          type={'sup'}
         />
         <div
           className='create-listing-button'

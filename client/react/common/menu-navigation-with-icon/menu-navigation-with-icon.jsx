@@ -7,9 +7,9 @@ export class MenuNavigationWithIcon extends Component {
     this.state = {};
   }
   render() {
-    let { className, id, icon, darkMode, title, ...other } = this.props;
+    let { className, id, icon, darkMode, title, type, ...other } = this.props;
     return (
-      <div className={classnames('menu-navigation-with-icon')}>
+      <div className={classnames('menu-navigation-with-icon', `${type}`)}>
         <div className='menu-navigation-wrapper'>
           {icon && <div className='mn-icon'>{icon}</div>}
           <div className='mn-title-wrapper'>
