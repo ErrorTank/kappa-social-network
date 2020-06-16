@@ -129,7 +129,7 @@ export class ChatBox extends Component {
                                         <div className="chat-box-body">
                                             <ChatBoxDropZone/>
                                             <MessageSection/>
-                                            <MessageUtilities/>
+                                            <MessageUtilities chatRoom={this.state.chat_room_brief}/>
                                         </div>
                                     )}
                                 />

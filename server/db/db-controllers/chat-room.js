@@ -2,7 +2,7 @@ const dbManager = require("../../config/db");
 const appDb = dbManager.getConnections()[0];
 const Page = require("../model/page")(appDb);
 const User = require("../model/user")(appDb);
-const Group = require("../model/group")(appDb);
+const ChatRoom = require("../model/chat-room")(appDb);
 const mongoose = require("mongoose");
 const ObjectId = mongoose.Types.ObjectId;
 const {ApplicationError} = require("../../utils/error/error-types");
@@ -14,7 +14,8 @@ const getChatContacts = (userID) => {
     return User.findOne({_id: ObjectId(userID)})
         .populate("friends.info")
         .then(user => {
-            let {friends} = user;
+            let {friends} =
+                user;
             return friends.sort((a, b) => {
 
                 return new Date(a.last_interact).getTime() - new Date(b.last_interact).getTime();
@@ -24,8 +25,40 @@ const getChatContacts = (userID) => {
         })
 };
 
+const getGroupChatRoomInvolvesByKeyword = (chatRoomID, keyword = "") => {
+    let pipeline = [{
+        $match: {
+            _id: ObjectId(chatRoomID)
+        },
 
+    }, {
+        $unwind: "$involve_person"
+    }, {
+        $lookup: {
+            from: 'users', localField: 'involve_person.related', foreignField: '_id', as: "involve_person.related"
+        }
+    }, {
+        $project: {
+            involve_person: "$involve_person",
+
+        }
+    }];
+    if (keyword) {
+        pipeline.push({
+            $match: {
+                $or: [{
+                    "involve_person.nickname": { $regex: keyword, $options: "i" }
+                }, {
+                    "involve_person.basic_info.username": { $regex: keyword, $options: "i" }
+                }]
+            }
+        })
+    }
+    return ChatRoom.aggregate(pipeline)
+
+};
 
 module.exports = {
     getChatContacts,
+    getGroupChatRoomInvolvesByKeyword
 };

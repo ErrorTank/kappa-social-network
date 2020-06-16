@@ -107,7 +107,7 @@ export class MessageUtilities extends Component {
 
                     </InputFileWrapper>
                     <div className="chat-input-wrapper">
-                        <ChatInput/>
+                        <ChatInput chatRoomID={this.props.chatRoom?._id}/>
                     </div>
                     <Tooltip text={() => "Gửi"} position={"top"}>
                         <div className="icon-wrapper react">
