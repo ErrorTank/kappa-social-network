@@ -13,24 +13,25 @@ export const chatApi = {
                 return Promise.reject(err);
             });
     },
-    getMentionsByKeyword(roomChatID, keyword) {
-        // return authenApi.get(`/chat/${roomChatID}/mentions?keyword=${keyword}`)
-        return Promise.resolve([{
-            _id: "1",
-            name: "Huan hoa hong",
-            basic_info: {
-                username: "Con cac"
-            },
-            avatar: "https://image.thanhnien.vn/1080/uploaded/congnguyen/2019_09_09/huanhoahong-1_ugww.jpg",
-            nickname: "Huan hoa hong"
-        }, {
-            _id: "2",
-            name: "Tuan Anh",
-            basic_info: {
-                username: "Tuan Anh"
-            },
-            nickname: "Kappa"
-        }])
+
+    getMentionsByKeyword(roomChatID, keyword = "") {
+        return authenApi.get(`/chat/${roomChatID}/mentions?keyword=${keyword}`)
+        // return Promise.resolve([{
+        //     _id: "1",
+        //     name: "Huan hoa hong",
+        //     basic_info: {
+        //         username: "Con cac"
+        //     },
+        //     avatar: "https://image.thanhnien.vn/1080/uploaded/congnguyen/2019_09_09/huanhoahong-1_ugww.jpg",
+        //     nickname: "Huan hoa hong"
+        // }, {
+        //     _id: "2",
+        //     name: "Tuan Anh",
+        //     basic_info: {
+        //         username: "Tuan Anh"
+        //     },
+        //     nickname: "Kappa"
+        // }])
     }
 
 };
