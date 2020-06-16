@@ -28,7 +28,7 @@ export class CreateMessageWidget extends Component {
                 this.setState({showCreatePanel: true, currentChatBox: null});
             },
             close: () => {
-                this.setState({showCreatePanel: false});
+                this.setState({showCreatePanel: false, currentChatBox: null});
             },
             createNewChatBox: ({userID}) => {
                 let {bubbleList} = this.state;
