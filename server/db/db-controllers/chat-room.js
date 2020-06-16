@@ -39,21 +39,14 @@ const getGroupChatRoomInvolvesByKeyword = (chatRoomID, keyword = "") => {
         }
     }, {
         $project: {
-            involve_person: "$involve_person",
-
+            _id: {
+                $arrayElemAt: ["$involve_person.related._id", 0]
+            },
+            nickname: "$involve_person.nickname",
+            basic_info: "$involve_person.related.basic_info",
         }
     }];
-    if (keyword) {
-        pipeline.push({
-            $match: {
-                $or: [{
-                    "involve_person.nickname": { $regex: keyword, $options: "i" }
-                }, {
-                    "involve_person.basic_info.username": { $regex: keyword, $options: "i" }
-                }]
-            }
-        })
-    }
+
     return ChatRoom.aggregate(pipeline)
 
 };
