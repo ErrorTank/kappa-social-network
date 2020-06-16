@@ -10,7 +10,7 @@ import 'emoji-mart/css/emoji-mart.css'
 import {ClickOutside} from "../../../../../../common/click-outside/click-outside";
 import {chatApi} from "../../../../../../../api/common/chat-api";
 import {Avatar} from "../../../../../../common/avatar/avatar";
-
+import debounce from "lodash/debounce"
 const emojiPlugin = createEmojiMartPlugin({
     data,
     set: 'apple'
@@ -57,7 +57,8 @@ export class ChatInput extends Component {
         this.editor.focus();
     };
 
-    onSearchChange = ({ value }) => {
+    onSearchChange = debounce(({ value }) => {
+        console.log(value)
         this.setState({
             loadSuggestion: true
         })
@@ -69,7 +70,7 @@ export class ChatInput extends Component {
                 });
             })
 
-    };
+    }, 500);
 
     render() {
         const { MentionSuggestions } = this.mentionPlugin;
@@ -124,7 +125,7 @@ export class ChatInput extends Component {
 
 class MentionPopover extends React.Component{
     render() {
-        console.log(this.props)
+
         return (
             <div className={classnames("chat-input-mention-popover")} id={this.props.id} role={"list-box"}>
                 {this.props.children}
@@ -133,7 +134,7 @@ class MentionPopover extends React.Component{
     }
 }
 const MentionEntry = props => {
-    console.log(props)
+
     const {
         mention,
         theme,

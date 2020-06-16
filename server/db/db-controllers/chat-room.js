@@ -8,7 +8,7 @@ const ObjectId = mongoose.Types.ObjectId;
 const {ApplicationError} = require("../../utils/error/error-types");
 const omit = require("lodash/omit");
 const pick = require("lodash/pick");
-const {getRandomToken} = require("../../utils/common-utils");
+const {binarySearch} = require("../../utils/common-utils");
 
 const getChatContacts = (userID) => {
     return User.findOne({_id: ObjectId(userID)})
@@ -43,11 +43,26 @@ const getGroupChatRoomInvolvesByKeyword = (chatRoomID, keyword = "") => {
                 $arrayElemAt: ["$involve_person.related._id", 0]
             },
             nickname: "$involve_person.nickname",
-            basic_info: "$involve_person.related.basic_info",
+            basic_info:{
+                $arrayElemAt: ["$involve_person.related.basic_info", 0]
+            },
         }
     }];
 
     return ChatRoom.aggregate(pipeline)
+        .then((data) => {
+            console.log(data)
+            console.log(keyword)
+            return keyword ? data.map(each => {
+                if((each.basic_info.username || "").indexOf(keyword) > -1){
+                    return {...each, name: each.basic_info.username}
+                }
+                if((each.nickname || "").indexOf(keyword) > -1){
+                    return {...each, name: each.nickname}
+                }
+                return each
+            }).filter(each => each.name) : data;
+        })
 
 };
 
