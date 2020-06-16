@@ -13,15 +13,20 @@ const moment = require("moment");
 import {WithUserStatus} from "../../../../common/user-statuts-subcriber/user-status-subscriber";
 import {ChatBoxDropZone} from "./chat-box-dropzone";
 
+
 export class ChatBox extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            chat_room_brief: null
+            chat_room_brief: null,
+
         };
 
         messengerApi.getUserChatRoomBrief(props.userID)
-            .then(({chat_room}) => this.setState({chat_room_brief: chat_room}))
+            .then(({chat_room}) => {
+                this.setState({chat_room_brief: chat_room});
+
+            })
 
     }
 

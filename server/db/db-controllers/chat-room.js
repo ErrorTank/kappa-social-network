@@ -50,19 +50,7 @@ const getGroupChatRoomInvolvesByKeyword = (chatRoomID, keyword = "") => {
     }];
 
     return ChatRoom.aggregate(pipeline)
-        .then((data) => {
-            console.log(data)
-            console.log(keyword)
-            return keyword ? data.map(each => {
-                if((each.basic_info.username || "").indexOf(keyword) > -1){
-                    return {...each, name: each.basic_info.username}
-                }
-                if((each.nickname || "").indexOf(keyword) > -1){
-                    return {...each, name: each.nickname}
-                }
-                return each
-            }).filter(each => each.name) : data;
-        })
+
 
 };
 
