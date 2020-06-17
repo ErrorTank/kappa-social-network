@@ -10,7 +10,7 @@ import 'emoji-mart/css/emoji-mart.css'
 import {ClickOutside} from "../../../../../../common/click-outside/click-outside";
 import {chatApi} from "../../../../../../../api/common/chat-api";
 import {Avatar} from "../../../../../../common/avatar/avatar";
-
+import debounce from "lodash/debounce"
 const emojiPlugin = createEmojiMartPlugin({
     data,
     set: 'apple'
@@ -26,8 +26,11 @@ export class ChatInput extends Component {
         this.state = {
             editorState: createEditorStateWithText(""),
             showEmojiPicker: false,
-            suggestions: []
+            suggestions: [],
+            loadSuggestion: true,
+            filteredSuggestions: []
         }
+
         this.mentionPlugin = createMentionPlugin({
             entityMutability: 'IMMUTABLE',
             supportWhitespace: true,
@@ -57,22 +60,44 @@ export class ChatInput extends Component {
         this.editor.focus();
     };
 
-    onSearchChange = ({ value }) => {
-        this.setState({
-            loadSuggestion: true
-        })
-        chatApi.getMentionsByKeyword(this.props.chatRoomID, value)
+    componentWillReceiveProps(nextProps, nextContext) {
+        if(nextProps.chatRoomID && nextProps.chatRoomID !== this.props.chatRoomID){
+            this.loadSuggestion(nextProps.chatRoomID);
+        }
+
+    }
+
+    loadSuggestion = (chatRoomID) => {
+
+        chatApi.getMentionsByKeyword(chatRoomID, "")
             .then((suggestions) => {
                 this.setState({
                     suggestions,
                     loadSuggestion: false
                 });
             })
+    }
 
-    };
+    onSearchChange = ({value}) => {
+        this.setState({filteredSuggestions: this.filterSuggestions(this.state.suggestions, value)});
+    }
+
+    filterSuggestions =  (data, keyword) => {
+
+        return keyword ? data.map(each => {
+            if((each.basic_info.username || "").indexOf(keyword) > -1){
+                return {...each, name: each.basic_info.username}
+            }
+            if((each.nickname || "").indexOf(keyword) > -1){
+                return {...each, name: each.nickname}
+            }
+            return each
+        }).filter(each => each.name) : data.map(each => ({...each, name: each.basic_info.username}));
+    }
 
     render() {
         const { MentionSuggestions } = this.mentionPlugin;
+        console.log(this.state.filteredSuggestions)
         return (
 
                 <ClickOutside onClickOut={() => this.setState({showEmojiPicker: false})}>
@@ -90,7 +115,7 @@ export class ChatInput extends Component {
                               />
                               <MentionSuggestions
                                   onSearchChange={this.onSearchChange}
-                                  suggestions={this.state.suggestions}
+                                  suggestions={this.state.filteredSuggestions}
                                   popoverComponent={<MentionPopover/>}
                                   entryComponent={MentionEntry}
                               />
@@ -124,7 +149,7 @@ export class ChatInput extends Component {
 
 class MentionPopover extends React.Component{
     render() {
-        console.log(this.props)
+
         return (
             <div className={classnames("chat-input-mention-popover")} id={this.props.id} role={"list-box"}>
                 {this.props.children}
@@ -133,7 +158,7 @@ class MentionPopover extends React.Component{
     }
 }
 const MentionEntry = props => {
-    console.log(props)
+
     const {
         mention,
         theme,

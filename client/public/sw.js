@@ -93,6 +93,10 @@ var exceptionRequestsDev = [
     endpoint: /http:\/\/localhost:4000\/api\/messenger\/chat-room\/user\/\w+\/brief/,
     method: 'GET',
   },
+  {
+    endpoint: /http:\/\/localhost:4000\/api\/chat\/\w+\/mentions/,
+    method: 'GET',
+  },
 ];
 
 var notGetRequests = [
