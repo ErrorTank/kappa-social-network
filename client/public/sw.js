@@ -94,6 +94,14 @@ var exceptionRequestsDev = [
     method: 'GET',
   },
   {
+    endpoint: /http:\/\/localhost:4000\/api\/chat\/\w+\/send-message/,
+    method: 'POST',
+  },
+  {
+    endpoint: /http:\/\/localhost:4000\/api\/chat\/\w+\/get-messages/,
+    method: 'GET',
+  },
+  {
     endpoint: /http:\/\/localhost:4000\/api\/chat\/\w+\/mentions/,
     method: 'GET',
   },
@@ -112,8 +120,8 @@ var notGetRequests = [
   },
 ];
 
-var CACHE_STATIC_NAME = 'static-v1592314154523';
-var CACHE_DYNAMIC_NAME = 'dynamic-v1592314154523';
+var CACHE_STATIC_NAME = 'static-v1592385756368';
+var CACHE_DYNAMIC_NAME = 'dynamic-v1592385756368';
 
 var STATIC_FILES = [
   '/',

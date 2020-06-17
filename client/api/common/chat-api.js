@@ -32,6 +32,12 @@ export const chatApi = {
         //     },
         //     nickname: "Kappa"
         // }])
+    },
+    sendMessage(chatRoomID, messageContent){
+        return authenApi.post(`/chat/${chatRoomID}/send-message`, messageContent)
+    },
+    getChatRoomMessages(chatRoomID, {skip, take = 10}){
+        return authenApi.get(`/chat/${chatRoomID}/get-messages?skip=${skip}&take=${take}`)
     }
 
 };

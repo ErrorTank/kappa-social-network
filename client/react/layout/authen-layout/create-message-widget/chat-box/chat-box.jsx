@@ -9,12 +9,23 @@ import Skeleton, {SkeletonTheme} from "react-loading-skeleton";
 import {ThemeContext} from "../../../../context/theme-context";
 import {StatusAvatar} from "../../../../common/status-avatar/status-avatar";
 const moment = require("moment");
-
+import { v4 as uuidv4 } from 'uuid';
 import {WithUserStatus} from "../../../../common/user-statuts-subcriber/user-status-subscriber";
 import {ChatBoxDropZone} from "./chat-box-dropzone";
+import {chatApi} from "../../../../../api/common/chat-api";
+import {userInfo} from "../../../../../common/states/common";
+import {createStateHolder} from "../../../../../common/states/state-holder";
+import omit from "lodash/omit"
+import {KComponent} from "../../../../common/k-component";
 
 
-export class ChatBox extends Component {
+export const MessageState = {
+    CACHED: "CACHED",
+    SAVED: "SAVED",
+    SENT: "SENT",
+}
+
+export class ChatBox extends KComponent {
     constructor(props) {
         super(props);
         this.state = {
@@ -22,11 +33,16 @@ export class ChatBox extends Component {
 
         };
 
+        this.messageState = createStateHolder([]);
+
         messengerApi.getUserChatRoomBrief(props.userID)
             .then(({chat_room}) => {
                 this.setState({chat_room_brief: chat_room});
 
             })
+        this.onUnmount( this.messageState.onChange((nextState, oldState) => {
+            this.forceUpdate();
+        }));
 
     }
 
@@ -60,6 +76,32 @@ export class ChatBox extends Component {
             toolTipContent: "Đóng tab"
         },
     ];
+
+    handleSubmitChat = (chatState) => {
+        let newMessageID = uuidv4();
+        let newMessage = {
+            _id: newMessageID,
+            sentBy: userInfo.getState()._id,
+            content: chatState.content,
+            mentions: chatState.mentions,
+            hyperlinks: chatState.hyperlinks,
+            state: MessageState.CACHED
+        }
+        let currentMessages = this.messageState.getState();
+        let newMessages = currentMessages.concat(newMessage);
+        this.messageState.setState(newMessages);
+        chatApi.sendMessage(this.state.chat_room_brief._id, omit(newMessage, ["_id", "state"]))
+            .then(newServerMessage => {
+                this.messageState.setState(newMessages.splice(newMessages.length - 1, 1, {...newServerMessage, state: MessageState.SAVED}));
+            })
+
+    };
+
+    loadMessages = (chatRoomID) => {
+
+        return chatApi.getChatRoomMessages(chatRoomID, {skip: this.messageState.getState().length})
+            .then(messages => this.messageState.setState(messages))
+    };
 
     render() {
         let {onClose, active, userInfo, userID} = this.props;
@@ -133,8 +175,15 @@ export class ChatBox extends Component {
                                     renderBody={() => (
                                         <div className="chat-box-body">
                                             <ChatBoxDropZone/>
-                                            <MessageSection/>
-                                            <MessageUtilities chatRoom={this.state.chat_room_brief}/>
+                                            <MessageSection
+                                                chatRoomID={this.state.chat_room_brief?._id}
+                                                loadMessages={this.loadMessages}
+                                                messages={this.messageState.getState()}
+                                            />
+                                            <MessageUtilities
+                                                chatRoom={this.state.chat_room_brief}
+                                                onSubmit={this.handleSubmitChat}
+                                            />
                                         </div>
                                     )}
                                 />

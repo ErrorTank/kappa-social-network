@@ -54,7 +54,47 @@ const getGroupChatRoomInvolvesByKeyword = (chatRoomID, keyword = "") => {
 
 };
 
+const createNewMessage = ({ chatRoomID, value}) => {
+    let newMessage = {...value, _id: new ObjectId()}
+    return ChatRoom.findOneAndUpdate({
+        _id: ObjectId(chatRoomID)
+    }, {
+        $push: {
+            context: newMessage
+        }
+    }, {
+        new: true,
+        fields: "context"
+    })
+        .lean()
+        .then(data => data.context.find(each => each._id.toString() === newMessage._id.toString()))
+};
+
+const getChatRoomMessages = (chatRoomID, {take = 10, skip = 0}) => {
+    return ChatRoom.aggregate([
+        {$match: {_id: ObjectId(chatRoomID)}},
+        {$unwind: "$context"},
+        {
+            $sort: {
+                "context.created_at": -1
+            }
+        },
+        {$skip: skip},
+        {$limit: take},
+        {
+            $project: {
+                context: "$context"
+            }
+        }
+    ])
+        .then(messages => {
+            return messages.map(each => each.context)
+        })
+}
+
 module.exports = {
     getChatContacts,
-    getGroupChatRoomInvolvesByKeyword
+    getGroupChatRoomInvolvesByKeyword,
+    createNewMessage,
+    getChatRoomMessages
 };

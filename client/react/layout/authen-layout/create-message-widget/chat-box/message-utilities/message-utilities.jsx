@@ -44,37 +44,46 @@ export class MessageUtilities extends Component {
         this.setState({files: this.state.files.filter(file => file.fileID !== fileID)});
     }
 
+    onSubmit = (input) => {
+        this.props.onSubmit(input);
+        this.setState({files: []});
+    };
+
+
+
     render() {
         let {files} = this.state;
 
         return (
             <div className="message-utilities">
-                <div className="files-display">
-                    <div className="files-container">
-                        {files.map(file => (
-                            <FileDisplay
-                                key={file.fileID}
-                                file={file}
-                                onClose={() => this.removeFile(file.fileID)}
-                            />
-                        ))}
-                        {!!files.length && (
-                            <InputFileWrapper
-                                multiple={true}
-                                accept={"*"}
-                                onUploaded={this.handleChangeFiles}
-                                limitSize={5 * 1024 * 1024}
-                            >
-                                {({onClick}) => (
-                                    <div className="add-file" onClick={onClick} >
-                                        <i className="fal fa-file-plus"></i>
-                                    </div>
-                                )}
+                {files.length && (
+                    <div className="files-display">
+                        <div className="files-container">
+                            {files.map(file => (
+                                <FileDisplay
+                                    key={file.fileID}
+                                    file={file}
+                                    onClose={() => this.removeFile(file.fileID)}
+                                />
+                            ))}
+                            {!!files.length && (
+                                <InputFileWrapper
+                                    multiple={true}
+                                    accept={"*"}
+                                    onUploaded={this.handleChangeFiles}
+                                    limitSize={5 * 1024 * 1024}
+                                >
+                                    {({onClick}) => (
+                                        <div className="add-file" onClick={onClick} >
+                                            <i className="fal fa-file-plus"></i>
+                                        </div>
+                                    )}
 
-                            </InputFileWrapper>
-                        )}
+                                </InputFileWrapper>
+                            )}
+                        </div>
                     </div>
-                </div>
+                )}
                 <div className="actions-container">
                     <InputFileWrapper
                         multiple={true}
@@ -107,7 +116,10 @@ export class MessageUtilities extends Component {
 
                     </InputFileWrapper>
                     <div className="chat-input-wrapper">
-                        <ChatInput chatRoomID={this.props.chatRoom?._id}/>
+                        <ChatInput
+                            chatRoomID={this.props.chatRoom?._id}
+                            onSubmit={this.onSubmit}
+                        />
                     </div>
                     <Tooltip text={() => "Gửi"} position={"top"}>
                         <div className="icon-wrapper react">

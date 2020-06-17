@@ -134,50 +134,7 @@ const getUserChatRoomBrief = (ownerID, userID) => {
 
         })
         // .then(({chatRoomID, user}) => {
-        //     return ChatRoom.aggregate([
-        //         {$match: {_id: ObjectId(chatRoomID)}},
-        //         {$unwind: "$context"},
-        //         {
-        //             $sort: {
-        //                 "context.created_at": -1
-        //             }
-        //         },
-        //         {$limit: 10},
-        //         {"$group": {"_id": "$_id",
-        //                 "context": {"$push": "$context"},
-        //                 "last_updated": {
-        //                     $first: "$last_updated"
-        //                 },
-        //                 "last_active": {
-        //                     $first: "$last_active"
-        //                 },
-        //                 "is_group_chat": {
-        //                     $first: "$is_group_chat"
-        //                 },
-        //                 "involve_person": {
-        //                     $first: "$involve_person"
-        //                 },
-        //                 "default_emoji": {
-        //                     $first: "$default_emoji"
-        //                 },
-        //                 "involve_page": {
-        //                     $first: "$involve_page"
-        //                 },
-        //                 "admins": {
-        //                     $first: "$admins"
-        //                 },
-        //                 "group_name": {
-        //                     $first: "$group_name"
-        //                 },
-        //             }
-        //         }
-        //     ])
-        //         .then(cr => {
-        //             return {
-        //                 ...user,
-        //                 chat_room: cr
-        //             };
-        //         })
+        //
         // });
 };
 

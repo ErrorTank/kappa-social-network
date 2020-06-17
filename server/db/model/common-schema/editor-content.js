@@ -14,6 +14,18 @@ const editorContentSchema = {
             }
         ]
     },
+    mentions: {
+        default: [],
+        type: [
+            {
+                related: {
+                    type: ObjectId,
+                    ref: "User"
+                },
+                name: String
+            }
+        ]
+    },
     files: {
         default: [],
         type: [

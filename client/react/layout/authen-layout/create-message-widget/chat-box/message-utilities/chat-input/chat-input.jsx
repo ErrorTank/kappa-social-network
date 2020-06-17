@@ -3,7 +3,7 @@ import Editor, {createEditorStateWithText} from 'draft-js-plugins-editor';
 import createEmojiMartPlugin from 'draft-js-emoji-mart-plugin';
 import createMentionPlugin from 'draft-js-mention-plugin';
 import classnames from "classnames"
-
+import Draft ,{ convertToRaw  ,EditorState, ContentState} from 'draft-js';
 import data from 'emoji-mart/data/apple.json';
 
 import 'emoji-mart/css/emoji-mart.css'
@@ -11,6 +11,7 @@ import {ClickOutside} from "../../../../../../common/click-outside/click-outside
 import {chatApi} from "../../../../../../../api/common/chat-api";
 import {Avatar} from "../../../../../../common/avatar/avatar";
 import debounce from "lodash/debounce"
+import {transformEditorState} from "../../../../../../../common/utils/editor-utils";
 const emojiPlugin = createEmojiMartPlugin({
     data,
     set: 'apple'
@@ -51,6 +52,7 @@ export class ChatInput extends Component {
         if(this.state.showEmojiPicker){
             this.setState({showEmojiPicker: false});
         }
+
         this.setState({
             editorState,
         });
@@ -85,14 +87,39 @@ export class ChatInput extends Component {
     filterSuggestions =  (data, keyword) => {
 
         return keyword ? data.map(each => {
-            if((each.basic_info.username || "").indexOf(keyword) > -1){
+            if((each.basic_info.username || "").toLowerCase().indexOf(keyword.toLowerCase()) > -1){
                 return {...each, name: each.basic_info.username}
             }
-            if((each.nickname || "").indexOf(keyword) > -1){
+            if((each.nickname || "").toLowerCase().indexOf(keyword.toLowerCase()) > -1){
                 return {...each, name: each.nickname}
             }
             return each
         }).filter(each => each.name) : data.map(each => ({...each, name: each.basic_info.username}));
+    }
+
+    keyBindingFn = (e) => {
+        if (!e.shiftKey && e.key === 'Enter') {
+            return 'chat-input-enter'
+        }
+
+
+        return Draft.getDefaultKeyBinding(e)
+    }
+
+    handleKeyCommand = (command) => {
+        if (command === 'chat-input-enter') {
+            let {editorState} = this.state;
+            console.log(convertToRaw(editorState.getCurrentContent()))
+            let transformedState = transformEditorState(convertToRaw(editorState.getCurrentContent()));
+            if(transformedState.content){
+                this.props.onSubmit(transformedState);
+                this.setState({ editorState: EditorState.createWithContent(ContentState.createFromText(""))});
+            }
+            return 'handled'
+        }
+
+
+        return 'not-handled'
     }
 
     render() {
@@ -112,6 +139,9 @@ export class ChatInput extends Component {
                                       this.editor = element;
                                   }}
                                   placeholder={"Nhập tin nhắn"}
+
+                                  keyBindingFn={this.keyBindingFn}
+                                  handleKeyCommand={this.handleKeyCommand}
                               />
                               <MentionSuggestions
                                   onSearchChange={this.onSearchChange}
