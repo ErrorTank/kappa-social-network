@@ -1,17 +1,26 @@
 .type-showcase{
   margin: 8px;
-  border-radius: 8px;
   height 258px
-  width: 193px
+  width: 193px 
+  box-sizing: border-box;
+  cursor pointer
+  
+
   .listing-type-wrapper{
     padding: 48px 16px;
     background-color: white;
+    border: 1px solid transparent;
+    border-radius: 8px;
     height: 100%;
+    box-shadow 0 1px 2px  rgba(0, 0 , 0, 0.2);
+    &:hover{
+      background-color: hover;
+    }
     .listing-type-icon{
       vertical-align: bottom;
       background-size: 62px 518px;
       background-repeat: no-repeat;
-      background-color: hover;
+      background-color: darken(hover, 10%);
       background-position: 0 -434px;
       border-radius: 50%;
       height: 60px;
@@ -26,9 +35,29 @@
       }
     }
 
-    .item{
+    .listing-type-content{
+      margin-top: 16px;
+      .listing-type-title{
+        text-align: center;
+        color: normalTextLight;
+        font-weight: 600;
+        font-size: 15px;
+      }
+      .listing-type-description{
+        color: lightIcon;
+        font-size: 13px;
+        text-align: center;
+        font-weight: 400;
+      }
+    }
+
+    
+  }
+}
+
+.item{
       .listing-type-icon{
-        color:red;
+        color: red;
       }
     }
     .vehicle{
@@ -36,10 +65,8 @@
         color:teal;
       }
     }
-    .item{
+    .house{
       .listing-type-icon{
         color: orange;
       }
     }
-  }
-}
