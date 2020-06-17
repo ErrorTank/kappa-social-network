@@ -46,6 +46,13 @@ const MarketplaceCreateListing = lazy(
     )
   )
 );
+const CreateListingDetail = lazy(
+  delayLoad(() =>
+    import(
+      './authen-routes/marketplace-route/marketplace-create-listing/create-listing-detail/create-listing-detail'
+    )
+  )
+);
 const GlobalSearchResult = lazy(
   delayLoad(() =>
     import('./authen-routes/global-search-result/global-search-result')
@@ -114,6 +121,12 @@ class MainRoute extends React.Component {
                     path={'/marketplace/create'}
                     exact
                     render={(props) => <MarketplaceCreateListing {...props} />}
+                  />
+                  <AuthenRoute
+                    {...layoutProps}
+                    path={'/marketplace/create/:categoryName'}
+                    exact
+                    render={(props) => <CreateListingDetail {...props} />}
                   />
                 </CustomSwitch>
               )}

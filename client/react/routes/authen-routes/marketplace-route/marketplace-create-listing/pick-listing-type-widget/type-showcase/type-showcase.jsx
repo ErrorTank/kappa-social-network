@@ -10,7 +10,11 @@ export class TypeShowcase extends Component {
   render() {
     let { url, icon, title, description, className } = this.props;
     return (
-      <div className={classnames('type-showcase', className)} key={url}>
+      <div
+        className={classnames('type-showcase', className)}
+        key={url}
+        onClick={() => customHistory.push(url)}
+      >
         <div className='listing-type-wrapper'>
           <div className='listing-type-icon'>{icon}</div>
           <div className='listing-type-content'>
