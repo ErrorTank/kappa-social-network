@@ -71,6 +71,8 @@ const createNewMessage = ({ chatRoomID, value}) => {
 };
 
 const getChatRoomMessages = (chatRoomID, {take = 10, skip = 0}) => {
+    console.log(skip)
+    console.log(take)
     return ChatRoom.aggregate([
         {$match: {_id: ObjectId(chatRoomID)}},
         {$unwind: "$context"},
@@ -79,8 +81,8 @@ const getChatRoomMessages = (chatRoomID, {take = 10, skip = 0}) => {
                 "context.created_at": -1
             }
         },
-        {$skip: skip},
-        {$limit: take},
+        {$skip: Number(skip)},
+        {$limit: Number(take)},
         {
             $project: {
                 context: "$context"
@@ -88,7 +90,7 @@ const getChatRoomMessages = (chatRoomID, {take = 10, skip = 0}) => {
         }
     ])
         .then(messages => {
-            return messages.map(each => each.context)
+            return messages.map(each => each.context).reverse();
         })
 }
 

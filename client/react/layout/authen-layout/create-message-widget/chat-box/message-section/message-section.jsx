@@ -21,7 +21,23 @@ export class MessageSection extends Component {
 
     loadMessages = (chatRoomID) => {
         this.setState({loadingMessages: true});
-        this.props.loadSuggestion(chatRoomID).then(() => this.setState({loadingMessages: false}));
+        this.props.loadMessages(chatRoomID).then(() => this.setState({loadingMessages: false}));
+    }
+
+    getMessagePositionState = (messages, index) => {
+        let previous = messages[index - 1];
+        let after = messages[index - 1];
+        let current = messages[index]
+        if((previous?.sentBy !== current.sentBy) && (after?.sentBy !== current.sentBy)){
+            return "single";
+        }
+        if((previous?.sentBy === current.sentBy) && (after?.sentBy === current.sentBy)){
+            return "middle"
+        }
+        if(previous?.sentBy !== current.sentBy){
+            return "head"
+        }
+        return "tail";
     }
 
     render() {
@@ -34,12 +50,17 @@ export class MessageSection extends Component {
                     </div>
                 )}
                 <div className="messages">
-                    {messages.map((each, _id) => (
-                        <Message
-                            message={each}
-                            key={_id}
-                        />
-                    ))}
+                    {messages.map((each, index) => {
+                        let position = this.getMessagePositionState(messages, index)
+                        return (
+                            <Message
+                                position={position}
+                                message={each}
+                                key={each._id}
+                                haveAvatar={position === "single" || position === "tail"}
+                            />
+                        )
+                    })}
                 </div>
             </div>
         );

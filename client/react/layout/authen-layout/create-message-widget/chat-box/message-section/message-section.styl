@@ -22,3 +22,39 @@
 
   }
 }
+
+.chat-message{
+  position relative
+  .message-renderable-content{
+    background-color common-border
+    padding 8px 12px
+    &.owned{
+      background-color primaryButton
+    }
+    &.head{
+      margin-top 10px
+      border-radius 18px 18px 18px 4px
+      &.owned{
+        border-radius 18px 18px 4px 18px
+      }
+    }
+    &.tail{
+      margin-top 2px
+      margin-bottom 10px
+      border-radius 4px 18px 18px 18px
+      &.owned{
+        border-radius 18px 4px 18px 18px
+      }
+    }
+    &.middle{
+      margin-top 2px
+      border-radius 4px 18px 18px 4px
+      &.owned{
+        border-radius 18px 4px 4px 18px
+      }
+    }
+    &.single{
+      border-radius 18px
+    }
+  }
+}

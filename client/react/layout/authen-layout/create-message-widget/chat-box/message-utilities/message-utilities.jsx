@@ -56,7 +56,7 @@ export class MessageUtilities extends Component {
 
         return (
             <div className="message-utilities">
-                {files.length && (
+                {!!files.length && (
                     <div className="files-display">
                         <div className="files-container">
                             {files.map(file => (

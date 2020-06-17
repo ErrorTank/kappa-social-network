@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const {authorizationUserMiddleware} = require("../common/middlewares/common");
 const {globalSearch, preSearch, getLoginSessionsBrief} = require("../db/db-controllers/utility");
+const urlMetadata = require('url-metadata')
 
 module.exports = () => {
     router.get("/search-global", authorizationUserMiddleware, (req, res, next) => {
@@ -13,6 +14,12 @@ module.exports = () => {
     });
     router.get("/pre-search", authorizationUserMiddleware, (req, res, next) => {
         return preSearch(req.user._id, decodeURIComponent(req.query.keyword)).then((data) => {
+            return res.status(200).json(data);
+        }).catch(err => next(err));
+
+    });
+    router.get("/url/:url/metadata", (req, res, next) => {
+        return urlMetadata(req.params.url).then((data) => {
             return res.status(200).json(data);
         }).catch(err => next(err));
 

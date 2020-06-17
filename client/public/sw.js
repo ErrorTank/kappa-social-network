@@ -82,6 +82,10 @@ var exceptionRequestsDev = [
     method: 'GET',
   },
   {
+    endpoint: /http:\/\/localhost:4000\/api\/utility\/url\/\w+\/metadata/,
+    method: 'GET',
+  },
+  {
     endpoint: /http:\/\/localhost:4000\/api\/messenger\/status\/active/,
     method: 'GET',
   },
@@ -120,8 +124,8 @@ var notGetRequests = [
   },
 ];
 
-var CACHE_STATIC_NAME = 'static-v1592385756368';
-var CACHE_DYNAMIC_NAME = 'dynamic-v1592385756368';
+var CACHE_STATIC_NAME = 'static-v1592387309980';
+var CACHE_DYNAMIC_NAME = 'dynamic-v1592387309980';
 
 var STATIC_FILES = [
   '/',

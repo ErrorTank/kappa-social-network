@@ -1,6 +1,7 @@
 
 import {authenApi, offlineApi} from "../api";
 import {urlUtils} from "../../common/utils/url-utils";
+import {guestApi} from "./guest-api";
 
 export const utilityApi = {
     searchGlobal(keyword){
@@ -18,4 +19,7 @@ export const utilityApi = {
     searchDialogsForCreateByKeyword(keyword){
         return authenApi.get(`/utility/search-for-create/dialogs?keyword=${keyword}`)
     },
+    getUrlMetadata(url){
+        return guestApi.get(`/utility/url/${url}/metadata`)
+    }
 };
