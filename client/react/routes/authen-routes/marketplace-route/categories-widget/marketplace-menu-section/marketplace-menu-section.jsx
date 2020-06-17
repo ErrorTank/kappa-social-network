@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { MenuNavigationWithIcon } from '../../../../../common/menu-navigation-with-icon/menu-navigation-with-icon';
 import { CategoriesSection } from './categories-section/categories-section';
-import { LineSeperate } from '../../../../../common/line-seperate/line-seperate';
 import { customHistory } from '../../../../routes';
 
 export class MarketplaceMenuSection extends Component {
@@ -30,7 +29,7 @@ export class MarketplaceMenuSection extends Component {
             <span className='create-lb-title'>Tạo bài niêm yết mới</span>
           </div>
         </div>
-        <LineSeperate />
+        <div className='line-seperate'></div>
         {/* <CategoriesSection darkMode={darkMode} /> */}
       </div>
     );

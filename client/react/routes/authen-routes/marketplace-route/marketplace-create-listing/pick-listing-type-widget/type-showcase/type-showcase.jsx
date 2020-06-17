@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { customHistory } from '../../../../../routes';
+import classnames from 'classnames';
 
 export class TypeShowcase extends Component {
   constructor(props) {
@@ -7,9 +8,13 @@ export class TypeShowcase extends Component {
     this.state = {};
   }
   render() {
-    let { url, icon, title, description } = this.props;
+    let { url, icon, title, description, className } = this.props;
     return (
-      <div className='type-showcase' key={url}>
+      <div
+        className={classnames('type-showcase', className)}
+        key={url}
+        onClick={() => customHistory.push(url)}
+      >
         <div className='listing-type-wrapper'>
           <div className='listing-type-icon'>{icon}</div>
           <div className='listing-type-content'>

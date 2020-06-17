@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { MenuNavigationWithIcon } from '../../../../../common/menu-navigation-with-icon/menu-navigation-with-icon';
-import { LineSeperate } from '../../../../../common/line-seperate/line-seperate';
 
 export class CreateListingWidget extends Component {
   constructor(props) {
@@ -21,7 +20,7 @@ export class CreateListingWidget extends Component {
               type={'main'}
             />
           </div>
-          <LineSeperate />
+          <div className='line-seperate'></div>
           <div className='other-choice'>
             <MenuNavigationWithIcon
               icon={<i className='fas fa-user'></i>}
