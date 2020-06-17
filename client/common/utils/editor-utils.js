@@ -16,19 +16,31 @@ const getRenderableContentFromMessage = (message) => {
     let resultStr = content;
     let contentPaths = [];
 
+    if(!mentions.length){
+        return (<span>{content}</span>)
+    }
+
     for(let mention of mentions){
+        console.log(resultStr)
+        console.log(mention)
         let index = resultStr.indexOf(`@${mention.name}`);
-        contentPaths.push({
-            path: resultStr.substring(0, index),
-        });
-        contentPaths.push({
-            path: content.substring(index, index + mention.name.length + 1),
+        console.log(index)
+        if(index > 0){
+            contentPaths = contentPaths.concat({
+                path: resultStr.substring(0, index),
+            });
+        }
+
+        contentPaths = contentPaths.concat({
+            path: resultStr.substring(index, index + mention.name.length + 1),
             link: `/profile/${mention.related}`,
             context: mention
         })
+        console.log(contentPaths)
 
         resultStr = resultStr.substring(index + mention.name.length + 1);
     }
+
     return (
         <span>
             {contentPaths.map((each => (

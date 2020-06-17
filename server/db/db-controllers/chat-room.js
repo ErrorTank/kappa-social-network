@@ -75,7 +75,16 @@ const getChatRoomMessages = (chatRoomID, {take = 10, skip = 0}) => {
     console.log(take)
     return ChatRoom.aggregate([
         {$match: {_id: ObjectId(chatRoomID)}},
+
         {$unwind: "$context"},
+        {$lookup: {from: 'users', localField: 'context.sentBy', foreignField: '_id', as: "context.sentBy"}},
+        {
+            $addFields: {
+                "context.sentBy": {
+                    $arrayElemAt: ["$context.sentBy", 0]
+                }
+            }
+        },
         {
             $sort: {
                 "context.created_at": -1
@@ -90,7 +99,7 @@ const getChatRoomMessages = (chatRoomID, {take = 10, skip = 0}) => {
         }
     ])
         .then(messages => {
-            return messages.map(each => each.context).reverse();
+            return messages.map(each => ({...each.context, sentBy: pick(each.context.sentBy, ["_id", "avatar", "basic_info"])})).reverse();
         })
 }
 

@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import ReactDOM from "react-dom"
 import {Message} from "./message";
 import {LoadingInline} from "../../../../../common/loading-inline/loading-inline";
 import classnames from "classnames"
@@ -21,20 +22,25 @@ export class MessageSection extends Component {
 
     loadMessages = (chatRoomID) => {
         this.setState({loadingMessages: true});
-        this.props.loadMessages(chatRoomID).then(() => this.setState({loadingMessages: false}));
+        this.props.loadMessages(chatRoomID).then(() => {
+            this.setState({loadingMessages: false});
+            let elem = ReactDOM.findDOMNode(this);
+            elem.scrollTop = elem.scrollHeight;
+        });
     }
 
     getMessagePositionState = (messages, index) => {
         let previous = messages[index - 1];
-        let after = messages[index - 1];
+        let after = messages[index + 1];
         let current = messages[index]
-        if((previous?.sentBy !== current.sentBy) && (after?.sentBy !== current.sentBy)){
+
+        if((previous?.sentBy._id !== current.sentBy._id) && (after?.sentBy._id !== current.sentBy._id)){
             return "single";
         }
-        if((previous?.sentBy === current.sentBy) && (after?.sentBy === current.sentBy)){
+        if((previous?.sentBy._id === current.sentBy._id) && (after?.sentBy._id === current.sentBy._id)){
             return "middle"
         }
-        if(previous?.sentBy !== current.sentBy){
+        if(previous?.sentBy._id !== current.sentBy._id){
             return "head"
         }
         return "tail";

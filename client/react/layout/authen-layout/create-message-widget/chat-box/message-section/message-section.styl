@@ -1,20 +1,23 @@
-.message-section{
+.message-section {
   flex-basis: 355px;
-
-  .loading-wrapper{
+  overflow-y auto
+  .loading-wrapper {
     position relative
     height 50px
-    &.expand{
+
+    &.expand {
       height 100%
-      .loading-inline{
-        i{
+
+      .loading-inline {
+        i {
           font-size 3rem
 
         }
       }
     }
-    .loading-inline{
-      i{
+
+    .loading-inline {
+      i {
         font-size 2.2rem
 
       }
@@ -23,38 +26,164 @@
   }
 }
 
-.chat-message{
+.chat-message {
   position relative
-  .message-renderable-content{
-    background-color common-border
-    padding 8px 12px
-    &.owned{
-      background-color primaryButton
-    }
-    &.head{
-      margin-top 10px
+  &.head {
+    margin-top 10px
+    .message-renderable-content{
       border-radius 18px 18px 18px 4px
-      &.owned{
+
+      &.owned {
         border-radius 18px 18px 4px 18px
       }
     }
-    &.tail{
-      margin-top 2px
-      margin-bottom 10px
+
+  }
+
+  &.tail {
+    margin-top 2px
+    margin-bottom 10px
+    .message-renderable-content{
       border-radius 4px 18px 18px 18px
-      &.owned{
+
+      &.owned {
         border-radius 18px 4px 18px 18px
       }
     }
-    &.middle{
-      margin-top 2px
+
+  }
+
+  &.middle {
+    margin-top 2px
+    .message-renderable-content{
       border-radius 4px 18px 18px 4px
-      &.owned{
+
+      &.owned {
         border-radius 18px 4px 4px 18px
       }
     }
-    &.single{
+
+  }
+
+  &.single {
+
+    .message-renderable-content{
       border-radius 18px
+
+
     }
   }
+  &.owned {
+    text-align right
+
+    .upper-panel {
+      justify-content flex-end
+    }
+  }
+
+  .upper-panel {
+    display flex
+    justify-content flex-start
+
+    &:hover {
+      .message-action {
+        opacity 1
+
+      }
+    }
+
+    .avatar{
+      width 44px
+      text-align center
+      align-self center
+      .status-avatar{
+        width 30px
+        height 30px
+        .common-avatar{
+          width 30px
+          height 30px
+          .avatar-holder{
+            span{
+              font-size 1.3rem
+            }
+          }
+        }
+      }
+
+    }
+
+    .message-action {
+      width 78px
+      align-self center
+      opacity 0
+
+      .message-action-wrapper {
+        width 100%
+        display flex
+        align-items center
+        justify-content space-around
+
+        .action {
+          width 22px
+          height 22px
+          border-radius 50%
+
+          i {
+            absoluteMiddle()
+            font-size 1.6rem
+          }
+          position relative
+          background-color transparent
+          transition background-color 0.1s ease
+          cursor pointer
+
+          &:hover {
+            background-color bgLight
+          }
+        }
+      }
+    }
+
+    .message-state {
+      align-self flex-end
+      width 22px
+
+    }
+
+    .message-renderable-content {
+      background-color common-border
+      padding 8px 12px
+      word-break  break-word
+      vertical-align bottom
+      margin-right 5px
+      margin-left 0
+      color commonTextLight
+      font-size 1.5rem
+      font-weight 400
+      display inline-block
+      max-width calc(100% - 78px - 5px - 10px - 44px)
+      text-align left
+      white-space pre-wrap
+
+      .message-link {
+        color inherit !important
+        font-weight 450
+
+        &:hover {
+          text-decoration underline !important
+        }
+      }
+
+      &.owned {
+        background-color primaryButton
+        color white !important
+        margin-right 0
+        margin-left 5px
+        max-width calc(100% - 22px - 78px - 5px - 10px)
+      }
+
+
+    }
+  }
+
 }
