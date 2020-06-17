@@ -6,6 +6,15 @@ export class CreateListingInputWidget extends Component {
     this.state = {};
   }
   render() {
-    return <div className='create-listing-input-widget'></div>;
+    return (
+      <div className='create-listing-input-widget'>
+        <div className='cs-input-header'>
+          <div className='header-info'></div>
+          <div className='save-draft'></div>
+        </div>
+        <div className='cs-input-body'></div>
+        <div className='cs-input-footer'></div>
+      </div>
+    );
   }
 }
