@@ -30,5 +30,19 @@ module.exports = (io, socket, context) => {
         }
 
     });
+    socket.on("join-chat-room", function (data) {
+        if(data.userID && data.chatRoomID){
+            console.log(`User ${data.userID} join chat room ${data.chatRoomID}!`)
+            socket.join(`/messenger-chat-room/chat-room/${data.chatRoomID}`);
+        }
+
+    });
+    socket.on("left-chat-room", function (data) {
+        if(data.userID && data.chatRoomID){
+            console.log(`User ${data.userID} left chat room ${data.chatRoomID}!`)
+            socket.leave(`/messenger-chat-room/chat-room/${data.chatRoomID}`);
+        }
+
+    });
     return io;
 };

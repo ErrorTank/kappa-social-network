@@ -71,7 +71,6 @@ export class Message extends Component {
                     {isOwned && (
                         <MessageAction
                             canRemove={isOwned}
-                            canReply={!!message.hyperlinks.length}
                             isReverse={!isOwned}
                         />
                     )}
@@ -94,7 +93,6 @@ export class Message extends Component {
                     {!isOwned && (
                         <MessageAction
                             canRemove={isOwned}
-                            canReply={!!message.hyperlinks.length}
                             isReverse={!isOwned}
                         />
                     )}
@@ -108,43 +106,33 @@ export class Message extends Component {
     }
 }
 
-const MessageAction = ({canRemove = false, canReply = false, isReverse = false}) => {
+const MessageAction = ({canRemove = false, isReverse = false}) => {
 
     return (
         <div className="message-action">
             {!isReverse ? (
                 <div className="message-action-wrapper">
+                    {canRemove && (
+                        <Tooltip
+                            position={"top"}
+                            className={"user-action-tooltip"}
+                            text={() => "Xóa"}
+                        >
+                            <div className="action">
+                                <i className="fal fa-trash"></i>
+                            </div>
+                        </Tooltip>
+                    )}
                     <Tooltip
                         position={"top"}
                         className={"user-action-tooltip"}
-                        text={() => "Thêm"}
+                        text={() => "Trả lời"}
                     >
                         <div className="action">
-                            <i className="fal fa-ellipsis-v"></i>
+                            <i className="fas fa-reply"></i>
                         </div>
                     </Tooltip>
-                    {canReply && (
-                        <Tooltip
-                            position={"top"}
-                            className={"user-action-tooltip"}
-                            text={() => "Trả lời"}
-                        >
-                            <div className="action">
-                                <i className="fas fa-reply"></i>
-                            </div>
-                        </Tooltip>
-                    )}
-                    {!canReply && (
-                        <Tooltip
-                            position={"top"}
-                            className={"user-action-tooltip"}
-                            text={() => "Gửi tiếp"}
-                        >
-                            <div className="action">
-                                <i className="fal fa-external-link-square"></i>
-                            </div>
-                        </Tooltip>
-                    )}
+
                     <Tooltip
                         position={"top"}
                         className={"user-action-tooltip"}
@@ -166,37 +154,28 @@ const MessageAction = ({canRemove = false, canReply = false, isReverse = false})
                             <i className="fal fa-smile"></i>
                         </div>
                     </Tooltip>
-                    {!canReply && (
-                        <Tooltip
-                            position={"top"}
-                            className={"user-action-tooltip"}
-                            text={() => "Gửi tiếp"}
-                        >
-                            <div className="action">
-                                <i className="fal fa-external-link-square"></i>
-                            </div>
-                        </Tooltip>
-                    )}
-                    {canReply && (
-                        <Tooltip
-                            position={"top"}
-                            className={"user-action-tooltip"}
-                            text={() => "Trả lời"}
-                        >
-                            <div className="action">
-                                <i className="fas fa-reply"></i>
-                            </div>
-                        </Tooltip>
-                    )}
+
                     <Tooltip
                         position={"top"}
                         className={"user-action-tooltip"}
-                        text={() => "Thêm"}
+                        text={() => "Trả lời"}
                     >
                         <div className="action">
-                            <i className="fal fa-ellipsis-v"></i>
+                            <i className="fas fa-reply"></i>
                         </div>
                     </Tooltip>
+                    {canRemove && (
+                        <Tooltip
+                            position={"top"}
+                            className={"user-action-tooltip"}
+                            text={() => "Xóa"}
+                        >
+                            <div className="action">
+                                <i className="fal fa-trash"></i>
+                            </div>
+                        </Tooltip>
+                    )}
+
 
 
                 </div>

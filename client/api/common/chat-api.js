@@ -38,6 +38,9 @@ export const chatApi = {
     },
     getChatRoomMessages(chatRoomID, {skip, take = 10}){
         return authenApi.get(`/chat/${chatRoomID}/get-messages?skip=${skip}&take=${take}`)
+    },
+    changeSavedMessagesToSent(chatRoomID, messages){
+        return authenApi.put(`/chat/${chatRoomID}/messages/update-to-sent`, {messages})
     }
 
 };

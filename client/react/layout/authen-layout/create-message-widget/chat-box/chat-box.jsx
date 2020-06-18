@@ -17,6 +17,7 @@ import {userInfo} from "../../../../../common/states/common";
 import {createStateHolder} from "../../../../../common/states/state-holder";
 import omit from "lodash/omit"
 import {KComponent} from "../../../../common/k-component";
+import {messengerIO} from "../../../../../socket/sockets";
 
 
 export const MessageState = {
@@ -34,9 +35,15 @@ export class ChatBox extends KComponent {
         };
 
         this.messageState = createStateHolder([]);
+        this.io = null
 
         messengerApi.getUserChatRoomBrief(props.userID)
             .then(({chat_room}) => {
+                this.io = messengerIO.getIOInstance();
+                this.io.emit("join-chat-room", {
+                    userID: userInfo.getState()._id,
+                    chatRoomID: chat_room._id
+                });
                 this.setState({chat_room_brief: chat_room});
 
             })
@@ -44,6 +51,16 @@ export class ChatBox extends KComponent {
             this.forceUpdate();
         }));
 
+    }
+
+    componentWillUnmount() {
+        if(this.io){
+            // this.io.off("");
+            this.io.emit("left-chat-room", {
+                chatRoomID: this.state.chat_room_brief._id,
+                userID: userInfo.getState()._id
+            });
+        }
     }
 
     startVideoCall = () => {
@@ -102,10 +119,21 @@ export class ChatBox extends KComponent {
 
     };
 
+    changeAllSavedMassageToSent = (messages) => {
+        let userID = userInfo.getState()._id;
+        let savedMessage = messages.filter(each => each.sentBy._id !== userID && each.state === "SAVED");
+        return savedMessage.length ? chatApi.changeSavedMessagesToSent(this.state.chat_room_brief._id, savedMessage) : Promise.resolve(messages)
+
+    };
+
     loadMessages = (chatRoomID) => {
 
         return chatApi.getChatRoomMessages(chatRoomID, {skip: this.messageState.getState().length})
-            .then(messages => this.messageState.setState(messages))
+            .then(messages => {
+                return this.changeAllSavedMassageToSent(messages)
+                    .then((msgs) => this.messageState.setState(msgs));
+
+            })
     };
 
     render() {
