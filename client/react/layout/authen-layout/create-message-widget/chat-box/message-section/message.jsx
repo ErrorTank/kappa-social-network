@@ -90,7 +90,7 @@ export class Message extends Component {
 
                     {(isOwned) && (
                         <div className="message-state">
-                            {(isLastMessage ? !message.seenBy.length : message.state !== MessageState.SENT) && this.renderMessageState(message.state)}
+                            {(message.seenBy.length === 0) && this.renderMessageState(message.state)}
                         </div>
                     )}
                     {!isOwned && (

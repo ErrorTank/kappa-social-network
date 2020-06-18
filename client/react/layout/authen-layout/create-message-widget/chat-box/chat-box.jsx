@@ -166,6 +166,15 @@ export class ChatBox extends KComponent {
             })
     };
 
+    emitSeenMessageEvent = () => {
+        let messages = this.messageState.getState();
+        let userID = userInfo.getState()._id;
+        let unseenMessages =  messages.filter(each => each.sentBy._id !== userID && each.state === "SENT" && !each.seenBy.length);
+        if(unseenMessages.length){
+            chatApi.seenMessages(this.state.chat_room_brief._id, savedMessage)
+        }
+    }
+
     render() {
         let {onClose, active, userInfo, userID} = this.props;
         let actions = userInfo ? this.headerActions : this.headerActions.slice(2);
@@ -248,6 +257,7 @@ export class ChatBox extends KComponent {
                                             <MessageUtilities
                                                 chatRoom={this.state.chat_room_brief}
                                                 onSubmit={this.handleSubmitChat}
+                                                onFocusEditor={this.emitSeenMessageEvent}
                                             />
                                         </div>
                                     )}

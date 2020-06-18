@@ -121,6 +121,7 @@ export class MessageUtilities extends Component {
                             chatRoomID={this.props.chatRoom?._id}
                             onSubmit={this.onSubmit}
                             canMention={this.props.chatRoom?.is_group_chat}
+                            onFocusEditor={this.props.onFocusEditor}
                         />
                     </div>
                     <Tooltip text={() => "Gửi"} position={"top"}>

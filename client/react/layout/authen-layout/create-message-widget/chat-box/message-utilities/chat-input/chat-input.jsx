@@ -29,7 +29,8 @@ export class ChatInput extends Component {
             showEmojiPicker: false,
             suggestions: [],
             loadSuggestion: true,
-            filteredSuggestions: []
+            filteredSuggestions: [],
+            checkSeen: false
         }
 
         this.mentionPlugin = createMentionPlugin({
@@ -49,12 +50,20 @@ export class ChatInput extends Component {
     }
 
     onChange = (editorState) => {
+        let nextState = {
+            editorState
+        };
         if(this.state.showEmojiPicker){
-            this.setState({showEmojiPicker: false});
+            nextState.showEmojiPicker = false;
+        }
+        if(!this.state.checkSeen){
+            this.props.onFocusEditor();
+            nextState.checkSeen = true;
+
         }
 
         this.setState({
-            editorState,
+            nextState
         });
     };
 
@@ -120,7 +129,7 @@ export class ChatInput extends Component {
                 this.props.onSubmit(transformedState);
 
 
-                this.setState({ editorState: this.getInitialState()});
+                this.setState({ editorState: this.getInitialState(), checkSeen: false});
             }
             return 'handled'
         }
@@ -153,6 +162,13 @@ export class ChatInput extends Component {
                                   placeholder={"Nhập tin nhắn"}
 
                                   keyBindingFn={this.keyBindingFn}
+                                  onFocus={() => {
+                                      this.props.onFocusEditor();
+                                      this.setState({checkSeen: true});
+                                  }}
+                                  onBlur={() => {
+                                      this.setState({checkSeen: false});
+                                  }}
                                   handleKeyCommand={this.handleKeyCommand}
                               />
                               <MentionSuggestions

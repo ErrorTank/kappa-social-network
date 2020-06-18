@@ -13,7 +13,9 @@ export const chatApi = {
                 return Promise.reject(err);
             });
     },
-
+    seenMessages(chatRoomID, messages){
+        return authenApi.put(`/chat/${chatRoomID}/messages/seen-messages`, {messages})
+    },
     getMentionsByKeyword(roomChatID, keyword = "") {
         return authenApi.get(`/chat/${roomChatID}/mentions?keyword=${keyword}`)
         // return Promise.resolve([{
