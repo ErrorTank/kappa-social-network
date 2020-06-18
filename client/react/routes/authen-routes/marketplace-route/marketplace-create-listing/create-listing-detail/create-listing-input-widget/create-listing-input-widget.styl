@@ -2,7 +2,8 @@
   background-color white
   height 100vh;
   border-top: 1px solid transparent;
-  box-shadow: 0 0 15px 1px rgba(69,65,78,0.2) 
+  box-shadow: 0 0 15px 1px rgba(69,65,78,0.2)
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
   .cs-input-header{
     margin: 20px 16px 5px 16px;
     box-sizing: border-box;
@@ -25,7 +26,7 @@
       }
       .header-title{
         font-size: 24px;
-        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        font-family: inherit;
         color: normalTextLight;
         font-weight: 700;
         line-height: 28px;
@@ -48,6 +49,7 @@
         font-size: 15px;
         line-height: 20px;
         height inherit 
+        font-weight: 500;
         &:hover{
           background-color: hover;
         }
@@ -62,8 +64,13 @@
 }
 
 .cs-input-body{
+  margin-top: 8px; 
   .user-info-display{
-    padding: 0 8px;
+    padding: 0 16px;
+    min-height: 44px;
+    display: flex;
+    align-items: center;
+
     .user-avatar-wrapper{
       display: inline-block;
       vertical-align: middle;
@@ -73,12 +80,34 @@
       border-radius: 50%;
       margin: auto;
       position: relative;
+      margin: 8px 12px 8px 0;
+      justify-content: space-between
       img{
         position: absolute;
         left: 50%;
         top: 50%;
         transform: translate(-50%,-50%);
         height: 41px;
+      }
+    }
+
+    .user-info-wrapper{
+      padding: 12px 0;
+      display: flex;
+      box-sizing: border-box;
+      justify-content: space-between;
+      align-items: stretch;
+      flex-direction: column;
+      .user-name{
+        margin: 5px 0;
+        color: normalTextLight;
+        font-size: 15px;
+        font-weight: 600;
+        font-family: inherit;
+        
+      }  
+      .user-marketplace-info{
+        display: flex;
       }
     }
   }

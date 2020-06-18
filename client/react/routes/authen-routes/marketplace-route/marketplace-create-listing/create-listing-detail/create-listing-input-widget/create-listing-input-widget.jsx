@@ -28,6 +28,16 @@ export class CreateListingInputWidget extends Component {
             <div className='user-avatar-wrapper'>
               <img src={user.avatar} alt='user avatar' />
             </div>
+            <div className='user-info-wrapper'>
+              <div className='user-name'>{user.basic_info.username}</div>
+              <div className='user-marketplace-info'>
+                <span>Niêm yết trên Marketplace ·</span>
+                <div>
+                  <i className='fal fa-globe-asia'></i>
+                </div>
+                <span> Công khai</span>
+              </div>
+            </div>
           </div>
         </div>
         <div className='cs-input-footer'></div>
