@@ -138,7 +138,6 @@ const getUserChatRoomBrief = (ownerID, userID) => {
         // });
 };
 
-
 module.exports = {
     getAllUserActiveRelations,
     getUserBubbleChatBrief,

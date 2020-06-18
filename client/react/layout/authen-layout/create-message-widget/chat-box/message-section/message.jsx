@@ -14,6 +14,7 @@ export class Message extends Component {
         this.state = {}
     }
 
+
     renderMessageState = (state) => {
         switch (state) {
             case MessageState.CACHED:
@@ -36,9 +37,11 @@ export class Message extends Component {
         return null;
     }
 
+
+
     render() {
         let userID = userInfo.getState()._id;
-        let {message, position, haveAvatar} = this.props;
+        let {message, position, haveAvatar, isLastMessage} = this.props;
         let isOwned = message.sentBy._id === userID;
         return (
 
@@ -85,9 +88,9 @@ export class Message extends Component {
                         </Tooltip>
                     </div>
 
-                    {(isOwned && (haveAvatar ? !message.seenBy.length : message.state !== MessageState.SENT)) && (
+                    {(isOwned) && (
                         <div className="message-state">
-                            {this.renderMessageState(message.state)}
+                            {(isLastMessage ? !message.seenBy.length : message.state !== MessageState.SENT) && this.renderMessageState(message.state)}
                         </div>
                     )}
                     {!isOwned && (

@@ -3,6 +3,7 @@ const router = express.Router();
 const {authorizationUserMiddleware} = require("../common/middlewares/common");
 const {asynchronized} = require("../utils/common-utils");
 const {getChatContacts, getGroupChatRoomInvolvesByKeyword, createNewMessage, getChatRoomMessages, updateSavedMessagesToSent} = require("../db/db-controllers/chat-room");
+const {MessageState} = require("../common/const/message-state")
 
 module.exports = (db, namespacesIO) => {
     router.get("/contacts", authorizationUserMiddleware, (req, res, next) => {
@@ -29,6 +30,8 @@ module.exports = (db, namespacesIO) => {
     router.put("/:chatRoomID/messages/update-to-sent", authorizationUserMiddleware, (req, res, next) => {
 
         return updateSavedMessagesToSent(req.params.chatRoomID, req.body.messages).then((data) => {
+
+            namespacesIO.messenger.to(`/messenger-chat-room/chat-room/${req.params.chatRoomID}`).emit('change-message-state', {messageIDs: req.body.messages.map(each => each._id), state: MessageState.SENT});
             return  res.status(200).json(data);
         }).catch(err => next(err));
 

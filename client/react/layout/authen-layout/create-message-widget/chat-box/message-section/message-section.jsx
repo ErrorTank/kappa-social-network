@@ -81,6 +81,7 @@ export class MessageSection extends Component {
                             <Message
                                 position={position}
                                 message={each}
+                                isLastMessage={index === messages.length - 1}
                                 key={each._id}
                                 haveAvatar={position === "single" || position === "tail"}
                             />

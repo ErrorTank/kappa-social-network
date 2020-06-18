@@ -44,6 +44,16 @@ export class ChatBox extends KComponent {
                     userID: userInfo.getState()._id,
                     chatRoomID: chat_room._id
                 });
+                this.io.on("change-message-state", ({messageIDs, state}) => {
+
+                    let clone = [...this.messageState.getState()];
+                    for(let i=0; i<clone.length; i++){
+                        if(messageIDs.find(each => each === clone[i]._id)){
+                            clone[i].state = state;
+                        }
+                    }
+                    this.messageState.setState(clone);
+                })
                 this.setState({chat_room_brief: chat_room});
 
             })
@@ -122,7 +132,9 @@ export class ChatBox extends KComponent {
     changeAllSavedMassageToSent = (messages) => {
         let userID = userInfo.getState()._id;
         let savedMessage = messages.filter(each => each.sentBy._id !== userID && each.state === "SAVED");
-        return savedMessage.length ? chatApi.changeSavedMessagesToSent(this.state.chat_room_brief._id, savedMessage) : Promise.resolve(messages)
+        if(savedMessage.length){
+            chatApi.changeSavedMessagesToSent(this.state.chat_room_brief._id, savedMessage)
+        }
 
     };
 
@@ -130,9 +142,9 @@ export class ChatBox extends KComponent {
 
         return chatApi.getChatRoomMessages(chatRoomID, {skip: this.messageState.getState().length})
             .then(messages => {
-                return this.changeAllSavedMassageToSent(messages)
-                    .then((msgs) => this.messageState.setState(msgs));
-
+                return this.messageState.setState(messages).then(() => {
+                    this.changeAllSavedMassageToSent(messages);
+                });
             })
     };
 
