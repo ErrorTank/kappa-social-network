@@ -30,7 +30,7 @@ export class ChatInput extends Component {
             suggestions: [],
             loadSuggestion: true,
             filteredSuggestions: [],
-            checkSeen: false
+
         }
 
         this.mentionPlugin = createMentionPlugin({
@@ -50,21 +50,16 @@ export class ChatInput extends Component {
     }
 
     onChange = (editorState) => {
+
         let nextState = {
             editorState
         };
         if(this.state.showEmojiPicker){
             nextState.showEmojiPicker = false;
         }
-        if(!this.state.checkSeen){
-            this.props.onFocusEditor();
-            nextState.checkSeen = true;
 
-        }
 
-        this.setState({
-            nextState
-        });
+        this.setState(nextState);
     };
 
     focus = () => {
@@ -129,7 +124,7 @@ export class ChatInput extends Component {
                 this.props.onSubmit(transformedState);
 
 
-                this.setState({ editorState: this.getInitialState(), checkSeen: false});
+                this.setState({ editorState: this.getInitialState()});
             }
             return 'handled'
         }
@@ -140,18 +135,18 @@ export class ChatInput extends Component {
 
     render() {
         const { MentionSuggestions } = this.mentionPlugin;
-        console.log(this.state.filteredSuggestions)
+
         let plugins = [emojiPlugin];
         if(this.props.canMention){
             plugins.push(this.mentionPlugin);
         }
-        console.log(plugins)
+
         return (
 
                 <ClickOutside onClickOut={() => this.setState({showEmojiPicker: false})}>
                   <div>
                       <div className="chat-input">
-                          <div onClick={this.focus}>
+                          <div>
                               <Editor
                                   editorState={this.state.editorState}
                                   onChange={this.onChange}
@@ -159,16 +154,11 @@ export class ChatInput extends Component {
                                   ref={(element) => {
                                       this.editor = element;
                                   }}
+                                  onFocus={() => this.props.onFocusEditor()}
                                   placeholder={"Nhập tin nhắn"}
 
                                   keyBindingFn={this.keyBindingFn}
-                                  onFocus={() => {
-                                      this.props.onFocusEditor();
-                                      this.setState({checkSeen: true});
-                                  }}
-                                  onBlur={() => {
-                                      this.setState({checkSeen: false});
-                                  }}
+
                                   handleKeyCommand={this.handleKeyCommand}
                               />
                               <MentionSuggestions

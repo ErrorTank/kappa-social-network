@@ -102,6 +102,10 @@ var exceptionRequestsDev = [
     method: 'POST',
   },
   {
+    endpoint: /http:\/\/localhost:4000\/api\/chat\/\w+\/messages\/seen-messages/,
+    method: 'PUT',
+  },
+  {
     endpoint: /http:\/\/localhost:4000\/api\/chat\/\w+\/messages\/update-to-sent/,
     method: 'PUT',
   },
@@ -128,8 +132,8 @@ var notGetRequests = [
   },
 ];
 
-var CACHE_STATIC_NAME = 'static-v1592489850497';
-var CACHE_DYNAMIC_NAME = 'dynamic-v1592489850497';
+var CACHE_STATIC_NAME = 'static-v1592497774033';
+var CACHE_DYNAMIC_NAME = 'dynamic-v1592497774033';
 
 var STATIC_FILES = [
   '/',

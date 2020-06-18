@@ -45,6 +45,16 @@ export class ChatBox extends KComponent {
                     userID: userInfo.getState()._id,
                     chatRoomID: chat_room._id
                 });
+                this.io.on("push-to-seen-by", ({messageIDs, userID}) => {
+
+                    let clone = [...this.messageState.getState()];
+                    for (let i = 0; i < clone.length; i++) {
+                        if (messageIDs.find(each => each === clone[i]._id)) {
+                            clone[i].seenBy.push(userID)
+                        }
+                    }
+                    this.messageState.setState(clone);
+                })
                 this.io.on("change-message-state", ({messageIDs, state}) => {
 
                     let clone = [...this.messageState.getState()];
@@ -81,6 +91,7 @@ export class ChatBox extends KComponent {
         if (this.io) {
             this.io.off("change-message-state");
             this.io.off("new-message");
+            this.io.off("push-to-seen-by");
             this.io.emit("left-chat-room", {
                 chatRoomID: this.state.chat_room_brief._id,
                 userID: userInfo.getState()._id
@@ -167,11 +178,12 @@ export class ChatBox extends KComponent {
     };
 
     emitSeenMessageEvent = () => {
+        console.log("dasdasdas")
         let messages = this.messageState.getState();
         let userID = userInfo.getState()._id;
-        let unseenMessages =  messages.filter(each => each.sentBy._id !== userID && each.state === "SENT" && !each.seenBy.length);
+        let unseenMessages =  messages.filter(each => each.sentBy._id !== userID && each.state === "SENT" && !each.seenBy.find(seen => seen._id === userID));
         if(unseenMessages.length){
-            chatApi.seenMessages(this.state.chat_room_brief._id, savedMessage)
+            chatApi.seenMessages(this.state.chat_room_brief._id, unseenMessages)
         }
     }
 

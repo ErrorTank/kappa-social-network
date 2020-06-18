@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const {authorizationUserMiddleware} = require("../common/middlewares/common");
 const {asynchronized} = require("../utils/common-utils");
-const {getChatContacts, getGroupChatRoomInvolvesByKeyword, createNewMessage, getChatRoomMessages, updateSavedMessagesToSent} = require("../db/db-controllers/chat-room");
+const {getChatContacts, getGroupChatRoomInvolvesByKeyword, createNewMessage, getChatRoomMessages, updateSavedMessagesToSent, seenMessages} = require("../db/db-controllers/chat-room");
 const {MessageState} = require("../common/const/message-state")
 const mongoose = require("mongoose");
 const ObjectId = mongoose.Types.ObjectId;
@@ -35,6 +35,15 @@ module.exports = (db, namespacesIO) => {
         return updateSavedMessagesToSent(req.params.chatRoomID, req.body.messages.map(each => ObjectId(each._id))).then((data) => {
 
             namespacesIO.messenger.to(`/messenger-chat-room/chat-room/${req.params.chatRoomID}`).emit('change-message-state', {messageIDs: req.body.messages.map(each => each._id), state: MessageState.SENT});
+            return  res.status(200).json(data);
+        }).catch(err => next(err));
+
+    });
+    router.put("/:chatRoomID/messages/seen-messages", authorizationUserMiddleware, (req, res, next) => {
+
+        return seenMessages(req.user._id, req.params.chatRoomID, req.body.messages.map(each => ObjectId(each._id))).then((data) => {
+
+            namespacesIO.messenger.to(`/messenger-chat-room/chat-room/${req.params.chatRoomID}`).emit('push-to-seen-by', {messageIDs: req.body.messages.map(each => each._id), userID: req.user._id});
             return  res.status(200).json(data);
         }).catch(err => next(err));
 

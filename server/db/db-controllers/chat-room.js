@@ -44,7 +44,7 @@ const getGroupChatRoomInvolvesByKeyword = (chatRoomID, keyword = "") => {
                 $arrayElemAt: ["$involve_person.related._id", 0]
             },
             nickname: "$involve_person.nickname",
-            basic_info:{
+            basic_info: {
                 $arrayElemAt: ["$involve_person.related.basic_info", 0]
             },
         }
@@ -55,7 +55,7 @@ const getGroupChatRoomInvolvesByKeyword = (chatRoomID, keyword = "") => {
 
 };
 
-const createNewMessage = ({ chatRoomID, value}) => {
+const createNewMessage = ({chatRoomID, value}) => {
     let newMessage = {...value, _id: new ObjectId()}
     return ChatRoom.findOneAndUpdate({
         _id: ObjectId(chatRoomID)
@@ -67,13 +67,24 @@ const createNewMessage = ({ chatRoomID, value}) => {
         new: true,
         fields: "context"
     })
-        .populate("context.sentBy", "_id basic_info avatar last_active_at active")
+
+        .populate([
+            {
+                path: "context.sentBy",
+                model: "User",
+                select: "_id basic_info avatar last_active_at active"
+            }, {
+                path: "context.seenBy",
+                model: "User",
+                select: "_id basic_info avatar last_active_at active"
+
+            }
+        ])
         .then(data => data.context.find(each => each._id.toString() === newMessage._id.toString()))
 };
 
 const getChatRoomMessages = (chatRoomID, {take = 10, skip = 0}) => {
-    console.log(skip)
-    console.log(take)
+
     return ChatRoom.aggregate([
         {$match: {_id: ObjectId(chatRoomID)}},
 
@@ -87,27 +98,92 @@ const getChatRoomMessages = (chatRoomID, {take = 10, skip = 0}) => {
             }
         },
         {
+            $unwind: {
+                path: "$context.seenBy",
+
+                "preserveNullAndEmptyArrays": true
+            }
+        },
+
+        {$lookup: {from: 'users', localField: 'context.seenBy', foreignField: '_id', as: "context.seenBy"}},
+        {
+            $addFields: {
+                "context.seenBy": {
+                    $arrayElemAt: ["$context.seenBy", 0]
+                }
+            }
+        },
+        {
+            $group: {
+                _id: "$context._id",
+                sentBy: {
+                    $first: "$context.sentBy"
+                },
+                seenBy: {
+                    $push: "$context.seenBy"
+                },
+                replyFor: {
+                    $first: "$context.replyFor"
+                },
+                state: {
+                    $first: "$context.state"
+                },
+                created_at: {
+                    $first: "$context.created_at"
+                },
+                content: {
+                    $first: "$context.content"
+                },
+                photos: {
+                    $first: "$context.photos"
+                },
+                mentions: {
+                    $first: "$context.mentions"
+                },
+                files: {
+                    $first: "$context.files"
+                },
+                videos: {
+                    $first: "$context.videos"
+                },
+                hyperlinks: {
+                    $first: "$context.hyperlinks"
+                },
+            }
+        },
+        {
             $sort: {
-                "context.created_at": -1
+                "created_at": -1
             }
         },
         {$skip: Number(skip)},
         {$limit: Number(take)},
-        {
-            $project: {
-                context: "$context"
-            }
-        }
+
     ])
-        .then(messages => {
-            return messages.map(each => ({...each.context, sentBy: pick(each.context.sentBy, ["_id", "avatar", "basic_info", "last_active_at", "active"])})).reverse();
-        })
+    .then(messages => {
+        return messages.map(each => ({...each, seenBy:each.seenBy.map(seen => pick(seen, ["_id", "avatar", "basic_info", "last_active_at", "active"]))  ,sentBy: pick(each.sentBy, ["_id", "avatar", "basic_info", "last_active_at", "active"])})).reverse();
+    })
 }
 
 const updateSavedMessagesToSent = (chatRoomID, messageIds) => {
     return ChatRoom.findOneAndUpdate({
         _id: ObjectId(chatRoomID)
-    },   { "$set": { "context.$[elem].state": "SENT" } },  { "arrayFilters": [{ "elem._id": {$in: messageIds} }], "multi": true , new: true})
+    }, {"$set": {"context.$[elem].state": "SENT"}}, {
+        "arrayFilters": [{"elem._id": {$in: messageIds}}],
+        "multi": true,
+        new: true
+    })
+
+};
+
+const seenMessages = (userID, chatRoomID, messageIds) => {
+    return ChatRoom.findOneAndUpdate({
+        _id: ObjectId(chatRoomID)
+    }, {"$push": {"context.$[elem].seenBy": ObjectId(userID)}}, {
+        "arrayFilters": [{"elem._id": {$in: messageIds}, "elem.seenBy": {$ne: ObjectId(userID)}}],
+        "multi": true,
+        new: true
+    })
 
 };
 
@@ -116,5 +192,6 @@ module.exports = {
     getGroupChatRoomInvolvesByKeyword,
     createNewMessage,
     getChatRoomMessages,
-    updateSavedMessagesToSent
+    updateSavedMessagesToSent,
+    seenMessages
 };
