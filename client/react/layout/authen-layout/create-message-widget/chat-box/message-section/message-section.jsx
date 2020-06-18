@@ -18,14 +18,24 @@ export class MessageSection extends Component {
         if(nextProps.chatRoomID && nextProps.chatRoomID !== this.props.chatRoomID){
             this.loadMessages(nextProps.chatRoomID);
         }
+        if(nextProps.messages.length > this.props.messages.length){
+            setTimeout(() => {
+                this.scrollToLatest();
+            })
+        }
+    }
+
+    scrollToLatest = () => {
+        let elem = ReactDOM.findDOMNode(this);
+        elem.scrollTop = elem.scrollHeight;
     }
 
     loadMessages = (chatRoomID) => {
         this.setState({loadingMessages: true});
         this.props.loadMessages(chatRoomID).then(() => {
             this.setState({loadingMessages: false});
-            let elem = ReactDOM.findDOMNode(this);
-            elem.scrollTop = elem.scrollHeight;
+            this.scrollToLatest();
+
         });
     }
 

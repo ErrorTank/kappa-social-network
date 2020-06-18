@@ -67,7 +67,7 @@ const createNewMessage = ({ chatRoomID, value}) => {
         new: true,
         fields: "context"
     })
-        .lean()
+        .populate("context.sentBy")
         .then(data => data.context.find(each => each._id.toString() === newMessage._id.toString()))
 };
 
