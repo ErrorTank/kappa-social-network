@@ -75,7 +75,7 @@ export class InputFileWrapper extends React.Component {
     };
 
     render() {
-        const {className, noElemWrap = false} = this.props;
+        const {className, noElemWrap = true} = this.props;
 
         return noElemWrap ? (
             this.renderChildren()

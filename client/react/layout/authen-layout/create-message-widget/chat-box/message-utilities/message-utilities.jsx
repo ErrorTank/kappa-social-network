@@ -7,6 +7,7 @@ import { v4 as uuidv4 } from 'uuid';
 import {isImageFile} from "../../../../../../common/utils/file-upload-utils";
 import {FileDisplay} from "./file-display/file-display";
 import {getURLsFromText} from "../../../../../../common/utils/string-utils";
+import {messagesContainerUtilities} from "../message-section/message-section";
 
 export const messageUtilities = {};
 
@@ -25,7 +26,7 @@ export class MessageUtilities extends Component {
         let newFiles = Array.from(files).map(file => {
             return isImageFile(file.name) ? {fileID: uuidv4(), file, type: "image"} : {fileID: uuidv4(), file, type: "common"};
         })
-
+        setTimeout(() => messagesContainerUtilities.scrollToLatest())
         this.setState({files: this.state.files.concat(newFiles)});
     };
 

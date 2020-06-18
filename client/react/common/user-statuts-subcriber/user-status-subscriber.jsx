@@ -5,7 +5,7 @@ import React, {Component} from 'react';
 export class WithUserStatus extends Component {
     constructor(props) {
         super(props);
-        this.state = {
+        this.state = {...props.status} || {
             active: false,
             last_active_at: null
         };

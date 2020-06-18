@@ -5,13 +5,12 @@ import {getRenderableContentFromMessage} from "../../../../../../common/utils/ed
 import {Tooltip} from "../../../../../common/tooltip/tooltip";
 import {StatusAvatar} from "../../../../../common/status-avatar/status-avatar";
 import {MessageState} from "../chat-box";
+import {WithUserStatus} from "../../../../../common/user-statuts-subcriber/user-status-subscriber";
 
 export class Message extends Component {
     constructor(props) {
         super(props);
-        this.state = {
-
-        }
+        this.state = {}
     }
 
     renderMessageState = (state) => {
@@ -41,14 +40,28 @@ export class Message extends Component {
         let {message, position, haveAvatar} = this.props;
         let isOwned = message.sentBy._id === userID;
         return (
-            <div className={classnames("chat-message",position, {owned: isOwned})}>
+            <div className={classnames("chat-message", position, {owned: isOwned})}>
                 <div className="upper-panel">
-                    {!isOwned &&  (
+                    {!isOwned && (
                         <div className="avatar">
                             {haveAvatar && (
-                                <StatusAvatar
-                                    user={message.sentBy}
-                                />
+                                <WithUserStatus
+                                    userID={message.sentBy._id}
+                                    status={{
+                                        active: message.sentBy?.active,
+                                        last_active_at: message.sentBy?.last_active_at
+                                    }}
+                                >
+                                    {({active}) => {
+                                        return (
+                                            <StatusAvatar
+                                                user={message.sentBy}
+                                                active={active}
+                                            />
+                                        )
+                                    }}
+
+                                </WithUserStatus>
                             )}
 
                         </div>
@@ -173,7 +186,6 @@ const MessageAction = ({canRemove = false, canReply = false, isReverse = false})
                             <i className="fal fa-ellipsis-v"></i>
                         </div>
                     </Tooltip>
-
 
 
                 </div>

@@ -4,6 +4,8 @@ import {Message} from "./message";
 import {LoadingInline} from "../../../../../common/loading-inline/loading-inline";
 import classnames from "classnames"
 
+export let messagesContainerUtilities = {};
+
 export class MessageSection extends Component {
     constructor(props) {
         super(props);
@@ -11,6 +13,10 @@ export class MessageSection extends Component {
             loadingMessages: true,
 
         }
+        messagesContainerUtilities = {
+            scrollToLatest: this.scrollToLatest
+        }
+
 
     }
 

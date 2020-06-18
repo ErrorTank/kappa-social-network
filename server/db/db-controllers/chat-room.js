@@ -67,7 +67,7 @@ const createNewMessage = ({ chatRoomID, value}) => {
         new: true,
         fields: "context"
     })
-        .populate("context.sentBy")
+        .populate("context.sentBy", "_id basic_info avatar last_active_at active")
         .then(data => data.context.find(each => each._id.toString() === newMessage._id.toString()))
 };
 
@@ -100,7 +100,7 @@ const getChatRoomMessages = (chatRoomID, {take = 10, skip = 0}) => {
         }
     ])
         .then(messages => {
-            return messages.map(each => ({...each.context, sentBy: pick(each.context.sentBy, ["_id", "avatar", "basic_info"])})).reverse();
+            return messages.map(each => ({...each.context, sentBy: pick(each.context.sentBy, ["_id", "avatar", "basic_info", "last_active_at", "active"])})).reverse();
         })
 }
 

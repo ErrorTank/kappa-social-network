@@ -128,7 +128,7 @@ export class ChatInput extends Component {
         return (
 
                 <ClickOutside onClickOut={() => this.setState({showEmojiPicker: false})}>
-                  <>
+                  <div>
                       <div className="chat-input">
                           <div onClick={this.focus}>
                               <Editor
@@ -167,7 +167,7 @@ export class ChatInput extends Component {
                           </div>
 
                       )}
-                      </>
+                      </div>
                 </ClickOutside>
 
 
