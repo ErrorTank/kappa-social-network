@@ -106,6 +106,11 @@ export class ChatInput extends Component {
         return Draft.getDefaultKeyBinding(e)
     }
 
+    getInitialState = () => {
+        const newEditorState = EditorState.push(this.state.editorState, ContentState.createFromText(''), 'remove-range');
+        return EditorState.moveFocusToEnd(newEditorState);
+    }
+
     handleKeyCommand = (command) => {
         if (command === 'chat-input-enter') {
             let {editorState} = this.state;
@@ -113,7 +118,9 @@ export class ChatInput extends Component {
             let transformedState = transformEditorState(convertToRaw(editorState.getCurrentContent()));
             if(transformedState.content){
                 this.props.onSubmit(transformedState);
-                this.setState({ editorState: EditorState.createWithContent(ContentState.createFromText(""))});
+
+
+                this.setState({ editorState: this.getInitialState()});
             }
             return 'handled'
         }

@@ -8,8 +8,9 @@ import {messengerApi} from "../../../../../api/common/messenger-api";
 import Skeleton, {SkeletonTheme} from "react-loading-skeleton";
 import {ThemeContext} from "../../../../context/theme-context";
 import {StatusAvatar} from "../../../../common/status-avatar/status-avatar";
+
 const moment = require("moment");
-import { v4 as uuidv4 } from 'uuid';
+import {v4 as uuidv4} from 'uuid';
 import {WithUserStatus} from "../../../../common/user-statuts-subcriber/user-status-subscriber";
 import {ChatBoxDropZone} from "./chat-box-dropzone";
 import {chatApi} from "../../../../../api/common/chat-api";
@@ -47,25 +48,39 @@ export class ChatBox extends KComponent {
                 this.io.on("change-message-state", ({messageIDs, state}) => {
 
                     let clone = [...this.messageState.getState()];
-                    for(let i=0; i<clone.length; i++){
-                        if(messageIDs.find(each => each === clone[i]._id)){
+                    for (let i = 0; i < clone.length; i++) {
+                        if (messageIDs.find(each => each === clone[i]._id)) {
                             clone[i].state = state;
                         }
                     }
                     this.messageState.setState(clone);
                 })
+                this.io.on("new-message", ({message}) => {
+
+                    if (userInfo.getState()._id !== message.sentBy._id) {
+                        let newMessages = this.messageState.getState();
+                        this.messageState.setState(newMessages.concat(message))
+                        this.io.emit("received-message", {
+                            userID: userInfo.getState()._id,
+                            chatRoomID: chat_room._id,
+                            messageID: message._id
+                        })
+                    }
+
+                })
                 this.setState({chat_room_brief: chat_room});
 
             })
-        this.onUnmount( this.messageState.onChange((nextState, oldState) => {
+        this.onUnmount(this.messageState.onChange((nextState, oldState) => {
             this.forceUpdate();
         }));
 
     }
 
     componentWillUnmount() {
-        if(this.io){
-            // this.io.off("");
+        if (this.io) {
+            this.io.off("change-message-state");
+            this.io.off("new-message");
             this.io.emit("left-chat-room", {
                 chatRoomID: this.state.chat_room_brief._id,
                 userID: userInfo.getState()._id
@@ -120,7 +135,10 @@ export class ChatBox extends KComponent {
         let newMessages = currentMessages.concat(newMessage);
         console.log(newMessages)
         this.messageState.setState([...newMessages]);
-        chatApi.sendMessage(this.state.chat_room_brief._id, omit({...newMessage, sentBy: newMessage.sentBy._id}, ["_id", "state"]))
+        chatApi.sendMessage(this.state.chat_room_brief._id, omit({
+            ...newMessage,
+            sentBy: newMessage.sentBy._id
+        }, ["_id", "state"]))
             .then(newServerMessage => {
                 let msgs = newMessages.slice(0, newMessages.length - 1).concat({...newServerMessage});
                 console.log(msgs)
@@ -132,7 +150,7 @@ export class ChatBox extends KComponent {
     changeAllSavedMassageToSent = (messages) => {
         let userID = userInfo.getState()._id;
         let savedMessage = messages.filter(each => each.sentBy._id !== userID && each.state === "SAVED");
-        if(savedMessage.length){
+        if (savedMessage.length) {
             chatApi.changeSavedMessagesToSent(this.state.chat_room_brief._id, savedMessage)
         }
 
@@ -191,8 +209,9 @@ export class ChatBox extends KComponent {
                                                     <SkeletonTheme color={darkMode ? "#242526" : "#e3e3e3"}
                                                                    highlightColor={darkMode ? "#333436" : "#ebebeb"}>
                                                         <div className="loading-wrapper">
-                                                            <Skeleton count={1} height={32} width={32} duration={1} circle={true}/>
-                                                            <span style={{width:"5px"}}/>
+                                                            <Skeleton count={1} height={32} width={32} duration={1}
+                                                                      circle={true}/>
+                                                            <span style={{width: "5px"}}/>
                                                             <Skeleton count={1} height={20} width={80} duration={1}/>
                                                         </div>
                                                     </SkeletonTheme>

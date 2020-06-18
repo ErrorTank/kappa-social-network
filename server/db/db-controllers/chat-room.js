@@ -104,10 +104,10 @@ const getChatRoomMessages = (chatRoomID, {take = 10, skip = 0}) => {
         })
 }
 
-const updateSavedMessagesToSent = (chatRoomID, messages) => {
+const updateSavedMessagesToSent = (chatRoomID, messageIds) => {
     return ChatRoom.findOneAndUpdate({
         _id: ObjectId(chatRoomID)
-    },   { "$set": { "context.$[elem].state": "SENT" } },  { "arrayFilters": [{ "elem._id": {$in: messages.map(each => ObjectId(each._id))} }], "multi": true , new: true})
+    },   { "$set": { "context.$[elem].state": "SENT" } },  { "arrayFilters": [{ "elem._id": {$in: messageIds} }], "multi": true , new: true})
 
 };
 

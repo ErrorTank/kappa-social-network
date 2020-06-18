@@ -72,7 +72,7 @@
   }
 
   &.single {
-
+    margin 10px 0
     .message-renderable-content{
       border-radius 18px
 
@@ -152,7 +152,7 @@
           cursor pointer
 
           &:hover {
-            background-color bgLight
+            background-color btnCancelLight
           }
         }
       }
@@ -167,17 +167,17 @@
         display block
         margin auto
         border-radius 50%
-        border 1px solid greyTextLight
+        border 1px solid common-border
         position relative
         background-color transparent
         i{
           font-size 0.8rem
           font-weight 500
           absoluteMiddle()
-          color greyTextLight
+          color common-border
         }
         &.full-fill{
-          background-color greyTextLight
+          background-color common-border
           i{
             color white
           }
@@ -186,7 +186,7 @@
     }
 
     .message-renderable-content {
-      background-color common-border
+      background-color btnCancelLight
       padding 8px 12px
       word-break  break-word
       vertical-align bottom

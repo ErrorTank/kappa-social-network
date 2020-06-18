@@ -1,6 +1,9 @@
 const {getAllUserActiveRelations} = require("../../../db/db-controllers/messenger-utility");
 const {simpleUpdateUser} = require("../../../db/db-controllers/user");
-
+const {updateSavedMessagesToSent} = require("../../../db/db-controllers/chat-room");
+const mongoose = require("mongoose");
+const {MessageState} = require("../../../common/const/message-state")
+const ObjectId = mongoose.Types.ObjectId;
 
 module.exports = (io, socket, context) => {
     console.log(socket.id + " has connected to /messenger namespace");
@@ -10,7 +13,7 @@ module.exports = (io, socket, context) => {
                 .then(([_, data]) => {
                     let relationIds = data.map(each => each._id);
                     for(let roomName of relationIds){
-                        console.log(`/messenger-user-room/user/${roomName}`)
+
                         io.to(`/messenger-user-room/user/${roomName}`).emit('change-contact-status', {userID: socket.userID, active: false});
                     }
                     socket.userID = "";
@@ -44,5 +47,14 @@ module.exports = (io, socket, context) => {
         }
 
     });
+    socket.on("received-message", function (data) {
+        if(data.userID && data.chatRoomID && data.messageID){
+            console.log(`User ${data.userID} has received message ${data.messageID}!`)
+            updateSavedMessagesToSent(data.chatRoomID, [ObjectId(data.messageID)]);
+            io.to(`/messenger-chat-room/chat-room/${data.chatRoomID}`).emit('change-message-state', {messageIDs: [ObjectId(data.messageID)], state: MessageState.SENT});
+        }
+
+    });
     return io;
+
 };

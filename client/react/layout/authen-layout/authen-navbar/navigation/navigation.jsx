@@ -54,11 +54,7 @@ export class Navigation extends Component {
                       ? typeof each.url === 'string'
                         ? location.pathname === each.url
                         : each.url.test(location.pathname)
-                      : !!each.url.find((each) =>
-                          typeof each === 'string'
-                            ? location.pathname === each
-                            : location.pathname.match(each)
-                        )
+                      : !!each.url.find((each) => typeof each === 'string' ? location.pathname === each : location.pathname.match(each))
                     : false,
                 })}
               >
