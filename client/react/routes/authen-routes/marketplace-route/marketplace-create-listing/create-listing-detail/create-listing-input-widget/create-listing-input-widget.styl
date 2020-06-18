@@ -2,16 +2,113 @@
   background-color white
   height 100vh;
   border-top: 1px solid transparent;
-  box-shadow: 0 0 15px 1px rgba(69,65,78,0.2) 
+  box-shadow: 0 0 15px 1px rgba(69,65,78,0.2)
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
   .cs-input-header{
-    margin: 20px 16px 12px 16px;
+    margin: 20px 16px 5px 16px;
     box-sizing: border-box;
     flex-shrink: 0;
     flex-wrap: nowrap;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    flex-direction column;
-    
+    .header-info{
+      flex-basis: calc(100% * (2/3));
+      flex-shrink: 1;
+      max-width: 100%;
+      flex-grow: 1;
+      .fake-breadcrumb{
+        color: secondaryTextLight;
+        font-size: 13px;
+        text-align: left;
+        font-weight: 400;
+        line-height: 16px;
+      }
+      .header-title{
+        font-size: 24px;
+        font-family: inherit;
+        color: normalTextLight;
+        font-weight: 700;
+        line-height: 28px;
+      }
+    }
+    .save-draft-button{
+      flex-basis: calc(100% /3);
+      display: flex;
+      width: 100%
+      height 36px;
+      box-sizing: border-box;
+      justify-content: flex-end;
+      align-items: center;
+      
+      .save-draft-title{
+        padding: 7px 12px;   
+        border-radius: 6px;
+        color: blueTextLight
+        cursor pointer
+        font-size: 15px;
+        line-height: 20px;
+        height inherit 
+        font-weight: 500;
+        &:hover{
+          background-color: hover;
+        }
+      }
+    }
+  }
+
+  .line-seperater{
+    border-bottom: 1px solid lightgray;
+    margin: 0 16px;
+  }
+}
+
+.cs-input-body{
+  margin-top: 8px; 
+  .user-info-display{
+    padding: 0 16px;
+    min-height: 44px;
+    display: flex;
+    align-items: center;
+
+    .user-avatar-wrapper{
+      display: inline-block;
+      vertical-align: middle;
+      width: 40px;
+      height: 40px;
+      overflow: hidden;
+      border-radius: 50%;
+      margin: auto;
+      position: relative;
+      margin: 8px 12px 8px 0;
+      justify-content: space-between
+      img{
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%,-50%);
+        height: 41px;
+      }
+    }
+
+    .user-info-wrapper{
+      padding: 12px 0;
+      display: flex;
+      box-sizing: border-box;
+      justify-content: space-between;
+      align-items: stretch;
+      flex-direction: column;
+      .user-name{
+        margin: 5px 0;
+        color: normalTextLight;
+        font-size: 15px;
+        font-weight: 600;
+        font-family: inherit;
+        
+      }  
+      .user-marketplace-info{
+        display: flex;
+      }
+    }
   }
 }
