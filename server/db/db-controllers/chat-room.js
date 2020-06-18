@@ -9,6 +9,7 @@ const {ApplicationError} = require("../../utils/error/error-types");
 const omit = require("lodash/omit");
 const pick = require("lodash/pick");
 const {binarySearch} = require("../../utils/common-utils");
+const {MessageState} = require("../../common/const/message-state")
 
 const getChatContacts = (userID) => {
     return User.findOne({_id: ObjectId(userID)})
@@ -60,7 +61,7 @@ const createNewMessage = ({ chatRoomID, value}) => {
         _id: ObjectId(chatRoomID)
     }, {
         $push: {
-            context: newMessage
+            context: {...newMessage, state: MessageState.SAVED}
         }
     }, {
         new: true,

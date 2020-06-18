@@ -89,10 +89,11 @@ export class ChatBox extends KComponent {
         }
         let currentMessages = this.messageState.getState();
         let newMessages = currentMessages.concat(newMessage);
-        this.messageState.setState(newMessages);
+        this.messageState.setState([...newMessages]);
         chatApi.sendMessage(this.state.chat_room_brief._id, omit(newMessage, ["_id", "state"]))
             .then(newServerMessage => {
-                this.messageState.setState(newMessages.splice(newMessages.length - 1, 1, {...newServerMessage, state: MessageState.SAVED}));
+                newMessages.splice(newMessages.length - 1, 1, {...newServerMessage});
+                this.messageState.setState([...newMessages]);
             })
 
     };

@@ -147,7 +147,28 @@
     .message-state {
       align-self flex-end
       width 22px
-
+      .msg-state{
+        width 14px
+        height 14px
+        display block
+        margin auto
+        border-radius 50%
+        border 1px solid greyTextLight
+        position relative
+        background-color transparent
+        i{
+          font-size 0.8rem
+          font-weight 500
+          absoluteMiddle()
+          color greyTextLight
+        }
+        &.full-fill{
+          background-color greyTextLight
+          i{
+            color white
+          }
+        }
+      }
     }
 
     .message-renderable-content {

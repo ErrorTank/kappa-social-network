@@ -4,6 +4,7 @@ import {userInfo} from "../../../../../../common/states/common";
 import {getRenderableContentFromMessage} from "../../../../../../common/utils/editor-utils";
 import {Tooltip} from "../../../../../common/tooltip/tooltip";
 import {StatusAvatar} from "../../../../../common/status-avatar/status-avatar";
+import {MessageState} from "../chat-box";
 
 export class Message extends Component {
     constructor(props) {
@@ -12,6 +13,29 @@ export class Message extends Component {
 
         }
     }
+
+    renderMessageState = (state) => {
+        switch (state) {
+            case MessageState.CACHED:
+                return (
+                    <span className="msg-state"></span>
+                )
+            case MessageState.SAVED:
+                return (
+                    <span className="msg-state">
+                        <i className="fal fa-check"></i>
+                    </span>
+                )
+            case MessageState.SENT:
+                return (
+                    <span className="msg-state full-fill">
+                        <i className="fal fa-check"></i>
+                    </span>
+                )
+        }
+        return null;
+    }
+
     render() {
         let userID = userInfo.getState()._id;
         let {message, position, haveAvatar} = this.props;
@@ -39,9 +63,9 @@ export class Message extends Component {
                     <div className={classnames("message-renderable-content", {owned: isOwned})}>
                         {getRenderableContentFromMessage(message)}
                     </div>
-                    {isOwned && (
+                    {(isOwned && (haveAvatar ? !message.seenBy.length : message.state !== MessageState.SENT)) && (
                         <div className="message-state">
-
+                            {this.renderMessageState(message.state)}
                         </div>
                     )}
                     {!isOwned && (

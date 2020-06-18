@@ -81,6 +81,10 @@ const chatRoomSchema = new Schema({
                     type: ObjectId,
                     default: null
                 },
+                state: {
+                    type: String,
+                    enum: ["CACHED", "SAVED", "SENT"]
+                },
                 created_at: {
                     type: Date,
                     default: Date.now
