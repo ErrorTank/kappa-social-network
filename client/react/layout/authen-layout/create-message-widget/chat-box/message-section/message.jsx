@@ -6,6 +6,7 @@ import {Tooltip} from "../../../../../common/tooltip/tooltip";
 import {StatusAvatar} from "../../../../../common/status-avatar/status-avatar";
 import {MessageState} from "../chat-box";
 import {WithUserStatus} from "../../../../../common/user-statuts-subcriber/user-status-subscriber";
+import moment from "moment";
 
 export class Message extends Component {
     constructor(props) {
@@ -40,6 +41,7 @@ export class Message extends Component {
         let {message, position, haveAvatar} = this.props;
         let isOwned = message.sentBy._id === userID;
         return (
+
             <div className={classnames("chat-message", position, {owned: isOwned})}>
                 <div className="upper-panel">
                     {!isOwned && (
@@ -73,9 +75,17 @@ export class Message extends Component {
                             isReverse={!isOwned}
                         />
                     )}
+
                     <div className={classnames("message-renderable-content", {owned: isOwned})}>
-                        {getRenderableContentFromMessage(message)}
+                        <Tooltip
+                            className={"message-tooltip"}
+                            position={"top"}
+                            text={() => moment(message.created_at).format('hh:mm A')}
+                        >
+                            {getRenderableContentFromMessage(message)}
+                        </Tooltip>
                     </div>
+
                     {(isOwned && (haveAvatar ? !message.seenBy.length : message.state !== MessageState.SENT)) && (
                         <div className="message-state">
                             {this.renderMessageState(message.state)}
@@ -93,6 +103,7 @@ export class Message extends Component {
 
                 </div>
             </div>
+
         );
     }
 }

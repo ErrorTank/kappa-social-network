@@ -72,6 +72,9 @@ export class MessageSection extends Component {
                     </div>
                 )}
                 <div className="messages">
+                    <div className="receiver-info">
+
+                    </div>
                     {messages.map((each, index) => {
                         let position = this.getMessagePositionState(messages, index)
                         return (

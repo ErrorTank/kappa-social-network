@@ -125,6 +125,11 @@ export class ChatInput extends Component {
     render() {
         const { MentionSuggestions } = this.mentionPlugin;
         console.log(this.state.filteredSuggestions)
+        let plugins = [emojiPlugin];
+        if(this.props.canMention){
+            plugins.push(this.mentionPlugin);
+        }
+        console.log(plugins)
         return (
 
                 <ClickOutside onClickOut={() => this.setState({showEmojiPicker: false})}>
@@ -134,7 +139,7 @@ export class ChatInput extends Component {
                               <Editor
                                   editorState={this.state.editorState}
                                   onChange={this.onChange}
-                                  plugins={ [emojiPlugin, this.mentionPlugin]}
+                                  plugins={plugins}
                                   ref={(element) => {
                                       this.editor = element;
                                   }}

@@ -184,6 +184,7 @@ export class ChatBox extends KComponent {
                                                 chatRoomID={this.state.chat_room_brief?._id}
                                                 loadMessages={this.loadMessages}
                                                 messages={this.messageState.getState()}
+                                                isGroupChat={this.state.chat_room_brief?.is_group_chat}
                                             />
                                             <MessageUtilities
                                                 chatRoom={this.state.chat_room_brief}
