@@ -38,6 +38,8 @@ export const userApi = {
     },
     toggleDarkMode(payload){
         return authenApi.put("/user/toggle-dark-mode", payload);
+    },
+    getUserBasicInfo(userID){
+        return authenApi.get(`/user/${userID}/basic-info`);
     }
-
 };

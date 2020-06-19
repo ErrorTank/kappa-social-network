@@ -124,6 +124,12 @@ const getUserChatRoomBrief = (ownerID, userID) => {
             if(!chat_room){
                 return new ChatRoom({
                     involve_person: [{related: ObjectId(ownerID)}, {related: ObjectId(userID)}],
+                    context: [
+                        {
+                            is_init: true,
+                            content: "nope"
+                        }
+                    ]
                 }).save().then(cr => {
                     let newCr = cr.toObject();
                     Promise.all([simpleUpdateUser(ownerID, {$push: {chat_rooms: newCr._id}}), simpleUpdateUser(userID, {$push: {chat_rooms: newCr._id}})]);

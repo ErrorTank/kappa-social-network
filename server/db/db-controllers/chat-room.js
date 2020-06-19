@@ -119,6 +119,9 @@ const getChatRoomMessages = (chatRoomID, {take = 10, skip = 0}) => {
                 sentBy: {
                     $first: "$context.sentBy"
                 },
+                is_init: {
+                    $first: "$context.is_init"
+                },
                 seenBy: {
                     $push: "$context.seenBy"
                 },

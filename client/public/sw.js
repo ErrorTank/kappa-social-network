@@ -70,6 +70,10 @@ var exceptionRequestsDev = [
     method: 'POST',
   },
   {
+    endpoint: /http:\/\/localhost:4000\/api\/user\/\w+\/basic-info/,
+    method: 'GET',
+  },
+  {
     endpoint: 'http://localhost:4000/api/user/toggle-dark-mode',
     method: 'PUT',
   },

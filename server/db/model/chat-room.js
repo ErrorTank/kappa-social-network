@@ -63,7 +63,12 @@ const chatRoomSchema = new Schema({
     context: {
         default: [],
         type: [
+
             {
+                is_init: {
+                    type: Boolean,
+                    default: false
+                },
                 sentBy: {
                     type: ObjectId,
                     ref: "User"
