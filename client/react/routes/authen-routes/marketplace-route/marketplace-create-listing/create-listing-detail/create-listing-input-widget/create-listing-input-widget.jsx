@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { userInfo } from './../../../../../../../common/states/common';
+import { ListingInfo } from './listing-info/listing-info';
 
 export class CreateListingInputWidget extends Component {
   constructor(props) {
@@ -31,14 +32,17 @@ export class CreateListingInputWidget extends Component {
             <div className='user-info-wrapper'>
               <div className='user-name'>{user.basic_info.username}</div>
               <div className='user-marketplace-info'>
-                <span>Niêm yết trên Marketplace ·</span>
-                <div>
+                <span className='um-info'>Niêm yết trên Marketplace</span>
+                <span className='um-info dot'> · </span>
+                <div className='um-info icon'>
                   <i className='fal fa-globe-asia'></i>
                 </div>
-                <span> Công khai</span>
+                <span className='um-info'>Công khai</span>
               </div>
             </div>
           </div>
+
+          <ListingInfo />
         </div>
         <div className='cs-input-footer'></div>
       </div>
