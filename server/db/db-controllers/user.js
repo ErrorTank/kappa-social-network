@@ -309,6 +309,10 @@ const simpleUpdateUser = (userID, data) => {
   return User.findOneAndUpdate({_id: ObjectId(userID)}, data, {new: true, select: "_id contact basic_info joined_at isVerify last_active_at dark_mode private_info search_history avatar"}).lean()
 };
 
+const getUserBasicInfo = userID => {
+    return User.findOne({_id: ObjectId(userID)}, "_id basic_info avatar").lean()
+}
+
 module.exports = {
     getAuthenticateUserInitCredentials,
     login,
@@ -321,5 +325,6 @@ module.exports = {
     deleteSearchHistory,
     updateSearchHistory,
     shortLogin,
-    simpleUpdateUser
+    simpleUpdateUser,
+    getUserBasicInfo
 };

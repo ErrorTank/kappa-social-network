@@ -7,6 +7,7 @@ import {StatusAvatar} from "../../../../../common/status-avatar/status-avatar";
 import {MessageState} from "../chat-box";
 import {WithUserStatus} from "../../../../../common/user-statuts-subcriber/user-status-subscriber";
 import moment from "moment";
+import {Avatar} from "../../../../../common/avatar/avatar";
 
 export class Message extends Component {
     constructor(props) {
@@ -41,7 +42,7 @@ export class Message extends Component {
 
     render() {
         let userID = userInfo.getState()._id;
-        let {message, position, haveAvatar, isLastMessage} = this.props;
+        let {message, position, haveAvatar, isUserLastMessage} = this.props;
         let isOwned = message.sentBy._id === userID;
         return (
 
@@ -101,7 +102,13 @@ export class Message extends Component {
                     )}
                 </div>
                 <div className="seen-panel">
-
+                    {isUserLastMessage && message.seenBy.map((each) => (
+                        <div className="seen-avatar" key={each._id}>
+                            <Avatar
+                                user={each}
+                            />
+                        </div>
+                    ))}
                 </div>
             </div>
 

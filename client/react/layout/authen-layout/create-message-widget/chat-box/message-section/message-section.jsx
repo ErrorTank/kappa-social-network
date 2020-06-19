@@ -3,6 +3,7 @@ import ReactDOM from "react-dom"
 import {Message} from "./message";
 import {LoadingInline} from "../../../../../common/loading-inline/loading-inline";
 import classnames from "classnames"
+import {userInfo} from "../../../../../../common/states/common";
 
 export let messagesContainerUtilities = {};
 
@@ -64,6 +65,9 @@ export class MessageSection extends Component {
 
     render() {
         let {messages} = this.props;
+        let userID = userInfo.getState()._id;
+        let userMessages = messages.filter(each => each.sentBy._id === userID);
+        let lastUserMessage = userMessages[userMessages.length - 1];
         return (
             <div className="message-section">
                 {this.state.loadingMessages && (
@@ -81,7 +85,7 @@ export class MessageSection extends Component {
                             <Message
                                 position={position}
                                 message={each}
-                                isLastMessage={index === messages.length - 1}
+                                isUserLastMessage={each._id === lastUserMessage._id}
                                 key={each._id}
                                 haveAvatar={position === "single" || position === "tail"}
                             />

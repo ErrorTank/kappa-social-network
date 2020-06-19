@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import {MessageBoxLayout} from "../../message-box-layout/message-box-layout";
-import {MessageSection} from "./message-section/message-section";
+import {messagesContainerUtilities, MessageSection} from "./message-section/message-section";
 import {MessageUtilities} from "./message-utilities/message-utilities";
 import classnames from "classnames"
 import {Tooltip} from "../../../../common/tooltip/tooltip";
@@ -45,15 +45,20 @@ export class ChatBox extends KComponent {
                     userID: userInfo.getState()._id,
                     chatRoomID: chat_room._id
                 });
-                this.io.on("push-to-seen-by", ({messageIDs, userID}) => {
+                this.io.on("push-to-seen-by", ({messageIDs, user}) => {
 
                     let clone = [...this.messageState.getState()];
                     for (let i = 0; i < clone.length; i++) {
                         if (messageIDs.find(each => each === clone[i]._id)) {
-                            clone[i].seenBy.push(userID)
+                            clone[i].seenBy.push(user)
                         }
                     }
-                    this.messageState.setState(clone);
+
+                    this.messageState.setState(clone).then(() => {
+                        setTimeout(() => {
+                            messagesContainerUtilities.scrollToLatest();
+                        })
+                    });
                 })
                 this.io.on("change-message-state", ({messageIDs, state}) => {
 
