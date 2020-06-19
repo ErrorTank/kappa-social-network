@@ -47,8 +47,8 @@ export class MessageSection extends Component {
         super(props);
         this.state = {
             loadingMessages: true,
-
-        }
+            onScroll: false
+       }
         messagesContainerUtilities = {
             scrollToLatest: this.scrollToLatest
         }
@@ -60,12 +60,15 @@ export class MessageSection extends Component {
         if(nextProps.chatRoomID && nextProps.chatRoomID !== this.props.chatRoomID){
             this.loadMessages(nextProps.chatRoomID).then(() => this.scrollToLatest());
         }
-        // if(nextProps.messages.length > this.props.messages.length){
+        // if(nextProps.messages.length !== this.props.messages.length){
         //     setTimeout(() => {
-        //         this.scrollToLatest();
+        //         let elem = ReactDOM.findDOMNode(this);
+        //
+        //         this.setState({scrollHeight: elem.scrollHeight})
         //     })
         // }
     }
+
 
     scrollToLatest = () => {
         if(!this.state.onScroll){
@@ -112,7 +115,13 @@ export class MessageSection extends Component {
            <InfiniteScrollWrapper
                onScrollTop={() => {
                    if(!(firstMessage && firstMessage.is_init)){
-                       this.loadMessages(this.props.chatRoomID)
+                       let oldScrollHeight = ReactDOM.findDOMNode(this).scrollHeight;
+                       this.loadMessages(this.props.chatRoomID).then(() => {
+                           setTimeout(() => {
+                               let elemClone = ReactDOM.findDOMNode(this);
+                               elemClone.scrollTop = elemClone.scrollHeight - oldScrollHeight;
+                           })
+                       })
                    }
 
                }}

@@ -5,11 +5,9 @@ import ReactDOM from "react-dom";
 export class InfiniteScrollWrapper extends KComponent {
     constructor(props) {
         super(props);
-        this.state = {
 
-        }
         this.onUnmount(() => {
-            if(this.cancelAction) {
+            if (this.cancelAction) {
                 this.cancelAction();
                 this.cancelAction = null;
             }
@@ -23,16 +21,23 @@ export class InfiniteScrollWrapper extends KComponent {
         this.cancelAction = this.bindActionToScroll();
     }
 
+
+
     bindActionToScroll = () => {
         let elem = ReactDOM.findDOMNode(this);
 
         this.scrollFunc = (e) => {
             let elemClone = ReactDOM.findDOMNode(this);
-            if(elemClone.scrollTop === 0){
-                this.props.onScrollTop(e);
-            }else if(elemClone.scrollTop + elem.clientHeight  >= elem.scrollHeight){
+
+            if (elemClone.scrollTop === 0) {
+
+                // console.log(elemClone.clientHeight)
+
+                this.props.onScrollTop();
+            } else if (elemClone.scrollTop + elem.clientHeight >= elem.scrollHeight) {
+
                 this.props.onScrollBottom(e);
-            }else{
+            } else {
                 this.props.onScroll(e)
             }
 
