@@ -3,6 +3,29 @@
       opacity 0.6
   }
 }
+.receiver-info{
+  min-height 120px
+  margin-bottom 20px
+  padding-top 20px
+  text-align center
+  .common-avatar{
+    width 60px
+    height 60px
+    border-radius 5px
+    .avatar-holder{
+      span{
+        font-size 2.2rem
+      }
+    }
+  }
+  .username{
+    margin-top 10px
+    font-size 1.5rem
+    color commonTextLight
+    padding 0 10px
+    white-space pre-wrap
+  }
+}
 .message-section {
   flex-basis: 355px;
   overflow-y auto
@@ -105,6 +128,7 @@
         .avatar-holder{
           span{
             font-size 0.2rem
+            font-weight 400 !important
           }
         }
       }

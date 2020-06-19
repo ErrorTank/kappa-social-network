@@ -4,8 +4,43 @@ import {Message} from "./message";
 import {LoadingInline} from "../../../../../common/loading-inline/loading-inline";
 import classnames from "classnames"
 import {userInfo} from "../../../../../../common/states/common";
+import {InfiniteScrollWrapper} from "../../../../../common/infinite-scroll-wrapper/infinite-scroll-wrapper";
+import {Avatar} from "../../../../../common/avatar/avatar";
+import {userApi} from "../../../../../../api/common/user-api";
 
 export let messagesContainerUtilities = {};
+
+
+class ReceiverInfo extends Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            info: null
+        };
+        let receiverID = props.chatRoom.involve_person.find(each => each.related !== userInfo.getState()._id).related;
+        userApi.getUserBasicInfo(receiverID).then((info) => {
+            this.setState({info})
+        })
+    };
+
+    render() {
+        return (
+            <div className="receiver-info">
+                {this.state.info && (
+                    <>
+                        <Avatar user={this.state.info}/>
+                        <div className="username">
+                            Bắt đầu trò chuyện với <br/> <span className="high-light">{this.state.info.basic_info.username}</span>
+                        </div>
+                    </>
+                )}
+
+            </div>
+        );
+    }
+}
+
+export default MessageSection;
 
 export class MessageSection extends Component {
     constructor(props) {
@@ -23,25 +58,28 @@ export class MessageSection extends Component {
 
     componentWillReceiveProps(nextProps, nextContext) {
         if(nextProps.chatRoomID && nextProps.chatRoomID !== this.props.chatRoomID){
-            this.loadMessages(nextProps.chatRoomID);
+            this.loadMessages(nextProps.chatRoomID).then(() => this.scrollToLatest());
         }
-        if(nextProps.messages.length > this.props.messages.length){
-            setTimeout(() => {
-                this.scrollToLatest();
-            })
-        }
+        // if(nextProps.messages.length > this.props.messages.length){
+        //     setTimeout(() => {
+        //         this.scrollToLatest();
+        //     })
+        // }
     }
 
     scrollToLatest = () => {
-        let elem = ReactDOM.findDOMNode(this);
-        elem.scrollTop = elem.scrollHeight;
+        if(!this.state.onScroll){
+            let elem = ReactDOM.findDOMNode(this);
+            elem.scrollTop = elem.scrollHeight;
+        }
+
     }
 
     loadMessages = (chatRoomID) => {
         this.setState({loadingMessages: true});
-        this.props.loadMessages(chatRoomID).then(() => {
+        return this.props.loadMessages(chatRoomID).then(() => {
             this.setState({loadingMessages: false});
-            this.scrollToLatest();
+
 
         });
     }
@@ -68,31 +106,51 @@ export class MessageSection extends Component {
         let userID = userInfo.getState()._id;
         let userMessages = messages.filter(each => each.sentBy._id === userID);
         let lastUserMessage = userMessages[userMessages.length - 1];
-        return (
-            <div className="message-section">
-                {this.state.loadingMessages && (
-                    <div className={classnames("loading-wrapper", {expand: messages.length === 0})}>
-                        <LoadingInline/>
-                    </div>
-                )}
-                <div className="messages">
-                    <div className="receiver-info">
+        let firstMessage = messages[0]
 
-                    </div>
-                    {messages.map((each, index) => {
-                        let position = this.getMessagePositionState(messages, index)
-                        return (
-                            <Message
-                                position={position}
-                                message={each}
-                                isUserLastMessage={each._id === lastUserMessage._id}
-                                key={each._id}
-                                haveAvatar={position === "single" || position === "tail"}
+        return (
+           <InfiniteScrollWrapper
+               onScrollTop={() => {
+                   if(!(firstMessage && firstMessage.is_init)){
+                       this.loadMessages(this.props.chatRoomID)
+                   }
+
+               }}
+               onScrollBottom={() =>  this.setState({onScroll: false})}
+               onScroll={() => {
+                   if(!this.state.onScroll){
+                       this.setState({onScroll: true});
+                   }
+               }}
+           >
+               <div className="message-section">
+                   {this.state.loadingMessages && (
+                       <div className={classnames("loading-wrapper", {expand: messages.length === 0})}>
+                           <LoadingInline/>
+                       </div>
+                   )}
+                   <div className="messages">
+                       {firstMessage && firstMessage.is_init && !this.props.chatRoom?.is_group_chat && (
+                            <ReceiverInfo
+                                chatRoom={this.props.chatRoom}
                             />
-                        )
-                    })}
-                </div>
-            </div>
+                       )}
+
+                       {messages.map((each, index) => {
+                           let position = this.getMessagePositionState(messages, index)
+                           return each.is_init ? null :(
+                               <Message
+                                   position={position}
+                                   message={each}
+                                   isUserLastMessage={each._id === lastUserMessage?._id}
+                                   key={each._id}
+                                   haveAvatar={position === "single" || position === "tail"}
+                               />
+                           )
+                       })}
+                   </div>
+               </div>
+           </InfiniteScrollWrapper>
         );
     }
 }

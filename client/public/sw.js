@@ -70,6 +70,10 @@ var exceptionRequestsDev = [
     method: 'POST',
   },
   {
+    endpoint: /http:\/\/localhost:4000\/api\/user\/\w+\/basic-info/,
+    method: 'GET',
+  },
+  {
     endpoint: 'http://localhost:4000/api/user/toggle-dark-mode',
     method: 'PUT',
   },
@@ -132,8 +136,8 @@ var notGetRequests = [
   },
 ];
 
-var CACHE_STATIC_NAME = 'static-v1592543973648';
-var CACHE_DYNAMIC_NAME = 'dynamic-v1592543973648';
+var CACHE_STATIC_NAME = 'static-v1592557095716';
+var CACHE_DYNAMIC_NAME = 'dynamic-v1592557095716';
 
 var STATIC_FILES = [
   '/',

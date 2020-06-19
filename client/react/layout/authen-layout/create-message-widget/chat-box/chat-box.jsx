@@ -74,7 +74,11 @@ export class ChatBox extends KComponent {
 
                     if (userInfo.getState()._id !== message.sentBy._id) {
                         let newMessages = this.messageState.getState();
-                        this.messageState.setState(newMessages.concat(message))
+                        this.messageState.setState(newMessages.concat(message)).then(() => {
+                            setTimeout(() => {
+                                messagesContainerUtilities.scrollToLatest();
+                            })
+                        })
                         this.io.emit("received-message", {
                             userID: userInfo.getState()._id,
                             chatRoomID: chat_room._id,
@@ -158,7 +162,11 @@ export class ChatBox extends KComponent {
             .then(newServerMessage => {
                 let msgs = newMessages.slice(0, newMessages.length - 1).concat({...newServerMessage});
                 console.log(msgs)
-                this.messageState.setState(msgs);
+                this.messageState.setState(msgs).then(() => {
+                    setTimeout(() => {
+                        messagesContainerUtilities.scrollToLatest();
+                    })
+                });
             })
 
     };
@@ -173,10 +181,10 @@ export class ChatBox extends KComponent {
     };
 
     loadMessages = (chatRoomID) => {
-
-        return chatApi.getChatRoomMessages(chatRoomID, {skip: this.messageState.getState().length})
+        let oldMsgs = this.messageState.getState();
+        return chatApi.getChatRoomMessages(chatRoomID, {skip: oldMsgs.length})
             .then(messages => {
-                return this.messageState.setState(messages).then(() => {
+                return this.messageState.setState(messages.concat(oldMsgs)).then(() => {
                     this.changeAllSavedMassageToSent(messages);
                 });
             })
@@ -268,6 +276,7 @@ export class ChatBox extends KComponent {
                                             <MessageSection
                                                 chatRoomID={this.state.chat_room_brief?._id}
                                                 loadMessages={this.loadMessages}
+                                                chatRoom={this.state.chat_room_brief}
                                                 messages={this.messageState.getState()}
                                                 isGroupChat={this.state.chat_room_brief?.is_group_chat}
                                             />
