@@ -155,7 +155,11 @@ export class ChatBox extends KComponent {
         let currentMessages = this.messageState.getState();
         let newMessages = currentMessages.concat(newMessage);
         console.log(newMessages)
-        this.messageState.setState([...newMessages]);
+        this.messageState.setState([...newMessages]).then(() => {
+            setTimeout(() => {
+                messagesContainerUtilities.scrollToLatest();
+            })
+        });
         chatApi.sendMessage(this.state.chat_room_brief._id, omit({
             ...newMessage,
             sentBy: newMessage.sentBy._id
@@ -163,11 +167,7 @@ export class ChatBox extends KComponent {
             .then(newServerMessage => {
                 let msgs = newMessages.slice(0, newMessages.length - 1).concat({...newServerMessage});
                 console.log(msgs)
-                this.messageState.setState(msgs).then(() => {
-                    setTimeout(() => {
-                        messagesContainerUtilities.scrollToLatest();
-                    })
-                });
+                this.messageState.setState(msgs)
             })
 
     };

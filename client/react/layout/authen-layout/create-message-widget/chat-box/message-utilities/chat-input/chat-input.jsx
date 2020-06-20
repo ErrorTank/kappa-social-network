@@ -10,9 +10,12 @@ import 'emoji-mart/css/emoji-mart.css'
 import {ClickOutside} from "../../../../../../common/click-outside/click-outside";
 import {chatApi} from "../../../../../../../api/common/chat-api";
 import {Avatar} from "../../../../../../common/avatar/avatar";
-import debounce from "lodash/debounce"
+import pick from "lodash/pick"
 import {transformEditorState} from "../../../../../../../common/utils/editor-utils";
 import {messengerIO} from "../../../../../../../socket/sockets";
+import {userInfo} from "../../../../../../../common/states/common";
+import isNil from "lodash/isNil"
+
 const emojiPlugin = createEmojiMartPlugin({
     data,
     set: 'apple'
@@ -54,6 +57,7 @@ export class ChatInput extends Component {
 
     onChange = (editorState) => {
         let value = transformEditorState(convertToRaw(editorState.getCurrentContent())).content;
+
         let nextState = {
             editorState
         };
@@ -65,6 +69,10 @@ export class ChatInput extends Component {
         }
         if(this.state.isTyping && !value){
             nextState.isTyping = false;
+        }
+
+        if(!isNil(nextState.isTyping)){
+            this.emitTypingStatus(nextState.isTyping)
         }
 
         this.setState(nextState);
@@ -130,7 +138,8 @@ export class ChatInput extends Component {
             let transformedState = transformEditorState(convertToRaw(editorState.getCurrentContent()));
             if(transformedState.content){
                 this.props.onSubmit(transformedState);
-
+                this.emitTypingStatus(false);
+                this.setState({isTyping: false})
 
                 this.setState({ editorState: this.getInitialState()});
             }
@@ -140,6 +149,11 @@ export class ChatInput extends Component {
 
         return 'not-handled'
     }
+
+    emitTypingStatus = isTyping => {
+
+        this.io.emit(`typing-${isTyping ? "start" : "done"}`, {chatRoomID: this.props.chatRoomID, user: pick(userInfo.getState(), ["_id", "basic_info", "avatar"])})
+    };
 
     render() {
         const { MentionSuggestions } = this.mentionPlugin;
@@ -163,7 +177,10 @@ export class ChatInput extends Component {
                                       this.editor = element;
                                   }}
                                   onFocus={() => this.props.onFocusEditor()}
-                                  onBlur={() => this.io.emit("done-typing", {chatRoomID: ""})}
+                                  onBlur={() => {
+                                      this.setState({isTyping: false})
+                                      this.emitTypingStatus(false);
+                                  }}
                                   placeholder={"Nhập tin nhắn"}
 
                                   keyBindingFn={this.keyBindingFn}

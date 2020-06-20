@@ -8,6 +8,8 @@ import {InfiniteScrollWrapper} from "../../../../../common/infinite-scroll-wrapp
 import {Avatar} from "../../../../../common/avatar/avatar";
 import {userApi} from "../../../../../../api/common/user-api";
 import {checkElemInContainerView} from "../../../../../../common/utils/dom-utils";
+import {messengerIO} from "../../../../../../socket/sockets";
+import {ThreeDotLoading} from "../../../../../common/3-dot-loading/3-dot-loading";
 
 export let messagesContainerUtilities = {};
 
@@ -22,6 +24,7 @@ class ReceiverInfo extends Component {
         userApi.getUserBasicInfo(receiverID).then((info) => {
             this.setState({info})
         })
+
     };
 
     render() {
@@ -50,19 +53,34 @@ export class MessageSection extends Component {
         this.state = {
             loadingMessages: true,
             onScroll: false,
-            unSeenCount: 0
+            unSeenCount: 0,
+            typing: []
         }
         messagesContainerUtilities = {
             scrollToLatest: this.scrollToLatest,
             increaseUnSeenCount: () => {
-                if (this.state.onScroll) {
-                    this.setState({unSeenCount: this.state.unSeenCount + 1})
-                }
+                this.setState({unSeenCount: this.state.unSeenCount + 1})
 
             }
         }
+        this.io = messengerIO.getIOInstance();
+        this.io.on("user-typing", ({user}) => {
+            if(!this.state.typing.find(each => each._id === user._id)){
+                this.setState({typing: this.state.typing.concat(user)}, () => {
+                    setTimeout(() => this.scrollToLatest())
+                });
+            }
+        })
+        this.io.on("user-typing-done", ({user}) => {
+            this.setState({typing: this.state.typing.filter(each => each._id !== user._id)}, () => {
+                setTimeout(() => this.scrollToLatest())
+            });
+        })
+    }
 
-
+    componentWillUnmount() {
+        this.io.off("user-typing-done");
+        this.io.off("user-typing");
     }
 
     componentWillReceiveProps(nextProps, nextContext) {
@@ -82,6 +100,7 @@ export class MessageSection extends Component {
     scrollToBottom = () => {
         let elem = ReactDOM.findDOMNode(this);
         elem.scrollTop = elem.scrollHeight;
+        this.setState({onScroll: false, unseenCount: 0});
     }
 
     scrollToLatest = () => {
@@ -129,7 +148,7 @@ export class MessageSection extends Component {
         let userMessages = messages.filter(each => each.sentBy._id === userID);
         let lastUserMessage = userMessages[userMessages.length - 1];
         let firstMessage = messages[0]
-        console.log(this.state.onScroll)
+        console.log(this.state.typing)
         return (
             <>
 
@@ -189,6 +208,18 @@ export class MessageSection extends Component {
                                     />
                                 )
                             })}
+                            {this.state.typing.map((each) => (
+                                <div className="typing" key={each._id}>
+                                    <div className="avatar">
+                                        <Avatar
+                                            user={each}
+                                        />
+                                    </div>
+                                    <div className="message-holder">
+                                        <ThreeDotLoading/>
+                                    </div>
+                                </div>
+                            ))}
                         </div>
                     </div>
 

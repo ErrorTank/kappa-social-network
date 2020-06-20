@@ -51,7 +51,31 @@
     }
   }
   .messages{
+    .typing{
+      margin 10px 0
+      display flex
+      align-items center
+      .avatar{
+        flex 0 0 44px
+        text-align center
+        .common-avatar{
+          width 30px
+          height 30px
+          .avatar-holder{
+            span{
+              font-size 1.3rem
+            }
+          }
+        }
+      }
+      .message-holder{
+        flex 0 0 auto
+        background-color btnCancelLight
+        border-radius 18px
+        padding 8px 12px
 
+      }
+    }
   }
   .loading-wrapper {
     position relative

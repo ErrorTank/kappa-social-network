@@ -55,6 +55,20 @@ module.exports = (io, socket, context) => {
         }
 
     });
+    socket.on("typing-start", function (data) {
+        if(data.user && data.chatRoomID){
+
+            socket.broadcast.to(`/messenger-chat-room/chat-room/${data.chatRoomID}`).emit('user-typing', {user: data.user});
+        }
+
+    });
+    socket.on("typing-done", function (data) {
+        if(data.user && data.chatRoomID){
+
+            socket.broadcast.to(`/messenger-chat-room/chat-room/${data.chatRoomID}`).emit('user-typing-done', {user: data.user});
+        }
+
+    });
     return io;
 
 };

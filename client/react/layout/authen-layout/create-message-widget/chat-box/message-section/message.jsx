@@ -58,11 +58,12 @@ export class Message extends Component {
                                         last_active_at: message.sentBy?.last_active_at
                                     }}
                                 >
-                                    {({active}) => {
+                                    {(userStatus) => {
+                                        console.log(userStatus)
                                         return (
                                             <StatusAvatar
                                                 user={message.sentBy}
-                                                active={active}
+                                                active={userStatus.active}
                                             />
                                         )
                                     }}
