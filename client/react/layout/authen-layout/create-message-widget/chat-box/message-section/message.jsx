@@ -8,6 +8,7 @@ import {MessageState} from "../chat-box";
 import {WithUserStatus} from "../../../../../common/user-statuts-subcriber/user-status-subscriber";
 import moment from "moment";
 import {Avatar} from "../../../../../common/avatar/avatar";
+import {HyperLink} from "./hyper-link";
 
 export class Message extends Component {
     constructor(props) {
@@ -88,6 +89,11 @@ export class Message extends Component {
                         >
                             {getRenderableContentFromMessage(message)}
                         </Tooltip>
+                        {message.hyperlinks.length && !message.temp && (
+                            <HyperLink
+                                link={message.hyperlinks[0]}
+                            />
+                        )}
                     </div>
 
                     {(isOwned) && (

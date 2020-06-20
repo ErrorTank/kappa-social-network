@@ -1,0 +1,40 @@
+import React, {Component} from 'react';
+import {LoadingInline} from "../../../../../common/loading-inline/loading-inline";
+import {utilityApi} from "../../../../../../api/common/utilities-api";
+import {parseHtmlEnteties} from "../../../../../../common/utils/string-utils";
+import pick from "lodash/pick"
+
+export class HyperLink extends Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            data: null
+        }
+        utilityApi.getUrlMetadata(props.link)
+            .then(data => this.setState({data: {...pick(data, ["image", "title", "url"]), title: parseHtmlEnteties(data.title)}}))
+
+        console.log(parseHtmlEnteties("Facebook - &#x110;&#x103;ng nh&#x1EAD;p ho&#x1EB7;c &#x111;&#x103;ng k&#xFD;"))
+
+    }
+    render() {
+        return (
+            <div className="hyperlink">
+                {this.state.data ? (
+                    <div className="info-wrapper">
+                        {this.state.data.image && (
+                            <div className="url-image">
+
+                            </div>
+                        )}
+                        <div className="url-main">
+                            <div className="url-title">{this.state.data.title}</div>
+                            <div className="url-url">{this.state.data.url}</div>
+                        </div>
+                    </div>
+                ) : (
+                    <LoadingInline/>
+                )}
+            </div>
+        );
+    }
+}
