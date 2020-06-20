@@ -10,6 +10,7 @@ import moment from "moment";
 import {Avatar} from "../../../../../common/avatar/avatar";
 import {HyperLink} from "./hyper-link";
 import {Link} from "react-router-dom"
+import {messagesContainerUtilities} from "./message-section";
 
 
 let Wrapper = (props) => props.links.length ? (
@@ -110,6 +111,9 @@ export class Message extends Component {
                                 {!!message.hyperlinks.length && !message.temp && (
                                     <HyperLink
                                         link={message.hyperlinks[0]}
+                                        onLoaded={() => {
+                                            messagesContainerUtilities.createScrollLatest(true)();
+                                        }}
                                     />
                                 )}
                             </Wrapper>

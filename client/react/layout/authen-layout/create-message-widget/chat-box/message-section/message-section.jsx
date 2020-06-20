@@ -56,8 +56,8 @@ export class MessageSection extends Component {
             typing: []
         }
         messagesContainerUtilities = {
-            createScrollLatest: () => {
-                return this.isBottom() ? this.scrollToBottom : () => null
+            createScrollLatest: (forceScroll = false) => {
+                return forceScroll  ? this.scrollToBottom :this.isBottom() ? this.scrollToBottom : () => null
             },
             increaseUnSeenCount: () => {
                 if(!this.isBottom()){
