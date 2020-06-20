@@ -76,6 +76,7 @@ export class ChatBox extends KComponent {
                         let newMessages = this.messageState.getState();
                         this.messageState.setState(newMessages.concat(message)).then(() => {
                             setTimeout(() => {
+                                messagesContainerUtilities.increaseUnSeenCount();
                                 messagesContainerUtilities.scrollToLatest();
                             })
                         })

@@ -12,6 +12,7 @@ import {chatApi} from "../../../../../../../api/common/chat-api";
 import {Avatar} from "../../../../../../common/avatar/avatar";
 import debounce from "lodash/debounce"
 import {transformEditorState} from "../../../../../../../common/utils/editor-utils";
+import {messengerIO} from "../../../../../../../socket/sockets";
 const emojiPlugin = createEmojiMartPlugin({
     data,
     set: 'apple'
@@ -30,8 +31,10 @@ export class ChatInput extends Component {
             suggestions: [],
             loadSuggestion: true,
             filteredSuggestions: [],
-
+            isTyping: false
         }
+
+        this.io = messengerIO.getIOInstance();
 
         this.mentionPlugin = createMentionPlugin({
             entityMutability: 'IMMUTABLE',
@@ -50,14 +53,19 @@ export class ChatInput extends Component {
     }
 
     onChange = (editorState) => {
-
+        let value = transformEditorState(convertToRaw(editorState.getCurrentContent())).content;
         let nextState = {
             editorState
         };
         if(this.state.showEmojiPicker){
             nextState.showEmojiPicker = false;
         }
-
+        if(!this.state.isTyping && value){
+            nextState.isTyping = true;
+        }
+        if(this.state.isTyping && !value){
+            nextState.isTyping = false;
+        }
 
         this.setState(nextState);
     };
@@ -118,7 +126,7 @@ export class ChatInput extends Component {
     handleKeyCommand = (command) => {
         if (command === 'chat-input-enter') {
             let {editorState} = this.state;
-            console.log(convertToRaw(editorState.getCurrentContent()))
+            // console.log(convertToRaw(editorState.getCurrentContent()))
             let transformedState = transformEditorState(convertToRaw(editorState.getCurrentContent()));
             if(transformedState.content){
                 this.props.onSubmit(transformedState);
@@ -155,6 +163,7 @@ export class ChatInput extends Component {
                                       this.editor = element;
                                   }}
                                   onFocus={() => this.props.onFocusEditor()}
+                                  onBlur={() => this.io.emit("done-typing", {chatRoomID: ""})}
                                   placeholder={"Nhập tin nhắn"}
 
                                   keyBindingFn={this.keyBindingFn}
