@@ -46,7 +46,7 @@ export class ChatBox extends KComponent {
                     chatRoomID: chat_room._id
                 });
                 this.io.on("push-to-seen-by", ({messageIDs, user}) => {
-
+                    let scrollToLatest = messagesContainerUtilities.createScrollLatest();
                     let clone = [...this.messageState.getState()];
                     for (let i = 0; i < clone.length; i++) {
                         if (messageIDs.find(each => each === clone[i]._id)) {
@@ -56,7 +56,7 @@ export class ChatBox extends KComponent {
 
                     this.messageState.setState(clone).then(() => {
                         setTimeout(() => {
-                            messagesContainerUtilities.scrollToLatest();
+                            scrollToLatest();
                         })
                     });
                 })
@@ -71,13 +71,13 @@ export class ChatBox extends KComponent {
                     this.messageState.setState(clone);
                 })
                 this.io.on("new-message", ({message}) => {
-
+                    let scrollToLatest = messagesContainerUtilities.createScrollLatest();
                     if (userInfo.getState()._id !== message.sentBy._id) {
                         let newMessages = this.messageState.getState();
                         this.messageState.setState(newMessages.concat(message)).then(() => {
                             setTimeout(() => {
                                 messagesContainerUtilities.increaseUnSeenCount();
-                                messagesContainerUtilities.scrollToLatest();
+                                scrollToLatest();
                             })
                         })
                         this.io.emit("received-message", {
@@ -155,9 +155,10 @@ export class ChatBox extends KComponent {
         let currentMessages = this.messageState.getState();
         let newMessages = currentMessages.concat(newMessage);
         console.log(newMessages)
+        let scrollToLatest = messagesContainerUtilities.createScrollLatest();
         this.messageState.setState([...newMessages]).then(() => {
             setTimeout(() => {
-                messagesContainerUtilities.scrollToLatest();
+                scrollToLatest();
             })
         });
         chatApi.sendMessage(this.state.chat_room_brief._id, omit({

@@ -56,7 +56,9 @@ export class MessageSection extends Component {
             typing: []
         }
         messagesContainerUtilities = {
-            scrollToLatest: this.scrollToLatest,
+            createScrollLatest: () => {
+                return this.isBottom() ? this.scrollToBottom : () => null
+            },
             increaseUnSeenCount: () => {
                 if(!this.isBottom()){
                     this.setState({unSeenCount: this.state.unSeenCount + 1})
@@ -67,15 +69,19 @@ export class MessageSection extends Component {
         }
         this.io = messengerIO.getIOInstance();
         this.io.on("user-typing", ({user}) => {
+            let isBottom = this.isBottom();
+            console.log(isBottom)
             if(!this.state.typing.find(each => each._id === user._id)){
                 this.setState({typing: this.state.typing.concat(user)}, () => {
-                    setTimeout(() => this.scrollToLatest())
+                    isBottom && setTimeout(() => this.scrollToBottom())
+
                 });
             }
         })
         this.io.on("user-typing-done", ({user}) => {
+            let isBottom = this.isBottom();
             this.setState({typing: this.state.typing.filter(each => each._id !== user._id)}, () => {
-                setTimeout(() => this.scrollToLatest())
+                isBottom && setTimeout(() => this.scrollToBottom())
             });
         })
     }
@@ -87,7 +93,8 @@ export class MessageSection extends Component {
 
     componentWillReceiveProps(nextProps, nextContext) {
         if (nextProps.chatRoomID && nextProps.chatRoomID !== this.props.chatRoomID) {
-            this.loadMessages(nextProps.chatRoomID).then(() => this.scrollToLatest());
+            let isBottom = this.isBottom();
+            this.loadMessages(nextProps.chatRoomID).then(() =>  isBottom && setTimeout(() => this.scrollToBottom()));
         }
         // if(nextProps.messages.length !== this.props.messages.length){
         //     setTimeout(() => {
@@ -107,16 +114,11 @@ export class MessageSection extends Component {
 
     isBottom = () => {
         let elem = ReactDOM.findDOMNode(this);
+
         return elem ? elem.scrollTop + elem.clientHeight >= elem.scrollHeight : true;
     }
 
-    scrollToLatest = () => {
 
-        if (!this.isBottom()) {
-           this.scrollToBottom();
-        }
-
-    }
 
     loadMessages = (chatRoomID) => {
         this.setState({loadingMessages: true});
