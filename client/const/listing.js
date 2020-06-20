@@ -222,5 +222,49 @@ export const listing = [
     //nothing else here
   },
 
-  //Home for rent
+  //Home is a little different
+
+  //Home for Rent/Sale
+  {
+    _id: 'Home for Rent',
+    name: 'Home for Rent',
+    //must
+    homeFor: true,
+    homeType: true,
+    numberOfBedrooms: true,
+    numberOfBathrooms: true,
+    pricePerMonth: true,
+    address: true,
+    decription: true,
+    //option
+    squareFeet: true,
+    dateAvailable: true,
+    laundryType: true,
+    parkingType: true,
+    airConditioningType: true,
+    heatingType: true,
+    catFriendly: true,
+    dogFriendly: true,
+  },
+  {
+    _id: 'Home for Sale',
+    name: 'Home for Sale',
+    //must
+    homeFor: true,
+    homeType: true,
+    numberOfBedrooms: true,
+    numberOfBathrooms: true,
+    price: true,
+    address: true,
+    decription: true,
+    //option
+    squareFeet: true,
+    dateAvailable: true,
+    laundryType: true,
+    parkingType: true,
+    airConditioningType: true,
+    heatingType: true,
+    catFriendly: true,
+    dogFriendly: true,
+  },
 ];

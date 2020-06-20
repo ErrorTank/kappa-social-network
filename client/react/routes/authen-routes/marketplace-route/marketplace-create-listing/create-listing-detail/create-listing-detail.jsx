@@ -14,9 +14,10 @@ class CreateListingDetail extends KComponent {
       <div className='create-listing-detail'>
         <PageTitle title={'Tạo niêm yết'}>
           <CommonLayout
+            // className={}
             mainRender={() => <div>xem truoc</div>}
             haveRightRender={false}
-            leftRender={() => <CreateListingInputWidget />}
+            leftRender={() => <CreateListingInputWidget {...this.props} />}
           />
         </PageTitle>
       </div>

@@ -11,13 +11,15 @@ class MarketplaceCreateListing extends KComponent {
     this.state = {};
   }
   render() {
+    console.log(this.props);
+
     return (
       <div className='marketplace-create-listing'>
         <PageTitle title={'Tạo niêm yết'}>
           <CommonLayout
             mainRender={() => <PickListingTypeWidget />}
             haveRightRender={false}
-            leftRender={() => <CreateListingWidget />}
+            leftRender={() => <CreateListingWidget {...this.props} />}
           />
         </PageTitle>
       </div>
