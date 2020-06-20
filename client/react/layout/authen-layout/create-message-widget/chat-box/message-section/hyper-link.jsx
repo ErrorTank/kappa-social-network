@@ -11,7 +11,7 @@ export class HyperLink extends Component {
             data: null
         }
         utilityApi.getUrlMetadata(props.link)
-            .then(data => this.setState({data: {...pick(data, ["image", "title", "url"]), title: parseHtmlEnteties(data.title)}}))
+            .then(data => this.setState({data: {...pick(data, ["image", "title", "url", "source"]), title: parseHtmlEnteties(data.title)}}))
 
         console.log(parseHtmlEnteties("Facebook - &#x110;&#x103;ng nh&#x1EAD;p ho&#x1EB7;c &#x111;&#x103;ng k&#xFD;"))
 
