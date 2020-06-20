@@ -52,14 +52,13 @@ export class MessageSection extends Component {
         super(props);
         this.state = {
             loadingMessages: true,
-            onScroll: false,
             unSeenCount: 0,
             typing: []
         }
         messagesContainerUtilities = {
             scrollToLatest: this.scrollToLatest,
             increaseUnSeenCount: () => {
-                if(!this.state.onScroll){
+                if(!this.isBottom()){
                     this.setState({unSeenCount: this.state.unSeenCount + 1})
                 }
 
@@ -106,8 +105,14 @@ export class MessageSection extends Component {
         this.setState({onScroll: false, unseenCount: 0});
     }
 
+    isBottom = () => {
+        let elem = ReactDOM.findDOMNode(this);
+        return elem ? elem.scrollTop + elem.clientHeight >= elem.scrollHeight : true;
+    }
+
     scrollToLatest = () => {
-        if (!this.state.onScroll) {
+
+        if (!this.isBottom()) {
            this.scrollToBottom();
         }
 
@@ -168,16 +173,14 @@ export class MessageSection extends Component {
                         }
 
                     }}
-                    onScrollBottom={() => this.setState({onScroll: false, unSeenCount: 0})}
+                    onScrollBottom={() => this.setState({unSeenCount: 0})}
                     onScroll={() => {
-                        if (!this.state.onScroll) {
-                            this.setState({onScroll: true});
-                        }
+
                     }}
                 >
 
                     <div className="message-section">
-                        {this.state.onScroll && this.state.unSeenCount !== 0 && (
+                        {!this.isBottom() && this.state.unSeenCount !== 0 && (
                             <div className="new-message-notify" onClick={() =>{
                                 this.scrollToBottom();
                             }}>

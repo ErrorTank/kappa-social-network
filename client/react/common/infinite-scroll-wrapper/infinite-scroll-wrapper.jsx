@@ -53,6 +53,8 @@ export class InfiniteScrollWrapper extends KComponent {
         };
     };
 
+
+
     render() {
         return this.props.children
     }
