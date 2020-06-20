@@ -23,12 +23,12 @@ export class HyperLink extends Component {
                     <div className="info-wrapper">
                         {this.state.data.image && (
                             <div className="url-image">
-
+                                <img src={this.state.data.image}/>
                             </div>
                         )}
                         <div className="url-main">
                             <div className="url-title">{this.state.data.title}</div>
-                            <div className="url-url">{this.state.data.url}</div>
+                            <div className="url-source">{this.state.data.source}</div>
                         </div>
                     </div>
                 ) : (

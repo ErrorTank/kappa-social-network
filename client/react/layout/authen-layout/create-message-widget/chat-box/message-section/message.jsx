@@ -9,7 +9,18 @@ import {WithUserStatus} from "../../../../../common/user-statuts-subcriber/user-
 import moment from "moment";
 import {Avatar} from "../../../../../common/avatar/avatar";
 import {HyperLink} from "./hyper-link";
+import {Link} from "react-router-dom"
 
+
+let Wrapper = (props) => props.links.length ? (
+    <a href={props.links.length ? props.links[0] : ""} target={"_blank"}  className={classnames("link-msg")}>
+        {props.children}
+    </a>
+)   : (
+    <>
+        {props.children}
+    </>
+);
 export class Message extends Component {
     constructor(props) {
         super(props);
@@ -45,6 +56,7 @@ export class Message extends Component {
         let userID = userInfo.getState()._id;
         let {message, position, haveAvatar, isUserLastMessage} = this.props;
         let isOwned = message.sentBy._id === userID;
+
         return (
 
             <div className={classnames("chat-message", position, {owned: isOwned})}>
@@ -81,20 +93,29 @@ export class Message extends Component {
                         />
                     )}
 
-                    <div className={classnames("message-renderable-content", {owned: isOwned})}>
-                        <Tooltip
-                            className={"message-tooltip"}
-                            position={"top"}
-                            text={() => moment(message.created_at).format('hh:mm A')}
-                        >
-                            {getRenderableContentFromMessage(message)}
-                        </Tooltip>
-                        {message.hyperlinks.length && !message.temp && (
-                            <HyperLink
-                                link={message.hyperlinks[0]}
-                            />
-                        )}
-                    </div>
+
+
+                        <div className={classnames("message-renderable-content", {owned: isOwned})}>
+                            <Wrapper links={message.hyperlinks}>
+                                <Tooltip
+                                    className={"message-tooltip"}
+                                    position={"top"}
+                                    text={() => moment(message.created_at).format('hh:mm A')}
+                                >
+                                    <div className="content">
+                                        {getRenderableContentFromMessage(message)}
+                                    </div>
+
+                                </Tooltip>
+                                {!!message.hyperlinks.length && !message.temp && (
+                                    <HyperLink
+                                        link={message.hyperlinks[0]}
+                                    />
+                                )}
+                            </Wrapper>
+                        </div>
+
+
 
                     {(isOwned) && (
                         <div className="message-state">
