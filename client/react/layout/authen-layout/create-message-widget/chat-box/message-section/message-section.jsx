@@ -59,7 +59,10 @@ export class MessageSection extends Component {
         messagesContainerUtilities = {
             scrollToLatest: this.scrollToLatest,
             increaseUnSeenCount: () => {
-                this.setState({unSeenCount: this.state.unSeenCount + 1})
+                if(!this.state.onScroll){
+                    this.setState({unSeenCount: this.state.unSeenCount + 1})
+                }
+
 
             }
         }

@@ -26,8 +26,8 @@ module.exports = (db, namespacesIO) => {
     router.post("/:chatRoomID/send-message", authorizationUserMiddleware, (req, res, next) => {
 
         return createNewMessage({value: req.body, chatRoomID: req.params.chatRoomID}).then((data) => {
-            namespacesIO.messenger.to(`/messenger-chat-room/chat-room/${req.params.chatRoomID}`).emit('new-message', {message: data});
-            return  res.status(200).json(data);
+            namespacesIO.messenger.to(`/messenger-chat-room/chat-room/${req.params.chatRoomID}`).emit('new-message', {message: data.toObject()});
+            return  res.status(200).json({...data.toObject(), oldID: req.body._id});
         }).catch(err => next(err));
 
     });

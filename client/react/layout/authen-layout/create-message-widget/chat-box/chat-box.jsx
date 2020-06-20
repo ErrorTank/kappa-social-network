@@ -163,11 +163,12 @@ export class ChatBox extends KComponent {
         chatApi.sendMessage(this.state.chat_room_brief._id, omit({
             ...newMessage,
             sentBy: newMessage.sentBy._id
-        }, ["_id", "state"]))
+        }, ["state"]))
             .then(newServerMessage => {
-                let msgs = newMessages.slice(0, newMessages.length - 1).concat({...newServerMessage});
-                console.log(msgs)
-                this.messageState.setState(msgs)
+                let msgs = [...this.messageState.getState()];
+                let replaceIndex = msgs.findIndex(each => each._id === newServerMessage.oldID)
+                msgs.splice(replaceIndex, 1, omit(newServerMessage, "oldID"));
+                this.messageState.setState([...msgs])
             })
 
     };
