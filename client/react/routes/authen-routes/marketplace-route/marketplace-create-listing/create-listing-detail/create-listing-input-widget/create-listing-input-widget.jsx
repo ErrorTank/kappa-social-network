@@ -6,6 +6,7 @@ export class CreateListingInputWidget extends Component {
   constructor(props) {
     super(props);
     this.state = {};
+    console.log(props);
   }
   render() {
     let user = userInfo.getState();
@@ -35,7 +36,7 @@ export class CreateListingInputWidget extends Component {
                 <span className='um-info'>Niêm yết trên Marketplace</span>
                 <span className='um-info dot'> · </span>
                 <div className='um-info icon'>
-                  <i className='fal fa-globe-asia'></i>
+                  <i className='far fa-globe-asia'></i>
                 </div>
                 <span className='um-info'>Công khai</span>
               </div>

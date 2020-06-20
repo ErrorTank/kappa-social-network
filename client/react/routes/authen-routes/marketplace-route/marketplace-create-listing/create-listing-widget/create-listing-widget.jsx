@@ -7,6 +7,7 @@ export class CreateListingWidget extends Component {
     this.state = {};
   }
   render() {
+    console.log(this.props);
     return (
       <div className='create-listing-widget'>
         <div className='create-listing-header'>

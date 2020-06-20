@@ -1,4 +1,7 @@
 import React, { Component } from 'react';
+import { ListingInfoInput } from '../../../../../../../common/listing-info-input/listing-info-input';
+import { listing } from './../../../../../../../../const/listing';
+import { customHistory } from './../../../../../../routes';
 
 export class ListingInfo extends Component {
   constructor(props) {
@@ -6,6 +9,8 @@ export class ListingInfo extends Component {
     this.state = {};
   }
   render() {
+    console.log(customHistory);
+
     return (
       <div className='listing-info'>
         <div className='picture-input'>
@@ -16,6 +21,7 @@ export class ListingInfo extends Component {
           </div>
           <div className='add-picture-section'></div>
         </div>
+        <ListingInfoInput label={'Title'} />
       </div>
     );
   }
