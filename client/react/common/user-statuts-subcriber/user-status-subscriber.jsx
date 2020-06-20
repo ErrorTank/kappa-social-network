@@ -5,12 +5,18 @@ import React, {Component} from 'react';
 export class WithUserStatus extends Component {
     constructor(props) {
         super(props);
-        this.state = {...props.status} || {
+        this.state = props.status ? {...props.status} : {
             active: false,
             last_active_at: null
         };
         this.io = messengerIO.getIOInstance();
-
+        if(props.userID){
+            this.io.on("change-contact-status", ({active, userID, last_active_at}) => {
+                if(userID === props.userID){
+                    this.setState({active, last_active_at});
+                }
+            });
+        }
     }
 
     componentWillReceiveProps(nextProps, nextContext) {

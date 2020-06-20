@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { userInfo } from './../../../../../../../common/states/common';
+import { userInfo } from '../../../../../../../common/states/common';
 import { ListingInfo } from './listing-info/listing-info';
 
 export class CreateListingInputWidget extends Component {

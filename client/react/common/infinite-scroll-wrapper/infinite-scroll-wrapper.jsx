@@ -1,10 +1,12 @@
 import React, {Component} from 'react';
 import {KComponent} from "../k-component";
 import ReactDOM from "react-dom";
+import {checkElemInContainerView} from "../../../common/utils/dom-utils";
 
 export class InfiniteScrollWrapper extends KComponent {
     constructor(props) {
         super(props);
+
 
         this.onUnmount(() => {
             if (this.cancelAction) {
@@ -20,6 +22,7 @@ export class InfiniteScrollWrapper extends KComponent {
     componentDidMount() {
         this.cancelAction = this.bindActionToScroll();
     }
+
 
 
 
@@ -49,6 +52,8 @@ export class InfiniteScrollWrapper extends KComponent {
             elem.removeEventListener('scroll', this.scrollFunc);
         };
     };
+
+
 
     render() {
         return this.props.children

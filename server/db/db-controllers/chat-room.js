@@ -65,7 +65,7 @@ const createNewMessage = ({chatRoomID, value}) => {
         }
     }, {
         new: true,
-        fields: "context"
+        fields: "context",
     })
 
         .populate([

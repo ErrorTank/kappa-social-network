@@ -7,6 +7,9 @@ import {userInfo} from "../../../../../../common/states/common";
 import {InfiniteScrollWrapper} from "../../../../../common/infinite-scroll-wrapper/infinite-scroll-wrapper";
 import {Avatar} from "../../../../../common/avatar/avatar";
 import {userApi} from "../../../../../../api/common/user-api";
+import {checkElemInContainerView} from "../../../../../../common/utils/dom-utils";
+import {messengerIO} from "../../../../../../socket/sockets";
+import {ThreeDotLoading} from "../../../../../common/3-dot-loading/3-dot-loading";
 
 export let messagesContainerUtilities = {};
 
@@ -21,6 +24,7 @@ class ReceiverInfo extends Component {
         userApi.getUserBasicInfo(receiverID).then((info) => {
             this.setState({info})
         })
+
     };
 
     render() {
@@ -30,7 +34,8 @@ class ReceiverInfo extends Component {
                     <>
                         <Avatar user={this.state.info}/>
                         <div className="username">
-                            Bắt đầu trò chuyện với <br/> <span className="high-light">{this.state.info.basic_info.username}</span>
+                            Bắt đầu trò chuyện với <br/> <span
+                            className="high-light">{this.state.info.basic_info.username}</span>
                         </div>
                     </>
                 )}
@@ -47,18 +52,49 @@ export class MessageSection extends Component {
         super(props);
         this.state = {
             loadingMessages: true,
-            onScroll: false
-       }
-        messagesContainerUtilities = {
-            scrollToLatest: this.scrollToLatest
+            unSeenCount: 0,
+            typing: []
         }
+        messagesContainerUtilities = {
+            createScrollLatest: () => {
+                return this.isBottom() ? this.scrollToBottom : () => null
+            },
+            increaseUnSeenCount: () => {
+                if(!this.isBottom()){
+                    this.setState({unSeenCount: this.state.unSeenCount + 1})
+                }
 
 
+            }
+        }
+        this.io = messengerIO.getIOInstance();
+        this.io.on("user-typing", ({user}) => {
+            let isBottom = this.isBottom();
+            console.log(isBottom)
+            if(!this.state.typing.find(each => each._id === user._id)){
+                this.setState({typing: this.state.typing.concat(user)}, () => {
+                    isBottom && setTimeout(() => this.scrollToBottom())
+
+                });
+            }
+        })
+        this.io.on("user-typing-done", ({user}) => {
+            let isBottom = this.isBottom();
+            this.setState({typing: this.state.typing.filter(each => each._id !== user._id)}, () => {
+                isBottom && setTimeout(() => this.scrollToBottom())
+            });
+        })
+    }
+
+    componentWillUnmount() {
+        this.io.off("user-typing-done");
+        this.io.off("user-typing");
     }
 
     componentWillReceiveProps(nextProps, nextContext) {
-        if(nextProps.chatRoomID && nextProps.chatRoomID !== this.props.chatRoomID){
-            this.loadMessages(nextProps.chatRoomID).then(() => this.scrollToLatest());
+        if (nextProps.chatRoomID && nextProps.chatRoomID !== this.props.chatRoomID) {
+            let isBottom = this.isBottom();
+            this.loadMessages(nextProps.chatRoomID).then(() =>  isBottom && setTimeout(() => this.scrollToBottom()));
         }
         // if(nextProps.messages.length !== this.props.messages.length){
         //     setTimeout(() => {
@@ -70,13 +106,19 @@ export class MessageSection extends Component {
     }
 
 
-    scrollToLatest = () => {
-        if(!this.state.onScroll){
-            let elem = ReactDOM.findDOMNode(this);
-            elem.scrollTop = elem.scrollHeight;
-        }
-
+    scrollToBottom = () => {
+        let elem = ReactDOM.findDOMNode(this);
+        elem.scrollTop = elem.scrollHeight;
+        this.setState({onScroll: false, unseenCount: 0});
     }
+
+    isBottom = () => {
+        let elem = ReactDOM.findDOMNode(this);
+
+        return elem ? elem.scrollTop + elem.clientHeight >= elem.scrollHeight : true;
+    }
+
+
 
     loadMessages = (chatRoomID) => {
         this.setState({loadingMessages: true});
@@ -92,17 +134,23 @@ export class MessageSection extends Component {
         let after = messages[index + 1];
         let current = messages[index]
 
-        if((previous?.sentBy._id !== current.sentBy._id) && (after?.sentBy._id !== current.sentBy._id)){
+        if ((previous?.sentBy._id !== current.sentBy._id) && (after?.sentBy._id !== current.sentBy._id)) {
             return "single";
         }
-        if((previous?.sentBy._id === current.sentBy._id) && (after?.sentBy._id === current.sentBy._id)){
+        if ((previous?.sentBy._id === current.sentBy._id) && (after?.sentBy._id === current.sentBy._id)) {
             return "middle"
         }
-        if(previous?.sentBy._id !== current.sentBy._id){
+        if (previous?.sentBy._id !== current.sentBy._id) {
             return "head"
         }
         return "tail";
     }
+
+    resetCount = (childElem) => {
+        if (checkElemInContainerView(ReactDOM.findDOMNode(this), childElem)) {
+            this.setState({unseenCount: this.state.unSeenCount - 1});
+        }
+    };
 
     render() {
         let {messages} = this.props;
@@ -110,56 +158,81 @@ export class MessageSection extends Component {
         let userMessages = messages.filter(each => each.sentBy._id === userID);
         let lastUserMessage = userMessages[userMessages.length - 1];
         let firstMessage = messages[0]
-
+        console.log(this.state.typing)
         return (
-           <InfiniteScrollWrapper
-               onScrollTop={() => {
-                   if(!(firstMessage && firstMessage.is_init)){
-                       let oldScrollHeight = ReactDOM.findDOMNode(this).scrollHeight;
-                       this.loadMessages(this.props.chatRoomID).then(() => {
-                           setTimeout(() => {
-                               let elemClone = ReactDOM.findDOMNode(this);
-                               elemClone.scrollTop = elemClone.scrollHeight - oldScrollHeight;
-                           })
-                       })
-                   }
+            <>
 
-               }}
-               onScrollBottom={() =>  this.setState({onScroll: false})}
-               onScroll={() => {
-                   if(!this.state.onScroll){
-                       this.setState({onScroll: true});
-                   }
-               }}
-           >
-               <div className="message-section">
-                   {this.state.loadingMessages && (
-                       <div className={classnames("loading-wrapper", {expand: messages.length === 0})}>
-                           <LoadingInline/>
-                       </div>
-                   )}
-                   <div className="messages">
-                       {firstMessage && firstMessage.is_init && !this.props.chatRoom?.is_group_chat && (
-                            <ReceiverInfo
-                                chatRoom={this.props.chatRoom}
-                            />
-                       )}
+                <InfiniteScrollWrapper
+                    onScrollTop={() => {
+                        if (!(firstMessage && firstMessage.is_init)) {
+                            let oldScrollHeight = ReactDOM.findDOMNode(this).scrollHeight;
+                            this.loadMessages(this.props.chatRoomID).then(() => {
+                                setTimeout(() => {
+                                    let elemClone = ReactDOM.findDOMNode(this);
+                                    elemClone.scrollTop = elemClone.scrollHeight - oldScrollHeight;
+                                })
+                            })
+                        }
 
-                       {messages.map((each, index) => {
-                           let position = this.getMessagePositionState(messages, index)
-                           return each.is_init ? null :(
-                               <Message
-                                   position={position}
-                                   message={each}
-                                   isUserLastMessage={each._id === lastUserMessage?._id}
-                                   key={each._id}
-                                   haveAvatar={position === "single" || position === "tail"}
-                               />
-                           )
-                       })}
-                   </div>
-               </div>
-           </InfiniteScrollWrapper>
+                    }}
+                    onScrollBottom={() => this.setState({unSeenCount: 0})}
+                    onScroll={() => {
+
+                    }}
+                >
+
+                    <div className="message-section">
+                        {!this.isBottom() && this.state.unSeenCount !== 0 && (
+                            <div className="new-message-notify" onClick={() =>{
+                                this.scrollToBottom();
+                            }}>
+                                Bạn có <span className="high-light">{this.state.unSeenCount}</span> tin nhắn mới <span style={{marginLeft: "5px"}} className="high-light"><i
+                                className="far fa-arrow-down"></i></span>
+                            </div>
+                        )}
+                        {this.state.loadingMessages && (
+                            <div className={classnames("loading-wrapper", {expand: messages.length === 0})}>
+                                <LoadingInline/>
+                            </div>
+                        )}
+                        <div className="messages">
+
+                            {firstMessage && firstMessage.is_init && !this.props.chatRoom?.is_group_chat && (
+                                <ReceiverInfo
+                                    chatRoom={this.props.chatRoom}
+                                />
+                            )}
+
+                            {messages.map((each, index) => {
+                                let position = this.getMessagePositionState(messages, index)
+                                return each.is_init ? null : (
+                                    <Message
+
+                                        position={position}
+                                        message={each}
+                                        isUserLastMessage={each._id === lastUserMessage?._id}
+                                        key={each._id}
+                                        haveAvatar={position === "single" || position === "tail"}
+                                    />
+                                )
+                            })}
+                            {this.state.typing.map((each) => (
+                                <div className="typing" key={each._id}>
+                                    <div className="avatar">
+                                        <Avatar
+                                            user={each}
+                                        />
+                                    </div>
+                                    <div className="message-holder">
+                                        <ThreeDotLoading/>
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+
+                </InfiniteScrollWrapper>
+            </>
         );
     }
 }

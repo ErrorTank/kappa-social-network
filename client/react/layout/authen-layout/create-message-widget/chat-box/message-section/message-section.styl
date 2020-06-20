@@ -28,8 +28,55 @@
 }
 .message-section {
   flex-basis: 355px;
+
   overflow-y auto
   overflow-x hidden
+  position relative
+  .new-message-notify{
+    position: -webkit-sticky; /* Safari */
+    position: sticky;
+    display inline-block
+    top calc(100% - 35px)
+    left 50%
+    transform translateX(-50%)
+    background-color white
+    box-shadow:0px 2px 6px #C4C4C4
+    padding: 5px 10px;
+    z-index: 1;
+    font-size: 1.2rem;
+    border-radius: 5px;
+    cursor: pointer;
+    &:hover{
+      background-color darken(white, 3%)
+    }
+  }
+  .messages{
+    .typing{
+      margin 10px 0
+      display flex
+      align-items center
+      .avatar{
+        flex 0 0 44px
+        text-align center
+        .common-avatar{
+          width 30px
+          height 30px
+          .avatar-holder{
+            span{
+              font-size 1.3rem
+            }
+          }
+        }
+      }
+      .message-holder{
+        flex 0 0 auto
+        background-color btnCancelLight
+        border-radius 18px
+        padding 8px 12px
+
+      }
+    }
+  }
   .loading-wrapper {
     position relative
     height 50px
