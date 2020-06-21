@@ -11,17 +11,19 @@ import {Avatar} from "../../../../../common/avatar/avatar";
 import {HyperLink} from "./hyper-link";
 import {Link} from "react-router-dom"
 import {messagesContainerUtilities} from "./message-section";
+import {MessageFileDisplay} from "./message-file-display";
 
 
 let Wrapper = (props) => props.links.length ? (
-    <a href={props.links.length ? props.links[0] : ""} target={"_blank"}  className={classnames("link-msg")}>
+    <a href={props.links.length ? props.links[0] : ""} target={"_blank"} className={classnames("link-msg")}>
         {props.children}
     </a>
-)   : (
+) : (
     <>
         {props.children}
     </>
 );
+
 export class Message extends Component {
     constructor(props) {
         super(props);
@@ -50,7 +52,6 @@ export class Message extends Component {
         }
         return null;
     }
-
 
 
     render() {
@@ -96,7 +97,13 @@ export class Message extends Component {
 
 
 
-                        <div className={classnames("message-renderable-content", {owned: isOwned})}>
+                    <div className={classnames("message-renderable-content", {owned: isOwned})}>
+                        {message.file ? (
+                            <MessageFileDisplay
+                                file={message.file}
+                                needUpload={message.needUploadFile}
+                            />
+                        ) : (
                             <Wrapper links={message.hyperlinks}>
                                 <Tooltip
                                     className={"message-tooltip"}
@@ -117,8 +124,9 @@ export class Message extends Component {
                                     />
                                 )}
                             </Wrapper>
-                        </div>
+                        )}
 
+                    </div>
 
 
                     {(isOwned) && (
@@ -217,7 +225,6 @@ const MessageAction = ({canRemove = false, isReverse = false}) => {
                             </div>
                         </Tooltip>
                     )}
-
 
 
                 </div>
