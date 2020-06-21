@@ -40,6 +40,7 @@ export class PickListingTypeWidget extends Component {
           {this.listingType.map((each, i) => {
             return (
               <TypeShowcase
+                key={each.url}
                 url={each.url}
                 icon={each.icon}
                 title={each.title}
