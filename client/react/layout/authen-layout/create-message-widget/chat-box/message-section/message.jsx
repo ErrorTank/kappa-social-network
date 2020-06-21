@@ -112,7 +112,7 @@ export class Message extends Component {
                                     <HyperLink
                                         link={message.hyperlinks[0]}
                                         onLoaded={() => {
-                                            messagesContainerUtilities.createScrollLatest(true)();
+                                            // messagesContainerUtilities.createScrollLatest(true)();
                                         }}
                                     />
                                 )}

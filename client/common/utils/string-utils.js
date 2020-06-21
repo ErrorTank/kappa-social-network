@@ -29,7 +29,7 @@ function parseHtmlEnteties(str, type = "HEX") {
     let option = options[type];
     return str.replace(option.regex, function (match, numStr) {
         var num = parseInt(numStr, option.value);
-        console.log(String.fromCharCode(num))
+
         return String.fromCharCode(num);
     });
 }

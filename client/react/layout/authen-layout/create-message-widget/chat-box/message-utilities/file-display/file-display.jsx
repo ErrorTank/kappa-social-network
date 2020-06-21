@@ -13,7 +13,7 @@ export class FileDisplay extends Component {
         }
         if(props.file.type === "image"){
             getBase64Image(props.file.file).then((base64Image) => {
-                console.log(base64Image);
+
                 this.setState({loading: false, base64Image})
             })
         }
