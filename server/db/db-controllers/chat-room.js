@@ -137,21 +137,15 @@ const getChatRoomMessages = (chatRoomID, {take = 10, skip = 0}) => {
                 content: {
                     $first: "$context.content"
                 },
-                photos: {
-                    $first: "$context.photos"
-                },
                 mentions: {
                     $first: "$context.mentions"
-                },
-                files: {
-                    $first: "$context.files"
-                },
-                videos: {
-                    $first: "$context.videos"
                 },
                 hyperlinks: {
                     $first: "$context.hyperlinks"
                 },
+                file: {
+                    $first: "$context.file"
+                }
             }
         },
         {

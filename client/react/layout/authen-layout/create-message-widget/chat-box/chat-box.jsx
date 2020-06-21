@@ -150,7 +150,9 @@ export class ChatBox extends KComponent {
             hyperlinks: chatState.hyperlinks,
             state: MessageState.CACHED,
             seenBy: [],
-            temp: true
+            temp: true,
+            needUploadFile: !!chatState.files.length,
+            files: chatState.files
         }
         let currentMessages = this.messageState.getState();
         let newMessages = currentMessages.concat(newMessage);

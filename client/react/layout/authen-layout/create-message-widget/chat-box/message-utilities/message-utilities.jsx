@@ -47,7 +47,7 @@ export class MessageUtilities extends Component {
     }
 
     onSubmit = (input) => {
-        this.props.onSubmit(input);
+        this.props.onSubmit({...input, files: this.state.files});
         this.setState({files: []});
     };
 
