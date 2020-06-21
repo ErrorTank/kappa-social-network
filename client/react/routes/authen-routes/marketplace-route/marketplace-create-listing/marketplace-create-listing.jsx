@@ -11,8 +11,6 @@ class MarketplaceCreateListing extends KComponent {
     this.state = {};
   }
   render() {
-    console.log(this.props);
-
     return (
       <div className='marketplace-create-listing'>
         <PageTitle title={'Tạo niêm yết'}>
