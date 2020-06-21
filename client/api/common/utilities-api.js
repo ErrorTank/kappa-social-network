@@ -20,6 +20,6 @@ export const utilityApi = {
         return authenApi.get(`/utility/search-for-create/dialogs?keyword=${keyword}`)
     },
     getUrlMetadata(url){
-        return guestApi.get(`/utility/url/${url}/metadata`)
+        return offlineApi.get(`/utility/url/${encodeURIComponent(url)}/metadata`)
     }
 };

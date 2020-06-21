@@ -26,7 +26,8 @@ export class MessageUtilities extends Component {
         let newFiles = Array.from(files).map(file => {
             return isImageFile(file.name) ? {fileID: uuidv4(), file, type: "image"} : {fileID: uuidv4(), file, type: "common"};
         })
-        setTimeout(() => messagesContainerUtilities.scrollToLatest())
+        let scrollToLatest = messagesContainerUtilities.createScrollLatest();
+        setTimeout(() => scrollToLatest())
         this.setState({files: this.state.files.concat(newFiles)});
     };
 
@@ -46,7 +47,7 @@ export class MessageUtilities extends Component {
     }
 
     onSubmit = (input) => {
-        this.props.onSubmit(input);
+        this.props.onSubmit({...input, files: this.state.files});
         this.setState({files: []});
     };
 

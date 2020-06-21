@@ -104,6 +104,14 @@
 
 .chat-message {
   position relative
+  .link-msg{
+    color unset
+    text-decoration unset
+    &:hover{
+      color unset
+    }
+    cursor pointer
+  }
   &.head {
     margin-top 10px
     .message-renderable-content{
@@ -277,18 +285,23 @@
 
     .message-renderable-content {
       background-color btnCancelLight
-      padding 8px 12px
-      word-break  break-word
-      vertical-align bottom
+      overflow hidden
       margin-right 5px
       margin-left 0
       color commonTextLight
-      font-size 1.5rem
-      font-weight 400
+
       display inline-block
+
       max-width calc(100% - 56px - 5px - 10px - 44px)
-      text-align left
-      white-space pre-wrap
+      .content{
+        font-size 1.5rem
+        font-weight 400
+        text-align left
+        white-space pre-wrap
+        padding 8px 12px
+        word-break  break-word
+        vertical-align bottom
+      }
 
       .message-link {
         color inherit !important

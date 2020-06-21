@@ -25,7 +25,7 @@ module.exports = () => {
 
     });
     router.get("/url/:url/metadata", (req, res, next) => {
-        return urlMetadata(req.params.url).then((data) => {
+        return urlMetadata(decodeURIComponent(req.params.url)).then((data) => {
             return res.status(200).json(data);
         }).catch(err => next(err));
 

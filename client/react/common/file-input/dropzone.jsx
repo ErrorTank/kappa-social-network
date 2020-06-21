@@ -50,11 +50,14 @@ export class DropZone extends KComponent {
                 counter--;
                 $elem.removeClass("window-on-drag");
 
-                const dataTransfer = e.originalEvent.dataTransfer;
-                this.handleDropFile(dataTransfer.files);
+
             })
 
+        $elem.on('drop', e => {
 
+            const dataTransfer = e.originalEvent.dataTransfer;
+            this.handleDropFile(dataTransfer.files);
+        })
 
 
 

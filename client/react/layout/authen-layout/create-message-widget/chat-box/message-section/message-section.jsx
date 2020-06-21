@@ -56,8 +56,8 @@ export class MessageSection extends Component {
             typing: []
         }
         messagesContainerUtilities = {
-            createScrollLatest: () => {
-                return this.isBottom() ? this.scrollToBottom : () => null
+            createScrollLatest: (forceScroll = false) => {
+                return forceScroll  ? this.scrollToBottom :this.isBottom() ? this.scrollToBottom : () => null
             },
             increaseUnSeenCount: () => {
                 if(!this.isBottom()){
@@ -158,7 +158,7 @@ export class MessageSection extends Component {
         let userMessages = messages.filter(each => each.sentBy._id === userID);
         let lastUserMessage = userMessages[userMessages.length - 1];
         let firstMessage = messages[0]
-        console.log(this.state.typing)
+
         return (
             <>
 

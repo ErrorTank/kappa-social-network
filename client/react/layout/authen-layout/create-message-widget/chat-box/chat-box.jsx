@@ -150,7 +150,9 @@ export class ChatBox extends KComponent {
             hyperlinks: chatState.hyperlinks,
             state: MessageState.CACHED,
             seenBy: [],
-
+            temp: true,
+            needUploadFile: !!chatState.files.length,
+            files: chatState.files
         }
         let currentMessages = this.messageState.getState();
         let newMessages = currentMessages.concat(newMessage);
@@ -164,7 +166,7 @@ export class ChatBox extends KComponent {
         chatApi.sendMessage(this.state.chat_room_brief._id, omit({
             ...newMessage,
             sentBy: newMessage.sentBy._id
-        }, ["state"]))
+        }, ["state","temp"]))
             .then(newServerMessage => {
                 let msgs = [...this.messageState.getState()];
                 let replaceIndex = msgs.findIndex(each => each._id === newServerMessage.oldID)
