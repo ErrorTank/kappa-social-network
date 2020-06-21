@@ -73,7 +73,7 @@ export class Message extends Component {
                                     }}
                                 >
                                     {(userStatus) => {
-                                        console.log(userStatus)
+
                                         return (
                                             <StatusAvatar
                                                 user={message.sentBy}
