@@ -140,22 +140,28 @@ export class ChatBox extends KComponent {
         },
     ];
 
-    handleSubmitChat = (chatState) => {
+    createTempMessage = ({state, needUploadFile = false, file = null}) => {
         let newMessageID = uuidv4();
-        let newMessage = {
+        return {
             _id: newMessageID,
             sentBy: {_id: userInfo.getState()._id},
-            content: chatState.content,
-            mentions: chatState.mentions,
-            hyperlinks: chatState.hyperlinks,
+            content: state.content || "",
+            mentions: state.mentions || [],
+            hyperlinks: state.hyperlinks || [],
             state: MessageState.CACHED,
             seenBy: [],
             temp: true,
-            needUploadFile: !!chatState.files.length,
-            files: chatState.files
+            needUploadFile,
+            file
         }
+    }
+
+    handleSubmitChat = (chatState) => {
+
+        let newMessage = this.createTempMessage({state: chatState});
+        let fileMessages = chatState.files.map((each) => this.createTempMessage({file: each, needUploadFile: true}))
         let currentMessages = this.messageState.getState();
-        let newMessages = currentMessages.concat(newMessage);
+        let newMessages = currentMessages.concat([newMessage, ...fileMessages]);
         console.log(newMessages)
         let scrollToLatest = messagesContainerUtilities.createScrollLatest();
         this.messageState.setState([...newMessages]).then(() => {
@@ -166,7 +172,7 @@ export class ChatBox extends KComponent {
         chatApi.sendMessage(this.state.chat_room_brief._id, omit({
             ...newMessage,
             sentBy: newMessage.sentBy._id
-        }, ["state","temp"]))
+        }, ["state", "temp", "needUploadFile", "file"]))
             .then(newServerMessage => {
                 let msgs = [...this.messageState.getState()];
                 let replaceIndex = msgs.findIndex(each => each._id === newServerMessage.oldID)
@@ -199,8 +205,8 @@ export class ChatBox extends KComponent {
         console.log("dasdasdas")
         let messages = this.messageState.getState();
         let userID = userInfo.getState()._id;
-        let unseenMessages =  messages.filter(each => each.sentBy._id !== userID && each.state === "SENT" && !each.seenBy.find(seen => seen._id === userID));
-        if(unseenMessages.length){
+        let unseenMessages = messages.filter(each => each.sentBy._id !== userID && each.state === "SENT" && !each.seenBy.find(seen => seen._id === userID));
+        if (unseenMessages.length) {
             chatApi.seenMessages(this.state.chat_room_brief._id, unseenMessages)
         }
     }
