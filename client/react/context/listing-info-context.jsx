@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { KComponent } from './../../../../../../common/k-component';
+import { KComponent } from '../common/k-component';
 
 export const ListingInfoContext = React.createContext();
 
@@ -8,12 +8,17 @@ export class ListingInfoController extends Component {
     super(props);
     this.state = {
       type: '',
-      title: 'test',
+      title: '',
     };
   }
+  updateValue = (key, val) => {
+    this.setState({ [key]: val });
+  };
   render() {
     return (
-      <ListingInfoContext.Provider value={this.state}>
+      <ListingInfoContext.Provider
+        value={{ state: this.state, updateValue: this.updateValue }}
+      >
         {this.props.children}
       </ListingInfoContext.Provider>
     );

@@ -4,7 +4,7 @@ import { CommonLayout } from '../../../../../layout/common-layout/common-layout'
 import { PageTitle } from '../../../../../common/page-title/page-title';
 import { CreateListingInputWidget } from './create-listing-input-widget/create-listing-input-widget';
 import { customHistory } from './../../../../routes';
-import { ListingInfoController } from './listing-info-context/listing-info-context';
+import { ListingInfoController } from '../../../../../context/listing-info-context';
 
 class CreateListingDetail extends KComponent {
   constructor(props) {

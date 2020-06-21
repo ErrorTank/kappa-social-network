@@ -1,7 +1,7 @@
 export const listing = [
   // item 10 pic, vehicle 20 and house 50, should consider
 
-  //brand is option true, :v
+  //brand is option too, :v
 
   //Home & Garden
   {
@@ -213,7 +213,7 @@ export const listing = [
     vehicleType: true,
     year: true,
     make: true,
-    //make + year = title
+    //make + year + model = title
     model: true,
     mileage: true,
 
