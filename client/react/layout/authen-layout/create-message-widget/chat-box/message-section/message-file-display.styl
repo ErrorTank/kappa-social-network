@@ -1,0 +1,47 @@
+.message-file-display{
+  .img-wrapper{
+    background-color black
+
+
+    img{
+
+      max-height 250px
+      max-width 200px
+    }
+  }
+  .file-wrapper{
+    padding 4px 8px
+    height 60px
+    width 180px
+    display flex
+    align-items center
+    background-color btnCancelLight
+    justify-content center
+    .icon-wrapper{
+      height  33px
+      flex 0 0 33px
+      vertical-align middle
+      background-color white
+      border-radius 50%
+      position relative
+      i{
+        color commonTextLight
+        font-size 2rem
+        absoluteMiddle()
+      }
+
+    }
+    .filename{
+      color commonTextLight
+      white-space pre-wrap
+      overflow hidden
+      text-overflow ellipsis
+      padding-left 8px
+      font-size 1.4rem
+      text-align left
+      font-weight 500
+      flex 0 0 calc(100% - 33px)
+
+    }
+  }
+}

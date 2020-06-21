@@ -140,7 +140,7 @@ export class ChatBox extends KComponent {
         },
     ];
 
-    createTempMessage = ({state, needUploadFile = false, file = null}) => {
+    createTempMessage = ({state = {}, needUploadFile = false, file = null}) => {
         let newMessageID = uuidv4();
         return {
             _id: newMessageID,
@@ -157,28 +157,35 @@ export class ChatBox extends KComponent {
     }
 
     handleSubmitChat = (chatState) => {
+        let newMessage = null;
+        if(chatState.content){
+             newMessage = this.createTempMessage({state: chatState});
+        }
 
-        let newMessage = this.createTempMessage({state: chatState});
         let fileMessages = chatState.files.map((each) => this.createTempMessage({file: each, needUploadFile: true}))
         let currentMessages = this.messageState.getState();
-        let newMessages = currentMessages.concat([newMessage, ...fileMessages]);
+        let newMessages = currentMessages.concat(newMessage ? [newMessage, ...fileMessages] : fileMessages);
         console.log(newMessages)
+
         let scrollToLatest = messagesContainerUtilities.createScrollLatest();
         this.messageState.setState([...newMessages]).then(() => {
             setTimeout(() => {
                 scrollToLatest();
             })
         });
-        chatApi.sendMessage(this.state.chat_room_brief._id, omit({
-            ...newMessage,
-            sentBy: newMessage.sentBy._id
-        }, ["state", "temp", "needUploadFile", "file"]))
-            .then(newServerMessage => {
-                let msgs = [...this.messageState.getState()];
-                let replaceIndex = msgs.findIndex(each => each._id === newServerMessage.oldID)
-                msgs.splice(replaceIndex, 1, omit(newServerMessage, "oldID"));
-                this.messageState.setState([...msgs])
-            })
+        if(newMessage){
+            chatApi.sendMessage(this.state.chat_room_brief._id, omit({
+                ...newMessage,
+                sentBy: newMessage.sentBy._id
+            }, ["state", "temp", "needUploadFile", "file"]))
+                .then(newServerMessage => {
+                    let msgs = [...this.messageState.getState()];
+                    let replaceIndex = msgs.findIndex(each => each._id === newServerMessage.oldID)
+                    msgs.splice(replaceIndex, 1, omit(newServerMessage, "oldID"));
+                    this.messageState.setState([...msgs])
+                })
+        }
+
 
     };
 

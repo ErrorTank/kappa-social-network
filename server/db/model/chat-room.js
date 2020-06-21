@@ -99,7 +99,8 @@ const chatRoomSchema = new Schema({
                     saved_at: {
                         type: Date,
                         default: Date.now
-                    }
+                    },
+                    name: String
                 },
                 ...editorContentSchema,
 
