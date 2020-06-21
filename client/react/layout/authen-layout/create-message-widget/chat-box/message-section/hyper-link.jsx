@@ -16,7 +16,6 @@ export class HyperLink extends Component {
                 props.onLoaded();
             })
 
-        console.log(parseHtmlEnteties("Facebook - &#x110;&#x103;ng nh&#x1EAD;p ho&#x1EB7;c &#x111;&#x103;ng k&#xFD;"))
 
     }
     render() {
