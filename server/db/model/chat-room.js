@@ -96,10 +96,6 @@ const chatRoomSchema = new Schema({
                 },
                 file: {
                     path: String,
-                    saved_at: {
-                        type: Date,
-                        default: Date.now
-                    },
                     name: String
                 },
                 ...editorContentSchema,

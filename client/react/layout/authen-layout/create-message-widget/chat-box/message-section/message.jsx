@@ -38,6 +38,9 @@ export class Message extends Component {
                 sentBy: props.message.sentBy._id,
                 file: props.message.file.file
             }, ["state", "temp", "needUploadFile"]))
+                .then((data) => {
+                    props.onUpload(data);
+                })
         }
     }
 

@@ -165,6 +165,7 @@ export class ChatInput extends Component {
         if(this.props.canMention){
             plugins.push(this.mentionPlugin);
         }
+        console.log(plugins)
 
         return (
 

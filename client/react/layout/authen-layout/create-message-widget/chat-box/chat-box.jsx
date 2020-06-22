@@ -208,6 +208,13 @@ export class ChatBox extends KComponent {
             })
     };
 
+    onUploadMessage = (newMessage) => {
+        let msgs = [...this.messageState.getState()];
+        let replaceIndex = msgs.findIndex(each => each._id === newMessage.oldID)
+        msgs.splice(replaceIndex, 1, omit(newMessage, "oldID"));
+        return this.messageState.setState([...msgs])
+    };
+
     emitSeenMessageEvent = () => {
         console.log("dasdasdas")
         let messages = this.messageState.getState();
@@ -297,6 +304,7 @@ export class ChatBox extends KComponent {
                                                 chatRoom={this.state.chat_room_brief}
                                                 messages={this.messageState.getState()}
                                                 isGroupChat={this.state.chat_room_brief?.is_group_chat}
+                                                onUpload={this.onUploadMessage}
                                             />
                                             <MessageUtilities
                                                 chatRoom={this.state.chat_room_brief}

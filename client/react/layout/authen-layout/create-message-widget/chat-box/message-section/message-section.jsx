@@ -213,6 +213,7 @@ export class MessageSection extends Component {
                                         isUserLastMessage={each._id === lastUserMessage?._id}
                                         key={each._id}
                                         haveAvatar={position === "single" || position === "tail"}
+                                        onUpload={this.props.onUpload}
                                     />
                                 )
                             })}
