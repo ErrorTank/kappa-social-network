@@ -23,6 +23,7 @@ export class MessageUtilities extends Component {
     }
 
     addNewFiles = (files) => {
+        this.input.editor.focus();
         let newFiles = Array.from(files).map(file => {
             return isImageFile(file.name) ? {fileID: uuidv4(), file, type: "image"} : {fileID: uuidv4(), file, type: "common"};
         })
@@ -123,6 +124,8 @@ export class MessageUtilities extends Component {
                             onSubmit={this.onSubmit}
                             canMention={this.props.chatRoom?.is_group_chat}
                             onFocusEditor={this.props.onFocusEditor}
+                            haveFiles={!!this.state.files.length}
+                            ref={input => this.input = input}
                         />
                     </div>
                     <Tooltip text={() => "Gửi"} position={"top"}>

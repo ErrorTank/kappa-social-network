@@ -87,6 +87,7 @@ export class ChatInput extends Component {
             this.loadSuggestion(nextProps.chatRoomID);
         }
 
+
     }
 
     loadSuggestion = (chatRoomID) => {
@@ -136,8 +137,10 @@ export class ChatInput extends Component {
             let {editorState} = this.state;
             // console.log(convertToRaw(editorState.getCurrentContent()))
             let transformedState = transformEditorState(convertToRaw(editorState.getCurrentContent()));
-            if(transformedState.content){
+            if(transformedState.content || this.props.haveFiles){
+                console.log(transformedState)
                 this.props.onSubmit(transformedState);
+
                 this.emitTypingStatus(false);
                 this.setState({isTyping: false})
 

@@ -27,7 +27,12 @@ let Wrapper = (props) => props.links.length ? (
 export class Message extends Component {
     constructor(props) {
         super(props);
-        this.state = {}
+        this.state = {
+            uploading: props.message.needUploadFile
+        }
+        if(props.message.file && props.message.needUploadFile){
+
+        }
     }
 
 
@@ -61,7 +66,7 @@ export class Message extends Component {
 
         return (
 
-            <div className={classnames("chat-message", position, {owned: isOwned})}>
+            <div className={classnames("chat-message", position, {owned: isOwned, disabled: this.state.uploading})}>
                 <div className="upper-panel">
                     {!isOwned && (
                         <div className="avatar">
@@ -98,6 +103,11 @@ export class Message extends Component {
 
 
                     <div className={classnames("message-renderable-content", {owned: isOwned})}>
+                        {this.state.uploading && (
+                            <div className="upload-loading">
+
+                            </div>
+                        )}
                         {message.file ? (
                             <MessageFileDisplay
                                 file={message.file}
