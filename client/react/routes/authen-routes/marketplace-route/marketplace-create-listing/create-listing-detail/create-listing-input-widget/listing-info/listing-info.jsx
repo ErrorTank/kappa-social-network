@@ -8,9 +8,23 @@ export class ListingInfo extends Component {
     super(props);
     this.state = {};
   }
-  render() {
-    console.log(customHistory);
 
+  componentDidMount = () => {
+    const { type, updateValue } = this.props;
+    updateValue('type', type);
+  };
+
+  itemField = [
+    {
+      name: 'Title',
+    },
+    {
+      name: 'Price',
+    },
+  ];
+
+  render() {
+    const { state, updateValue } = this.props;
     return (
       <div className='listing-info'>
         <div className='picture-input'>
@@ -21,7 +35,10 @@ export class ListingInfo extends Component {
           </div>
           <div className='add-picture-section'></div>
         </div>
-        <ListingInfoInput label={'Title'} />
+
+        {this.itemField.map((each, i) => {
+          return <ListingInfoInput label={each.name} key={each.name} />;
+        })}
       </div>
     );
   }

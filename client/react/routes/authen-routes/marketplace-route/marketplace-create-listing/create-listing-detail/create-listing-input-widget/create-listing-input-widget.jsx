@@ -9,14 +9,6 @@ export class CreateListingInputWidget extends Component {
     this.state = {};
   }
 
-  // componentDidMount = () => {
-  //   let val = this.props.match.params.categoryName;
-  //   this.setState({
-  //     type: val,
-  //   });
-  //   this.props.context.updateValue('type', val);
-  // };
-
   render() {
     let user = userInfo.getState();
     return (
@@ -56,7 +48,11 @@ export class CreateListingInputWidget extends Component {
                   </div>
                 </div>
 
-                <ListingInfo type={this.props.match.params.categoryName} />
+                <ListingInfo
+                  type={this.props.match.params.categoryName}
+                  updateValue={updateValue}
+                  state={state}
+                />
               </div>
               <div className='cs-input-footer'></div>
             </div>
