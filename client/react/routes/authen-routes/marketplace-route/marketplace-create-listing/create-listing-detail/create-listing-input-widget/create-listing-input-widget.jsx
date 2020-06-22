@@ -14,14 +14,13 @@ export class CreateListingInputWidget extends Component {
     return (
       <ListingInfoContext.Consumer>
         {({ updateValue, state }) => {
+          let type = this.props.match.params.categoryName;
           return (
             <div className='create-listing-input-widget'>
               <div className='cs-input-header'>
                 <div className='header-info'>
                   <p className='fake-breadcrumb'>Marketplace</p>
-                  <h1 className='header-title'>
-                    Mặt hàng cần bán {state.type}
-                  </h1>
+                  <h1 className='header-title'>Mặt hàng cần bán</h1>
                 </div>
                 <div className='save-draft-button'>
                   <span className='save-draft-title'>Save Draft</span>
@@ -49,7 +48,7 @@ export class CreateListingInputWidget extends Component {
                 </div>
 
                 <ListingInfo
-                  type={this.props.match.params.categoryName}
+                  type={type}
                   updateValue={updateValue}
                   state={state}
                 />

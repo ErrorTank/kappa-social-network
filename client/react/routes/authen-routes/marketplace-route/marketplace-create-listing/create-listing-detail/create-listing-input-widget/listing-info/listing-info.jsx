@@ -1,6 +1,9 @@
 import React, { Component } from 'react';
 import { ListingInfoInput } from '../../../../../../../common/listing-info-input/listing-info-input';
-import { listing } from './../../../../../../../../const/listing';
+import {
+  fieldByCategory,
+  itemField,
+} from './../../../../../../../../const/listing';
 import { customHistory } from './../../../../../../routes';
 
 export class ListingInfo extends Component {
@@ -13,15 +16,6 @@ export class ListingInfo extends Component {
     const { type, updateValue } = this.props;
     updateValue('type', type);
   };
-
-  itemField = [
-    {
-      name: 'Title',
-    },
-    {
-      name: 'Price',
-    },
-  ];
 
   render() {
     const { state, updateValue } = this.props;
@@ -36,7 +30,7 @@ export class ListingInfo extends Component {
           <div className='add-picture-section'></div>
         </div>
 
-        {this.itemField.map((each, i) => {
+        {itemField.map((each, i) => {
           return <ListingInfoInput label={each.name} key={each.name} />;
         })}
       </div>

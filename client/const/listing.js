@@ -1,4 +1,95 @@
-export const listing = [
+import React, { Component } from 'react';
+export const itemField = [
+  {
+    name: 'Tiêu đề',
+  },
+  {
+    name: 'Giá',
+  },
+  {
+    name: 'Hạng mục',
+    isSelected: true,
+    option: [
+      {
+        name: 'Nhà & vườn',
+        icon: <i class='fas fa-house'></i>,
+      },
+      {
+        name: 'Công cụ',
+      },
+      {
+        name: 'Nội thất',
+      },
+      {
+        name: 'Hộ gia đình',
+      },
+      {
+        name: 'Vườn',
+      },
+      {
+        name: 'Thiết bị',
+      },
+      {
+        name: 'Giải trí',
+        icon: <i class='fas fa-gamepad-alt'></i>,
+      },
+      {
+        name: 'Trò chơi điện tử',
+      },
+      {
+        name: 'Sách, phim & nhạc',
+      },
+      {
+        name: 'Quần áo và phụ kiện',
+        icon: <i class='fas fa-backpack'></i>,
+      },
+      {
+        name: 'Túi & hành lý',
+      },
+      {
+        name: 'Quần áo & giầy dép nữ',
+      },
+      {
+        name: 'Quần áo & giầy dép nam',
+      },
+      {
+        name: 'Trang sức & phụ kiện',
+      },
+      {
+        name: 'Gia đình',
+        icon: <i class='fas fa-heart'></i>,
+      },
+      {
+        name: 'Sức khỏe & làm đẹp',
+      },
+      {
+        name: 'Đồ dùng cho thú cưng',
+      },
+      {
+        name: 'Trẻ sơ sinh & trẻ nhỏ',
+      },
+      {
+        name: 'Đồ chơi và trò chơi',
+      },
+      // still missing, can add more
+    ],
+  },
+  {
+    name: 'Mô tả',
+    isTextArea: true,
+  },
+  {
+    name: 'Tình trạng hàng',
+    isSelected: true,
+    option: [
+      { name: 'Niêm yết là chỉ còn 1 mặt hàng' },
+      { name: 'Niêm yết là còn hàng' },
+      { name: 'Niêm yết là hết hàng' },
+    ],
+  },
+];
+
+export const fieldByCategory = [
   // item 10 pic, vehicle 20 and house 50, should consider
 
   //brand is option too, :v
@@ -6,14 +97,14 @@ export const listing = [
   //Home & Garden
   {
     _id: 'Tools',
-    name: 'Tools',
+    name: 'Công cụ',
     //must
     condition: true,
     brand: true,
   },
   {
     _id: 'Furniture',
-    name: 'Furniture',
+    name: 'Nội thất',
     //must
     condition: true,
     brand: true,
@@ -22,7 +113,7 @@ export const listing = [
   },
   {
     _id: 'Household',
-    name: 'Household',
+    name: 'Hộ gia đình',
     //must
     condition: true,
     brand: true,
@@ -31,14 +122,14 @@ export const listing = [
   },
   {
     _id: 'Garden',
-    name: 'Garden',
+    name: 'Vườn',
     //must
     condition: true,
     brand: true,
   },
   {
     _id: 'Applicanes',
-    name: 'Applicanes',
+    name: 'Thiết bị',
     //must
     condition: true,
     brand: true,
@@ -46,28 +137,28 @@ export const listing = [
   //Entertainment
   {
     _id: 'Video Games',
-    name: 'Video Games',
+    name: 'Trò chơi điện tử',
     //must
     condition: true,
     platform: true,
   },
   {
     _id: 'Books, Movie & Music',
-    name: 'Books, Movie & Music',
+    name: 'Sách, phim & nhạc',
     //must
     condition: true,
   },
   //Clothing & Accessories
   {
     _id: 'Bags & Luggage',
-    name: 'Bags & Luggage',
+    name: 'Túi & hành lý',
     //must
     condition: true,
     brand: true,
   },
   {
     _id: "Women's Clothing & Shoe",
-    name: "Women's Clothing & Shoe",
+    name: 'Quần áo & giầy dép nữ',
     //must
     condition: true,
     brand: true,
@@ -76,7 +167,7 @@ export const listing = [
   },
   {
     _id: "Men's Clothing & Shoe",
-    name: "Men's Clothing & Shoe",
+    name: 'Quần áo & giầy dép nam',
     //must
     condition: true,
     brand: true,
@@ -85,7 +176,7 @@ export const listing = [
   },
   {
     _id: 'Jewelry & Accessories',
-    name: 'Jewelry & Accessories',
+    name: 'Trang sức & phụ kiện',
     //must
     condition: true,
     brand: true,
@@ -93,28 +184,21 @@ export const listing = [
   //Family
   {
     _id: 'Health & Beauty',
-    name: 'Health & Beauty',
+    name: 'Sức khỏe & làm đẹp',
     //must
     condition: true,
     brand: true,
   },
   {
     _id: 'Pet Supplies',
-    name: 'Pet Supplies',
-    //must
-    condition: true,
-    brand: true,
-  },
-  {
-    _id: 'Health & Beauty',
-    name: 'Health & Beauty',
+    name: 'Đồ dùng cho thú cưng',
     //must
     condition: true,
     brand: true,
   },
   {
     _id: 'Baby & Kids',
-    name: 'Baby & Kids',
+    name: 'Trẻ sơ sinh & trẻ nhỏ',
     //must
     condition: true,
     brand: true,
@@ -123,11 +207,14 @@ export const listing = [
   },
   {
     _id: 'Toy & Games',
-    name: 'Toy & Games',
+    name: 'Đồ chơi và trò chơi',
     //must
     condition: true,
     brand: true,
   },
+
+  //below part didn't get add and fix yet
+
   //Electronics
   {
     _id: 'Electronics & Computers',
@@ -204,7 +291,9 @@ export const listing = [
     condition: true,
     brand: true,
   },
+];
 
+export const listingVehicle = [
   //Vehicle
   {
     _id: 'Vehicle',
@@ -221,7 +310,9 @@ export const listing = [
     //vehicleIdentificationNumber: true, (only for motocycle and car)
     //nothing else here
   },
+];
 
+export const listingHome = [
   //Home is a little different
 
   //Home for Rent/Sale
@@ -233,7 +324,7 @@ export const listing = [
     homeType: true,
     numberOfBedrooms: true,
     numberOfBathrooms: true,
-    pricePerMonth: true,
+    pricePerMonth: true, //
     address: true,
     decription: true,
     //option
@@ -254,7 +345,7 @@ export const listing = [
     homeType: true,
     numberOfBedrooms: true,
     numberOfBathrooms: true,
-    price: true,
+    price: true, //
     address: true,
     decription: true,
     //option
