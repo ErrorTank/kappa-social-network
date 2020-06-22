@@ -106,6 +106,10 @@ var exceptionRequestsDev = [
     method: 'POST',
   },
   {
+    endpoint: /http:\/\/localhost:4000\/api\/chat\/\w+\/send-file-message/,
+    method: 'POST',
+  },
+  {
     endpoint: /http:\/\/localhost:4000\/api\/chat\/\w+\/messages\/seen-messages/,
     method: 'PUT',
   },

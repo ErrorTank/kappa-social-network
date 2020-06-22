@@ -12,6 +12,8 @@ import {HyperLink} from "./hyper-link";
 import {Link} from "react-router-dom"
 import {messagesContainerUtilities} from "./message-section";
 import {MessageFileDisplay} from "./message-file-display";
+import {chatApi} from "../../../../../../api/common/chat-api";
+import omit from "lodash/omit";
 
 
 let Wrapper = (props) => props.links.length ? (
@@ -31,7 +33,11 @@ export class Message extends Component {
             uploading: props.message.needUploadFile
         }
         if(props.message.file && props.message.needUploadFile){
-
+            chatApi.sendFileMessage(props.chatRoomID, omit({
+                ...props.message,
+                sentBy: props.message.sentBy._id,
+                file: props.message.file.file
+            }, ["state", "temp", "needUploadFile"]))
         }
     }
 

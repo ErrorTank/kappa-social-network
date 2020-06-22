@@ -52,13 +52,13 @@ export const apiFactory = {
         let formData = new FormData();
         forIn(data, (value, key)=>{
           if (value != null) {
-            if(key === fileKey && Array.isArray(value)){
+            if(Array.isArray(value)){
               for(let i =0 ;i < value.length; i++){
                 formData.append(key, value[i]);
               }
-
-            }else
+            }else{
               formData.append(key, value);
+            }
           }
         });
 

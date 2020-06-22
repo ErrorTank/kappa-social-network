@@ -5,13 +5,16 @@ const {asynchronized} = require("../utils/common-utils");
 const {getChatContacts, getGroupChatRoomInvolvesByKeyword, createNewMessage, getChatRoomMessages, updateSavedMessagesToSent, seenMessages} = require("../db/db-controllers/chat-room");
 const {getUserBasicInfo} = require("../db/db-controllers/user");
 const {MessageState} = require("../common/const/message-state")
+const fileUpload = require("../common/upload-services/file-upload");
 const mongoose = require("mongoose");
 const ObjectId = mongoose.Types.ObjectId;
+const {isImage} = require("../utils/file-utils");
 
 module.exports = (db, namespacesIO) => {
     router.get("/contacts", authorizationUserMiddleware, (req, res, next) => {
 
         return getChatContacts(req.user._id).then((data) => {
+
            return  res.status(200).json(data);
         }).catch(err => next(err));
 
@@ -26,6 +29,16 @@ module.exports = (db, namespacesIO) => {
     router.post("/:chatRoomID/send-message", authorizationUserMiddleware, (req, res, next) => {
 
         return createNewMessage({value: req.body, chatRoomID: req.params.chatRoomID}).then((data) => {
+            namespacesIO.messenger.to(`/messenger-chat-room/chat-room/${req.params.chatRoomID}`).emit('new-message', {message: data.toObject()});
+            return  res.status(200).json({...data.toObject(), oldID: req.body._id});
+        }).catch(err => next(err));
+
+    });
+    router.post("/:chatRoomID/send-file-message", authorizationUserMiddleware, fileUpload.single("file"),  (req, res, next) => {
+        console.log(req.body)
+        console.log(req.file)
+        let file = req.file;
+        return createNewMessage({value: {...req.body, file: {name: file.originalname ,path: process.env.SERVER_HOST + `/uploads/${req.user._id}/${isImage(file.originalname) ? "image/" : "file/"}` + file.filename}}, chatRoomID: req.params.chatRoomID}).then((data) => {
             namespacesIO.messenger.to(`/messenger-chat-room/chat-room/${req.params.chatRoomID}`).emit('new-message', {message: data.toObject()});
             return  res.status(200).json({...data.toObject(), oldID: req.body._id});
         }).catch(err => next(err));
