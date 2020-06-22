@@ -207,7 +207,7 @@ export class MessageSection extends Component {
                                 let position = this.getMessagePositionState(messages, index)
                                 return each.is_init ? null : (
                                     <Message
-
+                                        chatRoomID={this.props.chatRoomID}
                                         position={position}
                                         message={each}
                                         isUserLastMessage={each._id === lastUserMessage?._id}
