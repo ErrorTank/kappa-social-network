@@ -9,11 +9,14 @@ export class ListingInfoController extends Component {
     this.state = {
       type: '',
       title: '',
+      limit: '',
     };
   }
   updateValue = (key, val) => {
     this.setState({ [key]: val });
   };
+
+  updateMoreValue = (oldState, newState) => {};
   render() {
     return (
       <ListingInfoContext.Provider

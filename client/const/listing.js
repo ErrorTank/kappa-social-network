@@ -9,7 +9,7 @@ export const itemField = [
   {
     name: 'Hạng mục',
     isSelected: true,
-    option: [
+    options: [
       {
         name: 'Nhà & vườn',
         icon: <i class='fas fa-house'></i>,
@@ -81,7 +81,7 @@ export const itemField = [
   {
     name: 'Tình trạng hàng',
     isSelected: true,
-    option: [
+    options: [
       { name: 'Niêm yết là chỉ còn 1 mặt hàng' },
       { name: 'Niêm yết là còn hàng' },
       { name: 'Niêm yết là hết hàng' },

@@ -13,7 +13,7 @@ export class CreateListingInputWidget extends Component {
     let user = userInfo.getState();
     return (
       <ListingInfoContext.Consumer>
-        {({ updateValue, state }) => {
+        {({ updateValue, state, limit }) => {
           let type = this.props.match.params.categoryName;
           return (
             <div className='create-listing-input-widget'>
@@ -51,6 +51,7 @@ export class CreateListingInputWidget extends Component {
                   type={type}
                   updateValue={updateValue}
                   state={state}
+                  limit={limit}
                 />
               </div>
               <div className='cs-input-footer'></div>
