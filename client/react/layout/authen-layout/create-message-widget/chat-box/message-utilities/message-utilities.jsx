@@ -74,7 +74,7 @@ export class MessageUtilities extends Component {
                                     multiple={true}
                                     accept={"*"}
                                     onUploaded={this.handleChangeFiles}
-                                    limitSize={5 * 1024 * 1024}
+                                    limitSize={10 * 1024 * 1024}
                                 >
                                     {({onClick}) => (
                                         <div className="add-file" onClick={onClick} >
@@ -92,7 +92,7 @@ export class MessageUtilities extends Component {
                         multiple={true}
                         accept={"image/*,image/heif,image/heic,video/*"}
                         onUploaded={this.handleChangeMediaFiles}
-                        limitSize={5 * 1024 * 1024}
+                        limitSize={10 * 1024 * 1024}
                     >
 
                         {({onClick}) => (
@@ -107,7 +107,7 @@ export class MessageUtilities extends Component {
                         multiple={true}
                         accept={"*"}
                         onUploaded={this.handleChangeFiles}
-                        limitSize={5 * 1024 * 1024}
+                        limitSize={10 * 1024 * 1024}
                     >
                         {({onClick}) => (
                             <Tooltip text={() => "Đính kèm file"} position={"top"}>

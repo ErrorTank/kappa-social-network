@@ -170,7 +170,7 @@ export class ChatBox extends KComponent {
         let scrollToLatest = messagesContainerUtilities.createScrollLatest();
         this.messageState.setState([...newMessages]).then(() => {
             setTimeout(() => {
-                scrollToLatest();
+                scrollToLatest(true);
             })
         });
         if(newMessage){

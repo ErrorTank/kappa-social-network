@@ -48,7 +48,7 @@ export const apiFactory = {
       downloadStream(url) {
         window.open(hostURL + url);
       },
-      postMultipart: (url, data, fileKey) => {
+      postMultipart: (url, data, {onLoad, onProgress, onError}) => {
         let formData = new FormData();
         forIn(data, (value, key)=>{
           if (value != null) {
@@ -67,6 +67,21 @@ export const apiFactory = {
             url: hostURL + url,
             type: 'POST',
             async: true,
+            xhr: function() {
+              let xhr = new window.XMLHttpRequest();
+              xhr.upload.addEventListener("progress", event => {
+                onProgress && onProgress(event);
+              });
+
+              xhr.upload.addEventListener("load", event => {
+                onLoad && onLoad(event);
+              });
+
+              xhr.upload.addEventListener("error", event => {
+                onError && onError(event);
+              });
+              return xhr;
+            },
             beforeSend: (xhr) => {
               if (headers && Object.keys(headers).length) {
                 Object.keys(headers).map((each) => {
@@ -74,6 +89,7 @@ export const apiFactory = {
                   xhr.setRequestHeader(each, val)
                 });
               }
+
               if(beforeSend){
                 beforeSend(xhr);
               }
@@ -82,7 +98,7 @@ export const apiFactory = {
             cache: false,
             dataType: 'json',
             processData: false, // Don't process the files
-            contentType: false, // Set content type to false as jQuery will tell the server its a query string request
+            contentType: false, // Set content type to false as jQuery will tell the server its a query string xhruest
             success: (data) => {
               resolve(data);
             },
