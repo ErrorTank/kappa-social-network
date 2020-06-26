@@ -96,7 +96,7 @@ export class Message extends Component {
         let {origin_path, name} = this.props.message.file;
         this.setState({downloading: true});
         utilityApi.downloadFile(origin_path, name)
-            .then(() => {
+            .finally(() => {
                 this.setState({downloading: false});
             })
     };
