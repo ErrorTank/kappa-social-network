@@ -24,6 +24,12 @@ module.exports = () => {
         }).catch(err => next(err));
 
     });
+    router.get("/download/:path/original-name/:name", authorizationUserMiddleware, (req, res, next) => {
+        return preSearch(req.user._id, decodeURIComponent(req.query.keyword)).then((data) => {
+            return res.status(200).json(data);
+        }).catch(err => next(err));
+
+    });
     router.get("/url/:url/metadata", (req, res, next) => {
         return urlMetadata(decodeURIComponent(req.params.url)).then((data) => {
             return res.status(200).json(data);

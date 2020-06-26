@@ -16,6 +16,9 @@ export const utilityApi = {
     searchForDialogsByKeyword(keyword){
         return authenApi.get(`/utility/search/dialogs?keyword=${keyword}`)
     },
+    downloadFile(filePath, oriFileName){
+        return authenApi.get(`/utility/download/${encodeURIComponent(filePath)}/original-name/${oriFileName}`)
+    },
     searchDialogsForCreateByKeyword(keyword){
         return authenApi.get(`/utility/search-for-create/dialogs?keyword=${keyword}`)
     },

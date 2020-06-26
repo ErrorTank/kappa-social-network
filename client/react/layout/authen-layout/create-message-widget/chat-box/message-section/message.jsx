@@ -15,6 +15,7 @@ import {MessageFileDisplay} from "./message-file-display";
 import {chatApi} from "../../../../../../api/common/chat-api";
 import omit from "lodash/omit";
 import {Progress} from "../../../../../common/progress/progress";
+import {utilityApi} from "../../../../../../api/common/utilities-api";
 
 
 let Wrapper = (props) => props.links.length ? (
@@ -91,12 +92,20 @@ export class Message extends Component {
         return null;
     }
 
+    onClickFile = () => {
+        let {origin_path, name} = this.props.message.file;
+        this.setState({downloading: true});
+        utilityApi.downloadFile(origin_path, name)
+            .then(() => {
+                this.setState({downloading: false});
+            })
+    };
 
     render() {
         let userID = userInfo.getState()._id;
         let {message, position, haveAvatar, isUserLastMessage} = this.props;
         let isOwned = message.sentBy._id === userID;
-        console.log(this.state.percentage)
+
         return (
 
             <div className={classnames("chat-message", position, {owned: isOwned, disabled: this.state.uploading})}>
@@ -135,7 +144,7 @@ export class Message extends Component {
 
 
 
-                    <div className={classnames("message-renderable-content", {owned: isOwned})}>
+                    <div className={classnames("message-renderable-content", {owned: isOwned, disabled: this.state.downloading})} onClick={this.onClickFile}>
                         {this.state.uploading && (
                             <div className="upload-loading">
                                 <div style={{height: "100%", position: "relative"}}>
