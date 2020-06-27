@@ -2,6 +2,7 @@
 import {authenApi, offlineApi} from "../api";
 import {urlUtils} from "../../common/utils/url-utils";
 import {guestApi} from "./guest-api";
+import {authenCache} from "../../common/cache/authen-cache";
 
 export const utilityApi = {
     searchGlobal(keyword){
@@ -17,7 +18,7 @@ export const utilityApi = {
         return authenApi.get(`/utility/search/dialogs?keyword=${keyword}`)
     },
     downloadFile(filePath, oriFileName){
-        return window.open(process.env.API_URI + `/api/utility/download/${encodeURIComponent(filePath)}/original-name/${oriFileName}`)
+        return window.open(process.env.API_URI + `/api/utility/download/${encodeURIComponent(filePath)}/original-name/${oriFileName}?token=${authenCache.getAuthen()}`)
 
     },
     searchDialogsForCreateByKeyword(keyword){

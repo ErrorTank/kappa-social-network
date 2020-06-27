@@ -19,6 +19,22 @@ const decodeAuthRequest = (req, secret, config) => {
     })
 };
 
+const decodeAuthDownloadRequest = (req, secret, config) => {
+    return new Promise((resolve, reject) => {
+        let token = req.query.token;
+
+        if (!token) {
+            reject();
+        } else {
+            verifyToken(token, secret, config).then((user) => {
+                resolve(user);
+            }).catch(err => {
+                reject(err);
+            })
+        }
+    })
+}
+
 
 const createAuthToken = (userInfo, secret, config) => {
     return new Promise((resolve, reject) => {
@@ -46,10 +62,10 @@ const verifyToken = (token, secret, config) => {
     });
 };
 
-const authorization = (secret, config) => {
+const authorization = (secret, config, decodeFunc) => {
     return (req, res, next) => {
 
-        decodeAuthRequest(req, secret, config)
+        decodeFunc(req, secret, config)
             .then((user) => {
 
                 if (!user) {
@@ -69,5 +85,6 @@ module.exports = {
     authorization,
     decodeAuthRequest,
     verifyToken,
-    createAuthToken
+    createAuthToken,
+    decodeAuthDownloadRequest
 };

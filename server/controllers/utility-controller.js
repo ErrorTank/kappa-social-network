@@ -1,7 +1,7 @@
 const express = require('express');
 const path = require('path');
 const router = express.Router();
-const {authorizationUserMiddleware} = require("../common/middlewares/common");
+const {authorizationUserMiddleware, authorizationDownloadMiddleware} = require("../common/middlewares/common");
 const {globalSearch, preSearch, getLoginSessionsBrief} = require("../db/db-controllers/utility");
 const urlMetadata = require('url-metadata')
 
@@ -26,7 +26,7 @@ module.exports = () => {
         }).catch(err => next(err));
 
     });
-    router.get("/download/:path/original-name/:name", authorizationUserMiddleware, (req, res, next) => {
+    router.get("/download/:path/original-name/:name", authorizationDownloadMiddleware, (req, res, next) => {
         let p = path.resolve(process.cwd() + req.params.path)
 
         return res.download(p, req.params.name)
