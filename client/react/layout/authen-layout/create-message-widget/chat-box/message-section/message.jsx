@@ -16,6 +16,7 @@ import {chatApi} from "../../../../../../api/common/chat-api";
 import omit from "lodash/omit";
 import {Progress} from "../../../../../common/progress/progress";
 import {utilityApi} from "../../../../../../api/common/utilities-api";
+import {isImageFile} from "../../../../../../common/utils/file-upload-utils";
 
 
 let Wrapper = (props) => props.links.length ? (
@@ -94,11 +95,13 @@ export class Message extends Component {
 
     onClickFile = () => {
         let {origin_path, name} = this.props.message.file;
-        this.setState({downloading: true});
-        utilityApi.downloadFile(origin_path, name)
-            .finally(() => {
-                this.setState({downloading: false});
-            })
+        if(!isImageFile(name)){
+            this.setState({downloading: true});
+            utilityApi.downloadFile(origin_path, name)
+                .finally(() => {
+                    this.setState({downloading: false});
+                })
+        }
     };
 
     render() {

@@ -18,7 +18,7 @@ export const utilityApi = {
         return authenApi.get(`/utility/search/dialogs?keyword=${keyword}`)
     },
     downloadFile(filePath, oriFileName){
-        return window.open(process.env.API_URI + `/api/utility/download/${encodeURIComponent(filePath)}/original-name/${oriFileName}?token=${authenCache.getAuthen()}`)
+        return Promise.resolve( window.open(process.env.API_URI + `/api/utility/download/${encodeURIComponent(filePath)}/original-name/${oriFileName}?token=${authenCache.getAuthen()}`))
 
     },
     searchDialogsForCreateByKeyword(keyword){
