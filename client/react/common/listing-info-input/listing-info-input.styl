@@ -13,18 +13,7 @@
     height 58px;
     margin: 0;
     overflow: hidden;
-    input{
-      &:focus{
-
-        & ~ span{
-          color blueTextLight;
-          transition-property: transform;
-          transition-duration: 200ms;
-          transform: scale(.75) translateY(-11px);
-          transform-origin: top left;  
-        }
-      }
-    }
+    z-index: 0;
     .listing-info-label{
       position: absolute;
       left: 16px;
@@ -44,8 +33,25 @@
       width: 100%;
       border: none;
       line-height: 20px;
-      height 56px;
 
+       &:focus{
+        & ~ span{
+          color blueTextLight;
+          transition-property: transform;
+          transition-duration: 200ms;
+          transform: scale(.75) translateY(-11px);
+          transform-origin: top left;  
+        }
+      }
     }
+    input{
+      height 56px;
+    }
+    textarea{
+      height 200px;
+    }
+  }
+  .textArea{
+    height 200px;
   }
 }

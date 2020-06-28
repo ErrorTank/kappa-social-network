@@ -6,21 +6,45 @@ import { ListingInfoContext } from '../../../../../../context/listing-info-conte
 export class CreateListingInputWidget extends Component {
   constructor(props) {
     super(props);
-    this.state = {};
+    this.state = {
+      title: '',
+      limit: '',
+    };
   }
 
+  createInfo = [
+    {
+      name: 'item',
+      limit: 10,
+      title: 'Mặt hàng',
+    },
+    {
+      name: 'vehicle',
+      limit: 20,
+      title: 'Xe',
+    },
+    {
+      name: 'house',
+      limit: 50,
+      title: 'Nhà',
+    },
+  ];
   render() {
     let user = userInfo.getState();
+    let info;
     return (
       <ListingInfoContext.Consumer>
-        {({ updateValue, state, limit }) => {
+        {({ updateValue, state }) => {
           let type = this.props.match.params.categoryName;
+          this.createInfo.forEach((each) => {
+            each.name === type && (info = each);
+          });
           return (
             <div className='create-listing-input-widget'>
               <div className='cs-input-header'>
                 <div className='header-info'>
                   <p className='fake-breadcrumb'>Marketplace</p>
-                  <h1 className='header-title'>Mặt hàng cần bán</h1>
+                  <h1 className='header-title'>{info.title} cần bán</h1>
                 </div>
                 <div className='save-draft-button'>
                   <span className='save-draft-title'>Save Draft</span>
@@ -51,7 +75,7 @@ export class CreateListingInputWidget extends Component {
                   type={type}
                   updateValue={updateValue}
                   state={state}
-                  limit={limit}
+                  limit={info.limit}
                 />
               </div>
               <div className='cs-input-footer'></div>

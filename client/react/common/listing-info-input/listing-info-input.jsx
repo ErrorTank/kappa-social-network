@@ -20,8 +20,10 @@ export class ListingInfoInput extends Component {
       error = false,
       success = false,
       id,
+      textArea = false,
       ...others
     } = this.props;
+    console.log(textArea);
     return (
       <ThemeContext.Consumer>
         {(theme) => (
@@ -31,21 +33,37 @@ export class ListingInfoInput extends Component {
               focus: this.state.focus,
             })}
           >
-            <label htmlFor={id} className='listing-info-wrapper'>
-              <input
-                type='text'
-                className={classnames('form-control', {
-                  'is-invalid': error,
-                  'is-valid': success,
+            {textArea ? (
+              <label
+                htmlFor={id}
+                className={classnames('listing-info-wrapper', {
+                  textArea,
                 })}
-                onFocus={() => this.setState({ focus: true })}
-                onBlur={() => this.setState({ focus: false })}
-                id={id}
-                {...others}
-                ref={(input) => (this.input = input)}
-              />
-              <span className='listing-info-label'>{label}</span>
-            </label>
+              >
+                <textarea
+                  className='form-control'
+                  id={id}
+                  {...others}
+                ></textarea>
+                <span className='listing-info-label'>{label}</span>
+              </label>
+            ) : (
+              <label htmlFor={id} className='listing-info-wrapper'>
+                <input
+                  type='text'
+                  className={classnames('form-control', {
+                    'is-invalid': error,
+                    'is-valid': success,
+                  })}
+                  onFocus={() => this.setState({ focus: true })}
+                  onBlur={() => this.setState({ focus: false })}
+                  id={id}
+                  {...others}
+                  ref={(input) => (this.input = input)}
+                />
+                <span className='listing-info-label'>{label}</span>
+              </label>
+            )}
           </div>
         )}
       </ThemeContext.Consumer>
