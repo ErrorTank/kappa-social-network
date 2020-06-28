@@ -44,7 +44,7 @@ export const chatApi = {
     changeSavedMessagesToSent(chatRoomID, messages){
         return authenApi.put(`/chat/${chatRoomID}/messages/update-to-sent`, {messages})
     },
-    sendFileMessage(chatRoomID, messageContent){
-        return authenApi.postMultipart(`/chat/${chatRoomID}/send-file-message`, messageContent)
+    sendFileMessage(chatRoomID, messageContent, multipartConfig,){
+        return authenApi.postMultipart(`/chat/${chatRoomID}/send-file-message`, messageContent, multipartConfig)
     },
 };

@@ -38,7 +38,8 @@ module.exports = (db, namespacesIO) => {
         console.log(req.body)
         console.log(req.file)
         let file = req.file;
-        return createNewMessage({value: {...req.body, file: {name: file.originalname ,path: process.env.SERVER_HOST + `/uploads/${req.user._id}/${isImage(file.originalname) ? "image/" : "file/"}` + file.filename}}, chatRoomID: req.params.chatRoomID}).then((data) => {
+        let origin_path = `/uploads/${req.user._id}/${isImage(file.originalname) ? "image/" : "file/"}` + file.filename;
+        return createNewMessage({value: {...req.body, file: {name: file.originalname , origin_path,path: process.env.SERVER_HOST + origin_path}}, chatRoomID: req.params.chatRoomID}).then((data) => {
             namespacesIO.messenger.to(`/messenger-chat-room/chat-room/${req.params.chatRoomID}`).emit('new-message', {message: data.toObject()});
             return  res.status(200).json({...data.toObject(), oldID: req.body._id});
         }).catch(err => next(err));

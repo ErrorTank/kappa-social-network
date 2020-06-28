@@ -93,8 +93,11 @@ export class MessageSection extends Component {
 
     componentWillReceiveProps(nextProps, nextContext) {
         if (nextProps.chatRoomID && nextProps.chatRoomID !== this.props.chatRoomID) {
-            let isBottom = this.isBottom();
-            this.loadMessages(nextProps.chatRoomID).then(() =>  isBottom && setTimeout(() => this.scrollToBottom()));
+
+            this.loadMessages(nextProps.chatRoomID).then(() =>  {
+
+                setTimeout(() => this.scrollToBottom(), 100)
+            });
         }
         // if(nextProps.messages.length !== this.props.messages.length){
         //     setTimeout(() => {
@@ -124,7 +127,7 @@ export class MessageSection extends Component {
         this.setState({loadingMessages: true});
         return this.props.loadMessages(chatRoomID).then(() => {
             this.setState({loadingMessages: false});
-
+            return;
 
         });
     }

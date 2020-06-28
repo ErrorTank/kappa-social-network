@@ -96,7 +96,8 @@ const chatRoomSchema = new Schema({
                 },
                 file: {
                     path: String,
-                    name: String
+                    name: String,
+                    origin_path: String
                 },
                 ...editorContentSchema,
 

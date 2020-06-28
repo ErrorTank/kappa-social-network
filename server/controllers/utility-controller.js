@@ -1,10 +1,12 @@
 const express = require('express');
+const path = require('path');
 const router = express.Router();
-const {authorizationUserMiddleware} = require("../common/middlewares/common");
+const {authorizationUserMiddleware, authorizationDownloadMiddleware} = require("../common/middlewares/common");
 const {globalSearch, preSearch, getLoginSessionsBrief} = require("../db/db-controllers/utility");
 const urlMetadata = require('url-metadata')
 
 module.exports = () => {
+
     router.get("/search-global", authorizationUserMiddleware, (req, res, next) => {
         return res.status(200).json([]);
         // return getAuthenticateUserInitCredentials(req.user._id).then((data) => {
@@ -22,6 +24,12 @@ module.exports = () => {
         return preSearch(req.user._id, decodeURIComponent(req.query.keyword)).then((data) => {
             return res.status(200).json(data);
         }).catch(err => next(err));
+
+    });
+    router.get("/download/:path/original-name/:name", authorizationDownloadMiddleware, (req, res, next) => {
+        let p = path.resolve(process.cwd() + req.params.path)
+
+        return res.download(p, req.params.name)
 
     });
     router.get("/url/:url/metadata", (req, res, next) => {

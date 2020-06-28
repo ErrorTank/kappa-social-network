@@ -14,6 +14,9 @@ import {messagesContainerUtilities} from "./message-section";
 import {MessageFileDisplay} from "./message-file-display";
 import {chatApi} from "../../../../../../api/common/chat-api";
 import omit from "lodash/omit";
+import {Progress} from "../../../../../common/progress/progress";
+import {utilityApi} from "../../../../../../api/common/utilities-api";
+import {isImageFile} from "../../../../../../common/utils/file-upload-utils";
 
 
 let Wrapper = (props) => props.links.length ? (
@@ -30,14 +33,37 @@ export class Message extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            uploading: props.message.needUploadFile
+            uploading: props.message.needUploadFile,
+            percentage: 0,
+            state: "pending"
         }
         if(props.message.file && props.message.needUploadFile){
             chatApi.sendFileMessage(props.chatRoomID, omit({
                 ...props.message,
                 sentBy: props.message.sentBy._id,
                 file: props.message.file.file
-            }, ["state", "temp", "needUploadFile"]))
+            }, ["state", "temp", "needUploadFile"]), {
+                onProgress: event => {
+                    if (event.lengthComputable) {
+                        this.setState({
+                            state: "pending",
+                            percentage: (event.loaded / event.total) * 100
+                        });
+                    }
+                },
+                onLoad: event => {
+                    this.setState({
+                        state: "done",
+                        percentage: 100
+                    });
+                },
+                onError: event =>  {
+                    this.setState({
+                        state: "error",
+                        percentage: 0
+                    });
+                },
+            })
                 .then((data) => {
                     props.onUpload(data);
                 })
@@ -67,6 +93,16 @@ export class Message extends Component {
         return null;
     }
 
+    onClickFile = () => {
+        let {origin_path, name} = this.props.message.file;
+        if(!isImageFile(name)){
+            this.setState({downloading: true});
+            utilityApi.downloadFile(origin_path, name)
+                .finally(() => {
+                    this.setState({downloading: false});
+                })
+        }
+    };
 
     render() {
         let userID = userInfo.getState()._id;
@@ -111,9 +147,12 @@ export class Message extends Component {
 
 
 
-                    <div className={classnames("message-renderable-content", {owned: isOwned})}>
+                    <div className={classnames("message-renderable-content", {owned: isOwned, disabled: this.state.downloading})} onClick={this.onClickFile}>
                         {this.state.uploading && (
                             <div className="upload-loading">
+                                <div style={{height: "100%", position: "relative"}}>
+                                    <Progress progress={this.state.percentage} className={"message-file-loading"}/>
+                                </div>
 
                             </div>
                         )}
