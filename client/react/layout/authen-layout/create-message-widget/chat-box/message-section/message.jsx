@@ -149,10 +149,10 @@ export class Message extends Component {
 
 
 
-                    <div className={classnames("message-renderable-content", {owned: isOwned, disabled: this.state.downloading})} onClick={this.onClickFile}>
+                    <div className={classnames("message-renderable-content", {owned: isOwned, disabled: this.state.downloading, isDeleted: message.is_deleted})} onClick={this.onClickFile}>
                         {message.is_deleted ? (
                             <div className="deleted-msg">
-                                Tin nhắn đã bị xóa bỏ
+                                {isOwned ? "Tin nhắn đã bị bạn xóa bỏ" : message.sentBy.basic_info.username + " đã xóa tin nhắn này"}
                             </div>
                         ) : (
                             <>

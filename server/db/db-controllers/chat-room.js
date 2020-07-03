@@ -172,7 +172,7 @@ const updateSavedMessagesToSent = (chatRoomID, messageIds) => {
         "arrayFilters": [{"elem._id": {$in: messageIds}}],
         "multi": true,
         new: true
-    })
+    }).then(() => true)
 
 };
 
@@ -183,7 +183,7 @@ const seenMessages = (userID, chatRoomID, messageIds) => {
         "arrayFilters": [{"elem._id": {$in: messageIds}, "elem.seenBy": {$ne: ObjectId(userID)}}],
         "multi": true,
         new: true
-    })
+    }).then(() => true)
 
 };
 
@@ -194,7 +194,7 @@ const deleteMessage = (chatRoomID, messageID) => {
         "arrayFilters": [{"elem._id": ObjectId(messageID)}],
         "multi": true,
         new: true
-    })
+    }).then(() => true)
 }
 
 module.exports = {

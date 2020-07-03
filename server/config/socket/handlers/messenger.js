@@ -41,7 +41,9 @@ module.exports = (io, socket, context) => {
 
     });
     socket.on("remove-message", function (data) {
+
         if(data.messageID && data.chatRoomID){
+
             deleteMessage(data.chatRoomID ,data.messageID)
             socket.broadcast.to(`/messenger-chat-room/chat-room/${data.chatRoomID}`).emit('remove-message', {messageID: data.messageID});
         }
