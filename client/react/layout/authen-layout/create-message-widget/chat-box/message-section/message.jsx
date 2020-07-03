@@ -104,6 +104,7 @@ export class Message extends Component {
         }
     };
 
+
     render() {
         let userID = userInfo.getState()._id;
         let {message, position, haveAvatar, isUserLastMessage} = this.props;
@@ -138,50 +139,59 @@ export class Message extends Component {
 
                         </div>
                     )}
-                    {isOwned && (
+                    {!message.is_deleted && isOwned && (
                         <MessageAction
                             canRemove={isOwned}
                             isReverse={!isOwned}
+                            onRemoveMessage={this.props.removeMessage}
                         />
                     )}
 
 
 
                     <div className={classnames("message-renderable-content", {owned: isOwned, disabled: this.state.downloading})} onClick={this.onClickFile}>
-                        {this.state.uploading && (
-                            <div className="upload-loading">
-                                <div style={{height: "100%", position: "relative"}}>
-                                    <Progress progress={this.state.percentage} className={"message-file-loading"}/>
-                                </div>
-
+                        {message.is_deleted ? (
+                            <div className="deleted-msg">
+                                Tin nhắn đã bị xóa bỏ
                             </div>
-                        )}
-                        {message.file ? (
-                            <MessageFileDisplay
-                                file={message.file}
-                                needUpload={message.needUploadFile}
-                            />
                         ) : (
-                            <Wrapper links={message.hyperlinks}>
-                                <Tooltip
-                                    className={"message-tooltip"}
-                                    position={"top"}
-                                    text={() => moment(message.created_at).format('hh:mm A')}
-                                >
-                                    <div className="content">
-                                        {getRenderableContentFromMessage(message)}
-                                    </div>
+                            <>
+                                {this.state.uploading && (
+                                    <div className="upload-loading">
+                                        <div style={{height: "100%", position: "relative"}}>
+                                            <Progress progress={this.state.percentage} className={"message-file-loading"}/>
+                                        </div>
 
-                                </Tooltip>
-                                {!!message.hyperlinks.length && !message.temp && (
-                                    <HyperLink
-                                        link={message.hyperlinks[0]}
-                                        onLoaded={() => {
-                                            // messagesContainerUtilities.createScrollLatest(true)();
-                                        }}
-                                    />
+                                    </div>
                                 )}
-                            </Wrapper>
+                                {message.file ? (
+                                    <MessageFileDisplay
+                                        file={message.file}
+                                        needUpload={message.needUploadFile}
+                                    />
+                                ) : (
+                                    <Wrapper links={message.hyperlinks}>
+                                        <Tooltip
+                                            className={"message-tooltip"}
+                                            position={"top"}
+                                            text={() => moment(message.created_at).format('hh:mm A')}
+                                        >
+                                            <div className="content">
+                                                {getRenderableContentFromMessage(message)}
+                                            </div>
+
+                                        </Tooltip>
+                                        {!!message.hyperlinks.length && !message.temp && (
+                                            <HyperLink
+                                                link={message.hyperlinks[0]}
+                                                onLoaded={() => {
+                                                    // messagesContainerUtilities.createScrollLatest(true)();
+                                                }}
+                                            />
+                                        )}
+                                    </Wrapper>
+                                )}
+                            </>
                         )}
 
                     </div>
@@ -192,7 +202,7 @@ export class Message extends Component {
                             {(message.seenBy.length === 0) && this.renderMessageState(message.state)}
                         </div>
                     )}
-                    {!isOwned && (
+                    {!message.is_deleted && !isOwned && (
                         <MessageAction
                             canRemove={isOwned}
                             isReverse={!isOwned}
@@ -214,7 +224,7 @@ export class Message extends Component {
     }
 }
 
-const MessageAction = ({canRemove = false, isReverse = false}) => {
+const MessageAction = ({canRemove = false, isReverse = false, onRemoveMessage}) => {
 
     return (
         <div className="message-action">
@@ -225,8 +235,9 @@ const MessageAction = ({canRemove = false, isReverse = false}) => {
                             position={"top"}
                             className={"user-action-tooltip"}
                             text={() => "Xóa"}
+
                         >
-                            <div className="action">
+                            <div className="action"  onClick={onRemoveMessage}>
                                 <i className="fal fa-trash"></i>
                             </div>
                         </Tooltip>
@@ -277,8 +288,9 @@ const MessageAction = ({canRemove = false, isReverse = false}) => {
                             position={"top"}
                             className={"user-action-tooltip"}
                             text={() => "Xóa"}
+
                         >
-                            <div className="action">
+                            <div className="action" onClick={onRemoveMessage}>
                                 <i className="fal fa-trash"></i>
                             </div>
                         </Tooltip>

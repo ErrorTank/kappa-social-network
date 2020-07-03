@@ -145,6 +145,9 @@ const getChatRoomMessages = (chatRoomID, {take = 10, skip = 0}) => {
                 },
                 file: {
                     $first: "$context.file"
+                },
+                is_deleted: {
+                    $first: "$context.is_deleted"
                 }
             }
         },
@@ -184,11 +187,22 @@ const seenMessages = (userID, chatRoomID, messageIds) => {
 
 };
 
+const deleteMessage = (chatRoomID, messageID) => {
+    return ChatRoom.findOneAndUpdate({
+        _id: ObjectId(chatRoomID)
+    }, {"$set": {"context.$[elem].is_deleted": true}}, {
+        "arrayFilters": [{"elem._id": ObjectId(messageID)}],
+        "multi": true,
+        new: true
+    })
+}
+
 module.exports = {
     getChatContacts,
     getGroupChatRoomInvolvesByKeyword,
     createNewMessage,
     getChatRoomMessages,
     updateSavedMessagesToSent,
-    seenMessages
+    seenMessages,
+    deleteMessage
 };

@@ -65,6 +65,10 @@ const chatRoomSchema = new Schema({
         type: [
 
             {
+                is_deleted: {
+                    type: Boolean,
+                    default: false
+                },
                 is_init: {
                     type: Boolean,
                     default: false

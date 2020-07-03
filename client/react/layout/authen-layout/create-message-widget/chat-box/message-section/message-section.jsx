@@ -57,10 +57,10 @@ export class MessageSection extends Component {
         }
         messagesContainerUtilities = {
             createScrollLatest: (forceScroll = false) => {
-                return forceScroll  ? this.scrollToBottom :this.isBottom() ? this.scrollToBottom : () => null
+                return forceScroll ? this.scrollToBottom : this.isBottom() ? this.scrollToBottom : () => null
             },
             increaseUnSeenCount: () => {
-                if(!this.isBottom()){
+                if (!this.isBottom()) {
                     this.setState({unSeenCount: this.state.unSeenCount + 1})
                 }
 
@@ -71,7 +71,7 @@ export class MessageSection extends Component {
         this.io.on("user-typing", ({user}) => {
             let isBottom = this.isBottom();
             console.log(isBottom)
-            if(!this.state.typing.find(each => each._id === user._id)){
+            if (!this.state.typing.find(each => each._id === user._id)) {
                 this.setState({typing: this.state.typing.concat(user)}, () => {
                     isBottom && setTimeout(() => this.scrollToBottom())
 
@@ -94,7 +94,7 @@ export class MessageSection extends Component {
     componentWillReceiveProps(nextProps, nextContext) {
         if (nextProps.chatRoomID && nextProps.chatRoomID !== this.props.chatRoomID) {
 
-            this.loadMessages(nextProps.chatRoomID).then(() =>  {
+            this.loadMessages(nextProps.chatRoomID).then(() => {
 
                 setTimeout(() => this.scrollToBottom(), 100)
             });
@@ -120,7 +120,6 @@ export class MessageSection extends Component {
 
         return elem ? elem.scrollTop + elem.clientHeight >= elem.scrollHeight : true;
     }
-
 
 
     loadMessages = (chatRoomID) => {
@@ -155,6 +154,15 @@ export class MessageSection extends Component {
         }
     };
 
+    removeMessage = (messageID) => {
+
+        this.props.removeMessage(messageID).then(() => {
+            console.log("cac")
+            this.io.emit("remove-message", {messageID, chatRoomID: this.props.chatRoomID});
+        });
+
+    }
+
     render() {
         let {messages} = this.props;
         let userID = userInfo.getState()._id;
@@ -186,10 +194,11 @@ export class MessageSection extends Component {
 
                     <div className="message-section">
                         {!this.isBottom() && this.state.unSeenCount !== 0 && (
-                            <div className="new-message-notify" onClick={() =>{
+                            <div className="new-message-notify" onClick={() => {
                                 this.scrollToBottom();
                             }}>
-                                Bạn có <span className="high-light">{this.state.unSeenCount}</span> tin nhắn mới <span style={{marginLeft: "5px"}} className="high-light"><i
+                                Bạn có <span className="high-light">{this.state.unSeenCount}</span> tin nhắn mới <span
+                                style={{marginLeft: "5px"}} className="high-light"><i
                                 className="far fa-arrow-down"></i></span>
                             </div>
                         )}
@@ -217,6 +226,7 @@ export class MessageSection extends Component {
                                         key={each._id}
                                         haveAvatar={position === "single" || position === "tail"}
                                         onUpload={this.props.onUpload}
+                                        removeMessage={() => this.removeMessage(each._id)}
                                     />
                                 )
                             })}

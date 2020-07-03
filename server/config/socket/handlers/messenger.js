@@ -1,6 +1,6 @@
 const {getAllUserActiveRelations} = require("../../../db/db-controllers/messenger-utility");
 const {simpleUpdateUser} = require("../../../db/db-controllers/user");
-const {updateSavedMessagesToSent} = require("../../../db/db-controllers/chat-room");
+const {updateSavedMessagesToSent, deleteMessage} = require("../../../db/db-controllers/chat-room");
 const mongoose = require("mongoose");
 const {MessageState} = require("../../../common/const/message-state")
 const ObjectId = mongoose.Types.ObjectId;
@@ -40,6 +40,14 @@ module.exports = (io, socket, context) => {
         }
 
     });
+    socket.on("remove-message", function (data) {
+        if(data.messageID && data.chatRoomID){
+            deleteMessage(data.chatRoomID ,data.messageID)
+            socket.broadcast.to(`/messenger-chat-room/chat-room/${data.chatRoomID}`).emit('remove-message', {messageID: data.messageID});
+        }
+
+    });
+
     socket.on("left-chat-room", function (data) {
         if(data.userID && data.chatRoomID){
             console.log(`User ${data.userID} left chat room ${data.chatRoomID}!`)

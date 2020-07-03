@@ -70,6 +70,10 @@ export class ChatBox extends KComponent {
                     }
                     this.messageState.setState(clone);
                 })
+                this.io.on("remove-message", ({messageID}) => {
+
+                   this.removeMessage(messageID)
+                })
                 this.io.on("new-message", ({message}) => {
                     let scrollToLatest = messagesContainerUtilities.createScrollLatest();
                     if (userInfo.getState()._id !== message.sentBy._id) {
@@ -101,6 +105,7 @@ export class ChatBox extends KComponent {
         if (this.io) {
             this.io.off("change-message-state");
             this.io.off("new-message");
+            this.io.off("update-message");
             this.io.off("push-to-seen-by");
             this.io.emit("left-chat-room", {
                 chatRoomID: this.state.chat_room_brief._id,
@@ -225,6 +230,17 @@ export class ChatBox extends KComponent {
         }
     }
 
+    removeMessage = (messageID) => {
+        let messages = [...this.messageState.getState()];
+        for(let msg of messages){
+            if(msg._id === messageID){
+                msg.is_deleted = true;
+                break;
+            }
+        }
+        return this.messageState.setState(messages);
+    }
+
     render() {
         let {onClose, active, userInfo, userID} = this.props;
         let actions = userInfo ? this.headerActions : this.headerActions.slice(2);
@@ -305,6 +321,7 @@ export class ChatBox extends KComponent {
                                                 messages={this.messageState.getState()}
                                                 isGroupChat={this.state.chat_room_brief?.is_group_chat}
                                                 onUpload={this.onUploadMessage}
+                                                removeMessage={this.removeMessage}
                                             />
                                             <MessageUtilities
                                                 chatRoom={this.state.chat_room_brief}
