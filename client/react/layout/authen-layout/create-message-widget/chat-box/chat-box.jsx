@@ -231,6 +231,7 @@ export class ChatBox extends KComponent {
     }
 
     removeMessage = (messageID) => {
+        let scrollToLatest = messagesContainerUtilities.createScrollLatest();
         let messages = [...this.messageState.getState()];
         for(let msg of messages){
             if(msg._id === messageID){
@@ -238,7 +239,10 @@ export class ChatBox extends KComponent {
                 break;
             }
         }
-        return this.messageState.setState(messages);
+        return this.messageState.setState(messages).then(() => {
+            scrollToLatest();
+            return true;
+        });
     }
 
     render() {
