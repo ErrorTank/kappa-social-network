@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {MessageBoxLayout} from "../../message-box-layout/message-box-layout";
 import {messagesContainerUtilities, MessageSection} from "./message-section/message-section";
-import {MessageUtilities} from "./message-utilities/message-utilities";
+import {messageUtilities, MessageUtilities} from "./message-utilities/message-utilities";
 import classnames from "classnames"
 import {Tooltip} from "../../../../common/tooltip/tooltip";
 import {messengerApi} from "../../../../../api/common/messenger-api";
@@ -221,7 +221,6 @@ export class ChatBox extends KComponent {
     };
 
     emitSeenMessageEvent = () => {
-        console.log("dasdasdas")
         let messages = this.messageState.getState();
         let userID = userInfo.getState()._id;
         let unseenMessages = messages.filter(each => each.sentBy._id !== userID && each.state === "SENT" && !each.seenBy.find(seen => seen._id === userID));
@@ -326,6 +325,7 @@ export class ChatBox extends KComponent {
                                                 isGroupChat={this.state.chat_room_brief?.is_group_chat}
                                                 onUpload={this.onUploadMessage}
                                                 removeMessage={this.removeMessage}
+                                                onReply={messageUtilities.openReplyPanel}
                                             />
                                             <MessageUtilities
                                                 chatRoom={this.state.chat_room_brief}

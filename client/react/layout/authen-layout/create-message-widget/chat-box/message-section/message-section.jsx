@@ -227,6 +227,7 @@ export class MessageSection extends Component {
                                         haveAvatar={position === "single" || position === "tail"}
                                         onUpload={this.props.onUpload}
                                         removeMessage={() => this.removeMessage(each._id)}
+                                        onReply={() => this.props.onReply(each)}
                                     />
                                 )
                             })}

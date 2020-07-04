@@ -8,6 +8,7 @@ import {isImageFile} from "../../../../../../common/utils/file-upload-utils";
 import {FileDisplay} from "./file-display/file-display";
 import {getURLsFromText} from "../../../../../../common/utils/string-utils";
 import {messagesContainerUtilities} from "../message-section/message-section";
+import {userInfo} from "../../../../../../common/states/common";
 
 export const messageUtilities = {};
 
@@ -15,10 +16,15 @@ export class MessageUtilities extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            files: []
+            files: [],
+            reply: null
         }
         messageUtilities.addFiles = (files) => {
             this.addNewFiles(files)
+        }
+        messageUtilities.openReplyPanel = (reply) => {
+            this.setState({reply});
+            this.input.editor.focus();
         }
     }
 
@@ -55,10 +61,18 @@ export class MessageUtilities extends Component {
 
 
     render() {
-        let {files} = this.state;
-
+        let {files, reply} = this.state;
+        let userID = userInfo.getState()._id;
         return (
             <div className="message-utilities">
+                {reply && (
+                    <div className="reply-panel">
+                        <span>Phản hồi {reply.sentBy._id === userID ? `lại chính bạn` : `tới ${reply.sentBy.basic_info.username}`}</span>
+                        <div className={"icon-wrapper"}>
+
+                        </div>
+                    </div>
+                )}
                 {!!files.length && (
                     <div className="files-display">
                         <div className="files-container">

@@ -144,6 +144,7 @@ export class Message extends Component {
                             canRemove={isOwned}
                             isReverse={!isOwned}
                             onRemoveMessage={this.props.removeMessage}
+                            onReply={this.props.onReply}
                         />
                     )}
 
@@ -206,6 +207,7 @@ export class Message extends Component {
                         <MessageAction
                             canRemove={isOwned}
                             isReverse={!isOwned}
+                            onReply={this.props.onReply}
                         />
                     )}
                 </div>
@@ -224,7 +226,7 @@ export class Message extends Component {
     }
 }
 
-const MessageAction = ({canRemove = false, isReverse = false, onRemoveMessage}) => {
+const MessageAction = ({canRemove = false, isReverse = false, onRemoveMessage, onReply}) => {
 
     return (
         <div className="message-action">
@@ -247,7 +249,7 @@ const MessageAction = ({canRemove = false, isReverse = false, onRemoveMessage}) 
                         className={"user-action-tooltip"}
                         text={() => "Trả lời"}
                     >
-                        <div className="action">
+                        <div className="action"  onClick={onReply}>
                             <i className="fas fa-reply"></i>
                         </div>
                     </Tooltip>
@@ -279,7 +281,7 @@ const MessageAction = ({canRemove = false, isReverse = false, onRemoveMessage}) 
                         className={"user-action-tooltip"}
                         text={() => "Trả lời"}
                     >
-                        <div className="action">
+                        <div className="action" onClick={onReply}>
                             <i className="fas fa-reply"></i>
                         </div>
                     </Tooltip>
