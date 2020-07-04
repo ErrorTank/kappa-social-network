@@ -1,6 +1,38 @@
 .message-utilities{
   padding 8px
   position relative
+  .reply-panel{
+    padding 8px 0
+    font-size 1.3rem
+    padding-right 30px
+    position relative
+    .content{
+      color greyTextLight
+      textOverflowEllipsis()
+      font-size 1.3rem
+    }
+    .top-text{
+      color commonTextLight
+    }
+    .icon-wrapper{
+      position absolute
+      top 2px
+      right 2px
+      width 18px
+      height 18px
+      display flex
+      justify-content center
+      border-radius 50%
+      cursor pointer
+      &:hover{
+        background-color btnCancelLight
+      }
+      align-items center
+      i{
+        font-size 1.5rem
+      }
+    }
+  }
   .files-display{
     margin-bottom 6px
     overflow-x auto

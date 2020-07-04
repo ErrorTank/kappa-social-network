@@ -3,7 +3,7 @@ import {Tooltip} from "../../../../../common/tooltip/tooltip";
 import {ChatInput} from "./chat-input/chat-input";
 import {InputFileWrapper} from "../../../../../common/file-input/file-input";
 import {DropZone} from "../../../../../common/file-input/dropzone";
-import { v4 as uuidv4 } from 'uuid';
+import {v4 as uuidv4} from 'uuid';
 import {isImageFile} from "../../../../../../common/utils/file-upload-utils";
 import {FileDisplay} from "./file-display/file-display";
 import {getURLsFromText} from "../../../../../../common/utils/string-utils";
@@ -31,7 +31,11 @@ export class MessageUtilities extends Component {
     addNewFiles = (files) => {
         this.input.editor.focus();
         let newFiles = Array.from(files).map(file => {
-            return isImageFile(file.name) ? {fileID: uuidv4(), file, type: "image"} : {fileID: uuidv4(), file, type: "common"};
+            return isImageFile(file.name) ? {fileID: uuidv4(), file, type: "image"} : {
+                fileID: uuidv4(),
+                file,
+                type: "common"
+            };
         })
         let scrollToLatest = messagesContainerUtilities.createScrollLatest();
         setTimeout(() => scrollToLatest())
@@ -59,17 +63,27 @@ export class MessageUtilities extends Component {
     };
 
 
-
     render() {
         let {files, reply} = this.state;
         let userID = userInfo.getState()._id;
+        console.log(reply)
         return (
             <div className="message-utilities">
                 {reply && (
                     <div className="reply-panel">
-                        <span>Phản hồi {reply.sentBy._id === userID ? `lại chính bạn` : `tới ${reply.sentBy.basic_info.username}`}</span>
-                        <div className={"icon-wrapper"}>
+                        <div className="top-text">
+                            <span>Phản hồi tới {reply.file && <span>{isImageFile(reply.file.name) ? "ảnh" : "file"} của </span>} {reply.sentBy._id === userID ?
+                                <span className="high-light">bạn</span> :
+                                <span className="high-light">{reply.sentBy.basic_info.username}</span>}</span>
+                        </div>
+                        {!reply.file && (
+                            <div className="content">
+                                {reply.content}
+                            </div>
+                        )}
 
+                        <div className={"icon-wrapper"} onClick={() => this.setState({reply: null})}>
+                            <i className="fal fa-times"></i>
                         </div>
                     </div>
                 )}
@@ -91,7 +105,7 @@ export class MessageUtilities extends Component {
                                     limitSize={10 * 1024 * 1024}
                                 >
                                     {({onClick}) => (
-                                        <div className="add-file" onClick={onClick} >
+                                        <div className="add-file" onClick={onClick}>
                                             <i className="fal fa-file-plus"></i>
                                         </div>
                                     )}
