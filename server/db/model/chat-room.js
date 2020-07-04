@@ -86,9 +86,20 @@ const chatRoomSchema = new Schema({
                         }
                     ]
                 },
-                replyFor: {
-                    type: ObjectId,
-                    default: null
+                reply_for: {
+                    file: {
+                        path: String,
+                        name: String,
+                        origin_path: String
+                    },
+                    content: {
+                        type: String,
+                    },
+                    sentBy: {
+                        type: ObjectId,
+                        ref: "User"
+                    },
+
                 },
                 state: {
                     type: String,

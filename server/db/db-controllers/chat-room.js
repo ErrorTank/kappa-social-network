@@ -78,7 +78,11 @@ const createNewMessage = ({chatRoomID, value}) => {
                 model: "User",
                 select: "_id basic_info avatar last_active_at active"
 
-            }
+            }, {
+                path: "context.reply_for.sentBy",
+                model: "User",
+                select: "_id basic_info avatar last_active_at active"
+            },
         ])
         .then(data => data.context.find(each => each._id.toString() === newMessage._id.toString()))
 };
@@ -89,6 +93,21 @@ const getChatRoomMessages = (chatRoomID, {take = 10, skip = 0}) => {
         {$match: {_id: ObjectId(chatRoomID)}},
 
         {$unwind: "$context"},
+        {
+            $lookup: {
+                from: 'users',
+                localField: 'context.reply_for.sentBy',
+                foreignField: '_id',
+                as: "context.reply_for.sentBy"
+            }
+        },
+        {
+            $addFields: {
+                "context.reply_for.sentBy": {
+                    $arrayElemAt: ["$context.reply_for.sentBy", 0]
+                }
+            }
+        },
         {$lookup: {from: 'users', localField: 'context.sentBy', foreignField: '_id', as: "context.sentBy"}},
         {
             $addFields: {
@@ -97,6 +116,7 @@ const getChatRoomMessages = (chatRoomID, {take = 10, skip = 0}) => {
                 }
             }
         },
+
         {
             $unwind: {
                 path: "$context.seenBy",
@@ -113,6 +133,7 @@ const getChatRoomMessages = (chatRoomID, {take = 10, skip = 0}) => {
                 }
             }
         },
+
         {
             $group: {
                 _id: "$context._id",
@@ -125,8 +146,8 @@ const getChatRoomMessages = (chatRoomID, {take = 10, skip = 0}) => {
                 seenBy: {
                     $push: "$context.seenBy"
                 },
-                replyFor: {
-                    $first: "$context.replyFor"
+                reply_for: {
+                    $first: "$context.reply_for"
                 },
                 state: {
                     $first: "$context.state"
@@ -160,9 +181,20 @@ const getChatRoomMessages = (chatRoomID, {take = 10, skip = 0}) => {
         {$limit: Number(take)},
 
     ])
-    .then(messages => {
-        return messages.map(each => ({...each, seenBy:each.seenBy.map(seen => pick(seen, ["_id", "avatar", "basic_info", "last_active_at", "active"]))  ,sentBy: pick(each.sentBy, ["_id", "avatar", "basic_info", "last_active_at", "active"])})).reverse();
-    })
+        .then(messages => {
+            return messages.map(each =>
+                ({
+                    ...each,
+                    seenBy: each.seenBy.map(seen =>
+                        pick(seen, ["_id", "avatar", "basic_info", "last_active_at", "active"])),
+                    sentBy: pick(each.sentBy, ["_id", "avatar", "basic_info", "last_active_at", "active"]),
+                    reply_for: each.reply_for.sentBy ? {
+                        content: each.reply_for.content,
+                        sentBy: pick(each.reply_for.sentBy, ["_id", "avatar", "basic_info", "last_active_at", "active"]),
+                        file: each.reply_for.file
+                    } : null
+                })).reverse();
+        })
 }
 
 const updateSavedMessagesToSent = (chatRoomID, messageIds) => {

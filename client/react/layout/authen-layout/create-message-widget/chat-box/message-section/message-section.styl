@@ -285,13 +285,32 @@
         }
       }
     }
-
+    .content-wrapper{
+      max-width calc(100% - 56px - 5px - 10px - 44px)
+      &.owned {
+        max-width calc(100% - 22px - 78px - 5px - 10px)
+      }
+      .reply-title{
+        font-size 1.2rem
+        margin 3px 0
+        color greySmallLight
+        i{
+          margin-right 3px
+          font-size 1.5rem
+        }
+      }
+    }
     .message-renderable-content {
       background-color btnCancelLight
       overflow hidden
       margin-right 5px
       margin-left 0
+      display inline-block
+      &.file{
+        display block
+      }
       color commonTextLight
+
       &.isDeleted{
         background-color white !important
         pointer-events none
@@ -307,7 +326,6 @@
       &.disabled{
         pointer-events none
       }
-      display inline-block
       position relative
       .upload-loading{
         position absolute
@@ -325,7 +343,7 @@
           z-index 1
         }
       }
-      max-width calc(100% - 56px - 5px - 10px - 44px)
+
       .content{
         font-size 1.5rem
         font-weight 400
@@ -350,7 +368,7 @@
         color white !important
         margin-right 0
         margin-left 5px
-        max-width calc(100% - 22px - 78px - 5px - 10px)
+
       }
 
 

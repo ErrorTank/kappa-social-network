@@ -157,7 +157,12 @@ export class ChatBox extends KComponent {
             seenBy: [],
             temp: true,
             needUploadFile,
-            file
+            file,
+            reply_for:  state.reply ? {
+                file: state.reply.file,
+                content: state.reply.content,
+                sentBy: state.reply.sentBy
+            } : null
         }
     }
 
@@ -181,7 +186,11 @@ export class ChatBox extends KComponent {
         if(newMessage){
             chatApi.sendMessage(this.state.chat_room_brief._id, omit({
                 ...newMessage,
-                sentBy: newMessage.sentBy._id
+                sentBy: newMessage.sentBy._id,
+                reply_for: newMessage.reply_for ? {
+                    ...newMessage.reply_for,
+                    sentBy: newMessage.reply_for.sentBy._id
+                } : null
             }, ["state", "temp", "needUploadFile", "file"]))
                 .then(newServerMessage => {
                     let msgs = [...this.messageState.getState()];

@@ -21,10 +21,9 @@ const getRenderableContentFromMessage = (message) => {
     }
 
     for(let mention of mentions){
-        console.log(resultStr)
-        console.log(mention)
+
         let index = resultStr.indexOf(`@${mention.name}`);
-        console.log(index)
+
         if(index > 0){
             contentPaths = contentPaths.concat({
                 path: resultStr.substring(0, index),
@@ -36,7 +35,7 @@ const getRenderableContentFromMessage = (message) => {
             link: `/profile/${mention.related}`,
             context: mention
         })
-        console.log(contentPaths)
+
 
         resultStr = resultStr.substring(index + mention.name.length + 1);
     }

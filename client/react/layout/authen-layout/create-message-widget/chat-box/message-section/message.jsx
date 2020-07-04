@@ -17,6 +17,7 @@ import omit from "lodash/omit";
 import {Progress} from "../../../../../common/progress/progress";
 import {utilityApi} from "../../../../../../api/common/utilities-api";
 import {isImageFile} from "../../../../../../common/utils/file-upload-utils";
+import {ReplyContent} from "./reply-content/reply-content";
 
 
 let Wrapper = (props) => props.links.length ? (
@@ -150,52 +151,75 @@ export class Message extends Component {
 
 
 
-                    <div className={classnames("message-renderable-content", {owned: isOwned, disabled: this.state.downloading, isDeleted: message.is_deleted})} onClick={this.onClickFile}>
-                        {message.is_deleted ? (
-                            <div className="deleted-msg">
-                                {isOwned ? "Tin nhắn đã bị bạn xóa bỏ" : message.sentBy.basic_info.username + " đã xóa tin nhắn này"}
-                            </div>
-                        ) : (
-                            <>
-                                {this.state.uploading && (
-                                    <div className="upload-loading">
-                                        <div style={{height: "100%", position: "relative"}}>
-                                            <Progress progress={this.state.percentage} className={"message-file-loading"}/>
-                                        </div>
+                   <div className={classnames("content-wrapper", {owned: isOwned})}>
+                       {message.reply_for && (
+                          <>
+                              <div className="reply-title">
+                                  <i className="fas fa-reply"></i> {
+                                  isOwned
+                                      ? "Bạn" :
+                                      <span className="high-light">{message.sentBy.basic_info.username}</span>
+                              } phản hồi {
+                                  message.sentBy._id !== message.reply_for.sentBy._id &&
+                                      <span>tới {userID === message.reply_for.sentBy._id ? "bạn" : <span className="high-light">{message.reply_for.sentBy.basic_info.username}</span>}</span>
+                              }
+                              </div>
+                              <div>
+                                  <ReplyContent
+                                      message={message.reply_for}
+                                      isOwned={isOwned}
+                                  />
+                              </div>
 
-                                    </div>
-                                )}
-                                {message.file ? (
-                                    <MessageFileDisplay
-                                        file={message.file}
-                                        needUpload={message.needUploadFile}
-                                    />
-                                ) : (
-                                    <Wrapper links={message.hyperlinks}>
-                                        <Tooltip
-                                            className={"message-tooltip"}
-                                            position={"top"}
-                                            text={() => moment(message.created_at).format('hh:mm A')}
-                                        >
-                                            <div className="content">
-                                                {getRenderableContentFromMessage(message)}
-                                            </div>
+                          </>
+                       )}
+                       <div className={classnames("message-renderable-content", {file: message.file, owned: isOwned, disabled: this.state.downloading, isDeleted: message.is_deleted})} onClick={this.onClickFile}>
+                           {message.is_deleted ? (
+                               <div className="deleted-msg">
+                                   {isOwned ? "Tin nhắn đã bị bạn xóa bỏ" : message.sentBy.basic_info.username + " đã xóa tin nhắn này"}
+                               </div>
+                           ) : (
+                               <>
+                                   {this.state.uploading && (
+                                       <div className="upload-loading">
+                                           <div style={{height: "100%", position: "relative"}}>
+                                               <Progress progress={this.state.percentage} className={"message-file-loading"}/>
+                                           </div>
 
-                                        </Tooltip>
-                                        {!!message.hyperlinks.length && !message.temp && (
-                                            <HyperLink
-                                                link={message.hyperlinks[0]}
-                                                onLoaded={() => {
-                                                    // messagesContainerUtilities.createScrollLatest(true)();
-                                                }}
-                                            />
-                                        )}
-                                    </Wrapper>
-                                )}
-                            </>
-                        )}
+                                       </div>
+                                   )}
+                                   {message.file ? (
+                                       <MessageFileDisplay
+                                           file={message.file}
+                                           needUpload={message.needUploadFile}
+                                       />
+                                   ) : (
+                                       <Wrapper links={message.hyperlinks}>
+                                           <Tooltip
+                                               className={"message-tooltip"}
+                                               position={"top"}
+                                               text={() => moment(message.created_at).format('hh:mm A')}
+                                           >
+                                               <div className="content">
+                                                   {getRenderableContentFromMessage(message)}
+                                               </div>
 
-                    </div>
+                                           </Tooltip>
+                                           {!!message.hyperlinks.length && !message.temp && (
+                                               <HyperLink
+                                                   link={message.hyperlinks[0]}
+                                                   onLoaded={() => {
+                                                       // messagesContainerUtilities.createScrollLatest(true)();
+                                                   }}
+                                               />
+                                           )}
+                                       </Wrapper>
+                                   )}
+                               </>
+                           )}
+
+                       </div>
+                   </div>
 
 
                     {(isOwned) && (
