@@ -7,9 +7,6 @@ import {Tooltip} from "../../../../common/tooltip/tooltip";
 import {messengerApi} from "../../../../../api/common/messenger-api";
 import Skeleton, {SkeletonTheme} from "react-loading-skeleton";
 import {ThemeContext} from "../../../../context/theme-context";
-import {StatusAvatar} from "../../../../common/status-avatar/status-avatar";
-
-const moment = require("moment");
 import {v4 as uuidv4} from 'uuid';
 import {WithUserStatus} from "../../../../common/user-statuts-subcriber/user-status-subscriber";
 import {ChatBoxDropZone} from "./chat-box-dropzone";
@@ -19,7 +16,7 @@ import {createStateHolder} from "../../../../../common/states/state-holder";
 import omit from "lodash/omit"
 import {KComponent} from "../../../../common/k-component";
 import {messengerIO} from "../../../../../socket/sockets";
-
+import {ChatBoxHeaderUserInfo} from "./chat-box-header-user-info";
 
 export const MessageState = {
     CACHED: "CACHED",
@@ -276,21 +273,7 @@ export class ChatBox extends KComponent {
                                         <div className="chat-box-header message-widget-header">
                                             <div className="left-panel">
                                                 {userInfo ? (
-                                                    <div className="chat-info">
-                                                        <div className={"avatar-wrapper"}>
-                                                            <StatusAvatar
-                                                                active={userStatus.active}
-                                                                user={userInfo}
-                                                            />
-                                                        </div>
-                                                        <div className="user-status">
-                                                            <div className="wrapper">
-                                                                <p className="username">{userInfo.basic_info.username}</p>
-                                                                <p className="status">{userStatus.active ? "Đang hoạt động" : moment(userStatus.last_active_at).fromNow()}</p>
-                                                            </div>
-                                                        </div>
-                                                        <i className="fal fa-angle-down"></i>
-                                                    </div>
+                                                     <ChatBoxHeaderUserInfo/>
                                                 ) : (
 
                                                     <SkeletonTheme color={darkMode ? "#242526" : "#e3e3e3"}
