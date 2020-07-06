@@ -273,7 +273,10 @@ export class ChatBox extends KComponent {
                                         <div className="chat-box-header message-widget-header">
                                             <div className="left-panel">
                                                 {userInfo ? (
-                                                     <ChatBoxHeaderUserInfo/>
+                                                     <ChatBoxHeaderUserInfo
+                                                        userInfo={userInfo}
+                                                        userStatus={userStatus}
+                                                     />
                                                 ) : (
 
                                                     <SkeletonTheme color={darkMode ? "#242526" : "#e3e3e3"}
