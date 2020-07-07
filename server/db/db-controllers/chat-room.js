@@ -210,7 +210,11 @@ const getChatRoomMessages = (chatRoomID, {take = 10, skip = 0}) => {
                         content: each.reply_for.content,
                         sentBy: pick(each.reply_for.sentBy, ["_id", "avatar", "basic_info", "last_active_at", "active"]),
                         file: each.reply_for.file
-                    } : null
+                    } : null,
+                    special_data: each.special_data.to ? {
+                        ...each.special_data,
+                        to: pick(each.special_data.to, ["_id", "avatar", "basic_info", "last_active_at", "active"]),
+                    }: null
                 })).reverse();
         })
 }

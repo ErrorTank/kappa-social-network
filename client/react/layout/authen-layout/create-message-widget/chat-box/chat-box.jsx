@@ -17,6 +17,7 @@ import omit from "lodash/omit"
 import {KComponent} from "../../../../common/k-component";
 import {messengerIO} from "../../../../../socket/sockets";
 import {ChatBoxHeaderUserInfo} from "./chat-box-header-user-info";
+import {MESSAGE_TYPES} from "./message-section/message";
 
 export const MessageState = {
     CACHED: "CACHED",
@@ -29,7 +30,7 @@ export class ChatBox extends KComponent {
         super(props);
         this.state = {
             chat_room_brief: null,
-
+            nickname_map: []
         };
 
         this.messageState = createStateHolder([]);
@@ -67,6 +68,10 @@ export class ChatBox extends KComponent {
                     }
                     this.messageState.setState(clone);
                 })
+                this.io.on("update-nicknames", ({data}) => {
+                    console.log(data)
+                   this.setState({nickname_map: data})
+                })
                 this.io.on("remove-message", ({messageID}) => {
 
                    this.removeMessage(messageID)
@@ -74,9 +79,7 @@ export class ChatBox extends KComponent {
                 this.io.on("new-message", ({message, senderID, forceUpdate = false}) => {
                     let scrollToLatest = messagesContainerUtilities.createScrollLatest();
                     let isOwned = userInfo.getState()._id === senderID;
-                    console.log(forceUpdate)
-                    console.log(senderID)
-                    console.log(userInfo.getState()._id)
+
                     if (forceUpdate || !isOwned) {
                         let newMessages = this.messageState.getState();
                         this.messageState.setState(newMessages.concat(message)).then(() => {
@@ -96,7 +99,7 @@ export class ChatBox extends KComponent {
                     }
 
                 })
-                this.setState({chat_room_brief: chat_room});
+                this.setState({chat_room_brief: chat_room, nickname_map: chat_room.involve_person});
 
             })
         this.onUnmount(this.messageState.onChange((nextState, oldState) => {
@@ -108,6 +111,7 @@ export class ChatBox extends KComponent {
     componentWillUnmount() {
         if (this.io) {
             this.io.off("change-message-state");
+            this.io.off("update-nicknames");
             this.io.off("new-message");
             this.io.off("update-message");
             this.io.off("push-to-seen-by");
@@ -156,6 +160,7 @@ export class ChatBox extends KComponent {
             sentBy: {_id: userInfo.getState()._id},
             content: state.content || "",
             mentions: state.mentions || [],
+            special: MESSAGE_TYPES.CASUAL,
             hyperlinks: state.hyperlinks || [],
             state: MessageState.CACHED,
             seenBy: [],
@@ -284,6 +289,7 @@ export class ChatBox extends KComponent {
                                                         userInfo={userInfo}
                                                         userStatus={userStatus}
                                                         chatRoomID={this.state.chat_room_brief?._id}
+                                                        nicknameMap={this.state.nickname_map}
                                                      />
                                                 ) : (
 

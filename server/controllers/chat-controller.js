@@ -107,6 +107,7 @@ module.exports = (db, namespacesIO) => {
             }).then((newMsg) => {
                 let result = newMsg.toObject();
                 namespacesIO.messenger.to(`/messenger-chat-room/chat-room/${req.params.chatRoomID}`).emit('new-message', {message: result, senderID: result.sentBy._id, forceUpdate: true});
+                namespacesIO.messenger.to(`/messenger-chat-room/chat-room/${req.params.chatRoomID}`).emit("update-nicknames", {data: data.toObject().map(each => ({...each, related: each.related._id}))})
                 return res.status(200).json(data);
             })
 

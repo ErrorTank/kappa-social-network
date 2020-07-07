@@ -36,8 +36,8 @@ export class ChatBoxHeaderUserInfo extends Component {
     ]
 
     render() {
-        let {userStatus, userInfo} = this.props;
-
+        let {userStatus, userInfo, nicknameMap} = this.props;
+        let nickname = nicknameMap.find(each => each.related === userInfo._id)?.nickname;
         return (
             <div className="chat-box-header-user-info">
                 <ClickOutside onClickOut={() => this.state.showMenu && this.setState({showMenu: false})}>
@@ -62,7 +62,7 @@ export class ChatBoxHeaderUserInfo extends Component {
                         </div>
                         <div className="user-status">
                             <div className="wrapper">
-                                <p className="username">{userInfo.basic_info.username}</p>
+                                <p className="username">{nickname || userInfo.basic_info.username}</p>
                                 <p className="status">{userStatus.active ? "Đang hoạt động" : moment(userStatus.last_active_at).fromNow()}</p>
                             </div>
                         </div>
