@@ -229,6 +229,10 @@ const deleteMessage = (chatRoomID, messageID) => {
     }).then(() => true)
 }
 
+const getChatRoomNicknames = () => {
+
+};
+
 module.exports = {
     getChatContacts,
     getGroupChatRoomInvolvesByKeyword,
@@ -236,5 +240,6 @@ module.exports = {
     getChatRoomMessages,
     updateSavedMessagesToSent,
     seenMessages,
-    deleteMessage
+    deleteMessage,
+    getChatRoomNicknames
 };

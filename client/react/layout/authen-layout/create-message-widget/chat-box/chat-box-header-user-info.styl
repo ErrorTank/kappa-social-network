@@ -80,11 +80,32 @@
     background-color white
     border-radius 8px
     box-shadow 0 0 15px 1px rgba(69, 65, 78, 0.2)
-    padding 8px 0
+    padding 8px
     right calc(100% + 10px)
     top 0
     width 200px
-
+    .menu-item{
+      padding 8px
+      transition background-color 0.1s ease
+      background-color white
+      display flex
+      align-items center
+      justify-content flex-start
+      border-radius 4px
+      .icon{
+        font-size 2rem
+        color #65676b
+      }
+      .label{
+        font-size 1.5rem
+        color commonTextLight
+        margin-left 15px
+        font-weight 500
+      }
+      &:hover{
+        background-color darken(white, 3%)
+      }
+    }
   }
 
 

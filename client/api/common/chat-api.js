@@ -47,4 +47,7 @@ export const chatApi = {
     sendFileMessage(chatRoomID, messageContent, multipartConfig,){
         return authenApi.postMultipart(`/chat/${chatRoomID}/send-file-message`, messageContent, multipartConfig)
     },
+    getChatRoomUserNicknames(chatRoomID){
+        return authenApi.get(`/chat/${chatRoomID}/nicknames`)
+    },
 };

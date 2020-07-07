@@ -276,6 +276,7 @@ export class ChatBox extends KComponent {
                                                      <ChatBoxHeaderUserInfo
                                                         userInfo={userInfo}
                                                         userStatus={userStatus}
+                                                        chatRoomID={this.state.chat_room_brief?._id}
                                                      />
                                                 ) : (
 
