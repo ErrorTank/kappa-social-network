@@ -152,7 +152,7 @@ export class Message extends Component {
 
 
                    <div className={classnames("content-wrapper", {owned: isOwned})}>
-                       {message.reply_for && (
+                       {!message.is_deleted && message.reply_for && (
                           <>
                               <div className="reply-title">
                                   <i className="fas fa-reply"></i> {
