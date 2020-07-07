@@ -50,4 +50,7 @@ export const chatApi = {
     getChatRoomUserNicknames(chatRoomID){
         return authenApi.get(`/chat/${chatRoomID}/nicknames`)
     },
+    changeUserNickname(chatRoomID, userID, newNickname){
+        return authenApi.put(`/chat/${chatRoomID}/user/${userID}/nickname`, {value: newNickname})
+    }
 };

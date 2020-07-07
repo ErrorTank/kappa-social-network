@@ -1,41 +1,50 @@
-.nickname-edit-modal{
+.nickname-edit-modal {
   position relative
   width 550px
-  .modal-header{
+
+  .modal-header {
     text-align center
 
   }
-  .modal-body{
-    .loading-holder{
+
+  .modal-body {
+    .loading-holder {
       display flex
       align-items center
       justify-content flex-start
       margin-bottom 10px
     }
-    .user-nickname-list{
-      .user-row{
+
+    .user-nickname-list {
+      .user-row {
         margin-bottom 12px
         display flex
         align-items center
-        .left-panel{
+
+        .left-panel {
           flex 0 0 45%
-          .user-info{
+
+          .user-info {
             display flex
             align-items center
-            .common-avatar{
+
+            .common-avatar {
               margin 0
               flex 0 0 40px
             }
-            .names{
+
+            .names {
               margin-left 12px
               flex 0 0 calc(100% - 52px)
-              .name{
+
+              .name {
                 font-size 1.5rem
                 font-weight 500
                 textOverflowEllipsis()
                 color commonTextLight
               }
-              .nickname{
+
+              .nickname {
                 font-size 1.3rem
                 textOverflowEllipsis()
                 color greySmallLight
@@ -43,8 +52,63 @@
             }
           }
         }
-        .right-panel{
+
+        .right-panel {
           flex 0 0 55%
+          text-align right
+
+          .nickname-input-wrapper {
+            display flex
+            justify-content flex-end
+            align-items center
+
+            .nickname-input {
+              margin-bottom 0 !important
+            }
+
+            .action-btn {
+              height 35px
+
+              margin-left 5px
+              i{
+                font-size 2rem
+              }
+              &.cancel {
+                background-color btnCancelLight
+                color commonTextLight
+                &:hover {
+                  background-color darken(btnCancelLight, 15%)
+                }
+              }
+
+              &.save {
+                color white
+                background-color primaryButton
+
+                &:hover {
+                  background-color darken(primaryButton, 15%)
+                }
+
+              }
+            }
+          }
+
+          .edit-nickname-btn {
+            background-color btnCancelLight
+            color commonTextLight
+            padding 8px 15px !important
+            font-weight 500
+            font-size 1.5rem
+
+            i {
+              font-size 1.8rem
+              margin-right 5px
+            }
+
+            &:hover {
+              background-color darken(btnCancelLight, 3%)
+            }
+          }
         }
       }
     }

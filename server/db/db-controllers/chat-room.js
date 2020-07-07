@@ -239,6 +239,18 @@ const getChatRoomNicknames = (chatRoomID) => {
         .then(chatRoom => chatRoom.involve_person)
 };
 
+const updateUserNickname = (chatRoomID, userID, nickname) => {
+    return ChatRoom.findOneAndUpdate({_id: ObjectId(chatRoomID)}, {"$set": {"involve_person.$[elem].nickname": nickname}}, {
+        "arrayFilters": [{"elem.related": ObjectId(userID)}],
+        new: true
+    })  .populate({
+        path: "involve_person.related",
+        model: "User",
+        select: "_id basic_info avatar"
+    })
+        .then(chatRoom => chatRoom.involve_person)
+}
+
 module.exports = {
     getChatContacts,
     getGroupChatRoomInvolvesByKeyword,
@@ -247,5 +259,6 @@ module.exports = {
     updateSavedMessagesToSent,
     seenMessages,
     deleteMessage,
-    getChatRoomNicknames
+    getChatRoomNicknames,
+    updateUserNickname
 };

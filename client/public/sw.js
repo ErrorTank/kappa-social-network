@@ -133,6 +133,10 @@ var exceptionRequestsDev = [
     endpoint: /http:\/\/localhost:4000\/api\/utilites\/download\/\w+\/original-name\/\w+/,
     method: 'GET',
   },
+  {
+    endpoint: /http:\/\/localhost:4000\/api\/chat\/\w+\/user\/\w+\/nickname/,
+    method: 'PUT',
+  },
 ];
 
 var notGetRequests = [
@@ -148,8 +152,8 @@ var notGetRequests = [
   },
 ];
 
-var CACHE_STATIC_NAME = 'static-v1594110259998';
-var CACHE_DYNAMIC_NAME = 'dynamic-v1594110259998';
+var CACHE_STATIC_NAME = 'static-v1594115891025';
+var CACHE_DYNAMIC_NAME = 'dynamic-v1594115891025';
 
 var STATIC_FILES = [
   '/',

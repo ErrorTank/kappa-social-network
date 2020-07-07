@@ -7,6 +7,9 @@ import {chatApi} from "../../../api/common/chat-api";
 import {ThemeContext} from "../../context/theme-context";
 import Skeleton, {SkeletonTheme} from "react-loading-skeleton";
 import {Avatar} from "../avatar/avatar";
+import {CommonInput} from "../common-input/common-input";
+import {Tooltip} from "../tooltip/tooltip";
+import {Button} from "../button/button";
 
 export const nicknameEditModal = {
     open(config) {
@@ -35,7 +38,13 @@ class NicknameEditModal extends Component {
             })
     }
 
+    saveNickname = (userID, newNickname) => {
+        return chatApi.changeUserNickname(this.props.chatRoomID, userID, newNickname)
+            .then((users) => {
+                this.setState({users})
 
+            })
+    }
 
     render() {
         let {onClose,} = this.props;
@@ -47,7 +56,11 @@ class NicknameEditModal extends Component {
                         className="nickname-edit-modal"
                         onClose={onClose}
                         title={"Cài đặt biệt danh"}
-
+                        actions={[ {
+                            className: "btn-cancel",
+                            onClick: onClose,
+                            content: "Đóng"
+                        }]}
                     >
 
                         {loading ? (
@@ -71,26 +84,11 @@ class NicknameEditModal extends Component {
                         ) : (
                             <div className="user-nickname-list">
                                 {users.map((each) => (
-                                    <div className="user-row" key={each.related._id}>
-                                        <div className="left-panel">
-                                            <div className="user-info">
-                                                <Avatar
-                                                    user={each.related}
-                                                />
-                                                <div className="names">
-                                                    <div className="name">{each.related.basic_info.username}</div>
-                                                    {each.nickname && (
-                                                        <div className="nickname">{each.nickname}</div>
-                                                    )}
-
-                                                </div>
-
-                                            </div>
-                                        </div>
-                                        <div className="right-panel">
-                                            <button className="btn btn-cancel edit-nickname-btn"></button>
-                                        </div>
-                                    </div>
+                                    <NicknameRow
+                                        key={each.related._id}
+                                        info={each}
+                                        onChange={(value) => this.saveNickname(each.related._id, value)}
+                                    />
                                 ))}
                             </div>
                         )}
@@ -102,3 +100,80 @@ class NicknameEditModal extends Component {
         );
     }
 }
+
+
+
+class NicknameRow extends Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            value: props.info.nickname || "",
+            showInput: false,
+            saving: false
+        };
+    };
+
+    setNickname = () => {
+        if(this.state.value.trim() === (this.props.info.nickname || "").trim()){
+
+            this.setState({showInput: false});
+            return;
+        }
+        this.setState({saving: true});
+        this.props.onChange(this.state.value.trim()).then(() => {
+            this.setState({showInput: false, saving: false, value: this.state.value.trim()})
+        })
+    }
+
+    render() {
+        let {info} = this.props;
+        return (
+            <div className="user-row" >
+                <div className="left-panel">
+                    <div className="user-info">
+                        <Avatar
+                            user={info.related}
+                        />
+                        <div className="names">
+                            <div className="name">{info.related.basic_info.username}</div>
+                            {info.nickname && (
+                                <div className="nickname">{info.nickname}</div>
+                            )}
+
+                        </div>
+
+                    </div>
+                </div>
+                <div className="right-panel">
+                    {this.state.showInput ? (
+                        <div className="nickname-input-wrapper">
+                            <CommonInput
+                                type={"text"}
+                                className={"nickname-input"}
+                                value={this.state.value || ""}
+                                placeholder={info.related.basic_info.username}
+                                onChange={e => this.setState({value: e.target.value})}
+                            />
+                            <Tooltip
+                                text={() => "Hủy bỏ"}
+                            >
+                                <button className="btn action-btn cancel" onClick={() => this.setState({value: this.props.info.nickname || "", showInput: false})}><i className="far fa-times"></i></button>
+                            </Tooltip>
+                            <Tooltip
+                                text={() => "Lưu biệt danh"}
+                            >
+                                <Button className="btn action-btn save"  disabled={this.state.saving} loading={this.state.saving} onClick={this.setNickname}><i className="far fa-check"></i></Button>
+                            </Tooltip>
+
+
+                        </div>
+                    ) : (
+                        <Button className="btn edit-nickname-btn" onClick={() => this.setState({showInput: true})}><i className="far fa-pen"></i> Đặt biệt danh</Button>
+                    )}
+
+                </div>
+            </div>
+        );
+    }
+}
+

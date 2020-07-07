@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const {authorizationUserMiddleware} = require("../common/middlewares/common");
 const {asynchronized} = require("../utils/common-utils");
-const {getChatContacts, getChatRoomNicknames,getGroupChatRoomInvolvesByKeyword, createNewMessage, getChatRoomMessages, updateSavedMessagesToSent, seenMessages} = require("../db/db-controllers/chat-room");
+const {getChatContacts, getChatRoomNicknames,getGroupChatRoomInvolvesByKeyword, createNewMessage,updateUserNickname, getChatRoomMessages, updateSavedMessagesToSent, seenMessages} = require("../db/db-controllers/chat-room");
 const {getUserBasicInfo} = require("../db/db-controllers/user");
 const {MessageState} = require("../common/const/message-state")
 const fileUpload = require("../common/upload-services/file-upload");
@@ -73,6 +73,13 @@ module.exports = (db, namespacesIO) => {
     router.get("/:chatRoomID/get-messages", authorizationUserMiddleware, (req, res, next) => {
 
         return getChatRoomMessages(req.params.chatRoomID, {take: req.query.take, skip: req.query.skip}).then((data) => {
+            return  res.status(200).json(data);
+        }).catch(err => next(err));
+
+    });
+    router.put("/:chatRoomID/user/:userID/nickname", authorizationUserMiddleware, (req, res, next) => {
+
+        return updateUserNickname(req.params.chatRoomID, req.params.userID, req.body.value).then((data) => {
             return  res.status(200).json(data);
         }).catch(err => next(err));
 
