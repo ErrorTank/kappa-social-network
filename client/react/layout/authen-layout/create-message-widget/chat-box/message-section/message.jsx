@@ -18,6 +18,7 @@ import {Progress} from "../../../../../common/progress/progress";
 import {utilityApi} from "../../../../../../api/common/utilities-api";
 import {isImageFile} from "../../../../../../common/utils/file-upload-utils";
 import {ReplyContent} from "./reply-content/reply-content";
+import {SpecialMessage} from "./special-message/special-message";
 
 
 let Wrapper = (props) => props.links.length ? (
@@ -29,6 +30,13 @@ let Wrapper = (props) => props.links.length ? (
         {props.children}
     </>
 );
+
+export const MESSAGE_TYPES = {
+    CASUAL: "CASUAL",
+    KICK: "KICK",
+    NICKNAME: "NICKNAME",
+    EMOJI: "EMOJI",
+}
 
 export class Message extends Component {
     constructor(props) {
@@ -111,7 +119,11 @@ export class Message extends Component {
         let {message, position, haveAvatar, isUserLastMessage} = this.props;
         let isOwned = message.sentBy._id === userID;
 
-        return (
+        return message.special !== MESSAGE_TYPES.CASUAL ? (
+            <SpecialMessage
+                message={message}
+            />
+        ) : (
 
             <div className={classnames("chat-message", position, {owned: isOwned, disabled: this.state.uploading})}>
                 <div className="upper-panel">

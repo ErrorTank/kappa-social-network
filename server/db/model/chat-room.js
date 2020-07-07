@@ -69,6 +69,17 @@ const chatRoomSchema = new Schema({
                     type: Boolean,
                     default: false
                 },
+                special: {
+                    type: String,
+                    enum: ["CASUAL", "KICK", "NICKNAME", "EMOJI"]
+                },
+                special_data: {
+                    to: {
+                        type: ObjectId,
+                        ref: "User"
+                    },
+                    value: String
+                },
                 is_init: {
                     type: Boolean,
                     default: false

@@ -82,6 +82,10 @@ const createNewMessage = ({chatRoomID, value}) => {
                 path: "context.reply_for.sentBy",
                 model: "User",
                 select: "_id basic_info avatar last_active_at active"
+            },{
+                path: "context.special_data.to",
+                model: "User",
+                select: "_id basic_info avatar last_active_at active"
             },
         ])
         .then(data => data.context.find(each => each._id.toString() === newMessage._id.toString()))
@@ -102,20 +106,28 @@ const getChatRoomMessages = (chatRoomID, {take = 10, skip = 0}) => {
             }
         },
         {
-            $addFields: {
-                "context.reply_for.sentBy": {
-                    $arrayElemAt: ["$context.reply_for.sentBy", 0]
-                }
+            $lookup: {
+                from: 'users',
+                localField: 'context.special_data.to',
+                foreignField: '_id',
+                as: "context.special_data.to"
             }
         },
         {$lookup: {from: 'users', localField: 'context.sentBy', foreignField: '_id', as: "context.sentBy"}},
         {
             $addFields: {
+                "context.reply_for.sentBy": {
+                    $arrayElemAt: ["$context.reply_for.sentBy", 0]
+                },
                 "context.sentBy": {
                     $arrayElemAt: ["$context.sentBy", 0]
+                },
+                "context.special_data.to": {
+                    $arrayElemAt: ["$context.special_data.to", 0]
                 }
             }
         },
+
 
         {
             $unwind: {
@@ -145,6 +157,9 @@ const getChatRoomMessages = (chatRoomID, {take = 10, skip = 0}) => {
                 },
                 seenBy: {
                     $push: "$context.seenBy"
+                },
+                special_data: {
+                    $first: "$context.special_data"
                 },
                 reply_for: {
                     $first: "$context.reply_for"
