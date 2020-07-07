@@ -73,7 +73,7 @@ export class UserAction extends KComponent {
 
                             ) : (
                                 <div className="avatar-holder">
-                                    <span>{getNamePrefix(user.basic_info.username)}</span>
+                                    <span>{getNamePrefix(user.basic_info.username.trim())}</span>
                                 </div>
                             )}
                         </div>

@@ -71,9 +71,13 @@ export class ChatBox extends KComponent {
 
                    this.removeMessage(messageID)
                 })
-                this.io.on("new-message", ({message}) => {
+                this.io.on("new-message", ({message, senderID, forceUpdate = false}) => {
                     let scrollToLatest = messagesContainerUtilities.createScrollLatest();
-                    if (userInfo.getState()._id !== message.sentBy._id) {
+                    let isOwned = userInfo.getState()._id === senderID;
+                    console.log(forceUpdate)
+                    console.log(senderID)
+                    console.log(userInfo.getState()._id)
+                    if (forceUpdate || !isOwned) {
                         let newMessages = this.messageState.getState();
                         this.messageState.setState(newMessages.concat(message)).then(() => {
                             setTimeout(() => {
@@ -81,11 +85,14 @@ export class ChatBox extends KComponent {
                                 scrollToLatest();
                             })
                         })
-                        this.io.emit("received-message", {
-                            userID: userInfo.getState()._id,
-                            chatRoomID: chat_room._id,
-                            messageID: message._id
-                        })
+                        if(!isOwned){
+                            this.io.emit("received-message", {
+                                userID: userInfo.getState()._id,
+                                chatRoomID: chat_room._id,
+                                messageID: message._id
+                            })
+                        }
+
                     }
 
                 })

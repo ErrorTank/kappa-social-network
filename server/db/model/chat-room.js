@@ -71,7 +71,8 @@ const chatRoomSchema = new Schema({
                 },
                 special: {
                     type: String,
-                    enum: ["CASUAL", "KICK", "NICKNAME", "EMOJI"]
+                    enum: ["CASUAL", "KICK", "NICKNAME", "EMOJI"],
+                    default: "CASUAL"
                 },
                 special_data: {
                     to: {
