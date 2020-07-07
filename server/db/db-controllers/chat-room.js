@@ -229,8 +229,14 @@ const deleteMessage = (chatRoomID, messageID) => {
     }).then(() => true)
 }
 
-const getChatRoomNicknames = () => {
-
+const getChatRoomNicknames = (chatRoomID) => {
+    return ChatRoom.findOne({_id: ObjectId(chatRoomID)})
+        .populate({
+            path: "involve_person.related",
+            model: "User",
+            select: "_id basic_info avatar"
+        })
+        .then(chatRoom => chatRoom.involve_person)
 };
 
 module.exports = {

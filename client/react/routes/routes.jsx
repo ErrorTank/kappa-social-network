@@ -68,7 +68,7 @@ class MainRoute extends React.Component {
 
   render() {
     return (
-      <ThemeController>
+      <ThemeContext.Consumer>
         {({ darkMode }) => (
           <Suspense fallback={<OverlayLoading darkMode={darkMode} />}>
             <WithRouterKappaLayout>
@@ -133,7 +133,7 @@ class MainRoute extends React.Component {
             </WithRouterKappaLayout>
           </Suspense>
         )}
-      </ThemeController>
+      </ThemeContext.Consumer>
     );
   }
 }
@@ -193,21 +193,30 @@ export class App extends React.Component {
   render() {
     return (
       <div className='app'>
-        <NotificationPrompt
-          value={this.state.showNotificationPrompt}
-          onChange={(value) => this.setState({ showNotificationPrompt: value })}
-        />
-        <div id='main-route'>
-          <TopFloatNotificationRegistry timeout={5000} />
-          <Router history={customHistory}>
-            <NotificationStateContext.Provider
-              value={this.state.showNotificationPrompt}
-            >
-              <MainRoute />
-            </NotificationStateContext.Provider>
-            <ModalsRegistry />
-          </Router>
-        </div>
+        <ThemeController>
+          {() => (
+              <>
+                <NotificationPrompt
+                    value={this.state.showNotificationPrompt}
+                    onChange={(value) => this.setState({ showNotificationPrompt: value })}
+                />
+                <div id='main-route'>
+
+                  <TopFloatNotificationRegistry timeout={5000} />
+                  <Router history={customHistory}>
+                    <NotificationStateContext.Provider
+                        value={this.state.showNotificationPrompt}
+                    >
+                      <MainRoute />
+                    </NotificationStateContext.Provider>
+                    <ModalsRegistry />
+                  </Router>
+                </div>
+              </>
+
+          )}
+        </ThemeController>
+
       </div>
     );
   }

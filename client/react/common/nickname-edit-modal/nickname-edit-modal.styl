@@ -1,0 +1,52 @@
+.nickname-edit-modal{
+  position relative
+  width 550px
+  .modal-header{
+    text-align center
+
+  }
+  .modal-body{
+    .loading-holder{
+      display flex
+      align-items center
+      justify-content flex-start
+      margin-bottom 10px
+    }
+    .user-nickname-list{
+      .user-row{
+        margin-bottom 12px
+        display flex
+        align-items center
+        .left-panel{
+          flex 0 0 45%
+          .user-info{
+            display flex
+            align-items center
+            .common-avatar{
+              margin 0
+              flex 0 0 40px
+            }
+            .names{
+              margin-left 12px
+              flex 0 0 calc(100% - 52px)
+              .name{
+                font-size 1.5rem
+                font-weight 500
+                textOverflowEllipsis()
+                color commonTextLight
+              }
+              .nickname{
+                font-size 1.3rem
+                textOverflowEllipsis()
+                color greySmallLight
+              }
+            }
+          }
+        }
+        .right-panel{
+          flex 0 0 55%
+        }
+      }
+    }
+  }
+}
