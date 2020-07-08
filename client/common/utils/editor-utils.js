@@ -24,6 +24,7 @@ const formatUTF8EmojiText = text => {
     let matches = text.matchAll(unicodeEmojiRegexp);
     let index = 0;
     for (let match of matches) {
+
         if(match.index > index){
             paths = paths.concat({
                 path: result.substring(index, match.index)
@@ -32,12 +33,13 @@ const formatUTF8EmojiText = text => {
         paths = paths.concat({
             path: <Emoji decoratedText={match[0]}/>
         })
-        index = match.index + 1;
+        index = match.index + 2;
 
     }
-    if(index === 0){
+
+    if(index < result.length - 1){
         paths.push({
-            path: result
+            path: result.substring(index)
         })
     }
     return paths;
@@ -75,7 +77,7 @@ const getRenderableContentFromMessage = (message) => {
             contentPaths = contentPaths.concat(formatUTF8EmojiText(resultStr));
         }
     }
-    console.log(contentPaths)
+    // console.log(contentPaths)
 
     return contentPaths.map((each => (
         <Fragment key={uuidv4()}>{each.link ? (
