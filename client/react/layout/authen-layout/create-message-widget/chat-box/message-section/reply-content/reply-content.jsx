@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import {MessageFileDisplay} from "../message-file-display";
 import classnames from "classnames"
+import {getRenderableContentFromMessage} from "../../../../../../../common/utils/editor-utils";
 
 export class ReplyContent extends Component {
     constructor(props) {
@@ -20,7 +21,7 @@ export class ReplyContent extends Component {
                     />
                 ) : (
                     <div className="content">
-                        {message.content}
+                        {getRenderableContentFromMessage(message)}
                     </div>
                 )}
             </div>

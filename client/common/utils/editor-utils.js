@@ -45,9 +45,9 @@ const formatUTF8EmojiText = text => {
 }
 
 const getRenderableContentFromMessage = (message) => {
-    let {mentions} = message;
+    let {mentions = []} = message;
     let content = checkText(message.content);
-    console.log(content)
+
     let resultStr = content;
     let contentPaths = [];
 
@@ -75,7 +75,7 @@ const getRenderableContentFromMessage = (message) => {
             contentPaths = contentPaths.concat(formatUTF8EmojiText(resultStr));
         }
     }
-
+    console.log(contentPaths)
 
     return contentPaths.map((each => (
         <Fragment key={uuidv4()}>{each.link ? (
