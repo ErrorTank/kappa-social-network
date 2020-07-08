@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const {authorizationUserMiddleware} = require("../common/middlewares/common");
 const {asynchronized} = require("../utils/common-utils");
-const {getChatContacts, getChatRoomNicknames, getGroupChatRoomInvolvesByKeyword, createNewMessage, updateUserNickname, getChatRoomMessages, updateSavedMessagesToSent, seenMessages} = require("../db/db-controllers/chat-room");
+const {getChatContacts, getChatRoomNicknames,updateChatRoomDefaultEmoji, getGroupChatRoomInvolvesByKeyword, createNewMessage, updateUserNickname, getChatRoomMessages, updateSavedMessagesToSent, seenMessages} = require("../db/db-controllers/chat-room");
 const {getUserBasicInfo} = require("../db/db-controllers/user");
 const {MessageState} = require("../common/const/message-state")
 const fileUpload = require("../common/upload-services/file-upload");
@@ -108,6 +108,31 @@ module.exports = (db, namespacesIO) => {
                 let result = newMsg.toObject();
                 namespacesIO.messenger.to(`/messenger-chat-room/chat-room/${req.params.chatRoomID}`).emit('new-message', {message: result, senderID: result.sentBy._id, forceUpdate: true});
                 namespacesIO.messenger.to(`/messenger-chat-room/chat-room/${req.params.chatRoomID}`).emit("update-nicknames", {data: data.toObject().map(each => ({...each, related: each.related._id}))})
+                return res.status(200).json(data);
+            })
+
+        }).catch(err => next(err));
+
+    });
+    router.put("/:chatRoomID/default-emoji", authorizationUserMiddleware, (req, res, next) => {
+
+        return updateChatRoomDefaultEmoji(req.params.chatRoomID, req.body.value).then((data) => {
+            return createNewMessage({
+                chatRoomID: req.params.chatRoomID,
+                value: {
+                    content: "huh",
+                    sentBy: ObjectId(req.user._id),
+                    special: "EMOJI",
+                    special_data: {
+                        value: req.body.value
+                    },
+
+                }
+            }).then((newMsg) => {
+
+                let result = newMsg.toObject();
+                namespacesIO.messenger.to(`/messenger-chat-room/chat-room/${req.params.chatRoomID}`).emit('new-message', {message: result, senderID: result.sentBy._id, forceUpdate: true});
+                namespacesIO.messenger.to(`/messenger-chat-room/chat-room/${req.params.chatRoomID}`).emit("update-default-emoji", {data: data})
                 return res.status(200).json(data);
             })
 

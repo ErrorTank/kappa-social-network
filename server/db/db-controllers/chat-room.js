@@ -200,6 +200,7 @@ const getChatRoomMessages = (chatRoomID, {take = 10, skip = 0}) => {
 
     ])
         .then(messages => {
+            console.log(messages[1])
             return messages.map(each =>
                 ({
                     ...each,
@@ -211,7 +212,7 @@ const getChatRoomMessages = (chatRoomID, {take = 10, skip = 0}) => {
                         sentBy: pick(each.reply_for.sentBy, ["_id", "avatar", "basic_info", "last_active_at", "active"]),
                         file: each.reply_for.file
                     } : null,
-                    special_data: each.special_data.to ? {
+                    special_data: each.special_data ? {
                         ...each.special_data,
                         to: pick(each.special_data.to, ["_id", "avatar", "basic_info", "last_active_at", "active"]),
                     }: null
@@ -273,6 +274,14 @@ const updateUserNickname = (chatRoomID, userID, nickname) => {
         .then(chatRoom => chatRoom.involve_person)
 }
 
+const updateChatRoomDefaultEmoji = (chatRoomID,  emoji) => {
+    return ChatRoom.findOneAndUpdate({_id: ObjectId(chatRoomID)}, {"$set": {"default_emoji": emoji}}, {
+        new: true
+    })
+        .lean()
+        .then(chatRoom => chatRoom.default_emoji)
+}
+
 module.exports = {
     getChatContacts,
     getGroupChatRoomInvolvesByKeyword,
@@ -282,5 +291,6 @@ module.exports = {
     seenMessages,
     deleteMessage,
     getChatRoomNicknames,
-    updateUserNickname
+    updateUserNickname,
+    updateChatRoomDefaultEmoji
 };

@@ -294,6 +294,7 @@ export class ChatBox extends KComponent {
                                                         userStatus={userStatus}
                                                         chatRoomID={this.state.chat_room_brief?._id}
                                                         nicknameMap={this.state.nickname_map}
+                                                        defaultEmoji={this.state.default_emoji}
                                                      />
                                                 ) : (
 

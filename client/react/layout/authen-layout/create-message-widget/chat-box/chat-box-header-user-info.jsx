@@ -3,6 +3,7 @@ import {StatusAvatar} from "../../../../common/status-avatar/status-avatar";
 import {ClickOutside} from "../../../../common/click-outside/click-outside";
 import {nicknameEditModal} from "../../../../common/nickname-edit-modal/nickname-edit-modal";
 import {emojiEditModal} from "../../../../common/edit-emoji-modal/edit-emoji-modal";
+import {chatApi} from "../../../../../api/common/chat-api";
 
 const moment = require("moment");
 
@@ -21,8 +22,8 @@ export class ChatBoxHeaderUserInfo extends Component {
     };
 
     changeDefaultEmoji = (emoji) => {
-        if(emoji){
-
+        if(emoji) {
+            chatApi.changeDefaultEmoji(this.props.chatRoomID, emoji)
         }
     };
 

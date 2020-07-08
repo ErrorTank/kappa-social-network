@@ -2,6 +2,7 @@ const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 const ObjectId = mongoose.Schema.Types.ObjectId;
 const {editorContentSchema} = require("./common-schema/common");
+const Mixed = mongoose.Schema.Types.Mixed;
 
 const chatRoomSchema = new Schema({
     last_updated: {
@@ -86,7 +87,7 @@ const chatRoomSchema = new Schema({
                         type: ObjectId,
                         ref: "User"
                     },
-                    value: String
+                    value: Mixed
                 },
                 is_init: {
                     type: Boolean,

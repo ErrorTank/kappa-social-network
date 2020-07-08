@@ -1,6 +1,7 @@
 import React from 'react';
 import {MESSAGE_TYPES} from "../message";
 import {userInfo} from "../../../../../../../common/states/common";
+import {Emoji} from "emoji-mart";
 
 let genderMatcher = {
     "MALE": "anh ấy",
@@ -10,7 +11,7 @@ let genderMatcher = {
 const renderMessage = (message) => {
     let userID = userInfo.getState()._id;
     let senderID = message.sentBy._id;
-    let toID = message.special_data.to._id;
+    let toID = message.special_data.to?._id;
     switch (message.special) {
         case MESSAGE_TYPES.NICKNAME:
             return (
@@ -21,6 +22,18 @@ const renderMessage = (message) => {
                     {message.special_data.value && (
                         <span>thành<span className="high-light"> {message.special_data.value}</span></span>
                     )}
+                </span>
+            )
+        case MESSAGE_TYPES.EMOJI:
+            return (
+                <span>
+                    {senderID === userID ? "Bạn " : <span className="high-light">{message.sentBy.basic_info.username} </span>}
+                    đổi biểu cảm
+                    <span> thành<span className="high-light">  <Emoji
+                        set={'facebook'}
+                        emoji={message.special_data.value}
+                        size={15}
+                    /></span></span>
                 </span>
             )
     }
