@@ -21,13 +21,15 @@ export class ChatBoxHeaderUserInfo extends Component {
     };
 
     changeDefaultEmoji = (emoji) => {
+        if(emoji){
 
+        }
     };
 
     editDefaultEmoji = () => {
         emojiEditModal.open({
-            onChange: this.changeDefaultEmoji
-        })
+
+        }).then(this.changeDefaultEmoji)
     };
 
     actions = [

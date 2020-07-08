@@ -52,5 +52,8 @@ export const chatApi = {
     },
     changeUserNickname(chatRoomID, userID, newNickname){
         return authenApi.put(`/chat/${chatRoomID}/user/${userID}/nickname`, {value: newNickname})
+    },
+    changeDefaultEmoji(chatRoomID, emoji) {
+        return authenApi.put(`/chat/${chatRoomID}/default-emoji`, {value: emoji})
     }
 };

@@ -31,7 +31,14 @@ const chatRoomSchema = new Schema({
         ]
     },
     default_emoji: {
-        type: String
+        id: {
+            type: String,
+            default: "+1"
+        },
+        skin: {
+            type: Number,
+            default: 1
+        }
     },
     involve_page: {
         default: [],
@@ -98,6 +105,7 @@ const chatRoomSchema = new Schema({
                         }
                     ]
                 },
+
                 reply_for: {
                     file: {
                         path: String,

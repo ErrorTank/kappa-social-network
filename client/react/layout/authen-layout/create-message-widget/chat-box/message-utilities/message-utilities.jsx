@@ -6,9 +6,11 @@ import {DropZone} from "../../../../../common/file-input/dropzone";
 import {v4 as uuidv4} from 'uuid';
 import {isImageFile} from "../../../../../../common/utils/file-upload-utils";
 import {FileDisplay} from "./file-display/file-display";
-import {getURLsFromText} from "../../../../../../common/utils/string-utils";
+import {Emoji} from 'emoji-mart'
 import {messagesContainerUtilities} from "../message-section/message-section";
 import {userInfo} from "../../../../../../common/states/common";
+import {ThemeContext} from "../../../../../context/theme-context";
+import Skeleton, {SkeletonTheme} from "react-loading-skeleton";
 
 export const messageUtilities = {};
 
@@ -68,101 +70,136 @@ export class MessageUtilities extends Component {
         let userID = userInfo.getState()._id;
         console.log(reply)
         return (
-            <div className="message-utilities">
-                {reply && (
-                    <div className="reply-panel">
-                        <div className="top-text">
-                            <span>Phản hồi tới {reply.file && <span>{isImageFile(reply.file.name) ? "ảnh" : "file"} của </span>} {reply.sentBy._id === userID ?
+            <ThemeContext.Consumer>
+                {({darkMode}) => (
+                    <div className="message-utilities">
+                        {reply && (
+                            <div className="reply-panel">
+                                <div className="top-text">
+                            <span>Phản hồi tới {reply.file &&
+                            <span>{isImageFile(reply.file.name) ? "ảnh" : "file"} của </span>} {reply.sentBy._id === userID ?
                                 <span className="high-light">bạn</span> :
                                 <span className="high-light">{reply.sentBy.basic_info.username}</span>}</span>
-                        </div>
-                        {!reply.file && (
-                            <div className="content">
-                                {reply.content}
+                                </div>
+                                {!reply.file && (
+                                    <div className="content">
+                                        {reply.content}
+                                    </div>
+                                )}
+
+                                <div className={"icon-wrapper"} onClick={() => this.setState({reply: null})}>
+                                    <i className="fal fa-times"></i>
+                                </div>
                             </div>
                         )}
+                        {!!files.length && (
+                            <div className="files-display">
+                                <div className="files-container">
+                                    {files.map(file => (
+                                        <FileDisplay
+                                            key={file.fileID}
+                                            file={file}
+                                            onClose={() => this.removeFile(file.fileID)}
+                                        />
+                                    ))}
+                                    {!!files.length && (
+                                        <InputFileWrapper
+                                            multiple={true}
+                                            accept={"*"}
+                                            onUploaded={this.handleChangeFiles}
+                                            limitSize={10 * 1024 * 1024}
+                                        >
+                                            {({onClick}) => (
+                                                <div className="add-file" onClick={onClick}>
+                                                    <i className="fal fa-file-plus"></i>
+                                                </div>
+                                            )}
 
-                        <div className={"icon-wrapper"} onClick={() => this.setState({reply: null})}>
-                            <i className="fal fa-times"></i>
-                        </div>
-                    </div>
-                )}
-                {!!files.length && (
-                    <div className="files-display">
-                        <div className="files-container">
-                            {files.map(file => (
-                                <FileDisplay
-                                    key={file.fileID}
-                                    file={file}
-                                    onClose={() => this.removeFile(file.fileID)}
+                                        </InputFileWrapper>
+                                    )}
+                                </div>
+                            </div>
+                        )}
+                        <div className="actions-container">
+                            <InputFileWrapper
+                                multiple={true}
+                                accept={"image/*,image/heif,image/heic,video/*"}
+                                onUploaded={this.handleChangeMediaFiles}
+                                limitSize={10 * 1024 * 1024}
+                            >
+
+                                {({onClick}) => (
+                                    <Tooltip text={() => "Gắn ảnh hoặc video"} position={"top"}>
+                                        <div className="icon-wrapper" onClick={onClick}>
+                                            <i className="far fa-photo-video"></i>
+                                        </div>
+                                    </Tooltip>
+                                )}
+                            </InputFileWrapper>
+                            <InputFileWrapper
+                                multiple={true}
+                                accept={"*"}
+                                onUploaded={this.handleChangeFiles}
+                                limitSize={10 * 1024 * 1024}
+                            >
+                                {({onClick}) => (
+                                    <Tooltip text={() => "Đính kèm file"} position={"top"}>
+                                        <div className="icon-wrapper" onClick={onClick}>
+                                            <i className="far fa-paperclip"></i>
+                                        </div>
+                                    </Tooltip>
+                                )}
+
+                            </InputFileWrapper>
+                            <div className="chat-input-wrapper">
+                                <ChatInput
+                                    chatRoomID={this.props.chatRoom?._id}
+                                    onSubmit={this.onSubmit}
+                                    canMention={this.props.chatRoom?.is_group_chat}
+                                    onFocusEditor={this.props.onFocusEditor}
+                                    haveFiles={!!this.state.files.length}
+                                    ref={input => this.input = input}
                                 />
-                            ))}
-                            {!!files.length && (
-                                <InputFileWrapper
-                                    multiple={true}
-                                    accept={"*"}
-                                    onUploaded={this.handleChangeFiles}
-                                    limitSize={10 * 1024 * 1024}
-                                >
-                                    {({onClick}) => (
-                                        <div className="add-file" onClick={onClick}>
-                                            <i className="fal fa-file-plus"></i>
+                            </div>
+
+
+                            {this.props.defaultEmoji ? (
+                                <Tooltip
+                                    text={() => (
+                                        <div style={{display: "flex"}}>
+                                            <span style={{marginRight: "3px"}}>Gửi </span>
+                                            <Emoji
+                                                set={'facebook'}
+                                                emoji={this.props.defaultEmoji}
+                                                size={18}
+                                            />
                                         </div>
                                     )}
+                                    position={"top"}
+                                >
+                                    <div className="icon-wrapper react">
+                                        <Emoji
+                                            set={'facebook'}
+                                            emoji={this.props.defaultEmoji}
+                                            size={24}
+                                        />
+                                    </div>
+                                </Tooltip>
+                            ) : (
+                                <SkeletonTheme color={darkMode ? "#242526" : "#e3e3e3"}
+                                               highlightColor={darkMode ? "#333436" : "#ebebeb"}>
+                                    <Skeleton count={1} height={32} width={32} duration={1}
+                                              circle={true}/>
 
-                                </InputFileWrapper>
+                                </SkeletonTheme>
                             )}
+
+
                         </div>
                     </div>
                 )}
-                <div className="actions-container">
-                    <InputFileWrapper
-                        multiple={true}
-                        accept={"image/*,image/heif,image/heic,video/*"}
-                        onUploaded={this.handleChangeMediaFiles}
-                        limitSize={10 * 1024 * 1024}
-                    >
+            </ThemeContext.Consumer>
 
-                        {({onClick}) => (
-                            <Tooltip text={() => "Gắn ảnh hoặc video"} position={"top"}>
-                                <div className="icon-wrapper" onClick={onClick}>
-                                    <i className="far fa-photo-video"></i>
-                                </div>
-                            </Tooltip>
-                        )}
-                    </InputFileWrapper>
-                    <InputFileWrapper
-                        multiple={true}
-                        accept={"*"}
-                        onUploaded={this.handleChangeFiles}
-                        limitSize={10 * 1024 * 1024}
-                    >
-                        {({onClick}) => (
-                            <Tooltip text={() => "Đính kèm file"} position={"top"}>
-                                <div className="icon-wrapper" onClick={onClick}>
-                                    <i className="far fa-paperclip"></i>
-                                </div>
-                            </Tooltip>
-                        )}
-
-                    </InputFileWrapper>
-                    <div className="chat-input-wrapper">
-                        <ChatInput
-                            chatRoomID={this.props.chatRoom?._id}
-                            onSubmit={this.onSubmit}
-                            canMention={this.props.chatRoom?.is_group_chat}
-                            onFocusEditor={this.props.onFocusEditor}
-                            haveFiles={!!this.state.files.length}
-                            ref={input => this.input = input}
-                        />
-                    </div>
-                    <Tooltip text={() => "Gửi"} position={"top"}>
-                        <div className="icon-wrapper react">
-                            <i className="fas fa-thumbs-up"></i>
-                        </div>
-                    </Tooltip>
-                </div>
-            </div>
         );
     }
 }

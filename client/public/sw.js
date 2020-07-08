@@ -137,6 +137,10 @@ var exceptionRequestsDev = [
     endpoint: /http:\/\/localhost:4000\/api\/chat\/\w+\/user\/\w+\/nickname/,
     method: 'PUT',
   },
+  {
+    endpoint: /http:\/\/localhost:4000\/api\/chat\/\w+\/default-emoji/,
+    method: 'PUT',
+  },
 ];
 
 var notGetRequests = [
@@ -152,8 +156,8 @@ var notGetRequests = [
   },
 ];
 
-var CACHE_STATIC_NAME = 'static-v1594182343835';
-var CACHE_DYNAMIC_NAME = 'dynamic-v1594182343835';
+var CACHE_STATIC_NAME = 'static-v1594184604893';
+var CACHE_DYNAMIC_NAME = 'dynamic-v1594184604893';
 
 var STATIC_FILES = [
   '/',

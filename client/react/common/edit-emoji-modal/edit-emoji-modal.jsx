@@ -29,8 +29,11 @@ class EmojiEditModal extends Component {
     }
 
     selectDefaultEmoji = (emoji) => {
-        let {onChange} = this.props;
-        console.log(emoji)
+
+        this.props.onClose({
+            id: emoji.id,
+            skin: emoji.skin
+        });
     };
 
 

@@ -23,18 +23,19 @@ export const MessageState = {
     CACHED: "CACHED",
     SAVED: "SAVED",
     SENT: "SENT",
-}
+};
 
 export class ChatBox extends KComponent {
     constructor(props) {
         super(props);
         this.state = {
             chat_room_brief: null,
-            nickname_map: []
+            nickname_map: [],
+            default_emoji: null
         };
 
         this.messageState = createStateHolder([]);
-        this.io = null
+        this.io = null;
 
         messengerApi.getUserChatRoomBrief(props.userID)
             .then(({chat_room}) => {
@@ -57,7 +58,7 @@ export class ChatBox extends KComponent {
                             scrollToLatest();
                         })
                     });
-                })
+                });
                 this.io.on("change-message-state", ({messageIDs, state}) => {
 
                     let clone = [...this.messageState.getState()];
@@ -67,15 +68,17 @@ export class ChatBox extends KComponent {
                         }
                     }
                     this.messageState.setState(clone);
-                })
+                });
                 this.io.on("update-nicknames", ({data}) => {
-                    console.log(data)
                    this.setState({nickname_map: data})
-                })
+                });
+                this.io.on("update-default-emoji", ({data}) => {
+                    this.setState({default_emoji: data})
+                });
                 this.io.on("remove-message", ({messageID}) => {
 
                    this.removeMessage(messageID)
-                })
+                });
                 this.io.on("new-message", ({message, senderID, forceUpdate = false}) => {
                     let scrollToLatest = messagesContainerUtilities.createScrollLatest();
                     let isOwned = userInfo.getState()._id === senderID;
@@ -87,7 +90,7 @@ export class ChatBox extends KComponent {
                                 messagesContainerUtilities.increaseUnSeenCount();
                                 scrollToLatest();
                             })
-                        })
+                        });
                         if(!isOwned){
                             this.io.emit("received-message", {
                                 userID: userInfo.getState()._id,
@@ -98,10 +101,10 @@ export class ChatBox extends KComponent {
 
                     }
 
-                })
-                this.setState({chat_room_brief: chat_room, nickname_map: chat_room.involve_person});
+                });
+                this.setState({chat_room_brief: chat_room, nickname_map: chat_room.involve_person, default_emoji: chat_room.default_emoji});
 
-            })
+            });
         this.onUnmount(this.messageState.onChange((nextState, oldState) => {
             this.forceUpdate();
         }));
@@ -111,6 +114,7 @@ export class ChatBox extends KComponent {
     componentWillUnmount() {
         if (this.io) {
             this.io.off("change-message-state");
+            this.io.off("update-default-emoji");
             this.io.off("update-nicknames");
             this.io.off("new-message");
             this.io.off("update-message");
@@ -173,7 +177,7 @@ export class ChatBox extends KComponent {
                 sentBy: state.reply.sentBy
             } : null
         }
-    }
+    };
 
     handleSubmitChat = (chatState) => {
         let newMessage = null;
@@ -181,10 +185,10 @@ export class ChatBox extends KComponent {
              newMessage = this.createTempMessage({state: chatState});
         }
 
-        let fileMessages = chatState.files.map((each) => this.createTempMessage({file: each, needUploadFile: true}))
+        let fileMessages = chatState.files.map((each) => this.createTempMessage({file: each, needUploadFile: true}));
         let currentMessages = this.messageState.getState();
         let newMessages = currentMessages.concat(newMessage ? [newMessage, ...fileMessages] : fileMessages);
-        console.log(newMessages)
+        console.log(newMessages);
 
         let scrollToLatest = messagesContainerUtilities.createScrollLatest();
         this.messageState.setState([...newMessages]).then(() => {
@@ -203,7 +207,7 @@ export class ChatBox extends KComponent {
             }, ["state", "temp", "needUploadFile", "file"]))
                 .then(newServerMessage => {
                     let msgs = [...this.messageState.getState()];
-                    let replaceIndex = msgs.findIndex(each => each._id === newServerMessage.oldID)
+                    let replaceIndex = msgs.findIndex(each => each._id === newServerMessage.oldID);
                     msgs.splice(replaceIndex, 1, omit(newServerMessage, "oldID"));
                     this.messageState.setState([...msgs])
                 })
@@ -233,7 +237,7 @@ export class ChatBox extends KComponent {
 
     onUploadMessage = (newMessage) => {
         let msgs = [...this.messageState.getState()];
-        let replaceIndex = msgs.findIndex(each => each._id === newMessage.oldID)
+        let replaceIndex = msgs.findIndex(each => each._id === newMessage.oldID);
         msgs.splice(replaceIndex, 1, omit(newMessage, "oldID"));
         return this.messageState.setState([...msgs])
     };
@@ -245,7 +249,7 @@ export class ChatBox extends KComponent {
         if (unseenMessages.length) {
             chatApi.seenMessages(this.state.chat_room_brief._id, unseenMessages)
         }
-    }
+    };
 
     removeMessage = (messageID) => {
         let scrollToLatest = messagesContainerUtilities.createScrollLatest();
@@ -260,7 +264,7 @@ export class ChatBox extends KComponent {
             scrollToLatest();
             return true;
         });
-    }
+    };
 
     render() {
         let {onClose, active, userInfo, userID} = this.props;
@@ -340,6 +344,7 @@ export class ChatBox extends KComponent {
                                                 chatRoom={this.state.chat_room_brief}
                                                 onSubmit={this.handleSubmitChat}
                                                 onFocusEditor={this.emitSeenMessageEvent}
+                                                defaultEmoji={this.state.default_emoji}
                                             />
                                         </div>
                                     )}
