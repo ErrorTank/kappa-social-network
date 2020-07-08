@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import {StatusAvatar} from "../../../../common/status-avatar/status-avatar";
 import {ClickOutside} from "../../../../common/click-outside/click-outside";
 import {nicknameEditModal} from "../../../../common/nickname-edit-modal/nickname-edit-modal";
+import {emojiEditModal} from "../../../../common/edit-emoji-modal/edit-emoji-modal";
 
 const moment = require("moment");
 
@@ -17,11 +18,17 @@ export class ChatBoxHeaderUserInfo extends Component {
         nicknameEditModal.open({
             chatRoomID: this.props.chatRoomID
         })
-    }
+    };
+
+    changeDefaultEmoji = (emoji) => {
+
+    };
 
     editDefaultEmoji = () => {
-
-    }
+        emojiEditModal.open({
+            onChange: this.changeDefaultEmoji
+        })
+    };
 
     actions = [
         {

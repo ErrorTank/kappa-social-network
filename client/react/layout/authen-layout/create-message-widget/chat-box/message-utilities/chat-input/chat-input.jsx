@@ -4,7 +4,7 @@ import createEmojiMartPlugin from 'draft-js-emoji-mart-plugin';
 import createMentionPlugin from 'draft-js-mention-plugin';
 import classnames from "classnames"
 import Draft ,{ convertToRaw  ,EditorState, ContentState} from 'draft-js';
-import data from 'emoji-mart/data/apple.json';
+import data from 'emoji-mart/data/facebook.json';
 
 import 'emoji-mart/css/emoji-mart.css'
 import {ClickOutside} from "../../../../../../common/click-outside/click-outside";
@@ -18,7 +18,7 @@ import isNil from "lodash/isNil"
 
 const emojiPlugin = createEmojiMartPlugin({
     data,
-    set: 'apple'
+    set: 'facebook'
 });
 
 
@@ -211,6 +211,7 @@ export class ChatInput extends Component {
                               <Picker
                                   perLine={7}
                                   showPreview={false}
+                                  autoFocus={true}
                               />
                           </div>
 
