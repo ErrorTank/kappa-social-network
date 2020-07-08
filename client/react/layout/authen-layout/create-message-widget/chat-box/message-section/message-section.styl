@@ -306,6 +306,10 @@
       margin-right 5px
       margin-left 0
       display inline-block
+      &.emoji{
+        border none
+        background-color transparent !important
+      }
       &.file{
         display block
       }
@@ -352,6 +356,10 @@
         padding 8px 12px
         word-break  break-word
         vertical-align bottom
+        & > span{
+          display inline-block
+          vertical-align middle
+        }
       }
 
       .message-link {

@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import ReactDOM from "react-dom"
-import {Message} from "./message";
+import {Message, MESSAGE_TYPES} from "./message";
 import {LoadingInline} from "../../../../../common/loading-inline/loading-inline";
 import classnames from "classnames"
 import {userInfo} from "../../../../../../common/states/common";
@@ -135,7 +135,9 @@ export class MessageSection extends Component {
         let previous = messages[index - 1];
         let after = messages[index + 1];
         let current = messages[index]
-
+        if(current.special !== MESSAGE_TYPES.CASUAL || current.emoji){
+            return "single"
+        }
         if ((previous?.sentBy._id !== current.sentBy._id) && (after?.sentBy._id !== current.sentBy._id)) {
             return "single";
         }

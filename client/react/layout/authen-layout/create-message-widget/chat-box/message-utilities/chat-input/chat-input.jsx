@@ -16,9 +16,10 @@ import {messengerIO} from "../../../../../../../socket/sockets";
 import {userInfo} from "../../../../../../../common/states/common";
 import isNil from "lodash/isNil"
 
-const emojiPlugin = createEmojiMartPlugin({
+export const emojiPlugin = createEmojiMartPlugin({
     data,
-    set: 'facebook'
+    set: 'facebook',
+    emojiSize: 16
 });
 
 

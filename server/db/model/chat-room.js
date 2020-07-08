@@ -4,6 +4,17 @@ const ObjectId = mongoose.Schema.Types.ObjectId;
 const {editorContentSchema} = require("./common-schema/common");
 const Mixed = mongoose.Schema.Types.Mixed;
 
+const CommonEmojiSchema = {
+    id: {
+        type: String,
+        default: "+1"
+    },
+    skin: {
+        type: Number,
+        default: 1
+    }
+}
+
 const chatRoomSchema = new Schema({
     last_updated: {
         type: Date,
@@ -88,6 +99,17 @@ const chatRoomSchema = new Schema({
                         ref: "User"
                     },
                     value: Mixed
+                },
+                emoji: {
+                    type: {
+                        id: {
+                            type: String,
+                        },
+                        skin: {
+                            type: Number,
+                        }
+                    },
+                    default: null
                 },
                 is_init: {
                     type: Boolean,

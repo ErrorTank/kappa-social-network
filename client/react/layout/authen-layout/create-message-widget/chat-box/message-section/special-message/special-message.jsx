@@ -15,26 +15,27 @@ const renderMessage = (message) => {
     switch (message.special) {
         case MESSAGE_TYPES.NICKNAME:
             return (
-                <span>
-                    {senderID === userID ? "Bạn " : <span className="high-light">{message.sentBy.basic_info.username} </span>}
+                <>
+                    {senderID === userID ? "Bạn " : <span className="high-light"> {message.sentBy.basic_info.username} </span>}
                     {message.special_data.value ? "đổi " : "xóa "}biệt danh của
                     {toID === userID ? senderID === userID ? " mình " : " bạn " : senderID === toID ? <span> {genderMatcher[message.special_data.to.basic_info.gender]} </span> : <span className="high-light"> {message.special_data.to.basic_info.username} </span>}
                     {message.special_data.value && (
                         <span>thành<span className="high-light"> {message.special_data.value}</span></span>
                     )}
-                </span>
+                </>
             )
         case MESSAGE_TYPES.EMOJI:
             return (
-                <span>
+                <>
                     {senderID === userID ? "Bạn " : <span className="high-light">{message.sentBy.basic_info.username} </span>}
-                    đổi biểu cảm
-                    <span> thành<span className="high-light">  <Emoji
+                    <span> đổi biểu cảm </span>
+                    <span> thành </span>
+                    <Emoji
                         set={'facebook'}
                         emoji={message.special_data.value}
                         size={15}
-                    /></span></span>
-                </span>
+                    />
+                </>
             )
     }
 };

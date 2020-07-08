@@ -19,6 +19,7 @@ import {utilityApi} from "../../../../../../api/common/utilities-api";
 import {isImageFile} from "../../../../../../common/utils/file-upload-utils";
 import {ReplyContent} from "./reply-content/reply-content";
 import {SpecialMessage} from "./special-message/special-message";
+import {Emoji} from "emoji-mart";
 
 
 let Wrapper = (props) => props.links.length ? (
@@ -185,12 +186,18 @@ export class Message extends Component {
 
                           </>
                        )}
-                       <div className={classnames("message-renderable-content", {file: message.file, owned: isOwned, disabled: this.state.downloading, isDeleted: message.is_deleted})} onClick={this.onClickFile}>
+                       <div className={classnames("message-renderable-content", {emoji: message.emoji ,file: message.file, owned: isOwned, disabled: this.state.downloading, isDeleted: message.is_deleted})} onClick={this.onClickFile}>
                            {message.is_deleted ? (
                                <div className="deleted-msg">
                                    {isOwned ? "Tin nhắn đã bị bạn xóa bỏ" : message.sentBy.basic_info.username + " đã xóa tin nhắn này"}
                                </div>
-                           ) : (
+                           ) : message.emoji ? (
+                               <div className="emoji-message">
+                                   <Emoji  set={'facebook'}
+                                           emoji={message.emoji}
+                                           size={35}/>
+                               </div>
+                           ) :(
                                <>
                                    {this.state.uploading && (
                                        <div className="upload-loading">

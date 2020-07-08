@@ -1,52 +1,86 @@
-import React from "react";
+import React, {Fragment} from "react";
 import {getURLsFromText} from "./string-utils";
-import { v4 as uuidv4 } from 'uuid';
+import {v4 as uuidv4} from 'uuid';
 import {Link} from "react-router-dom";
+import {unicodeEmojiRegexp} from 'draft-js-emoji-mart-plugin/lib/constants';
+import {emojiPlugin} from "../../react/layout/authen-layout/create-message-widget/chat-box/message-utilities/chat-input/chat-input";
+import { checkText } from 'smile2emoji'
+const {Emoji} = emojiPlugin;
 
 const transformEditorState = (rawEditorState) => {
     return {
         content: rawEditorState.blocks[0].text.trim(),
-        mentions: Object.values(rawEditorState.entityMap).filter(each => each.type === "mention").map(each => ({related: each.data.mention._id, name: each.data.mention.name})),
+        mentions: Object.values(rawEditorState.entityMap).filter(each => each.type === "mention").map(each => ({
+            related: each.data.mention._id,
+            name: each.data.mention.name
+        })),
         hyperlinks: getURLsFromText(rawEditorState.blocks[0].text.trim())
     }
 };
 
+const formatUTF8EmojiText = text => {
+    let paths = [];
+    let result = text;
+    let matches = text.matchAll(unicodeEmojiRegexp);
+    let index = 0;
+    for (let match of matches) {
+        if(match.index > index){
+            paths = paths.concat({
+                path: result.substring(index, match.index)
+            })
+        }
+        paths = paths.concat({
+            path: <Emoji decoratedText={match[0]}/>
+        })
+        index = match.index + 1;
+
+    }
+    if(index === 0){
+        paths.push({
+            path: result
+        })
+    }
+    return paths;
+
+}
+
 const getRenderableContentFromMessage = (message) => {
-    let {mentions, content} = message;
+    let {mentions} = message;
+    let content = checkText(message.content);
+    console.log(content)
     let resultStr = content;
     let contentPaths = [];
 
-    if(!mentions.length){
-        return (<span>{content}</span>)
-    }
+    if (!mentions.length) {
+        contentPaths = formatUTF8EmojiText(content)
+    }else{
+        for (let mention of mentions) {
 
-    for(let mention of mentions){
+            let index = resultStr.indexOf(`@${mention.name}`);
 
-        let index = resultStr.indexOf(`@${mention.name}`);
+            if (index > 0) {
+                contentPaths = contentPaths.concat(formatUTF8EmojiText(resultStr.substring(0, index)));
+            }
 
-        if(index > 0){
             contentPaths = contentPaths.concat({
-                path: resultStr.substring(0, index),
-            });
+                path: resultStr.substring(index, index + mention.name.length + 1),
+                link: `/profile/${mention.related}`,
+                context: mention
+            })
+
+
+            resultStr = resultStr.substring(index + mention.name.length + 1);
         }
-
-        contentPaths = contentPaths.concat({
-            path: resultStr.substring(index, index + mention.name.length + 1),
-            link: `/profile/${mention.related}`,
-            context: mention
-        })
-
-
-        resultStr = resultStr.substring(index + mention.name.length + 1);
+        if(resultStr){
+            contentPaths = contentPaths.concat(formatUTF8EmojiText(resultStr));
+        }
     }
 
-    return (
-        <span>
-            {contentPaths.map((each => (
-                <span key={uuidv4()}>{each.link ? (<Link className="message-link" to={each.link}>{each.path}</Link>) : each.path}</span>
-            )))}
-        </span>
-    )
+
+    return contentPaths.map((each => (
+        <Fragment key={uuidv4()}>{each.link ? (
+            <Link className="message-link" to={each.link}>{each.path}</Link>) : each.path}</Fragment>
+    )))
 }
 
 export {

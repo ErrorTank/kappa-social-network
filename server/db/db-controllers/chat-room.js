@@ -161,6 +161,9 @@ const getChatRoomMessages = (chatRoomID, {take = 10, skip = 0}) => {
                 special: {
                     $first: "$context.special"
                 },
+                emoji: {
+                    $first: "$context.emoji"
+                },
                 special_data: {
                     $first: "$context.special_data"
                 },

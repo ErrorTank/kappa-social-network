@@ -171,6 +171,7 @@ export class ChatBox extends KComponent {
             temp: true,
             needUploadFile,
             file,
+            emoji: state.emoji || null,
             reply_for:  state.reply ? {
                 file: state.reply.file,
                 content: state.reply.content,

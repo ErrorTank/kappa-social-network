@@ -155,7 +155,7 @@ export class MessageUtilities extends Component {
                                 <ChatInput
                                     chatRoomID={this.props.chatRoom?._id}
                                     onSubmit={this.onSubmit}
-                                    canMention={this.props.chatRoom?.is_group_chat}
+                                    canMention={this.props.chatRoom?.is_group_chat || true}
                                     onFocusEditor={this.props.onFocusEditor}
                                     haveFiles={!!this.state.files.length}
                                     ref={input => this.input = input}
@@ -177,7 +177,12 @@ export class MessageUtilities extends Component {
                                     )}
                                     position={"top"}
                                 >
-                                    <div className="icon-wrapper react">
+                                    <div className="icon-wrapper react"
+                                         onClick={() => {
+
+                                             this.onSubmit({emoji: this.props.defaultEmoji, content: "huh"})
+                                         }}
+                                    >
                                         <Emoji
                                             set={'facebook'}
                                             emoji={this.props.defaultEmoji}
