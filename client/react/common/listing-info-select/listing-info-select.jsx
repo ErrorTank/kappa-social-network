@@ -35,6 +35,22 @@ export class ListingInfoSelect extends Component {
       isSelected = (option) => false,
       getOptionKey = (each, index) => index,
     } = this.props;
-    return <div className={classnames('listing-info-select')}></div>;
+
+    let { show } = this.state;
+    return (
+      <div
+        className={classnames('listing-info-select', className, {
+          error: !!error,
+          focus: show,
+        })}
+      >
+        <ClickOutside onClickOut={() => this.setState({ show: false })}>
+          <label htmlFor={id} className='listing-info-wrapper'>
+            <div className={classnames('listing-info-toggle')}></div>
+            <span className='listing-info-label'>{label}</span>
+          </label>
+        </ClickOutside>
+      </div>
+    );
   }
 }

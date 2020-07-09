@@ -5,6 +5,7 @@ import {
   itemField,
 } from './../../../../../../../../const/listing';
 import { customHistory } from './../../../../../../routes';
+import { ListingInfoSelect } from './../../../../../../../common/listing-info-select/listing-info-select';
 
 export class ListingInfo extends Component {
   constructor(props) {
@@ -31,12 +32,14 @@ export class ListingInfo extends Component {
         </div>
 
         {itemField.map((each, i) => {
-          return (
+          return !each.isSelected ? (
             <ListingInfoInput
               label={each.name}
               key={each.name}
               textArea={each.isTextArea}
             />
+          ) : (
+            <div>OK</div>
           );
         })}
       </div>
