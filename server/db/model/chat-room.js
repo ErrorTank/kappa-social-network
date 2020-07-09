@@ -3,16 +3,31 @@ const Schema = mongoose.Schema;
 const ObjectId = mongoose.Schema.Types.ObjectId;
 const {editorContentSchema} = require("./common-schema/common");
 const Mixed = mongoose.Schema.Types.Mixed;
+const omit = require("lodash/omit");
 
 const CommonEmojiSchema = {
-    id: {
-        type: String,
-        default: "+1"
+    type: {
+        id: {
+            type: String,
+        },
+        skin: {
+            type: Number,
+        }
     },
-    skin: {
-        type: Number,
-        default: 1
-    }
+    default: null
+}
+
+const ReactionSchema = {
+    type: {
+        love: Number,
+        laugh: Number,
+        wow: Number,
+        cry: Number,
+        angry: Number,
+        thump_up: Number,
+        thump_down: Number
+    },
+    default: null
 }
 
 const chatRoomSchema = new Schema({
@@ -84,6 +99,7 @@ const chatRoomSchema = new Schema({
         type: [
 
             {
+                reactions: ReactionSchema,
                 is_deleted: {
                     type: Boolean,
                     default: false
@@ -100,17 +116,7 @@ const chatRoomSchema = new Schema({
                     },
                     value: Mixed
                 },
-                emoji: {
-                    type: {
-                        id: {
-                            type: String,
-                        },
-                        skin: {
-                            type: Number,
-                        }
-                    },
-                    default: null
-                },
+                emoji: CommonEmojiSchema,
                 is_init: {
                     type: Boolean,
                     default: false
@@ -138,17 +144,7 @@ const chatRoomSchema = new Schema({
                     content: {
                         type: String,
                     },
-                    emoji: {
-                        type: {
-                            id: {
-                                type: String,
-                            },
-                            skin: {
-                                type: Number,
-                            }
-                        },
-
-                    },
+                    emoji: omit(CommonEmojiSchema, "default"),
                     sentBy: {
                         type: ObjectId,
                         ref: "User"

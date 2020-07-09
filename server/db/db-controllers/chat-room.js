@@ -203,7 +203,6 @@ const getChatRoomMessages = (chatRoomID, {take = 10, skip = 0}) => {
 
     ])
         .then(messages => {
-            console.log(messages[1])
             return messages.map(each =>
                 ({
                     ...each,

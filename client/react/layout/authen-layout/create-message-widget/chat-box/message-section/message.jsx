@@ -192,8 +192,7 @@ export class Message extends Component {
                             owned: isOwned,
                             disabled: this.state.downloading,
                             isDeleted: message.is_deleted
-                        })} onClick={
-                            () => message.file && this.onClickFile()}>
+                        })} onClick={() => message.file && this.onClickFile()}>
                             {message.is_deleted ? (
                                 <div className="deleted-msg">
                                     {isOwned ? "Tin nhắn đã bị bạn xóa bỏ" : message.sentBy.basic_info.username + " đã xóa tin nhắn này"}
@@ -202,13 +201,12 @@ export class Message extends Component {
                                 <div className="emoji-message">
                                     <Emoji set={'facebook'}
                                            emoji={message.emoji}
-                                           skin={message.emoji
-                                               ?.skin || 1}
+                                           skin={message.emoji?.skin || 1}
                                            size={35}
 
                                     />
 
-                                }}
+                                    }}
                                 </div>
                             ) : (
                                 <>
