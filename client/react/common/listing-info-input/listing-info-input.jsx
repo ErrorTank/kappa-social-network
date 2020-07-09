@@ -19,11 +19,10 @@ export class ListingInfoInput extends Component {
       label,
       error = false,
       success = false,
-      id,
       textArea = false,
       ...others
     } = this.props;
-    console.log(textArea);
+    // console.log(textArea);
     return (
       <ThemeContext.Consumer>
         {(theme) => (
@@ -35,20 +34,20 @@ export class ListingInfoInput extends Component {
           >
             {textArea ? (
               <label
-                htmlFor={id}
+                htmlFor={label}
                 className={classnames('listing-info-wrapper', {
                   textArea,
                 })}
               >
                 <textarea
                   className='form-control'
-                  id={id}
+                  id={label}
                   {...others}
                 ></textarea>
                 <span className='listing-info-label'>{label}</span>
               </label>
             ) : (
-              <label htmlFor={id} className='listing-info-wrapper'>
+              <label htmlFor={label} className='listing-info-wrapper'>
                 <input
                   type='text'
                   className={classnames('form-control', {
@@ -57,7 +56,7 @@ export class ListingInfoInput extends Component {
                   })}
                   onFocus={() => this.setState({ focus: true })}
                   onBlur={() => this.setState({ focus: false })}
-                  id={id}
+                  id={label}
                   {...others}
                   ref={(input) => (this.input = input)}
                 />

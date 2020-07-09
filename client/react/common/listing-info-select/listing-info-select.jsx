@@ -26,12 +26,10 @@ export class ListingInfoSelect extends Component {
       className,
       label,
       options,
-      value,
       onChange,
       displayAs = (val) => val,
       disabled = false,
       error,
-      placeholder,
       isSelected = (option) => false,
       getOptionKey = (each, index) => index,
     } = this.props;
@@ -45,9 +43,35 @@ export class ListingInfoSelect extends Component {
         })}
       >
         <ClickOutside onClickOut={() => this.setState({ show: false })}>
-          <label htmlFor={id} className='listing-info-wrapper'>
-            <div className={classnames('listing-info-toggle')}></div>
-            <span className='listing-info-label'>{label}</span>
+          <label htmlFor={label} className='listing-info-wrapper'>
+            <div
+              className={classnames('listing-info-toggle')}
+              onClick={() => this.setState({ show: !show })}
+              id={label}
+            >
+              <span className='listing-info-label'>
+                {label ? displayAs(label) : 'Chọn'}
+              </span>
+            </div>
+            {show && (
+              <div className='select-dropdown'>
+                {options.map((each, i) => (
+                  <div
+                    key={getOptionKey(each, i)}
+                    className={classnames('select-option', {
+                      selected: isSelected(each),
+                    })}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      onChange(each);
+                      this.setState({ show: false });
+                    }}
+                  >
+                    {displayAs(each)}
+                  </div>
+                ))}
+              </div>
+            )}
           </label>
         </ClickOutside>
       </div>

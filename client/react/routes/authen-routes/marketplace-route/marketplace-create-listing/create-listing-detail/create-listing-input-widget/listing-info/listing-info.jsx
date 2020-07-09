@@ -39,7 +39,13 @@ export class ListingInfo extends Component {
               textArea={each.isTextArea}
             />
           ) : (
-            <div>OK</div>
+            <ListingInfoSelect
+              label={each.name}
+              options={each.options}
+              displayAs={(label) => label}
+              // isSelected={(option) => option === day}
+              key={each.name}
+            />
           );
         })}
       </div>
