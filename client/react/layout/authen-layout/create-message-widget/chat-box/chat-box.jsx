@@ -175,7 +175,8 @@ export class ChatBox extends KComponent {
             reply_for:  state.reply ? {
                 file: state.reply.file,
                 content: state.reply.content,
-                sentBy: state.reply.sentBy
+                sentBy: state.reply.sentBy,
+                emoji: state.reply.emoji
             } : null
         }
     };

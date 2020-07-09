@@ -211,9 +211,9 @@ const getChatRoomMessages = (chatRoomID, {take = 10, skip = 0}) => {
                         pick(seen, ["_id", "avatar", "basic_info", "last_active_at", "active"])),
                     sentBy: pick(each.sentBy, ["_id", "avatar", "basic_info", "last_active_at", "active"]),
                     reply_for: each.reply_for.sentBy ? {
-                        content: each.reply_for.content,
+                        ...each.reply_for,
                         sentBy: pick(each.reply_for.sentBy, ["_id", "avatar", "basic_info", "last_active_at", "active"]),
-                        file: each.reply_for.file
+
                     } : null,
                     special_data: each.special_data ? {
                         ...each.special_data,

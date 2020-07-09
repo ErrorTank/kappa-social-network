@@ -81,9 +81,20 @@ export class MessageUtilities extends Component {
                                 <span className="high-light">bạn</span> :
                                 <span className="high-light">{reply.sentBy.basic_info.username}</span>}</span>
                                 </div>
-                                {!reply.file && (
+                                {!reply.emoji && !reply.file && (
                                     <div className="content">
                                         {reply.content}
+                                    </div>
+                                )}
+                                {reply.emoji && (
+                                    <div className="content">
+                                        <Emoji set={'facebook'}
+                                               emoji={reply.emoji}
+                                               skin={reply.emoji
+                                                   ?.skin || 1}
+                                               size={16}
+
+                                        />
                                     </div>
                                 )}
 

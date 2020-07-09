@@ -138,6 +138,17 @@ const chatRoomSchema = new Schema({
                     content: {
                         type: String,
                     },
+                    emoji: {
+                        type: {
+                            id: {
+                                type: String,
+                            },
+                            skin: {
+                                type: Number,
+                            }
+                        },
+
+                    },
                     sentBy: {
                         type: ObjectId,
                         ref: "User"
