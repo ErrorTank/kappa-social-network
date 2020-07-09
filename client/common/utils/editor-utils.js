@@ -5,6 +5,7 @@ import {Link} from "react-router-dom";
 import {unicodeEmojiRegexp} from 'draft-js-emoji-mart-plugin/lib/constants';
 import {emojiPlugin} from "../../react/layout/authen-layout/create-message-widget/chat-box/message-utilities/chat-input/chat-input";
 import { checkText } from 'smile2emoji'
+import {createPipelines} from "./pipelines";
 const {Emoji} = emojiPlugin;
 
 const transformEditorState = (rawEditorState) => {
@@ -37,7 +38,7 @@ const formatUTF8EmojiText = text => {
 
     }
 
-    if(index < result.length - 1){
+    if(index < result.length){
         paths.push({
             path: result.substring(index)
         })
@@ -46,15 +47,14 @@ const formatUTF8EmojiText = text => {
 
 }
 
-const getRenderableContentFromMessage = (message) => {
-    let {mentions = []} = message;
-    let content = checkText(message.content);
+const transformMessageContentToPaths = ({content, mentions}) => {
 
     let resultStr = content;
     let contentPaths = [];
 
     if (!mentions.length) {
         contentPaths = formatUTF8EmojiText(content)
+
     }else{
         for (let mention of mentions) {
 
@@ -77,12 +77,25 @@ const getRenderableContentFromMessage = (message) => {
             contentPaths = contentPaths.concat(formatUTF8EmojiText(resultStr));
         }
     }
-    // console.log(contentPaths)
+    console.log(contentPaths)
 
     return contentPaths.map((each => (
         <Fragment key={uuidv4()}>{each.link ? (
             <Link className="message-link" to={each.link}>{each.path}</Link>) : each.path}</Fragment>
     )))
+}
+
+const getRenderableContentFromMessage = (message) => {
+
+    let pipelines = createPipelines([
+        (message) => ({
+            content: checkText(message.content),
+            mentions: message.mentions || []
+        }),
+        transformMessageContentToPaths
+    ])
+    return pipelines(message)
+
 }
 
 export {
