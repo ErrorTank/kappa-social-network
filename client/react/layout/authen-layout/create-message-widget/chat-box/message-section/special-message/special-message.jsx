@@ -33,7 +33,9 @@ const renderMessage = (message) => {
                     <Emoji
                         set={'facebook'}
                         emoji={message.special_data.value}
-                        size={15}
+                        size={16}
+                        skin={message.special_data.value.skin || 1}
+
                     />
                 </>
             )

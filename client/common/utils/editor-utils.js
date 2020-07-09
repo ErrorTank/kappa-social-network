@@ -19,9 +19,11 @@ const transformEditorState = (rawEditorState) => {
     }
 };
 
+const removeBadCharacters = text => [...text].filter(v=>v.charCodeAt(0) <= 127).join("");
+
 const formatUTF8EmojiText = text => {
     let paths = [];
-    let result = text;
+    let result = removeBadCharacters(text);
     let matches = text.matchAll(unicodeEmojiRegexp);
     let index = 0;
     for (let match of matches) {
@@ -34,7 +36,7 @@ const formatUTF8EmojiText = text => {
         paths = paths.concat({
             path: <Emoji decoratedText={match[0]}/>
         })
-        index = match.index + 2;
+        index = match.index + 1;
 
     }
 

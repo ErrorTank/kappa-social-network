@@ -47,7 +47,7 @@ export class Message extends Component {
             percentage: 0,
             state: "pending"
         }
-        if(props.message.file && props.message.needUploadFile){
+        if (props.message.file && props.message.needUploadFile) {
             chatApi.sendFileMessage(props.chatRoomID, omit({
                 ...props.message,
                 sentBy: props.message.sentBy._id,
@@ -67,7 +67,7 @@ export class Message extends Component {
                         percentage: 100
                     });
                 },
-                onError: event =>  {
+                onError: event => {
                     this.setState({
                         state: "error",
                         percentage: 0
@@ -105,7 +105,7 @@ export class Message extends Component {
 
     onClickFile = () => {
         let {origin_path, name} = this.props.message.file;
-        if(!isImageFile(name)){
+        if (!isImageFile(name)) {
             this.setState({downloading: true});
             utilityApi.downloadFile(origin_path, name)
                 .finally(() => {
@@ -163,82 +163,96 @@ export class Message extends Component {
                     )}
 
 
+                    <div className={classnames("content-wrapper", {owned: isOwned})}>
+                        {!message.is_deleted && message.reply_for && (
+                            <>
+                                <div className="reply-title">
+                                    <i className="fas fa-reply"></i> {
+                                    isOwned
+                                        ? "Bạn" :
+                                        <span className="high-light">{message.sentBy.basic_info.username}</span>
+                                } phản hồi {
+                                    message.sentBy._id !== message.reply_for.sentBy._id &&
+                                    <span>tới {userID === message.reply_for.sentBy._id ? "bạn" : <span
+                                        className="high-light">{message.reply_for.sentBy.basic_info.username}</span>}</span>
+                                }
+                                </div>
+                                <div>
+                                    <ReplyContent
+                                        message={message.reply_for}
+                                        isOwned={isOwned}
+                                    />
+                                </div>
 
-                   <div className={classnames("content-wrapper", {owned: isOwned})}>
-                       {!message.is_deleted && message.reply_for && (
-                          <>
-                              <div className="reply-title">
-                                  <i className="fas fa-reply"></i> {
-                                  isOwned
-                                      ? "Bạn" :
-                                      <span className="high-light">{message.sentBy.basic_info.username}</span>
-                              } phản hồi {
-                                  message.sentBy._id !== message.reply_for.sentBy._id &&
-                                      <span>tới {userID === message.reply_for.sentBy._id ? "bạn" : <span className="high-light">{message.reply_for.sentBy.basic_info.username}</span>}</span>
-                              }
-                              </div>
-                              <div>
-                                  <ReplyContent
-                                      message={message.reply_for}
-                                      isOwned={isOwned}
-                                  />
-                              </div>
-
-                          </>
-                       )}
-                       <div className={classnames("message-renderable-content", {emoji: message.emoji ,file: message.file, owned: isOwned, disabled: this.state.downloading, isDeleted: message.is_deleted})} onClick={this.onClickFile}>
-                           {message.is_deleted ? (
-                               <div className="deleted-msg">
-                                   {isOwned ? "Tin nhắn đã bị bạn xóa bỏ" : message.sentBy.basic_info.username + " đã xóa tin nhắn này"}
-                               </div>
-                           ) : message.emoji ? (
-                               <div className="emoji-message">
-                                   <Emoji  set={'facebook'}
+                            </>
+                        )}
+                        <div className={classnames("message-renderable-content", {
+                            emoji: message.emoji,
+                            file: message.file,
+                            owned: isOwned,
+                            disabled: this.state.downloading,
+                            isDeleted: message.is_deleted
+                        })} onClick={
+                            () => message.file && this.onClickFile()}>
+                            {message.is_deleted ? (
+                                <div className="deleted-msg">
+                                    {isOwned ? "Tin nhắn đã bị bạn xóa bỏ" : message.sentBy.basic_info.username + " đã xóa tin nhắn này"}
+                                </div>
+                            ) : message.emoji ? (
+                                <div className="emoji-message">
+                                    <Emoji set={'facebook'}
                                            emoji={message.emoji}
-                                           size={35}/>
-                               </div>
-                           ) :(
-                               <>
-                                   {this.state.uploading && (
-                                       <div className="upload-loading">
-                                           <div style={{height: "100%", position: "relative"}}>
-                                               <Progress progress={this.state.percentage} className={"message-file-loading"}/>
-                                           </div>
+                                           skin={message.emoji
+                                               ?.skin || 1}
+                                           size={35}
 
-                                       </div>
-                                   )}
-                                   {message.file ? (
-                                       <MessageFileDisplay
-                                           file={message.file}
-                                           needUpload={message.needUploadFile}
-                                       />
-                                   ) : (
-                                       <Wrapper links={message.hyperlinks}>
-                                           <Tooltip
-                                               className={"message-tooltip"}
-                                               position={"top"}
-                                               text={() => moment(message.created_at).format('hh:mm A')}
-                                           >
-                                               <div className="content">
-                                                   {getRenderableContentFromMessage(message)}
-                                               </div>
+                                    />
 
-                                           </Tooltip>
-                                           {!!message.hyperlinks.length && !message.temp && (
-                                               <HyperLink
-                                                   link={message.hyperlinks[0]}
-                                                   onLoaded={() => {
-                                                       // messagesContainerUtilities.createScrollLatest(true)();
-                                                   }}
-                                               />
-                                           )}
-                                       </Wrapper>
-                                   )}
-                               </>
-                           )}
+                                }}
+                                </div>
+                            ) : (
+                                <>
+                                    {this.state.uploading && (
+                                        <div className="upload-loading">
+                                            <div style={{height: "100%", position: "relative"}}>
+                                                <Progress progress={this.state.percentage}
+                                                          className={"message-file-loading"}/>
+                                            </div>
 
-                       </div>
-                   </div>
+                                        </div>
+                                    )}
+                                    {message.file ? (
+                                        <MessageFileDisplay
+                                            file={message.file}
+                                            needUpload={message.needUploadFile}
+                                        />
+                                    ) : (
+                                        <Wrapper links={message.hyperlinks}>
+                                            <Tooltip
+                                                className={"message-tooltip"}
+                                                position={"top"}
+                                                text={() => moment(message.created_at).format('hh:mm A')}
+                                            >
+                                                <div className="content">
+                                                    {getRenderableContentFromMessage(message)}
+                                                </div>
+
+                                            </Tooltip>
+                                            {!!message.hyperlinks.length && !message.temp && (
+                                                <HyperLink
+                                                    link={message.hyperlinks[0]}
+                                                    onLoaded={() => {
+                                                        // messagesContainerUtilities.createScrollLatest(true)();
+                                                    }}
+                                                />
+                                            )}
+                                        </Wrapper>
+                                    )}
+                                </>
+                            )}
+
+                        </div>
+                    </div>
 
 
                     {(isOwned) && (
@@ -282,7 +296,7 @@ const MessageAction = ({canRemove = false, isReverse = false, onRemoveMessage, o
                             text={() => "Xóa"}
 
                         >
-                            <div className="action"  onClick={onRemoveMessage}>
+                            <div className="action" onClick={onRemoveMessage}>
                                 <i className="fal fa-trash"></i>
                             </div>
                         </Tooltip>
@@ -292,7 +306,7 @@ const MessageAction = ({canRemove = false, isReverse = false, onRemoveMessage, o
                         className={"user-action-tooltip"}
                         text={() => "Trả lời"}
                     >
-                        <div className="action"  onClick={onReply}>
+                        <div className="action" onClick={onReply}>
                             <i className="fas fa-reply"></i>
                         </div>
                     </Tooltip>

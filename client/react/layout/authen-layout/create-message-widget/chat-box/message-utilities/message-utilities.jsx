@@ -172,6 +172,7 @@ export class MessageUtilities extends Component {
                                                 set={'facebook'}
                                                 emoji={this.props.defaultEmoji}
                                                 size={18}
+                                                skin={this.props.defaultEmoji.skin}
                                             />
                                         </div>
                                     )}
@@ -186,6 +187,7 @@ export class MessageUtilities extends Component {
                                         <Emoji
                                             set={'facebook'}
                                             emoji={this.props.defaultEmoji}
+                                            skin={this.props.defaultEmoji.skin}
                                             size={24}
                                         />
                                     </div>
