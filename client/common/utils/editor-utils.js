@@ -77,7 +77,7 @@ const transformMessageContentToPaths = ({content, mentions}) => {
             contentPaths = contentPaths.concat(formatUTF8EmojiText(resultStr));
         }
     }
-    console.log(contentPaths)
+    // console.log(contentPaths)
 
     return contentPaths.map((each => (
         <Fragment key={uuidv4()}>{each.link ? (
