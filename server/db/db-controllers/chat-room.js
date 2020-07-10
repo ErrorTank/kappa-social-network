@@ -162,7 +162,7 @@ const getChatRoomMessages = (chatRoomID, {take = 10, skip = 0}) => {
                     $first: "$context.special"
                 },
                 reactions: {
-                    $first: "$context.special"
+                    $first: "$context.reactions"
                 },
                 emoji: {
                     $first: "$context.emoji"

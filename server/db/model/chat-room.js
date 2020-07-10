@@ -17,17 +17,26 @@ const CommonEmojiSchema = {
     default: null
 }
 
+const SingleReactionSchema = {
+    type: [
+        {
+            type: ObjectId,
+        },
+
+    ],
+    default: []
+}
+
 const ReactionSchema = {
     type: {
-        love: Number,
-        laugh: Number,
-        wow: Number,
-        cry: Number,
-        angry: Number,
-        thump_up: Number,
-        thump_down: Number
-    },
-    default: null
+        love: SingleReactionSchema,
+        laugh: SingleReactionSchema,
+        wow: SingleReactionSchema,
+        cry: SingleReactionSchema,
+        angry: SingleReactionSchema,
+        thump_up: SingleReactionSchema,
+        thump_down: SingleReactionSchema
+    }
 }
 
 const chatRoomSchema = new Schema({

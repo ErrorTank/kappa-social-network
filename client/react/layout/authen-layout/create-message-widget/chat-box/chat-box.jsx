@@ -342,6 +342,7 @@ export class ChatBox extends KComponent {
                                                 onUpload={this.onUploadMessage}
                                                 removeMessage={this.removeMessage}
                                                 onReply={messageUtilities.openReplyPanel}
+                                                onUpdateMessages={(messages) => this.messageState.setState(messages)}
                                             />
                                             <MessageUtilities
                                                 chatRoom={this.state.chat_room_brief}
