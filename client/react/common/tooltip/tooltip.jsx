@@ -12,7 +12,7 @@ export class Tooltip extends React.Component {
     };
 
     render() {
-        let {position = "bottom", className, text, onShow = () => null, onHide = () => null} = this.props;
+        let {position = "bottom", className, text, onShow = () => null, onHide = () => null, disabled = false} = this.props;
         return (
             <ThemeContext.Consumer>
                 {({darkMode}) => (
@@ -28,7 +28,7 @@ export class Tooltip extends React.Component {
                     >
                         {this.props.children}
                         <CSSTransition in={this.state.show} timeout={300} classNames={"fade"}>
-                            {this.state.show ? (
+                            {(this.state.show && !disabled) ? (
                                 <div className={classnames("tool-tip", position)}>
                                     <div className="tooltip-content">
                                         {text()}

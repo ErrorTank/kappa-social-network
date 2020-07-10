@@ -69,6 +69,18 @@ export class ChatBox extends KComponent {
                     }
                     this.messageState.setState(clone);
                 });
+                this.io.on("change-message-reactions", ({messageID, reactions}) => {
+                    console.log(messageID)
+                    console.log(reactions)
+                    let clone = [...this.messageState.getState()];
+                    for (let i = 0; i < clone.length; i++) {
+                        if (messageID === clone[i]._id) {
+                            clone[i].reactions = reactions;
+                            break;
+                        }
+                    }
+                    this.messageState.setState(clone);
+                });
                 this.io.on("update-nicknames", ({data}) => {
                    this.setState({nickname_map: data})
                 });
@@ -118,6 +130,7 @@ export class ChatBox extends KComponent {
             this.io.off("update-nicknames");
             this.io.off("new-message");
             this.io.off("update-message");
+            this.io.off("change-message-reactions");
             this.io.off("push-to-seen-by");
             this.io.emit("left-chat-room", {
                 chatRoomID: this.state.chat_room_brief._id,
@@ -342,7 +355,6 @@ export class ChatBox extends KComponent {
                                                 onUpload={this.onUploadMessage}
                                                 removeMessage={this.removeMessage}
                                                 onReply={messageUtilities.openReplyPanel}
-                                                onUpdateMessages={(messages) => this.messageState.setState(messages)}
                                             />
                                             <MessageUtilities
                                                 chatRoom={this.state.chat_room_brief}

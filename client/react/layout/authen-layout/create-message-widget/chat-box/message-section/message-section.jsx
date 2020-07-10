@@ -165,28 +165,8 @@ export class MessageSection extends Component {
 
     }
 
-    changeReaction = (reaction, activeReaction, message) => {
-        let userID = userInfo.getState()._id;
-        let _reactions = message.reactions;
-        if(reaction === null){
-            _reactions[REVERSE_REACTIONS[activeReaction]] = _reactions[REVERSE_REACTIONS[activeReaction]].filter(each => each !== userID)
-        }else{
-            _reactions[REVERSE_REACTIONS[reaction]] = _reactions[REVERSE_REACTIONS[reaction]].concat(userID);
-            if(activeReaction){
-                _reactions[REVERSE_REACTIONS[activeReaction]] = _reactions[REVERSE_REACTIONS[activeReaction]].filter(each => each !== userID)
-            }
-        }
-        let _messages = [...this.props.messages];
-        for(let msg of _messages){
-            if(msg._id === message._id){
-                msg.reactions = _reactions;
-                break;
-            }
-        }
-        this.props.onUpdateMessages(_messages)
-            .then(() => {
-                this.io.emit("change-message-reaction", {chatRoomID: this.props.chatRoomID, messageID: message._id, reactions: _reactions})
-            });
+    changeReaction = (config, messageID) => {
+        this.io.emit("change-message-reaction", {chatRoomID: this.props.chatRoomID, messageID, userID: userInfo.getState()._id, reactionConfig: config})
     };
 
     render() {
@@ -254,7 +234,7 @@ export class MessageSection extends Component {
                                         onUpload={this.props.onUpload}
                                         removeMessage={() => this.removeMessage(each._id)}
                                         onReply={() => this.props.onReply(each)}
-                                        onChangeReaction={(reaction) => this.changeReaction(reaction, each)}
+                                        onChangeReaction={(config) => this.changeReaction(config, each._id)}
                                     />
                                 )
                             })}

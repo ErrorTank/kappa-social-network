@@ -1,4 +1,6 @@
 import React from 'react';
+import classnames from "classnames";
+import {Emoji} from "emoji-mart";
 
 export const REACTIONS = {
     love: 1,
@@ -21,10 +23,50 @@ export const REVERSE_REACTIONS = {
     7: "thump_down"
 };
 
-export const ReactionsWidget = ({onSelect, active}) => {
+export const REACTION_EMOJI_MAP = {
+    1: {
+        id: "heart"
+    },
+    2: {
+        id: "laughing"
+    },
+    3: {
+        id: "open_mouth"
+    },
+    4: {
+        id: "cry"
+    },
+    5: {
+        id: "angry"
+    },
+    6: {
+        id: "+1"
+    },
+    7: {
+        id: "-1"
+    },
+}
+
+export const ReactionsWidget = ({onSelect, active = null}) => {
     return (
         <div className="reactions-widget">
-
+            {Object.values(REACTIONS).map(each => {
+                return (
+                    <div key={each} className={classnames("reaction", {active: each === active})} onClick={() => {
+                        if(each === active){
+                            onSelect({off: each})
+                        }else{
+                            onSelect({on: each, off: active});
+                        }
+                    }}>
+                        <Emoji
+                            set={'facebook'}
+                            emoji={REACTION_EMOJI_MAP[each]}
+                            size={32}
+                        />
+                    </div>
+                )
+            })}
         </div>
     );
 };

@@ -28,15 +28,13 @@ const SingleReactionSchema = {
 }
 
 const ReactionSchema = {
-    type: {
-        love: SingleReactionSchema,
-        laugh: SingleReactionSchema,
-        wow: SingleReactionSchema,
-        cry: SingleReactionSchema,
-        angry: SingleReactionSchema,
-        thump_up: SingleReactionSchema,
-        thump_down: SingleReactionSchema
-    }
+    love: SingleReactionSchema,
+    laugh: SingleReactionSchema,
+    wow: SingleReactionSchema,
+    cry: SingleReactionSchema,
+    angry: SingleReactionSchema,
+    thump_up: SingleReactionSchema,
+    thump_down: SingleReactionSchema
 }
 
 const chatRoomSchema = new Schema({

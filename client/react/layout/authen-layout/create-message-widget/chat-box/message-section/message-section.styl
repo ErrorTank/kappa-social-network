@@ -195,12 +195,14 @@
   .upper-panel {
     display flex
     justify-content flex-start
+    position relative
+    .chat-reactions{
+      position absolute
+      bottom calc(100% + 5px)
+      left 50%
+      transform translateX(-50%)
+      z-index 1
 
-    &:hover {
-      .message-action {
-        opacity 1
-
-      }
     }
 
     .avatar{
@@ -231,6 +233,9 @@
       width 56px
       align-self center
       opacity 0
+      &.show{
+        opacity 1
+      }
 
       .message-action-wrapper {
         width 100%
@@ -302,7 +307,6 @@
     }
     .message-renderable-content {
       background-color btnCancelLight
-      overflow hidden
       margin-right 5px
       margin-left 0
       display inline-block
@@ -330,7 +334,14 @@
       &.disabled{
         pointer-events none
       }
+
       position relative
+      .reaction-bottom{
+        position absolute
+        left 7px
+        top calc(100% - 10px)
+
+      }
       .upload-loading{
         position absolute
         z-index 1
@@ -372,6 +383,13 @@
       }
 
       &.owned {
+        .reaction-bottom{
+          position absolute
+          left unset
+          right 7px
+          top calc(100% - 12px)
+
+        }
         background-color primaryButton
         color white !important
         margin-right 0
