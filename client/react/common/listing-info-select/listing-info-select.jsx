@@ -30,7 +30,6 @@ export class ListingInfoSelect extends Component {
       displayAs = (val) => val,
       disabled = false,
       error,
-      isSelected = (option) => false,
       getOptionKey = (each, index) => index,
     } = this.props;
 
@@ -52,15 +51,16 @@ export class ListingInfoSelect extends Component {
               <span className='listing-info-label'>
                 {label ? displayAs(label) : 'Chọn'}
               </span>
+              <div className='toggle-icon'>
+                <i className='fas fa-sort-down'></i>
+              </div>
             </div>
             {show && (
               <div className='select-dropdown'>
                 {options.map((each, i) => (
                   <div
                     key={getOptionKey(each, i)}
-                    className={classnames('select-option', {
-                      selected: isSelected(each),
-                    })}
+                    className={classnames('select-option')}
                     onClick={(e) => {
                       e.stopPropagation();
                       onChange(each);

@@ -43,7 +43,6 @@ export class ListingInfo extends Component {
               label={each.name}
               options={each.options}
               displayAs={(label) => label}
-              // isSelected={(option) => option === day}
               key={each.name}
             />
           );

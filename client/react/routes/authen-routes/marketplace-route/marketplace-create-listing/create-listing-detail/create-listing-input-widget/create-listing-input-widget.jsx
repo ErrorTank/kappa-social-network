@@ -6,10 +6,7 @@ import { ListingInfoContext } from '../../../../../../context/listing-info-conte
 export class CreateListingInputWidget extends Component {
   constructor(props) {
     super(props);
-    this.state = {
-      title: '',
-      limit: '',
-    };
+    this.state = {};
   }
 
   createInfo = [

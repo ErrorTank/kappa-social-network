@@ -40,7 +40,9 @@ export class ListingInfoInput extends Component {
                 })}
               >
                 <textarea
-                  className='form-control'
+                  className={classnames('form-control')}
+                  onFocus={() => this.setState({ focus: true })}
+                  onBlur={() => this.setState({ focus: false })}
                   id={label}
                   {...others}
                 ></textarea>
