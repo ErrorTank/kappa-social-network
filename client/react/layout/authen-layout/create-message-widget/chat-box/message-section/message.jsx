@@ -49,6 +49,7 @@ export class Message extends Component {
             uploading: props.message.needUploadFile,
             percentage: 0,
             state: "pending",
+            showAction: false
         }
         if (props.message.file && props.message.needUploadFile) {
             chatApi.sendFileMessage(props.chatRoomID, omit({
@@ -133,7 +134,10 @@ export class Message extends Component {
             />
         ) : (
 
-            <div className={classnames("chat-message", position, {owned: isOwned, disabled: this.state.uploading})}>
+            <div className={classnames("chat-message", position, {owned: isOwned, disabled: this.state.uploading})}
+                 onMouseEnter={() => this.setState({showAction: true})}
+                 onMouseLeave={() => this.setState({showAction: false})}
+            >
                 <div className="upper-panel">
                     {!isOwned && (
                         <div className="avatar">
@@ -162,6 +166,7 @@ export class Message extends Component {
                     )}
                     {!message.is_deleted && isOwned && (
                         <MessageAction
+                            show={this.state.showAction}
                             canRemove={isOwned}
                             isReverse={!isOwned}
                             onRemoveMessage={this.props.removeMessage}
@@ -274,6 +279,7 @@ export class Message extends Component {
                             onReply={this.props.onReply}
                             onChangeReaction={value => this.changeReaction(value)}
                             activeReaction={activeReaction}
+                            show={this.state.showAction}
                         />
                     )}
                 </div>
@@ -293,7 +299,7 @@ export class Message extends Component {
 }
 
 
-class MessageAction extends React.Component{
+class MessageAction extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -303,103 +309,104 @@ class MessageAction extends React.Component{
 
 
     render() {
-        let {canRemove = false, isReverse = false, onRemoveMessage, onReply, onChangeReaction, activeReaction} = this.props;
+        let {canRemove = false, isReverse = false, onRemoveMessage, onReply, onChangeReaction, activeReaction, show} = this.props;
         let {showReaction} = this.state;
+        console.log(showReaction)
         return (
-            <div className="message-action">
-                {!isReverse ? (
-                    <div className="message-action-wrapper">
-                        {canRemove && (
-                            <Tooltip
-                                position={"top"}
-                                className={"user-action-tooltip"}
-                                text={() => "Xóa"}
-
-                            >
-                                <div className="action" onClick={onRemoveMessage}>
-                                    <i className="fal fa-trash"></i>
-                                </div>
-                            </Tooltip>
-                        )}
-                        <Tooltip
-                            position={"top"}
-                            className={"user-action-tooltip"}
-                            text={() => "Trả lời"}
-                        >
-                            <div className="action" onClick={onReply}>
-                                <i className="fas fa-reply"></i>
-                            </div>
-                        </Tooltip>
-
-                        <Tooltip
-                            position={"top"}
-                            className={"user-action-tooltip"}
-                            text={() => "Biểu cảm"}
-                        >
-                            <ClickOutside onClickOut={() => showReaction && this.setState({showReaction: false})}>
-                                <div className="action" onClick={() => this.setState({showReaction: !showReaction})}>
-                                    {showReaction && (
-                                        <div className="chat-reactions">
-                                            <ReactionsWidget
-                                                onSelect={onChangeReaction}
-                                                active={activeReaction}
-                                            />
-                                        </div>
-                                    )}
-                                    <i className="fal fa-smile"></i>
-                                </div>
-                            </ClickOutside>
-
-                        </Tooltip>
-                    </div>
-                ) : (
-                    <div className="message-action-wrapper">
-                        <Tooltip
-                            position={"top"}
-                            className={"user-action-tooltip"}
-                            text={() => "Biểu cảm"}
-                        >
-                            <ClickOutside onClickOut={() => showReaction && this.setState({showReaction: false})}>
-                                <div className="action" onClick={() => this.setState({showReaction: !showReaction})}>
-                                    {showReaction && (
-                                        <div className="chat-reactions">
-                                            <ReactionsWidget
-                                                onSelect={onChangeReaction}
-                                                active={activeReaction}
-                                            />
-                                        </div>
-                                    )}
-                                    <i className="fal fa-smile"></i>
-                                </div>
-                            </ClickOutside>
-                        </Tooltip>
-
-                        <Tooltip
-                            position={"top"}
-                            className={"user-action-tooltip"}
-                            text={() => "Trả lời"}
-                        >
-                            <div className="action" onClick={onReply}>
-                                <i className="fas fa-reply"></i>
-                            </div>
-                        </Tooltip>
-                        {canRemove && (
-                            <Tooltip
-                                position={"top"}
-                                className={"user-action-tooltip"}
-                                text={() => "Xóa"}
-
-                            >
-                                <div className="action" onClick={onRemoveMessage}>
-                                    <i className="fal fa-trash"></i>
-                                </div>
-                            </Tooltip>
-                        )}
-
-
+            <>
+                {showReaction && (
+                    <div className="chat-reactions">
+                        <ReactionsWidget
+                            onSelect={onChangeReaction}
+                            active={activeReaction}
+                        />
                     </div>
                 )}
-            </div>
+                <div className={classnames("message-action", {show: show || showReaction})}>
+                    {!isReverse ? (
+                        <div className="message-action-wrapper">
+                            {canRemove && (
+                                <Tooltip
+                                    position={"top"}
+                                    className={"user-action-tooltip"}
+                                    text={() => "Xóa"}
+
+                                >
+                                    <div className="action" onClick={onRemoveMessage}>
+                                        <i className="fal fa-trash"></i>
+                                    </div>
+                                </Tooltip>
+                            )}
+                            <Tooltip
+                                position={"top"}
+                                className={"user-action-tooltip"}
+                                text={() => "Trả lời"}
+                            >
+                                <div className="action" onClick={onReply}>
+                                    <i className="fas fa-reply"></i>
+                                </div>
+                            </Tooltip>
+
+                            <Tooltip
+                                position={"top"}
+                                className={"user-action-tooltip"}
+                                text={() => "Biểu cảm"}
+                                disabled={showReaction}
+                            >
+                                <ClickOutside onClickOut={() => showReaction && this.setState({showReaction: false})}>
+                                    <div className="action"
+                                         onClick={() => this.setState({showReaction: !showReaction})}>
+
+                                        <i className="fal fa-smile"></i>
+                                    </div>
+                                </ClickOutside>
+
+                            </Tooltip>
+                        </div>
+                    ) : (
+                        <div className="message-action-wrapper">
+                            <Tooltip
+                                position={"top"}
+                                className={"user-action-tooltip"}
+                                text={() => "Biểu cảm"}
+                                disabled={showReaction}
+                            >
+                                <ClickOutside onClickOut={() => showReaction && this.setState({showReaction: false})}>
+                                    <div className="action"
+                                         onClick={() => this.setState({showReaction: !showReaction})}>
+
+                                        <i className="fal fa-smile"></i>
+                                    </div>
+                                </ClickOutside>
+                            </Tooltip>
+
+                            <Tooltip
+                                position={"top"}
+                                className={"user-action-tooltip"}
+                                text={() => "Trả lời"}
+                            >
+                                <div className="action" onClick={onReply}>
+                                    <i className="fas fa-reply"></i>
+                                </div>
+                            </Tooltip>
+                            {canRemove && (
+                                <Tooltip
+                                    position={"top"}
+                                    className={"user-action-tooltip"}
+                                    text={() => "Xóa"}
+
+                                >
+                                    <div className="action" onClick={onRemoveMessage}>
+                                        <i className="fal fa-trash"></i>
+                                    </div>
+                                </Tooltip>
+                            )}
+
+
+                        </div>
+                    )}
+                </div>
+            </>
         )
     }
 }

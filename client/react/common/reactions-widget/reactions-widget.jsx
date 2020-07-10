@@ -25,14 +25,26 @@ export const REVERSE_REACTIONS = {
 
 const REACTION_EMOJI_MAP = {
     1: {
-        id: 1
+        id: "heart"
     },
-    2: "laugh",
-    3: "wow",
-    4: "cry",
-    5: "angry",
-    6: "thump_up",
-    7: "thump_down"
+    2: {
+        id: "laughing"
+    },
+    3: {
+        id: "open_mouth"
+    },
+    4: {
+        id: "cry"
+    },
+    5: {
+        id: "angry"
+    },
+    6: {
+        id: "+1"
+    },
+    7: {
+        id: "-1"
+    },
 }
 
 export const ReactionsWidget = ({onSelect, active}) => {
@@ -42,7 +54,9 @@ export const ReactionsWidget = ({onSelect, active}) => {
                 return (
                     <div key={each} className={classnames("reaction", {active: each === active})} onClick={onSelect}>
                         <Emoji
-
+                            set={'facebook'}
+                            emoji={REACTION_EMOJI_MAP[each]}
+                            size={32}
                         />
                     </div>
                 )
