@@ -165,8 +165,8 @@ export class MessageSection extends Component {
 
     }
 
-    changeReaction = (config, message) => {
-        this.io.emit("change-message-reaction", {chatRoomID: this.props.chatRoomID, messageID: message._id, userID: userInfo.getState()._id, reactionConfig: config})
+    changeReaction = (config, messageID) => {
+        this.io.emit("change-message-reaction", {chatRoomID: this.props.chatRoomID, messageID, userID: userInfo.getState()._id, reactionConfig: config})
     };
 
     render() {

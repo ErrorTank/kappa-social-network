@@ -22,7 +22,8 @@ import {SpecialMessage} from "./special-message/special-message";
 import {Emoji} from "emoji-mart";
 import {ClickOutside} from "../../../../../common/click-outside/click-outside";
 import {ReactionsWidget} from "../../../../../common/reactions-widget/reactions-widget";
-import {getActiveReaction} from "../../../../../../common/utils/messenger-utils";
+import {getActiveReaction, haveReaction} from "../../../../../../common/utils/messenger-utils";
+import {ReactionDisplay} from "./reaction-display/reaction-display";
 
 
 let Wrapper = (props) => props.links.length ? (
@@ -207,6 +208,13 @@ export class Message extends Component {
                             disabled: this.state.downloading,
                             isDeleted: message.is_deleted
                         })} onClick={() => message.file && this.onClickFile()}>
+                            {haveReaction(message.reactions) && !message.is_deleted && (
+                                <div className="reaction-bottom">
+                                    <ReactionDisplay
+                                        reactions={message.reactions}
+                                    />
+                                </div>
+                            )}
                             {message.is_deleted ? (
                                 <div className="deleted-msg">
                                     {isOwned ? "Tin nhắn đã bị bạn xóa bỏ" : message.sentBy.basic_info.username + " đã xóa tin nhắn này"}
@@ -311,7 +319,7 @@ class MessageAction extends React.Component {
     render() {
         let {canRemove = false, isReverse = false, onRemoveMessage, onReply, onChangeReaction, activeReaction, show} = this.props;
         let {showReaction} = this.state;
-        console.log(showReaction)
+
         return (
             <>
                 {showReaction && (

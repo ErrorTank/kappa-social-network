@@ -288,8 +288,9 @@ const updateChatRoomDefaultEmoji = (chatRoomID,  emoji) => {
         .then(chatRoom => chatRoom.default_emoji)
 }
 
-const updateMessageReaction = (userID, chatRoomID, messageID, reactionConfig) => {
+const updateMessageReaction = (chatRoomID,userID,  messageID, reactionConfig) => {
     let execCommand = {};
+    console.log(reactionConfig)
     let {on, off} = reactionConfig;
     if(on){
         execCommand["$push"] = {
@@ -302,14 +303,17 @@ const updateMessageReaction = (userID, chatRoomID, messageID, reactionConfig) =>
             [`context.$[elem].reactions.${REVERSE_REACTIONS[off]}`] : ObjectId(userID)
         };
     }
-
     return ChatRoom.findOneAndUpdate({
         _id: ObjectId(chatRoomID)
     } , execCommand, {
         "arrayFilters": [{"elem._id": ObjectId(messageID)}],
         new: true
     }).lean()
-        .then(cr => cr.context.find(each => each._id === chatRoomID))
+        .then(cr => {
+            // console.log(cr.context)
+            // console.log(messageID)
+            return cr.context.find(each => each._id.toString() === messageID)
+        })
 }
 
 module.exports = {

@@ -30,7 +30,7 @@
   flex-basis: 355px;
 
   overflow-y auto
-  //overflow-x hidden
+  overflow-x hidden
   position relative
   .new-message-notify{
     position: -webkit-sticky; /* Safari */
@@ -307,7 +307,6 @@
     }
     .message-renderable-content {
       background-color btnCancelLight
-      overflow hidden
       margin-right 5px
       margin-left 0
       display inline-block
@@ -335,7 +334,14 @@
       &.disabled{
         pointer-events none
       }
+
       position relative
+      .reaction-bottom{
+        position absolute
+        left 7px
+        top calc(100% - 10px)
+
+      }
       .upload-loading{
         position absolute
         z-index 1
@@ -377,6 +383,13 @@
       }
 
       &.owned {
+        .reaction-bottom{
+          position absolute
+          left unset
+          right 7px
+          top calc(100% - 12px)
+
+        }
         background-color primaryButton
         color white !important
         margin-right 0

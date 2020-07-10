@@ -70,7 +70,8 @@ export class ChatBox extends KComponent {
                     this.messageState.setState(clone);
                 });
                 this.io.on("change-message-reactions", ({messageID, reactions}) => {
-
+                    console.log(messageID)
+                    console.log(reactions)
                     let clone = [...this.messageState.getState()];
                     for (let i = 0; i < clone.length; i++) {
                         if (messageID === clone[i]._id) {

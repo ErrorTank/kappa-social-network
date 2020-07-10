@@ -54,8 +54,9 @@ module.exports = (io, socket, context) => {
         if(data.userID && data.chatRoomID && data.messageID && data.reactionConfig){
             updateMessageReaction(data.chatRoomID, data.userID, data.messageID, data.reactionConfig)
                 .then((newMsg) => {
-                    let result = newMsg.toObject();
-                    io.to(`/messenger-chat-room/chat-room/${data.chatRoomID}`).emit("change-message-reactions", {messageID: result._id, reactions: result.reactions})
+
+
+                    io.to(`/messenger-chat-room/chat-room/${data.chatRoomID}`).emit("change-message-reactions", {messageID: newMsg._id, reactions: newMsg.reactions})
                 });
         }
 
