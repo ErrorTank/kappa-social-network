@@ -1,4 +1,6 @@
 import React from 'react';
+import classnames from "classnames";
+import {Emoji} from "emoji-mart";
 
 export const REACTIONS = {
     love: 1,
@@ -21,10 +23,30 @@ export const REVERSE_REACTIONS = {
     7: "thump_down"
 };
 
+const REACTION_EMOJI_MAP = {
+    1: {
+        id: 1
+    },
+    2: "laugh",
+    3: "wow",
+    4: "cry",
+    5: "angry",
+    6: "thump_up",
+    7: "thump_down"
+}
+
 export const ReactionsWidget = ({onSelect, active}) => {
     return (
         <div className="reactions-widget">
+            {Object.values(REACTIONS).map(each => {
+                return (
+                    <div key={each} className={classnames("reaction", {active: each === active})} onClick={onSelect}>
+                        <Emoji
 
+                        />
+                    </div>
+                )
+            })}
         </div>
     );
 };

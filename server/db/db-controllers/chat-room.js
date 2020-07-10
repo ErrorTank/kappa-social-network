@@ -6,6 +6,7 @@ const ChatRoom = require("../model/chat-room")(appDb);
 const mongoose = require("mongoose");
 const ObjectId = mongoose.Types.ObjectId;
 const {ApplicationError} = require("../../utils/error/error-types");
+const {getActiveReaction, REVERSE_REACTIONS} = require("../../utils/messenger-utils");
 const omit = require("lodash/omit");
 const pick = require("lodash/pick");
 const {binarySearch} = require("../../utils/common-utils");
@@ -287,6 +288,30 @@ const updateChatRoomDefaultEmoji = (chatRoomID,  emoji) => {
         .then(chatRoom => chatRoom.default_emoji)
 }
 
+const updateMessageReaction = (userID, chatRoomID, messageID, reactionConfig) => {
+    let execCommand = {};
+    let {on, off} = reactionConfig;
+    if(on){
+        execCommand["$push"] = {
+            [`context.$[elem].reactions.${REVERSE_REACTIONS[on]}`] : ObjectId(userID)
+        };
+
+    }
+    if(off){
+        execCommand["$pull"] = {
+            [`context.$[elem].reactions.${REVERSE_REACTIONS[off]}`] : ObjectId(userID)
+        };
+    }
+
+    return ChatRoom.findOneAndUpdate({
+        _id: ObjectId(chatRoomID)
+    } , execCommand, {
+        "arrayFilters": [{"elem._id": ObjectId(messageID)}],
+        new: true
+    }).lean()
+        .then(cr => cr.context.find(each => each._id === chatRoomID))
+}
+
 module.exports = {
     getChatContacts,
     getGroupChatRoomInvolvesByKeyword,
@@ -297,5 +322,6 @@ module.exports = {
     deleteMessage,
     getChatRoomNicknames,
     updateUserNickname,
-    updateChatRoomDefaultEmoji
+    updateChatRoomDefaultEmoji,
+    updateMessageReaction
 };

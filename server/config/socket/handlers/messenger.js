@@ -1,6 +1,6 @@
 const {getAllUserActiveRelations} = require("../../../db/db-controllers/messenger-utility");
 const {simpleUpdateUser} = require("../../../db/db-controllers/user");
-const {updateSavedMessagesToSent, deleteMessage} = require("../../../db/db-controllers/chat-room");
+const {updateSavedMessagesToSent, deleteMessage, updateMessageReaction} = require("../../../db/db-controllers/chat-room");
 const mongoose = require("mongoose");
 const {MessageState} = require("../../../common/const/message-state")
 const ObjectId = mongoose.Types.ObjectId;
@@ -50,6 +50,16 @@ module.exports = (io, socket, context) => {
 
     });
 
+    socket.on("change-message-reaction", function (data) {
+        if(data.userID && data.chatRoomID && data.messageID && data.reactionConfig){
+            updateMessageReaction(data.chatRoomID, data.userID, data.messageID, data.reactionConfig)
+                .then((newMsg) => {
+                    let result = newMsg.toObject();
+                    io.to(`/messenger-chat-room/chat-room/${data.chatRoomID}`).emit("change-message-reactions", {messageID: result._id, reactions: result.reactions})
+                });
+        }
+
+    });
     socket.on("left-chat-room", function (data) {
         if(data.userID && data.chatRoomID){
             console.log(`User ${data.userID} left chat room ${data.chatRoomID}!`)
