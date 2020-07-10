@@ -11,20 +11,21 @@ class CreateListingDetail extends KComponent {
     super(props);
     this.state = {};
   }
+  updateValue = (key, val) => {
+    this.setState({ [key]: val });
+  };
   render() {
     return (
-      <ListingInfoController>
-        <div className='create-listing-detail'>
-          <PageTitle title={'Tạo niêm yết'}>
-            <CommonLayout
-              // className={}
-              mainRender={() => <div>xem truoc</div>}
-              haveRightRender={false}
-              leftRender={() => <CreateListingInputWidget {...this.props} />}
-            />
-          </PageTitle>
-        </div>
-      </ListingInfoController>
+      <div className='create-listing-detail'>
+        <PageTitle title={'Tạo niêm yết'}>
+          <CommonLayout
+            // className={}
+            mainRender={() => <div>xem truoc</div>}
+            haveRightRender={false}
+            leftRender={() => <CreateListingInputWidget {...this.props} />}
+          />
+        </PageTitle>
+      </div>
     );
   }
 }
