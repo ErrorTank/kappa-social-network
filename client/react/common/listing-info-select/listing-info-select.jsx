@@ -26,6 +26,7 @@ export class ListingInfoSelect extends Component {
       className,
       label,
       options,
+      value,
       onChange,
       displayAs = (val) => val,
       disabled = false,
@@ -48,11 +49,13 @@ export class ListingInfoSelect extends Component {
               onClick={() => this.setState({ show: !show })}
               id={label}
             >
-              <span className='listing-info-label'>
-                {label ? displayAs(label) : 'Chọn'}
-              </span>
+              <div className='label-wrapper'>
+                <span className='listing-info-label'>
+                  {label ? displayAs(label) : 'Chọn'}
+                </span>
+              </div>
               <div className='toggle-icon'>
-                <i className='fas fa-sort-down'></i>
+                <i className='fas fa-caret-down'></i>
               </div>
             </div>
             {show && (

@@ -10,7 +10,11 @@ import { ListingInfoSelect } from './../../../../../../../common/listing-info-se
 export class ListingInfo extends Component {
   constructor(props) {
     super(props);
-    this.state = {};
+    this.state = {
+      category: null,
+      condition: null,
+      material: null,
+    };
   }
 
   componentDidMount = () => {
@@ -44,6 +48,7 @@ export class ListingInfo extends Component {
               options={each.options}
               displayAs={(label) => label}
               key={each.name}
+              value={each.name}
             />
           );
         })}

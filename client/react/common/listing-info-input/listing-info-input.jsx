@@ -22,7 +22,6 @@ export class ListingInfoInput extends Component {
       textArea = false,
       ...others
     } = this.props;
-    // console.log(textArea);
     return (
       <ThemeContext.Consumer>
         {(theme) => (
@@ -49,7 +48,10 @@ export class ListingInfoInput extends Component {
                 <span className='listing-info-label'>{label}</span>
               </label>
             ) : (
-              <label htmlFor={label} className='listing-info-wrapper'>
+              <label
+                htmlFor={label}
+                className={classnames('listing-info-wrapper')}
+              >
                 <input
                   type='text'
                   className={classnames('form-control', {
