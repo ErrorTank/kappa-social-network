@@ -6,6 +6,7 @@ import {
 } from './../../../../../../../../const/listing';
 import { customHistory } from './../../../../../../routes';
 import { ListingInfoSelect } from './../../../../../../../common/listing-info-select/listing-info-select';
+import { v4 as uuidv4 } from 'uuid';
 
 export class ListingInfo extends Component {
   constructor(props) {
@@ -17,13 +18,14 @@ export class ListingInfo extends Component {
     };
   }
 
-  componentDidMount = () => {
-    const { type, updateValue } = this.props;
-    updateValue('type', type);
-  };
+  // componentDidMount = () => {
+  //   const { type, updateValue } = this.props;
+  //   updateValue('type', type);
+  // };
 
   render() {
-    const { state, updateValue, type, limit } = this.props;
+    const { state, updateValue } = this.props;
+    let listingInfoID = uuidv4();
     return (
       <div className='listing-info'>
         <div className='picture-input'>
@@ -39,15 +41,20 @@ export class ListingInfo extends Component {
           return !each.isSelected ? (
             <ListingInfoInput
               label={each.name}
-              key={each.name}
+              key={listingInfoID}
               textArea={each.isTextArea}
+              id={each.name}
+              value={value}
+              onChange={(e) => {
+                this.setState({ value: e.target.value });
+              }}
             />
           ) : (
             <ListingInfoSelect
               label={each.name}
               options={each.options}
               displayAs={(label) => label}
-              key={each.name}
+              key={listingInfoID}
               value={each.name}
             />
           );

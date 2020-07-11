@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { userInfo } from '../../../../../../../common/states/common';
 import { ListingInfo } from './listing-info/listing-info';
-import { ListingInfoContext } from '../../../../../../context/listing-info-context';
 
 export class CreateListingInputWidget extends Component {
   constructor(props) {
@@ -33,6 +32,7 @@ export class CreateListingInputWidget extends Component {
     this.createInfo.forEach((each) => {
       each.name === type && (info = each);
     });
+    console.log(this.props);
     return (
       <div className='create-listing-input-widget'>
         <div className='cs-input-header'>
@@ -65,12 +65,7 @@ export class CreateListingInputWidget extends Component {
             </div>
           </div>
 
-          <ListingInfo
-            type={type}
-            updateValue={updateValue}
-            state={state}
-            limit={info.limit}
-          />
+          <ListingInfo />
         </div>
         <div className='cs-input-footer'></div>
       </div>

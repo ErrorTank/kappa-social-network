@@ -4,12 +4,14 @@ import { CommonLayout } from '../../../../../layout/common-layout/common-layout'
 import { PageTitle } from '../../../../../common/page-title/page-title';
 import { CreateListingInputWidget } from './create-listing-input-widget/create-listing-input-widget';
 import { customHistory } from './../../../../routes';
-import { ListingInfoController } from '../../../../../context/listing-info-context';
 
 class CreateListingDetail extends KComponent {
   constructor(props) {
     super(props);
-    this.state = {};
+    this.state = {
+      type: '',
+      pictureLimit: '',
+    };
   }
   updateValue = (key, val) => {
     this.setState({ [key]: val });
@@ -22,7 +24,9 @@ class CreateListingDetail extends KComponent {
             // className={}
             mainRender={() => <div>xem truoc</div>}
             haveRightRender={false}
-            leftRender={() => <CreateListingInputWidget {...this.props} />}
+            leftRender={() => (
+              <CreateListingInputWidget state={this.state} {...this.props} />
+            )}
           />
         </PageTitle>
       </div>
