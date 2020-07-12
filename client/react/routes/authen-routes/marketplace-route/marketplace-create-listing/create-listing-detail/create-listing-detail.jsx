@@ -25,7 +25,11 @@ class CreateListingDetail extends KComponent {
             mainRender={() => <div>xem truoc</div>}
             haveRightRender={false}
             leftRender={() => (
-              <CreateListingInputWidget state={this.state} {...this.props} />
+              <CreateListingInputWidget
+                state={this.state}
+                updateValue={this.updateValue}
+                {...this.props}
+              />
             )}
           />
         </PageTitle>

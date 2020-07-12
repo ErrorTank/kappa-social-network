@@ -5,40 +5,49 @@ import { ListingInfo } from './listing-info/listing-info';
 export class CreateListingInputWidget extends Component {
   constructor(props) {
     super(props);
-    this.state = {};
+    this.state = {
+      title: '',
+    };
   }
 
   createInfo = [
     {
       name: 'item',
-      limit: 10,
+      pictureLimit: 10,
       title: 'Mặt hàng',
     },
     {
       name: 'vehicle',
-      limit: 20,
+      pictureLimit: 20,
       title: 'Xe',
     },
     {
       name: 'house',
-      limit: 50,
+      pictureLimit: 50,
       title: 'Nhà',
     },
   ];
+  componentDidMount = () => {
+    let { state, updateValue } = this.props;
+
+    this.createInfo.forEach((each) => {
+      if (each.name === this.props.match.params.categoryName) {
+        this.setState({ title: each.title });
+        updateValue('type', each.name);
+        updateValue('pictureLimit', each.pictureLimit);
+      }
+    });
+  };
   render() {
     let user = userInfo.getState();
-    let info;
-    let type = this.props.match.params.categoryName;
-    this.createInfo.forEach((each) => {
-      each.name === type && (info = each);
-    });
-    console.log(this.props);
+
+    // console.log(this.props);
     return (
       <div className='create-listing-input-widget'>
         <div className='cs-input-header'>
           <div className='header-info'>
             <p className='fake-breadcrumb'>Marketplace</p>
-            <h1 className='header-title'>{info.title} cần bán</h1>
+            <h1 className='header-title'>{this.state.title} cần bán</h1>
           </div>
           <div className='save-draft-button'>
             <span className='save-draft-title'>Save Draft</span>
@@ -65,7 +74,7 @@ export class CreateListingInputWidget extends Component {
             </div>
           </div>
 
-          <ListingInfo />
+          <ListingInfo {...this.props} />
         </div>
         <div className='cs-input-footer'></div>
       </div>

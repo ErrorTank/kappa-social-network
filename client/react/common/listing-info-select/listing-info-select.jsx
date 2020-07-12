@@ -32,9 +32,11 @@ export class ListingInfoSelect extends Component {
       disabled = false,
       error,
       getOptionKey = (each, index) => index,
+      id,
     } = this.props;
 
     let { show } = this.state;
+    console.log(id);
     return (
       <div
         className={classnames('listing-info-select', className, {
@@ -43,11 +45,11 @@ export class ListingInfoSelect extends Component {
         })}
       >
         <ClickOutside onClickOut={() => this.setState({ show: false })}>
-          <label htmlFor={label} className='listing-info-wrapper'>
+          <label htmlFor={id} className='listing-info-wrapper'>
             <div
               className={classnames('listing-info-toggle')}
               onClick={() => this.setState({ show: !show })}
-              id={label}
+              id={id}
             >
               <div className='label-wrapper'>
                 <span className='listing-info-label'>

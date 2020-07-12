@@ -18,45 +18,49 @@ export class ListingInfo extends Component {
     };
   }
 
-  // componentDidMount = () => {
-  //   const { type, updateValue } = this.props;
-  //   updateValue('type', type);
-  // };
-
   render() {
     const { state, updateValue } = this.props;
+    let { pictureLimit, type, ...other } = state;
+    console.log(this.props);
     let listingInfoID = uuidv4();
     return (
       <div className='listing-info'>
         <div className='picture-input'>
           <div className='picture-input-header'>
             Ảnh
-            <span className='dot'> · </span>0 / {type && <span>{limit}</span>}
-            <span className='sub'> - Bạn có thể thêm tối đa {limit} ảnh</span>
+            <span className='dot'> · </span>0 /{' '}
+            {type && <span>{pictureLimit}</span>}
+            <span className='sub'>
+              {' '}
+              - Bạn có thể thêm tối đa {pictureLimit} ảnh
+            </span>
           </div>
           <div className='add-picture-section'></div>
         </div>
 
         {itemField.map((each, i) => {
+          // console.log(each);
           return !each.isSelected ? (
             <ListingInfoInput
               label={each.name}
               key={listingInfoID}
               textArea={each.isTextArea}
-              id={each.name}
-              value={value}
+              id={each.englishName}
+              // value={}
               onChange={(e) => {
-                this.setState({ value: e.target.value });
+                updateValue(`${each.englishName}`, e.target.value);
               }}
             />
           ) : (
-            <ListingInfoSelect
-              label={each.name}
-              options={each.options}
-              displayAs={(label) => label}
-              key={listingInfoID}
-              value={each.name}
-            />
+            // <ListingInfoSelect
+            //   label={each.name}
+            //   options={each.options}
+            //   displayAs={(label) => label}
+            //   key={listingInfoID}
+            //   id={each.englishName}
+            //   // value={each.name}
+            // />
+            <div>ok</div>
           );
         })}
       </div>

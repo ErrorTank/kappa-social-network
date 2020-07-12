@@ -24,6 +24,7 @@ export class ListingInfoInput extends Component {
       inputType = 'input',
       ...others
     } = this.props;
+    console.log(id);
     return (
       <ThemeContext.Consumer>
         {(theme) => (

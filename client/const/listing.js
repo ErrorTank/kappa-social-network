@@ -2,12 +2,15 @@ import React, { Component } from 'react';
 export const itemField = [
   {
     name: 'Tiêu đề',
+    englishName: 'title',
   },
   {
     name: 'Giá',
+    englishName: 'price',
   },
   {
     name: 'Hạng mục',
+    englishName: 'category',
     isSelected: true,
     options: [
       {
@@ -76,10 +79,12 @@ export const itemField = [
   },
   {
     name: 'Mô tả',
+    englishName: 'decription',
     isTextArea: true,
   },
   {
     name: 'Tình trạng hàng',
+    englishName: 'availability',
     isSelected: true,
     options: [
       { name: 'Niêm yết là chỉ còn 1 mặt hàng' },
