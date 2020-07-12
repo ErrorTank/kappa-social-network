@@ -10,6 +10,7 @@
     margin: 0;
     overflow: hidden;
     z-index: 0;
+    position relative;
     .listing-info-toggle{
       display: flex
       height: 56px;
@@ -38,6 +39,20 @@
           font-weight: 600;
         }
       }
+    }
+
+    .select-dropdown {
+      position absolute
+      top 101%
+      left 0
+      width 100%
+      overflow-y auto
+      max-height 200px
+      background-color white
+      border 1px solid common-border
+      color #1a1a1a
+      font-size 1.4rem
+      z-index 1
     }
   }
 }

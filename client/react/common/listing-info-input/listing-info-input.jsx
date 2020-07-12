@@ -13,6 +13,7 @@ export class ListingInfoInput extends Component {
       this.input.focus();
     };
   }
+
   render() {
     const {
       className,
@@ -22,9 +23,9 @@ export class ListingInfoInput extends Component {
       textArea = false,
       id,
       inputType = 'input',
+      value,
       ...others
     } = this.props;
-    console.log(id);
     return (
       <ThemeContext.Consumer>
         {(theme) => (
@@ -53,7 +54,9 @@ export class ListingInfoInput extends Component {
             ) : (
               <label
                 htmlFor={id}
-                className={classnames('listing-info-wrapper')}
+                className={classnames('listing-info-wrapper', {
+                  'has-value': value,
+                })}
               >
                 <input
                   type='text'

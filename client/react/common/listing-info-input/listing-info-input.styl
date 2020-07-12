@@ -3,9 +3,13 @@
   box-sizing: border-box;
   &.focus{
     .listing-info-wrapper{
-      border-color: blueTextLight;
+      border-color: blueTextLight ;
+      &:hover{
+        border-color: blueTextLight ;
+      }
     }
   }
+
   .listing-info-wrapper{
     cursor text
     border-radius: 6px;
@@ -16,9 +20,18 @@
     margin: 0;
     overflow: hidden;
     z-index: 0;
-    // &:hover{
-    //   border-color: gray;
-    // }
+    &.has-value{
+      .listing-info-label{
+        transition-property: transform;
+        transition-duration: 200ms;
+        transform: scale(.75) translateY(-11px);
+        transform-origin: top left;  
+      }
+    }
+
+    &:hover{
+      border-color: gray;
+    }
     .listing-info-label{
       position: absolute;
       left: 16px;
@@ -48,6 +61,7 @@
           transform-origin: top left;  
         }
       }
+
     }
     input{
       height 56px;

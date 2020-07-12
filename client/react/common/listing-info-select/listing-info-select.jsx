@@ -11,15 +11,15 @@ export class ListingInfoSelect extends Component {
     };
   }
 
-  componentDidUpdate = (prevProps, prevState, snapshot) => {
-    if (this.state.show && prevState.show === false) {
-      let selectDropdownElem = ReactDom.findDOMNode(this).querySelector(
-        '.select-dropdown'
-      );
-      let selectedTarget = selectDropdownElem.querySelector('.selected');
-      selectDropdownElem.scrollTop = selectedTarget.offsetTop;
-    }
-  };
+  // componentDidUpdate = (prevProps, prevState, snapshot) => {
+  //   if (this.state.show && prevState.show === false) {
+  //     let selectDropdownElem = ReactDOM.findDOMNode(this).querySelector(
+  //       '.select-dropdown'
+  //     );
+  //     let selectedTarget = selectDropdownElem.querySelector('.selected');
+  //     selectDropdownElem.scrollTop = selectedTarget.offsetTop;
+  //   }
+  // };
 
   render() {
     let {
@@ -33,10 +33,10 @@ export class ListingInfoSelect extends Component {
       error,
       getOptionKey = (each, index) => index,
       id,
+      isSelected = (option) => false,
     } = this.props;
 
     let { show } = this.state;
-    console.log(id);
     return (
       <div
         className={classnames('listing-info-select', className, {
@@ -53,7 +53,7 @@ export class ListingInfoSelect extends Component {
             >
               <div className='label-wrapper'>
                 <span className='listing-info-label'>
-                  {label ? displayAs(label) : 'Chọn'}
+                  {value ? displayAs(value) : label ? label : 'Chọn'}
                 </span>
               </div>
               <div className='toggle-icon'>
@@ -65,14 +65,17 @@ export class ListingInfoSelect extends Component {
                 {options.map((each, i) => (
                   <div
                     key={getOptionKey(each, i)}
-                    className={classnames('select-option')}
+                    className={classnames('select-option', {
+                      selected: isSelected(each),
+                    })}
                     onClick={(e) => {
                       e.stopPropagation();
                       onChange(each);
                       this.setState({ show: false });
                     }}
                   >
-                    {displayAs(each)}
+                    {each.icon}
+                    {each.name}
                   </div>
                 ))}
               </div>

@@ -15,7 +15,7 @@ export const itemField = [
     options: [
       {
         name: 'Nhà & vườn',
-        icon: <i class='fas fa-house'></i>,
+        icon: <i className='fas fa-house'></i>,
       },
       {
         name: 'Công cụ',
@@ -34,7 +34,7 @@ export const itemField = [
       },
       {
         name: 'Giải trí',
-        icon: <i class='fas fa-gamepad-alt'></i>,
+        icon: <i className='fas fa-gamepad-alt'></i>,
       },
       {
         name: 'Trò chơi điện tử',
@@ -44,7 +44,7 @@ export const itemField = [
       },
       {
         name: 'Quần áo và phụ kiện',
-        icon: <i class='fas fa-backpack'></i>,
+        icon: <i className='fas fa-backpack'></i>,
       },
       {
         name: 'Túi & hành lý',
@@ -60,7 +60,7 @@ export const itemField = [
       },
       {
         name: 'Gia đình',
-        icon: <i class='fas fa-heart'></i>,
+        icon: <i className='fas fa-heart'></i>,
       },
       {
         name: 'Sức khỏe & làm đẹp',
@@ -281,7 +281,7 @@ export const fieldByCategory = [
     condition: true,
     brand: true,
   },
-  //Classifieds
+  //classNameifieds
   {
     _id: 'Garage Sale',
     name: 'Garage Sale',

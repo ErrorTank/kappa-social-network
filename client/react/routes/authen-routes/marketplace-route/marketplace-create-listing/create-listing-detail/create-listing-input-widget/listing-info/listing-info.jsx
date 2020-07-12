@@ -12,17 +12,19 @@ export class ListingInfo extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      category: null,
-      condition: null,
-      material: null,
+      // category: props.state.category,
+      // condition: props.state.condition,
+      // material: props.state.material,
     };
   }
-
+  // componentWillReceiveProps(nextProps, nextContext) {
+  //   if (nextProps !== this.props) this.forceUpdate();
+  // }
   render() {
     const { state, updateValue } = this.props;
     let { pictureLimit, type, ...other } = state;
     console.log(this.props);
-    let listingInfoID = uuidv4();
+
     return (
       <div className='listing-info'>
         <div className='picture-input'>
@@ -38,31 +40,35 @@ export class ListingInfo extends Component {
           <div className='add-picture-section'></div>
         </div>
 
-        {itemField.map((each, i) => {
-          // console.log(each);
-          return !each.isSelected ? (
-            <ListingInfoInput
-              label={each.name}
-              key={listingInfoID}
-              textArea={each.isTextArea}
-              id={each.englishName}
-              // value={}
-              onChange={(e) => {
-                updateValue(`${each.englishName}`, e.target.value);
-              }}
-            />
-          ) : (
-            // <ListingInfoSelect
-            //   label={each.name}
-            //   options={each.options}
-            //   displayAs={(label) => label}
-            //   key={listingInfoID}
-            //   id={each.englishName}
-            //   // value={each.name}
-            // />
-            <div>ok</div>
-          );
-        })}
+        {type &&
+          itemField.map((each, i) => {
+            // console.log(each);
+            let listingInfoID = uuidv4();
+            return !each.isSelected ? (
+              <ListingInfoInput
+                label={each.name}
+                key={listingInfoID}
+                textArea={each.isTextArea}
+                id={each.englishName}
+                value={state[each.englishName]}
+                onChange={(e) => {
+                  updateValue(`${each.englishName}`, e.target.value);
+                }}
+              />
+            ) : (
+              <ListingInfoSelect
+                label={each.name}
+                options={each.options}
+                displayAs={(label) => label}
+                key={listingInfoID}
+                id={each.englishName}
+                value={state[each.englishName]}
+                onChange={(value) => {
+                  updateValue(`${each.englishName}`, value);
+                }}
+              />
+            );
+          })}
       </div>
     );
   }
