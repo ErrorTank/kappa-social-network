@@ -8,12 +8,14 @@
     width 100%;
     height 58px;
     margin: 0;
-    overflow: hidden;
-    z-index: 0;
     position relative;
+    &:hover{
+      border-color: gray
+    }
     .listing-info-toggle{
       display: flex
       height: 56px;
+      z-index: 1
       .label-wrapper{
         position relative
         width 90%;
@@ -53,6 +55,17 @@
       color #1a1a1a
       font-size 1.4rem
       z-index 1
+      padding: 0 8px;
+      .select-option {
+        padding 5px 10px
+        cursor pointer
+        color #1a1a1a
+        font-weight 500
+        font-size 1.4rem
+        .option-icon{
+          
+        }
+      }
     }
   }
 }

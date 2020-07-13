@@ -42,7 +42,7 @@ export class ListingInfo extends Component {
 
         {type &&
           itemField.map((each, i) => {
-            // console.log(each);
+            console.log(state[each.englishName]);
             let listingInfoID = uuidv4();
             return !each.isSelected ? (
               <ListingInfoInput

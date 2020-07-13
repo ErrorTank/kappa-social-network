@@ -15,7 +15,7 @@ export const itemField = [
     options: [
       {
         name: 'Nhà & vườn',
-        icon: <i className='fas fa-house'></i>,
+        icon: 'fas fa-home-lg-alt',
       },
       {
         name: 'Công cụ',
@@ -34,7 +34,7 @@ export const itemField = [
       },
       {
         name: 'Giải trí',
-        icon: <i className='fas fa-gamepad-alt'></i>,
+        icon: 'fas fa-gamepad-alt',
       },
       {
         name: 'Trò chơi điện tử',
@@ -44,7 +44,7 @@ export const itemField = [
       },
       {
         name: 'Quần áo và phụ kiện',
-        icon: <i className='fas fa-backpack'></i>,
+        icon: 'fas fa-backpack',
       },
       {
         name: 'Túi & hành lý',
@@ -60,7 +60,7 @@ export const itemField = [
       },
       {
         name: 'Gia đình',
-        icon: <i className='fas fa-heart'></i>,
+        icon: 'fas fa-heart',
       },
       {
         name: 'Sức khỏe & làm đẹp',

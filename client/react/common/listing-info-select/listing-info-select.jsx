@@ -36,19 +36,19 @@ export class ListingInfoSelect extends Component {
       isSelected = (option) => false,
     } = this.props;
 
-    let { show } = this.state;
+    console.log(options);
     return (
       <div
         className={classnames('listing-info-select', className, {
           error: !!error,
-          focus: show,
+          focus: this.state.show,
         })}
       >
         <ClickOutside onClickOut={() => this.setState({ show: false })}>
           <label htmlFor={id} className='listing-info-wrapper'>
             <div
               className={classnames('listing-info-toggle')}
-              onClick={() => this.setState({ show: !show })}
+              onClick={() => this.setState({ show: !this.state.show })}
               id={id}
             >
               <div className='label-wrapper'>
@@ -60,7 +60,7 @@ export class ListingInfoSelect extends Component {
                 <i className='fas fa-caret-down'></i>
               </div>
             </div>
-            {show && (
+            {this.state.show && (
               <div className='select-dropdown'>
                 {options.map((each, i) => (
                   <div
@@ -70,12 +70,14 @@ export class ListingInfoSelect extends Component {
                     })}
                     onClick={(e) => {
                       e.stopPropagation();
-                      onChange(each);
+                      onChange(each.name);
                       this.setState({ show: false });
                     }}
                   >
-                    {each.icon}
-                    {each.name}
+                    <div className='option-icon'>
+                      <i className={each.icon}></i>
+                    </div>
+                    <div className='option-name'>{each.name}</div>
                   </div>
                 ))}
               </div>
