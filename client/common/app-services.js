@@ -3,6 +3,7 @@ import {userChatSettings, userInfo, userSearchHistory} from "./states/common";
 import omit from "lodash/omit";
 import { messengerIO} from "../socket/sockets";
 import {messengerApi} from "../api/common/messenger-api";
+import {messageWidgetController} from "../react/layout/authen-layout/create-message-widget/create-message-widget";
 
 const initializeAuthenticateUser = ({userInfo: uInfo, authToken}) => {
     if(authToken){
@@ -14,9 +15,17 @@ const initializeAuthenticateUser = ({userInfo: uInfo, authToken}) => {
         userSearchHistory.setState(uInfo.search_history),
         userChatSettings.setState(uInfo.chat_settings),
         messengerIO.connect({token: authToken})
-            .then((appIO) => {
+            .then((messengerIO) => {
                 messengerApi.sendActiveStatusToAllRelations(true);
-                appIO.emit("join-own-room", {userID: uInfo._id});
+                messengerIO.emit("join-own-room", {userID: uInfo._id});
+                messengerIO.on("new-incoming-message", ({senderID}) => {
+                    console.log("????")
+                    if(senderID){
+                        messageWidgetController.focusOnChatBox({
+                            userID: senderID
+                        })
+                    }
+                })
             })
         // userSearchHistory.setState([
         //     {
@@ -68,10 +77,10 @@ const initializeAuthenticateUser = ({userInfo: uInfo, authToken}) => {
 };
 
 const clearAuthenticateUserSession = () => {
-    console.log("dasdas")
 
     return messengerApi.sendActiveStatusToAllRelations(false)
         .then(() => {
+
             authenCache.clearAuthen();
             messengerIO.disconnect();
             return Promise.all([

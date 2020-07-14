@@ -106,6 +106,10 @@ export class ChatInput extends Component {
         this.setState({filteredSuggestions: this.filterSuggestions(this.state.suggestions, value)});
     }
 
+    componentDidMount() {
+        this.focus();
+    }
+
     filterSuggestions =  (data, keyword) => {
 
         return keyword ? data.map(each => {

@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const {authorizationUserMiddleware} = require("../common/middlewares/common");
 const {asynchronized} = require("../utils/common-utils");
-const {getChatContacts, getChatRoomNicknames,updateChatRoomDefaultEmoji, getGroupChatRoomInvolvesByKeyword, createNewMessage, updateUserNickname, getChatRoomMessages, updateSavedMessagesToSent, seenMessages} = require("../db/db-controllers/chat-room");
+const {getChatContacts, getChatRoomNicknames,updateChatRoomDefaultEmoji, getGroupChatRoomInvolvesByKeyword, createNewMessage, updateUserNickname, getChatRoomMessages, updateSavedMessagesToSent, seenMessages, getChatRoomBrief} = require("../db/db-controllers/chat-room");
 const {getUserBasicInfo} = require("../db/db-controllers/user");
 const {MessageState} = require("../common/const/message-state")
 const fileUpload = require("../common/upload-services/file-upload");
@@ -37,6 +37,15 @@ module.exports = (db, namespacesIO) => {
 
         return createNewMessage({value: req.body, chatRoomID: req.params.chatRoomID}).then((data) => {
             let result = data.toObject();
+            getChatRoomBrief(req.params.chatRoomID).then((cr) => {
+
+                for(let user of cr.involve_person.filter(each => each.related.toString() !== result.sentBy._id.toString())){
+                    console.log(`/messenger-user-room/user/${user.related.toString()}`)
+                    namespacesIO.messenger.to(`/messenger-user-room/user/${user.related.toString()}`).emit('new-incoming-message', {senderID: result.sentBy._id});
+                }
+
+            })
+
             namespacesIO.messenger.to(`/messenger-chat-room/chat-room/${req.params.chatRoomID}`).emit('new-message', {message: result, senderID: result.sentBy._id});
             return res.status(200).json({...result, oldID: req.body._id});
         }).catch(err => next(err));

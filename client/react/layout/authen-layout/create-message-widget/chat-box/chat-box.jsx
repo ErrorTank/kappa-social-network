@@ -132,10 +132,14 @@ export class ChatBox extends KComponent {
             this.io.off("update-message");
             this.io.off("change-message-reactions");
             this.io.off("push-to-seen-by");
-            this.io.emit("left-chat-room", {
-                chatRoomID: this.state.chat_room_brief._id,
-                userID: userInfo.getState()._id
-            });
+            let userID = userInfo.getState()?._id;
+            if(this.state.chat_room_brief._id && userID){
+                this.io.emit("left-chat-room", {
+                    chatRoomID: this.state.chat_room_brief._id,
+                    userID
+                });
+            }
+
         }
     }
 

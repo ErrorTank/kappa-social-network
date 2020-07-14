@@ -228,7 +228,6 @@ export class Message extends Component {
 
                                     />
 
-                                    }}
                                 </div>
                             ) : (
                                 <>
