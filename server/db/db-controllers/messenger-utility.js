@@ -100,7 +100,7 @@ const getUserBubbleChatBrief = (ownerID, userID) => {
             return {
                 ...user,
                 latest_message: (chat_room && chat_room.context.length) ? chat_room.context[chat_room.context.length - 1] : "",
-                unseen_messages: (chat_room.context || []).filter(each => (each.sentBy ? each.sentBy.toString() !== ownerID : false)  && !each.seenBy.find(each => each.toString() === ownerID)).length
+                unseen_messages: (chat_room.context || []).filter(each => (each.sentBy ? each.sentBy.toString() !== ownerID : false)  && !each.seenBy.find(each => each.toString() === ownerID)).map((each) => each._id)
             };
 
         })

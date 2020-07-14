@@ -207,6 +207,13 @@ export class ChatBox extends KComponent {
         }
     };
 
+    componentWillReceiveProps(nextProps) {
+        if(this.props.active === false && nextProps.active){
+            this.utilities.input.editor.focus();
+            this.emitSeenMessageEvent();
+        }
+    }
+
     handleSubmitChat = (chatState) => {
         let newMessage = null;
         if(chatState.content){
@@ -274,6 +281,8 @@ export class ChatBox extends KComponent {
         let messages = this.messageState.getState();
         let userID = userInfo.getState()._id;
         let unseenMessages = messages.filter(each => each.sentBy._id !== userID && each.state === "SENT" && !each.seenBy.find(seen => seen._id === userID));
+        this.props.onSeenMessages(unseenMessages)
+        console.log(unseenMessages)
         if (unseenMessages.length) {
             chatApi.seenMessages(this.state.chat_room_brief._id, unseenMessages)
         }
@@ -374,6 +383,7 @@ export class ChatBox extends KComponent {
                                                 onSubmit={this.handleSubmitChat}
                                                 onFocusEditor={this.emitSeenMessageEvent}
                                                 defaultEmoji={this.state.default_emoji}
+                                                ref={utilities => this.utilities = utilities}
                                             />
                                         </div>
                                     )}

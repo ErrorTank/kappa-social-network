@@ -36,9 +36,9 @@ export class ChatRoomBubble extends Component {
                                  onMouseLeave={() => this.setState({showCloseIcon: false})}
                                  onClick={onClick}
                             >
-                                {showUnseenCount && userInfo?.unseen_messages && (
+                                {showUnseenCount && !!userInfo?.unseen_messages.length && (
                                     <div className="unseen-count">
-                                        <span>{userInfo.unseen_messages < 10 ? userInfo.unseen_messages : "9+"}</span>
+                                        <span>{userInfo.unseen_messages.length < 10 ? userInfo.unseen_messages.length : "9+"}</span>
                                     </div>
                                 )}
                                 {showCloseIcon && (

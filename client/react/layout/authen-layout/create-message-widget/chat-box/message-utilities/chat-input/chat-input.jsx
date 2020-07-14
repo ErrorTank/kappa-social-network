@@ -106,9 +106,6 @@ export class ChatInput extends Component {
         this.setState({filteredSuggestions: this.filterSuggestions(this.state.suggestions, value)});
     }
 
-    componentDidMount() {
-        this.focus();
-    }
 
     filterSuggestions =  (data, keyword) => {
 
@@ -185,7 +182,9 @@ export class ChatInput extends Component {
                                   ref={(element) => {
                                       this.editor = element;
                                   }}
-                                  onFocus={() => this.props.onFocusEditor()}
+                                  onFocus={() => {
+                                      this.props.onFocusEditor()
+                                  }}
                                   onBlur={() => {
                                       this.setState({isTyping: false})
                                       this.emitTypingStatus(false);

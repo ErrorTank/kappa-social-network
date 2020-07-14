@@ -72,6 +72,15 @@ export class CreateMessageWidget extends Component {
         this.setState({userMap:newUserMap });
     };
 
+    seenMessages = (userID, messages) => {
+        if(messages.length){
+            let {userMap} = this.state;
+            let newUserMap = {...userMap, [userID]: {...userMap[userID],  unseen_messages: userMap[userID].unseen_messages.filter(each => !messages.find(msg => msg._id === each))}};
+            this.setState({userMap:newUserMap });
+        }
+
+    };
+
     render() {
         let {showCreatePanel, bubbleList, currentChatBox, userMap} = this.state;
         let {darkMode} = this.props;
@@ -159,7 +168,7 @@ export class CreateMessageWidget extends Component {
                                     active={each === currentChatBox}
                                     onClose={() => this.closeChatBox({userID: each})}
                                     onMinimize={() => this.setState({currentChatBox: null})}
-
+                                    onSeenMessages={(messages) => this.seenMessages(each, messages)}
                                 />
                             ))}
                         </>
