@@ -17,14 +17,12 @@ export class ListingInfo extends Component {
       // material: props.state.material,
     };
   }
-  // componentWillReceiveProps(nextProps, nextContext) {
-  //   if (nextProps !== this.props) this.forceUpdate();
-  // }
 
   render() {
     const { state, updateValue } = this.props;
+
     let { pictureLimit, type, ...other } = state;
-    console.log(this.props);
+    console.log(this.props.state);
 
     return (
       <div className='listing-info'>
@@ -47,12 +45,11 @@ export class ListingInfo extends Component {
             return !each.isSelected ? (
               <ListingInfoInput
                 label={each.name}
-                key={listingInfoID}
+                key={each.englishName}
                 textArea={each.isTextArea}
                 id={each.englishName}
                 value={state[each.englishName]}
                 onChange={(e) => {
-                  console.log(e.target.value);
                   updateValue(`${each.englishName}`, e.target.value);
                 }}
               />

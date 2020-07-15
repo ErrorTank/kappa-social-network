@@ -23,6 +23,7 @@ export class ListingInfoInput extends Component {
       textArea = false,
       id,
       inputType = 'input',
+      value,
       ...others
     } = this.props;
     return (
@@ -46,6 +47,7 @@ export class ListingInfoInput extends Component {
                   onFocus={() => this.setState({ focus: true })}
                   onBlur={() => this.setState({ focus: false })}
                   id={id}
+                  value={value}
                   {...others}
                 ></textarea>
                 <span className='listing-info-label'>{label}</span>
@@ -54,7 +56,7 @@ export class ListingInfoInput extends Component {
               <label
                 htmlFor={id}
                 className={classnames('listing-info-wrapper', {
-                  // 'has-value': value,
+                  'has-value': value,
                 })}
               >
                 <input
@@ -66,6 +68,7 @@ export class ListingInfoInput extends Component {
                   onFocus={() => this.setState({ focus: true })}
                   onBlur={() => this.setState({ focus: false })}
                   id={id}
+                  value={value}
                   {...others}
                   ref={(input) => (this.input = input)}
                 />

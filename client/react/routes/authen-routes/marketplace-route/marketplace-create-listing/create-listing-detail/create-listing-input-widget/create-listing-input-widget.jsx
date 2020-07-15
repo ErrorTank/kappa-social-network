@@ -5,9 +5,7 @@ import { ListingInfo } from './listing-info/listing-info';
 export class CreateListingInputWidget extends Component {
   constructor(props) {
     super(props);
-    this.state = {
-      title: '',
-    };
+    this.state = {};
   }
 
   createInfo = [

@@ -11,6 +11,8 @@ class CreateListingDetail extends KComponent {
     this.state = {
       type: '',
       pictureLimit: '',
+      title: '',
+      price: '',
     };
   }
   updateValue = (key, val) => {
