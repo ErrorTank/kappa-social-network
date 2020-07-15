@@ -132,10 +132,14 @@ export class ChatBox extends KComponent {
             this.io.off("update-message");
             this.io.off("change-message-reactions");
             this.io.off("push-to-seen-by");
-            this.io.emit("left-chat-room", {
-                chatRoomID: this.state.chat_room_brief._id,
-                userID: userInfo.getState()._id
-            });
+            let userID = userInfo.getState()?._id;
+            if(this.state.chat_room_brief._id && userID){
+                this.io.emit("left-chat-room", {
+                    chatRoomID: this.state.chat_room_brief._id,
+                    userID
+                });
+            }
+
         }
     }
 
@@ -180,6 +184,15 @@ export class ChatBox extends KComponent {
             special: MESSAGE_TYPES.CASUAL,
             hyperlinks: state.hyperlinks || [],
             state: MessageState.CACHED,
+            reactions: {
+                angry: [],
+                cry: [],
+                laugh: [],
+                love: [],
+                thump_down: [],
+                thump_up: [],
+                wow: [],
+            },
             seenBy: [],
             temp: true,
             needUploadFile,
@@ -193,6 +206,13 @@ export class ChatBox extends KComponent {
             } : null
         }
     };
+
+    componentWillReceiveProps(nextProps) {
+        if(this.props.active === false && nextProps.active){
+            this.utilities.input.editor.focus();
+            this.emitSeenMessageEvent();
+        }
+    }
 
     handleSubmitChat = (chatState) => {
         let newMessage = null;
@@ -261,6 +281,8 @@ export class ChatBox extends KComponent {
         let messages = this.messageState.getState();
         let userID = userInfo.getState()._id;
         let unseenMessages = messages.filter(each => each.sentBy._id !== userID && each.state === "SENT" && !each.seenBy.find(seen => seen._id === userID));
+        this.props.onSeenMessages(unseenMessages)
+        console.log(unseenMessages)
         if (unseenMessages.length) {
             chatApi.seenMessages(this.state.chat_room_brief._id, unseenMessages)
         }
@@ -361,6 +383,7 @@ export class ChatBox extends KComponent {
                                                 onSubmit={this.handleSubmitChat}
                                                 onFocusEditor={this.emitSeenMessageEvent}
                                                 defaultEmoji={this.state.default_emoji}
+                                                ref={utilities => this.utilities = utilities}
                                             />
                                         </div>
                                     )}

@@ -316,6 +316,17 @@ const updateMessageReaction = (chatRoomID,userID,  messageID, reactionConfig) =>
         })
 }
 
+const getChatRoomBrief = (chatRoomID) => {
+    return ChatRoom.findOne({_id: ObjectId(chatRoomID)})
+        .lean()
+        .then((data) => {
+            return omit({
+                ...data,
+                latest_message: data ? data.context[data.context.length - 1] : ""
+            }, "context")
+        })
+}
+
 module.exports = {
     getChatContacts,
     getGroupChatRoomInvolvesByKeyword,
@@ -327,5 +338,6 @@ module.exports = {
     getChatRoomNicknames,
     updateUserNickname,
     updateChatRoomDefaultEmoji,
-    updateMessageReaction
+    updateMessageReaction,
+    getChatRoomBrief
 };

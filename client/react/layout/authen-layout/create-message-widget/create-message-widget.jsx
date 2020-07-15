@@ -9,6 +9,7 @@ import {ChatRoomBubble} from "./chat-room-bubble/chat-room-bubble";
 import {ChatBox} from "./chat-box/chat-box";
 import omit from "lodash/omit"
 import {CollapseBubbles} from "../collapse-bubble/collapse-bubbles";
+import {messengerApi} from "../../../../api/common/messenger-api";
 
 export let messageWidgetController = {};
 
@@ -39,6 +40,16 @@ export class CreateMessageWidget extends Component {
                 }
 
             },
+            focusOnChatBox: ({userID}) => {
+                let {bubbleList} = this.state;
+                if (bubbleList.indexOf(userID) === -1) {
+                    this.setState({currentChatBox: userID, showCreatePanel: false, bubbleList: bubbleList.concat(userID)});
+                }else{
+                    if(this.state.currentChatBox !== userID){
+                        messengerApi.getUserBubbleBriefInfo(userID).then(data => this.handleUserBriefFetch(userID, data));
+                    }
+                }
+            }
         };
     }
 
@@ -61,6 +72,15 @@ export class CreateMessageWidget extends Component {
         this.setState({userMap:newUserMap });
     };
 
+    seenMessages = (userID, messages) => {
+        if(messages.length){
+            let {userMap} = this.state;
+            let newUserMap = {...userMap, [userID]: {...userMap[userID],  unseen_messages: userMap[userID].unseen_messages.filter(each => !messages.find(msg => msg._id === each))}};
+            this.setState({userMap:newUserMap });
+        }
+
+    };
+
     render() {
         let {showCreatePanel, bubbleList, currentChatBox, userMap} = this.state;
         let {darkMode} = this.props;
@@ -81,6 +101,7 @@ export class CreateMessageWidget extends Component {
                                     onFetch={(data) => this.handleUserBriefFetch(each, data)}
                                     onClose={() => this.closeChatBox({userID: each})}
                                     onClick={() => this.handleClickBubbleBox({userID: each})}
+                                    showUnseenCount={this.state.currentChatBox !== each}
                                 />
                             </div>
                         ))}
@@ -147,7 +168,7 @@ export class CreateMessageWidget extends Component {
                                     active={each === currentChatBox}
                                     onClose={() => this.closeChatBox({userID: each})}
                                     onMinimize={() => this.setState({currentChatBox: null})}
-
+                                    onSeenMessages={(messages) => this.seenMessages(each, messages)}
                                 />
                             ))}
                         </>
