@@ -20,6 +20,7 @@ export class ListingInfo extends Component {
   // componentWillReceiveProps(nextProps, nextContext) {
   //   if (nextProps !== this.props) this.forceUpdate();
   // }
+
   render() {
     const { state, updateValue } = this.props;
     let { pictureLimit, type, ...other } = state;
@@ -42,7 +43,6 @@ export class ListingInfo extends Component {
 
         {type &&
           itemField.map((each, i) => {
-            console.log(state[each.englishName]);
             let listingInfoID = uuidv4();
             return !each.isSelected ? (
               <ListingInfoInput
@@ -52,6 +52,7 @@ export class ListingInfo extends Component {
                 id={each.englishName}
                 value={state[each.englishName]}
                 onChange={(e) => {
+                  console.log(e.target.value);
                   updateValue(`${each.englishName}`, e.target.value);
                 }}
               />
@@ -59,12 +60,12 @@ export class ListingInfo extends Component {
               <ListingInfoSelect
                 label={each.name}
                 options={each.options}
-                displayAs={(label) => label}
+                displayAs={(item) => item}
                 key={listingInfoID}
                 id={each.englishName}
                 value={state[each.englishName]}
                 onChange={(value) => {
-                  updateValue(`${each.englishName}`, value);
+                  updateValue(`${each.englishName}`, value.name);
                 }}
               />
             );

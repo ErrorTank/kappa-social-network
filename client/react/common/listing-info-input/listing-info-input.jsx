@@ -23,7 +23,6 @@ export class ListingInfoInput extends Component {
       textArea = false,
       id,
       inputType = 'input',
-      value,
       ...others
     } = this.props;
     return (
@@ -55,7 +54,7 @@ export class ListingInfoInput extends Component {
               <label
                 htmlFor={id}
                 className={classnames('listing-info-wrapper', {
-                  'has-value': value,
+                  // 'has-value': value,
                 })}
               >
                 <input

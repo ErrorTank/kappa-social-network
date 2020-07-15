@@ -36,7 +36,7 @@ export class ListingInfoSelect extends Component {
       isSelected = (option) => false,
     } = this.props;
 
-    console.log(options);
+    // console.log(options);
     return (
       <div
         className={classnames('listing-info-select', className, {
@@ -70,14 +70,16 @@ export class ListingInfoSelect extends Component {
                     })}
                     onClick={(e) => {
                       e.stopPropagation();
-                      onChange(each.name);
+                      onChange(each);
                       this.setState({ show: false });
                     }}
                   >
-                    <div className='option-icon'>
-                      <i className={each.icon}></i>
-                    </div>
-                    <div className='option-name'>{each.name}</div>
+                    <>
+                      <div className='option-icon'>
+                        {each.icon && <i className={each.icon}></i>}
+                      </div>
+                      <div className='option-name'>{each.name}</div>
+                    </>
                   </div>
                 ))}
               </div>
