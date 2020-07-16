@@ -21,6 +21,7 @@ const FeedRoute = lazy(
   delayLoad(() => import('./authen-routes/feed-route/feed-route'))
 );
 import LoginRoute from './guest-routes/login-route/login-route';
+
 const ForgotPasswordRoute = lazy(
   delayLoad(() =>
     import('./guest-routes/forgot-password-route/forgot-password-route')
@@ -196,6 +197,7 @@ export class App extends React.Component {
         <ThemeController>
           {() => (
               <>
+
                 <NotificationPrompt
                     value={this.state.showNotificationPrompt}
                     onChange={(value) => this.setState({ showNotificationPrompt: value })}
