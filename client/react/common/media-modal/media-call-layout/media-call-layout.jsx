@@ -22,11 +22,15 @@ export class MediaCallLayout extends Component {
             .on('end', this.endCall.bind(this, false))
 
     }
+
+    startCall = () => {
+
+    }
+
     render() {
-        return (
-            <div>
-                
-            </div>
-        );
+        return this.props.children({
+            startCall: this.startCall,
+
+        })
     }
 }

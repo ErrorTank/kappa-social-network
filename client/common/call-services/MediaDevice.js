@@ -5,7 +5,7 @@ import {appModal} from "../../react/common/modal/modals";
 /**
  * Manage all media devices
  */
-class MediaDevice extends Emitter {
+export class MediaDevice extends Emitter {
   /**
    * Start media devices and send stream
    */
@@ -66,4 +66,3 @@ class MediaDevice extends Emitter {
   }
 }
 
-export default MediaDevice;

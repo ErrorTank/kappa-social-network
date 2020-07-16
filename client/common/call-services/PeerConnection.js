@@ -1,10 +1,10 @@
-import MediaDevice from './MediaDevice';
+import {MediaDevice} from './MediaDevice';
 import {Emitter} from './Emitter';
 import {messengerIO} from "../../socket/sockets";
 
 const PC_CONFIG = { iceServers: [{ urls: ['stun:stun.l.google.com:19302'] }] };
 
-class PeerConnection extends Emitter {
+export class PeerConnection extends Emitter {
   /**
      * Create a PeerConnection.
      * @param {String} friendID - ID of the friend you want to call.
@@ -99,4 +99,3 @@ class PeerConnection extends Emitter {
   }
 }
 
-export default PeerConnection;
