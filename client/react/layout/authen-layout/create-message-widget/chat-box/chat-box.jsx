@@ -240,7 +240,7 @@ export class ChatBox extends KComponent {
                     sentBy: newMessage.reply_for.sentBy._id
                 } : null
             }, ["state", "temp", "needUploadFile", "file"]))
-                .then(newServerMessage => {
+                .then((newServerMessage) => {
                     let msgs = [...this.messageState.getState()];
                     let replaceIndex = msgs.findIndex(each => each._id === newServerMessage.oldID);
                     msgs.splice(replaceIndex, 1, omit(newServerMessage, "oldID"));

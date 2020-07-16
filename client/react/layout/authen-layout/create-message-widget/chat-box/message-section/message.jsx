@@ -208,13 +208,7 @@ export class Message extends Component {
                             disabled: this.state.downloading,
                             isDeleted: message.is_deleted
                         })} onClick={() => message.file && this.onClickFile()}>
-                            {haveReaction(message.reactions) && !message.is_deleted && (
-                                <div className="reaction-bottom">
-                                    <ReactionDisplay
-                                        reactions={message.reactions}
-                                    />
-                                </div>
-                            )}
+
                             {message.is_deleted ? (
                                 <div className="deleted-msg">
                                     {isOwned ? "Tin nhắn đã bị bạn xóa bỏ" : message.sentBy.basic_info.username + " đã xóa tin nhắn này"}
@@ -271,6 +265,13 @@ export class Message extends Component {
                             )}
 
                         </div>
+                        {haveReaction(message.reactions) && !message.is_deleted && (
+                            <div className="reaction-bottom">
+                                <ReactionDisplay
+                                    reactions={message.reactions}
+                                />
+                            </div>
+                        )}
                     </div>
 
 
