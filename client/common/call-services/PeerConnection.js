@@ -28,17 +28,17 @@ export class PeerConnection extends Emitter {
    * @param callType
    * @param chatRoomID
    */
-  start(isCaller, config, callType, chatRoomID) {
+  start(isCaller,  callType) {
     this.mediaDevice
       .on('stream', (stream) => {
         stream.getTracks().forEach((track) => {
           this.pc.addTrack(track, stream);
         });
         this.emit('localStream', stream);
-        if (isCaller) this.socket.emit('request', { callType, chatRoomID});
+        if (isCaller) this.socket.emit('request', { callType, chatRoomID: this.chatRoomID});
         else this.createOffer();
       })
-      .start(config);
+      .start();
 
     return this;
   }
@@ -49,7 +49,7 @@ export class PeerConnection extends Emitter {
    */
   stop(isStarter) {
     if (isStarter) {
-      this.socket.emit('end', { chatRoomID });
+      this.socket.emit('end', { chatRoomID: this.chatRoomID });
     }
     this.mediaDevice.stop();
     this.pc.close();
@@ -74,7 +74,7 @@ export class PeerConnection extends Emitter {
 
   getDescription(desc) {
     this.pc.setLocalDescription(desc);
-    this.socket.emit('call', { to: this.friendID, sdp: desc });
+    this.socket.emit('call', { chatRoomID: this.chatRoomID, sdp: desc });
     return this;
   }
 

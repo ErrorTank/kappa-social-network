@@ -27,17 +27,19 @@ export class MediaCallLayout extends Component {
         //         } else this.pc.addIceCandidate(data.candidate);
         //     })
         //     .on('end', this.endCall.bind(this, false))
-
+        if(this.props.isCaller){
+            this.startCall(true);
+        }
     }
 
-    startCall = (isCaller, config) => {
-        this.pc = new PeerConnection(this.props.chatRoomID)
+    startCall = (isCaller) => {
+        this.pc = new PeerConnection(this.props.callTo)
             .on('localStream', (src) => {
                 const newState = { callStatus: isCaller ? CALL_STATUS.CALLING : CALL_STATUS.ACTIVE, localSrc: src };
                 this.setState(newState);
             })
             .on('peerStream', (src) => this.setState({ peerSrc: src }))
-            .start(isCaller, config, this.props.callType);
+            .start(isCaller, this.props.callType);
 
     };
 

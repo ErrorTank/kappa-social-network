@@ -146,7 +146,7 @@ export class ChatBox extends KComponent {
 
     startVideoCall = () => {
         let openVideoModal = callServices.createCallModal(CALL_TYPES.VIDEO);
-        openVideoModal({isCaller: true, chatRoomID: this.props.chatRoomID, multiple: false})
+        openVideoModal({isCaller: true, chatRoomID: this.props.chatRoomID, multiple: false, callTo: this.state.chat_room_brief.involve_person.filter(each => each.related !== userInfo.getState().id)[0].related})
             .then(callInfo => {
 
             });
@@ -154,7 +154,7 @@ export class ChatBox extends KComponent {
 
     startVoiceCall = () => {
         let openVoiceModal = callServices.createCallModal(CALL_TYPES.VOICE);
-        openVoiceModal({isCaller: true, chatRoomID: this.props.chatRoomID, multiple: false})
+        openVoiceModal({isCaller: true, chatRoomID: this.props.chatRoomID, multiple: false, callTo: this.state.chat_room_brief.involve_person.filter(each => each.related !== userInfo.getState().id)[0].related})
             .then(callInfo => {
 
             });

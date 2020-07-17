@@ -5,7 +5,7 @@ import {videoCallModal} from "../../react/common/media-modal/video-call-modal/vi
 export const CALL_TYPES = {
     "VOICE": 1,
     "VIDEO": 2
-}
+};
 
 
 
@@ -24,7 +24,7 @@ const createCallServices = () => {
             return (config) => {
                 let modal = type === CALL_TYPES.VOICE ? voiceCallModal : videoCallModal;
                 return modal.open({
-                    ...config,
+                    config,
                     clientID
                 })
             }
