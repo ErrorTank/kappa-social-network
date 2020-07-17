@@ -58,22 +58,14 @@
       font-size 1.4rem
       z-index 1
       padding: 0 8px;
-      .select-option {
+      .not-option{
         padding  0 8px
         color #1a1a1a
         font-weight 500
         font-size 1.4rem
         min-height: 44px;
-        &:hover {
-          background-color darken(white, 5%)
-          cursor pointer
-        }
-
-        &.disabled {
-          cursor none
-        }
-
-        .optionIcon{
+        cursor none
+        .displayIcon{
           margin: 8px 12px 8px 0;
           display: inline-block;
           border-radius: 50%;
@@ -88,14 +80,32 @@
             color: lightIcon;
           }
         }
-        .optionName{
+        .displayName{
           display inline-block;
           padding: 12px 0;
           font-size: 15px;
         }
-        .addition{
-          padding-left: 48px;
+      }
+      .select-option {
+        padding  0 8px
+        color #1a1a1a
+        font-weight 500
+        font-size 1.4rem
+        min-height: 44px;
+        &:hover {
+          background-color darken(white, 5%)
+          cursor pointer
+        }
+
+        &.disabled {
+          cursor none
+        }
+        
+        .option-name{
           font-weight: 400;
+          display inline-block;
+          padding: 12px 0 12px 48px;
+          font-size: 15px;
         }
       }
     }

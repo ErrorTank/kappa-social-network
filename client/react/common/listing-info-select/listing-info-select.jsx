@@ -62,37 +62,40 @@ export class ListingInfoSelect extends Component {
             </div>
             {this.state.show && (
               <div className='select-dropdown'>
-                {options.map((each, i) => (
-                  <div
-                    key={getOptionKey(each, i)}
-                    className={classnames('select-option', {
-                      disabled: each.isDisabled,
-                      selected: isSelected(each),
-                    })}
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      onChange(each);
-                      this.setState({ show: false });
-                    }}
-                  >
-                    <>
+                {options.map((each, i) => {
+                  return each.isDisabled ? (
+                    <div className='not-option'>
                       <div
                         className={classnames({
-                          optionIcon: each.icon,
+                          displayIcon: each.icon,
                         })}
                       >
                         {each.icon && <i className={each.icon}></i>}
                       </div>
                       <div
-                        className={classnames('optionName', {
+                        className={classnames('displayName', {
                           addition: !each.icon,
                         })}
                       >
                         {each.name}
                       </div>
-                    </>
-                  </div>
-                ))}
+                    </div>
+                  ) : (
+                    <div
+                      key={getOptionKey(each, i)}
+                      className={classnames('select-option', {
+                        selected: isSelected(each),
+                      })}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        onChange(each);
+                        this.setState({ show: false });
+                      }}
+                    >
+                      <div className='option-name'>{each.name}</div>
+                    </div>
+                  );
+                })}
               </div>
             )}
           </label>
