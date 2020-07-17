@@ -30,14 +30,14 @@ export class MediaCallLayout extends Component {
 
     }
 
-    startCall = (isCaller, friendID, config) => {
-        this.pc = new PeerConnection(friendID)
+    startCall = (isCaller, config) => {
+        this.pc = new PeerConnection(this.props.chatRoomID)
             .on('localStream', (src) => {
                 const newState = { callStatus: isCaller ? CALL_STATUS.CALLING : CALL_STATUS.ACTIVE, localSrc: src };
                 this.setState(newState);
             })
             .on('peerStream', (src) => this.setState({ peerSrc: src }))
-            .start(isCaller, config, this.props.);
+            .start(isCaller, config, this.props.callType);
 
     };
 

@@ -19,9 +19,8 @@ const initializeAuthenticateUser = ({userInfo: uInfo, authToken}) => {
             .then((messengerIO) => {
                 messengerApi.sendActiveStatusToAllRelations(true);
                 messengerIO.emit("join-own-room", {userID: uInfo._id});
-                callServices.initClientID(messengerIO.id);
+                callServices.initClientID(uInfo._id);
                 messengerIO.on("new-incoming-message", ({senderID}) => {
-                    console.log("????")
                     if(senderID){
                         messageWidgetController.focusOnChatBox({
                             userID: senderID

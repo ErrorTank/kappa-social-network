@@ -6,36 +6,36 @@ const PC_CONFIG = { iceServers: [{ urls: ['stun:stun.l.google.com:19302'] }] };
 
 export class PeerConnection extends Emitter {
   /**
-     * Create a PeerConnection.
-     * @param {String} friendID - ID of the friend you want to call.
-     */
-  constructor(friendID) {
+   * Create a PeerConnection.
+   * @param chatRoomID
+   */
+  constructor(chatRoomID) {
     super();
     this.socket = messengerIO.getIOInstance();
     this.pc = new RTCPeerConnection(PC_CONFIG);
     this.pc.onicecandidate = (event) => this.socket.emit('call', {
-      to: this.friendID,
       candidate: event.candidate
     });
     this.pc.ontrack = (event) => this.emit('peerStream', event.streams[0]);
-
+    this.chatRoomID = chatRoomID;
     this.mediaDevice = new MediaDevice();
-    this.friendID = friendID;
   }
 
   /**
    * Starting the call
    * @param {Boolean} isCaller
    * @param {Object} config - configuration for the call {audio: boolean, video: boolean}
+   * @param callType
+   * @param chatRoomID
    */
-  start(isCaller, config) {
+  start(isCaller, config, callType, chatRoomID) {
     this.mediaDevice
       .on('stream', (stream) => {
         stream.getTracks().forEach((track) => {
           this.pc.addTrack(track, stream);
         });
         this.emit('localStream', stream);
-        if (isCaller) this.socket.emit('request', { to: this.friendID });
+        if (isCaller) this.socket.emit('request', { callType, chatRoomID});
         else this.createOffer();
       })
       .start(config);
@@ -49,7 +49,7 @@ export class PeerConnection extends Emitter {
    */
   stop(isStarter) {
     if (isStarter) {
-      this.socket.emit('end', { to: this.friendID });
+      this.socket.emit('end', { chatRoomID });
     }
     this.mediaDevice.stop();
     this.pc.close();

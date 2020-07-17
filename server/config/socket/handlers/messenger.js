@@ -26,10 +26,8 @@ module.exports = (io, socket, context) => {
 
     });
     socket.on("request", function (data) {
-        if(data.userID){
-            console.log(`User ${data.userID} join their own room!`)
-            socket.userID = data.userID;
-            socket.join(`/messenger-user-room/user/${data.userID}`);
+        if(data.callType && data.chatRoomID){
+            console.log(io.nsps('/messenger').sockets.adapter.rooms[`/messenger-chat-room/chat-room/${data.chatRoomID}`].sockets)
         }
 
     });
