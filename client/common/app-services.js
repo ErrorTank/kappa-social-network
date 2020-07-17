@@ -4,6 +4,7 @@ import omit from "lodash/omit";
 import { messengerIO} from "../socket/sockets";
 import {messengerApi} from "../api/common/messenger-api";
 import {messageWidgetController} from "../react/layout/authen-layout/create-message-widget/create-message-widget";
+import {callServices} from "./call-services/call-services";
 
 const initializeAuthenticateUser = ({userInfo: uInfo, authToken}) => {
     if(authToken){
@@ -18,6 +19,7 @@ const initializeAuthenticateUser = ({userInfo: uInfo, authToken}) => {
             .then((messengerIO) => {
                 messengerApi.sendActiveStatusToAllRelations(true);
                 messengerIO.emit("join-own-room", {userID: uInfo._id});
+                callServices.initClientID(messengerIO.id);
                 messengerIO.on("new-incoming-message", ({senderID}) => {
                     console.log("????")
                     if(senderID){

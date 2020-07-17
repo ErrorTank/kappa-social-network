@@ -20,8 +20,8 @@ const createCallServices = () => {
             })
         },
         createCallModal: type => {
-            return ({config}) => {
-                let modal = type === CALL_TYPES.VOICE ? voiceCallModal : videoCallModal
+            return ({config = null}) => {
+                let modal = type === CALL_TYPES.VOICE ? voiceCallModal : videoCallModal;
                 return modal.open({
                     config,
                     clientID

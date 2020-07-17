@@ -18,6 +18,7 @@ import {KComponent} from "../../../../common/k-component";
 import {messengerIO} from "../../../../../socket/sockets";
 import {ChatBoxHeaderUserInfo} from "./chat-box-header-user-info";
 import {MESSAGE_TYPES} from "./message-section/message";
+import {CALL_TYPES, callServices} from "../../../../../common/call-services/call-services";
 
 export const MessageState = {
     CACHED: "CACHED",
@@ -147,6 +148,13 @@ export class ChatBox extends KComponent {
 
     };
 
+    startVoiceCall = () => {
+        let openVoiceModal = callServices.createCallModal(CALL_TYPES.VOICE);
+        openVoiceModal({config: {isCaller: true}})
+            .then(callInfo => {
+
+            });
+    };
 
     headerActions = [
         {

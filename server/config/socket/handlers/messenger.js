@@ -25,6 +25,14 @@ module.exports = (io, socket, context) => {
 
 
     });
+    socket.on("request", function (data) {
+        if(data.userID){
+            console.log(`User ${data.userID} join their own room!`)
+            socket.userID = data.userID;
+            socket.join(`/messenger-user-room/user/${data.userID}`);
+        }
+
+    });
     socket.on("join-own-room", function (data) {
         if(data.userID){
             console.log(`User ${data.userID} join their own room!`)
