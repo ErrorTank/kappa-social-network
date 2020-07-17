@@ -16,14 +16,15 @@ const createCallServices = () => {
         createIncomingModal: (type) => {
             return ({callFrom}) => incomingMediaModal.open({
                 type,
-                callFrom
+                callFrom,
+                clientID
             })
         },
         createCallModal: type => {
-            return ({config = null}) => {
+            return (config) => {
                 let modal = type === CALL_TYPES.VOICE ? voiceCallModal : videoCallModal;
                 return modal.open({
-                    config,
+                    ...config,
                     clientID
                 })
             }
