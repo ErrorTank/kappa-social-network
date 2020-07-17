@@ -16,6 +16,7 @@ export const itemField = [
       {
         name: 'Nhà & vườn',
         icon: 'fas fa-home-lg-alt',
+        isDisabled: true,
       },
       {
         name: 'Công cụ',
@@ -35,6 +36,7 @@ export const itemField = [
       {
         name: 'Giải trí',
         icon: 'fas fa-gamepad-alt',
+        isDisabled: true,
       },
       {
         name: 'Trò chơi điện tử',
@@ -61,6 +63,7 @@ export const itemField = [
       {
         name: 'Gia đình',
         icon: 'fas fa-heart',
+        isDisabled: true,
       },
       {
         name: 'Sức khỏe & làm đẹp',
@@ -72,7 +75,12 @@ export const itemField = [
         name: 'Trẻ sơ sinh & trẻ nhỏ',
       },
       {
-        name: 'Đồ chơi và trò chơi',
+        name: 'Đồ chơi & trò chơi',
+      },
+      {
+        name: 'Đồ điện tử',
+        icon: 'fas fa-mobile-alt',
+        isDisabled: true,
       },
       // still missing, can add more
     ],

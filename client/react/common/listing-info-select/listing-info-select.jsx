@@ -66,6 +66,7 @@ export class ListingInfoSelect extends Component {
                   <div
                     key={getOptionKey(each, i)}
                     className={classnames('select-option', {
+                      disabled: each.isDisabled,
                       selected: isSelected(each),
                     })}
                     onClick={(e) => {
@@ -75,10 +76,20 @@ export class ListingInfoSelect extends Component {
                     }}
                   >
                     <>
-                      <div className='option-icon'>
+                      <div
+                        className={classnames({
+                          optionIcon: each.icon,
+                        })}
+                      >
                         {each.icon && <i className={each.icon}></i>}
                       </div>
-                      <div className='option-name'>{each.name}</div>
+                      <div
+                        className={classnames('optionName', {
+                          addition: !each.icon,
+                        })}
+                      >
+                        {each.name}
+                      </div>
                     </>
                   </div>
                 ))}
