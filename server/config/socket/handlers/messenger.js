@@ -26,7 +26,7 @@ module.exports = (io, socket, context) => {
 
     });
     socket.on("request", function (data) {
-        if(data.callType && data.chatRoomID){
+        if(data.callType && data.chatRoomID && data.friendID){
             console.log(io.nsps('/messenger').sockets.adapter.rooms[`/messenger-chat-room/chat-room/${data.chatRoomID}`].sockets)
         }
 
