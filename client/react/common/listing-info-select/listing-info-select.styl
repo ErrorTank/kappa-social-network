@@ -58,6 +58,13 @@
       font-size 1.4rem
       z-index 1
       padding: 0 8px;
+      .linked{
+        cursor pointer
+        &:hover {
+          background-color darken(white, 5%)
+          cursor pointer
+        }
+      }
       .not-option{
         padding  0 8px
         color #1a1a1a
@@ -65,6 +72,7 @@
         font-size 1.4rem
         min-height: 44px;
         cursor none
+        
         .displayIcon{
           margin: 8px 12px 8px 0;
           display: inline-block;

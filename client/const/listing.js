@@ -82,9 +82,100 @@ export const itemField = [
         icon: 'fas fa-mobile-alt',
         isDisabled: true,
       },
-      // still missing, can add more
+      {
+        name: 'Điện tử & máy tính',
+      },
+      {
+        name: 'Điện thoại di động',
+      },
+      {
+        name: 'Sở thích',
+        icon: 'fas fa-guitar',
+        isDisabled: true,
+      },
+      {
+        name: 'Xe đạp',
+      },
+      {
+        name: 'Thủ công mỹ nghệ',
+      },
+      {
+        name: 'Thể thao & hoạt động ngoài trời',
+      },
+      {
+        name: 'Phụ tùng xe hơi',
+      },
+      {
+        name: 'Nhạc cụ',
+      },
+      {
+        name: 'Đồ cổ và bộ sưu tập',
+      },
+      {
+        name: 'Rao vặt',
+        icon: 'fas fa-binoculars',
+        isDisabled: true,
+      },
+      {
+        name: 'Thanh lý đồ cũ',
+      },
+      {
+        name: 'hỗn hợp',
+      },
+      {
+        name: 'Phương tiện',
+        icon: 'fas fa-car',
+        isDisabled: true,
+        link: '/marketplace/create/vehicle',
+      },
+      {
+        name: 'Nhà đất',
+        icon: 'fas fa-home',
+        isDisabled: true,
+        link: '/marketplace/create/rental',
+      },
     ],
   },
+
+  // category special input
+
+  {
+    name: 'Tình Trạng',
+    englishName: 'condition',
+    isSelected: true,
+    categoryDepend: true,
+    options: [
+      { name: 'Mới' },
+      { name: 'Đã qua sử dụng - Như mới' },
+      { name: 'Đã qua sử dụng - Tốt' },
+      { name: 'Đã qua sử dụng - Khá tốt' },
+    ],
+  },
+  {
+    name: 'Thương hiệu',
+    englishName: 'brand',
+    categoryDepend: true,
+  },
+  {
+    name: 'Chất liệu',
+    englishName: 'material',
+    isSelected: true,
+    categoryDepend: true,
+    options: [
+      { name: 'Gỗ' },
+      { name: 'Kim loại' },
+      { name: 'Thủy tinh' },
+      { name: 'Da' },
+      { name: 'Vải sợi' },
+      { name: 'Đá' },
+      { name: 'Nhựa' },
+      { name: 'Tre' },
+      { name: 'Wicker' },
+      { name: 'Không rõ' },
+    ],
+  },
+
+  //
   {
     name: 'Mô tả',
     englishName: 'decription',
@@ -97,7 +188,7 @@ export const itemField = [
     options: [
       { name: 'Niêm yết là chỉ còn 1 mặt hàng' },
       { name: 'Niêm yết là còn hàng' },
-      { name: 'Niêm yết là hết hàng' },
+      //  { name: 'Niêm yết là hết hàng' },
     ],
   },
 ];
@@ -231,7 +322,7 @@ export const fieldByCategory = [
   //Electronics
   {
     _id: 'Electronics & Computers',
-    name: 'Electronics & Computers',
+    name: 'Điện tử & máy tính',
     //must
     condition: true,
     brand: true,
@@ -240,7 +331,7 @@ export const fieldByCategory = [
   },
   {
     _id: 'Mobile Phones',
-    name: 'Mobile Phones',
+    name: 'Điện thoại di động',
     //must
     condition: true,
     carrie: true,
@@ -249,42 +340,42 @@ export const fieldByCategory = [
   //Hobbies
   {
     _id: 'Bicycles',
-    name: 'Bicycles',
+    name: 'Xe đạp',
     //must
     condition: true,
     brand: true,
   },
   {
     _id: 'Arts & Crafts',
-    name: 'Arts & Crafts',
+    name: 'Thủ công mỹ nghệ',
     //must
     condition: true,
     brand: true,
   },
   {
     _id: 'Sports & Outdoors',
-    name: 'Sports & Outdoors',
+    name: 'Thể thao & hoạt động ngoài trời',
     //must
     condition: true,
     brand: true,
   },
   {
     _id: 'Auto Parts',
-    name: 'Auto Parts',
+    name: 'Phụ tùng xe hơi',
     //must
     condition: true,
     brand: true,
   },
   {
     _id: 'Musical Instruments',
-    name: 'Musical Instruments',
+    name: 'Nhạc cụ',
     //must
     condition: true,
     brand: true,
   },
   {
     _id: 'Antiques & Collectibles',
-    name: 'Antiques & Collectibles',
+    name: 'Đồ cổ và bộ sưu tập',
     //must
     condition: true,
     brand: true,
@@ -292,14 +383,14 @@ export const fieldByCategory = [
   //classNameifieds
   {
     _id: 'Garage Sale',
-    name: 'Garage Sale',
+    name: 'Thanh lý đồ cũ',
     //must
     condition: true,
     brand: true,
   },
   {
     _id: 'Miscellaneous',
-    name: 'Miscellaneous',
+    name: 'hỗn hợp',
     //must
     condition: true,
     brand: true,
