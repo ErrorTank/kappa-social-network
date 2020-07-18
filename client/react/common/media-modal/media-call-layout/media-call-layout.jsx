@@ -5,8 +5,10 @@ import {CALL_TYPES} from "../../../../common/call-services/call-services";
 import {MediaDevice} from "../../../../common/call-services/MediaDevice";
 
 const CALL_STATUS = {
-    "CALLING": 1,
-    "ACTIVE": 2,
+    "CONNECTING": 1,
+    "RINGING": 2,
+    "CALLING": 3,
+    "END": 4
 };
 
 export class MediaCallLayout extends Component {
@@ -15,7 +17,7 @@ export class MediaCallLayout extends Component {
         this.state = {
             localSrc: null,
             peerSrc: null,
-            callStatus: null,
+            callStatus: props.isCaller ? CALL_STATUS.CONNECTING : CALL_STATUS.CALLING,
             microphone_granted: false,
             webcam_granted: false,
             init: true,
@@ -41,7 +43,7 @@ export class MediaCallLayout extends Component {
             init: false
         }
         if(this.props.callType === CALL_TYPES.VOICE ? state.microphone_granted !== false : (state.microphone_granted !== false && state.webcam_granted !== false)){
-            this.startCall(true);
+            this.startCall(this.props.isCaller);
         }else{
             state.error = true;
         }
@@ -52,7 +54,7 @@ export class MediaCallLayout extends Component {
     startCall = (isCaller) => {
         this.pc = new PeerConnection(this.props.callTo, this.props.chatRoomID, this.props.callType)
             .on('localStream', (src) => {
-                const newState = {callStatus: isCaller ? CALL_STATUS.CALLING : CALL_STATUS.ACTIVE, localSrc: src};
+                const newState = {localSrc: src};
                 this.setState(newState);
             })
             .on('peerStream', (src) => this.setState({peerSrc: src}))
