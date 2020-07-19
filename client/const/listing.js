@@ -194,8 +194,6 @@ export const itemField = [
 ];
 
 export const fieldByCategory = [
-  // item 10 pic, vehicle 20 and house 50, should consider
-
   //brand is option too, :v
 
   //Home & Garden
@@ -400,19 +398,86 @@ export const fieldByCategory = [
 export const listingVehicle = [
   //Vehicle
   {
-    _id: 'Vehicle',
-    name: 'Vehicle',
-    //must
-    vehicleType: true,
-    year: true,
-    make: true,
-    //make + year + model = title
-    model: true,
-    mileage: true,
+    name: 'Loại xe',
+    englishName: 'vehicle type',
+    isSelected: true,
+    options: [
+      { name: 'Xe hơi/Xe tải' },
+      { name: 'Xe máy' },
+      { name: 'Xe mô tô thể thao' },
+      { name: 'RV/Nhà xe lưu động' },
+      { name: 'Xe moóc' },
+      { name: 'Thuyền' },
+      { name: 'Thương mại/Công nghiệp' },
+      { name: 'Khác' },
+    ],
+  },
+  //make + year + model = title
+  {
+    name: 'Năm',
+    englishName: 'year',
+    isSelected: true,
+    options: [
+      { name: '2021' },
+      { name: '2020' },
+      { name: '2019' },
+      { name: '2018' },
+      { name: '2017' },
+      { name: '2016' },
+      { name: '2015' },
+      { name: '2014' },
+      { name: '2013' },
+      { name: '2012' },
+      { name: '2011' },
+      { name: '2010' },
+      //more
+    ],
+  },
+  {
+    name: 'Hãng',
+    englishName: 'make',
+  },
+  {
+    name: 'Mẫu xe',
+    englishName: 'model',
+  },
 
-    //option
-    //vehicleIdentificationNumber: true, (only for motocycle and car)
-    //nothing else here
+  // vị trí ở đây
+
+  {
+    name: 'Giá',
+    englishName: 'price',
+  },
+  {
+    name: 'Mô tả',
+    englishName: 'decription',
+    isTextArea: true,
+  },
+  //  {
+  //    _id: 'Vehicle',
+  //    name: 'Vehicle',
+  //    //must
+  //    vehicleType: true,
+  //    year: true,
+  //    make: true,
+  //    //make + year + model = title
+  //    model: true,
+  //    mileage: true,
+
+  //    //option
+  //    //vehicleIdentificationNumber: true, (only for motocycle and car)
+  //    //nothing else here
+  //  },
+];
+
+export const fieldByVehicleType = [
+  //Home & Garden
+  {
+    _id: 'Tools',
+    name: 'Công cụ',
+    //must
+    condition: true,
+    brand: true,
   },
 ];
 
