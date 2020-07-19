@@ -1,0 +1,49 @@
+.voice-call-modal{
+  .voice-modal-body{
+    position relative
+    width 80vw
+    height 80vh
+    .voice-modal-content{
+
+    }
+    .header-actions{
+      position absolute
+      top 0
+      left 0
+      text-align right
+      width: 100%;
+      .action{
+        display inline-block
+        width 60px
+        height 40px
+        position relative
+        cursor pointer
+        transition all 0.1s ease
+        background-color transparent
+        &:hover{
+          background-color darken(white, 3%)
+        }
+        &.close:hover{
+          background-color danger !important
+          i{
+            color white !important
+          }
+        }
+        i{
+          absoluteMiddle()
+          font-size 2.2rem
+          color commonTextLight
+        }
+        &.active{
+          opacity 0.6
+          i{
+            color white
+          }
+        }
+      }
+    }
+    .footer-actions{
+
+    }
+  }
+}

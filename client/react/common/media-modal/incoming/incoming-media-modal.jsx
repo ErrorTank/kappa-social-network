@@ -8,6 +8,7 @@ import {userApi} from "../../../../api/common/user-api";
 import {CALL_TYPES} from "../../../../common/call-services/call-services";
 import {Avatar} from "../../avatar/avatar";
 import {LoadingInline} from "../../loading-inline/loading-inline";
+import {messengerIO} from "../../../../socket/sockets";
 
 
 export const incomingMediaModal = {
@@ -33,7 +34,10 @@ class IncomingMediaModal extends Component {
         }
         userApi.getUserBasicInfo(props.callFrom)
             .then(user => this.setState({user}))
-
+        this.io = messengerIO.getIOInstance();
+        this.io.on("reject", ({from}) => {
+            props.onClose(false);
+        })
     }
 
 
@@ -46,7 +50,7 @@ class IncomingMediaModal extends Component {
                 {({darkMode}) => (
                     <CommonModalLayout
                         className="incoming-media-modal"
-                        onClose={onClose}
+                        onClose={() => onClose(false)}
                         title={type === CALL_TYPES.VOICE ? "Cuộc gọi đến" : "Cuộc gọi video đến"}
                         actions={[ {
                             className: "btn-decline",

@@ -5,17 +5,18 @@ import {CALL_TYPES} from "../../../../common/call-services/call-services";
 import {MediaDevice} from "../../../../common/call-services/MediaDevice";
 import isFunction from "lodash/isFunction"
 
-const CALL_STATUS = {
+export const CALL_STATUS = {
     "CONNECTING": 1,
     "RINGING": 2,
     "CALLING": 3,
-    "END": 4
+    "END": 4,
+    "NO_ANSWER": 5
 };
 
 export class MediaCallLayout extends Component {
     constructor(props) {
         super(props);
-        this.state = {
+        this.initState = {
             localSrc: null,
             peerSrc: null,
             callStatus: props.isCaller ? CALL_STATUS.CONNECTING : CALL_STATUS.CALLING,
@@ -24,6 +25,7 @@ export class MediaCallLayout extends Component {
             init: true,
             error: false
         };
+        this.state = {...this.initState}
 
         this.pc = {};
         this.io = messengerIO.getIOInstance();
@@ -90,7 +92,7 @@ export class MediaCallLayout extends Component {
         if (isFunction(this.pc.stop)) {
             this.pc.stop(isStarter);
         }
-        this.props.onClose();
+        this.setState({...this.initState, callStatus: CALL_STATUS.NO_ANSWER})
     }
 
     render() {
@@ -102,7 +104,16 @@ export class MediaCallLayout extends Component {
         ) :this.props.children({
             startCall: this.startCall,
             ...this.state,
-            pc: this.pc
+            pc: this.pc,
+            onReject: () => this.endCall(true),
+            onRedial: () => {
+                this.setState({callStatus: CALL_STATUS.CONNECTING});
+                this.startCall(true)
+            },
+            disabledMicrophone: localStorage.getItem("microphone_granted") !== true,
+            disabledWebcam: localStorage.getItem("webcam_granted") !== true,
+            disabledShareScreen: true,
+
         })
     }
 }
