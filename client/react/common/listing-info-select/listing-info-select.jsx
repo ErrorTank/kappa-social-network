@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 import classnames from 'classnames';
 import { ClickOutside } from './../click-outside/click-outside';
+import { customHistory } from './../../routes/routes';
 
 export class ListingInfoSelect extends Component {
   constructor(props) {
@@ -64,7 +65,12 @@ export class ListingInfoSelect extends Component {
               <div className='select-dropdown'>
                 {options.map((each, i) => {
                   return each.isDisabled ? (
-                    <div className='not-option'>
+                    <div
+                      className={classnames('not-option', {
+                        linked: each.link,
+                      })}
+                      onClick={() => each.link && customHistory.push(each.link)}
+                    >
                       <div
                         className={classnames({
                           displayIcon: each.icon,
