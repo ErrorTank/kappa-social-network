@@ -162,6 +162,7 @@ export class CreateMessageWidget extends Component {
                         <>
                             {bubbleList.map((each) => (
                                 <ChatBox
+                                    chatRoomID={this.props.chatRoomID}
                                     key={each}
                                     userID={each}
                                     userInfo={userMap[each]}

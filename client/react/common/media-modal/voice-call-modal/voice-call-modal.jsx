@@ -14,6 +14,7 @@ export const voiceCallModal = {
                     onClose={(r) => modal.close(r)}
                 />
             ),
+            disabledOverlayClose: true
         });
         return modal.result;
     }
@@ -32,12 +33,13 @@ class VoiceCallModal extends Component {
 
 
     render() {
-        let {config, clientID} = this.props;
+        let {config, clientID, onClose} = this.props;
         return (
            <MediaCallLayout
                callType={CALL_TYPES.VOICE}
                {...config}
                clientID={clientID}
+               onClose={onClose}
            >
                {({}) => {
                    return (

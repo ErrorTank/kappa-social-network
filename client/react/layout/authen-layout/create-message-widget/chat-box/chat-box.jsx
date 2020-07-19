@@ -71,8 +71,6 @@ export class ChatBox extends KComponent {
                     this.messageState.setState(clone);
                 });
                 this.io.on("change-message-reactions", ({messageID, reactions}) => {
-                    console.log(messageID)
-                    console.log(reactions)
                     let clone = [...this.messageState.getState()];
                     for (let i = 0; i < clone.length; i++) {
                         if (messageID === clone[i]._id) {
@@ -146,7 +144,7 @@ export class ChatBox extends KComponent {
 
     startVideoCall = () => {
         let openVideoModal = callServices.createCallModal(CALL_TYPES.VIDEO);
-        openVideoModal({isCaller: true, chatRoomID: this.props.chatRoomID, multiple: false, callTo: this.state.chat_room_brief.involve_person.filter(each => each.related !== userInfo.getState().id)[0].related})
+        openVideoModal({isCaller: true, chatRoomID: this.state.chat_room_brief?._id, multiple: false, callTo: this.state.chat_room_brief.involve_person.filter(each => each.related !== userInfo.getState()._id)[0].related})
             .then(callInfo => {
 
             });
@@ -154,7 +152,8 @@ export class ChatBox extends KComponent {
 
     startVoiceCall = () => {
         let openVoiceModal = callServices.createCallModal(CALL_TYPES.VOICE);
-        openVoiceModal({isCaller: true, chatRoomID: this.props.chatRoomID, multiple: false, callTo: this.state.chat_room_brief.involve_person.filter(each => each.related !== userInfo.getState().id)[0].related})
+        console.log(this.props.chatRoomID)
+        openVoiceModal({isCaller: true, chatRoomID: this.state.chat_room_brief?._id, multiple: false, callTo: this.state.chat_room_brief.involve_person.filter(each => each.related !== userInfo.getState()._id)[0].related})
             .then(callInfo => {
 
             });

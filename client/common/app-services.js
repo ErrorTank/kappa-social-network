@@ -4,7 +4,7 @@ import omit from "lodash/omit";
 import { messengerIO} from "../socket/sockets";
 import {messengerApi} from "../api/common/messenger-api";
 import {messageWidgetController} from "../react/layout/authen-layout/create-message-widget/create-message-widget";
-import {callServices} from "./call-services/call-services";
+import {CALL_TYPES, callServices} from "./call-services/call-services";
 
 const initializeAuthenticateUser = ({userInfo: uInfo, authToken}) => {
     if(authToken){
@@ -26,6 +26,19 @@ const initializeAuthenticateUser = ({userInfo: uInfo, authToken}) => {
                             userID: senderID
                         })
                     }
+                })
+                messengerIO.on("request", ({from, callType}) => {
+                    let openRequestModal = callServices.createIncomingModal(callType)
+                    openRequestModal({
+                        callFrom: from
+                    }).then(result => {
+                        console.log(result)
+                        if(result){
+
+                        }else{
+                            messengerIO.emit('reject', { friendID: from });
+                        }
+                    });
                 })
             })
         // userSearchHistory.setState([

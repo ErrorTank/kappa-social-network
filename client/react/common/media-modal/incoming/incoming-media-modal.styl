@@ -1,0 +1,55 @@
+.incoming-media-modal{
+  width auto
+  .modal-footer{
+    button{
+      padding 5px 12px !important
+    }
+    .btn-decline{
+      color primaryButton
+      background-color transparent
+      font-weight 500
+    }
+    .btn-accept{
+      color white
+      background-color primaryButton
+      font-weight 500
+      i{
+        margin-right 6px
+
+      }
+      &:hover{
+        background-color darken(primaryButton, 15%)
+      }
+
+    }
+  }
+  .body-wrapper{
+    position relative
+    min-height 100px
+    display flex
+    align-items center
+    justify-content center
+
+    .common-avatar{
+      width 50px
+      height 50px
+      .avatar-holder{
+        span{
+          font-size 1.8rem
+        }
+      }
+    }
+    .content{
+      margin-left 10px
+      .content-title{
+        font-size 1.6rem
+        font-weight 500
+        color commonTextLight
+      }
+      .content-sub{
+        font-size 1.4rem
+        color greyTextLight
+      }
+    }
+  }
+}

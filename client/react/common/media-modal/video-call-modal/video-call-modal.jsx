@@ -12,6 +12,7 @@ export const videoCallModal = {
                     onClose={(r) => modal.close(r)}
                 />
             ),
+            disabledOverlayClose: true
         });
         return modal.result;
     }

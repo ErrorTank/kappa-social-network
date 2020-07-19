@@ -8,10 +8,9 @@ export class PeerConnection extends Emitter {
     /**
      * Create a PeerConnection.
      * @param friendID
-     * @param chatRoomID
      * @param callType
      */
-    constructor(friendID, chatRoomID, callType) {
+    constructor(friendID, callType) {
         super();
         this.socket = messengerIO.getIOInstance();
         this.pc = new RTCPeerConnection(PC_CONFIG);
@@ -20,7 +19,6 @@ export class PeerConnection extends Emitter {
         });
         this.pc.ontrack = (event) => this.emit('peerStream', event.streams[0]);
         this.friendID = friendID;
-        this.chatRoomID = chatRoomID;
         this.mediaDevice = new MediaDevice(callType);
         this.callType = callType;
     }
@@ -36,11 +34,14 @@ export class PeerConnection extends Emitter {
                     this.pc.addTrack(track, stream);
                 });
                 this.emit('localStream', stream);
-                if (isCaller) this.socket.emit('request', {
-                    callType: this.callType,
-                    friendID: this.friendID,
-                    chatRoomID: this.chatRoomID
-                });
+
+                if (isCaller) {
+                    console.log("dasdas")
+                    this.socket.emit('request', {
+                        callType: this.callType,
+                        friendID: this.friendID,
+                    });
+                }
                 else this.createOffer();
             })
             .on('not-allowed', () => {
@@ -60,7 +61,7 @@ export class PeerConnection extends Emitter {
      */
     stop(isStarter) {
         if (isStarter) {
-            this.socket.emit('end', {chatRoomID: this.chatRoomID, friendID: this.friendID});
+            this.socket.emit('end', { friendID: this.friendID});
         }
         this.mediaDevice.stop();
         this.pc.close();
@@ -85,7 +86,7 @@ export class PeerConnection extends Emitter {
 
     getDescription(desc) {
         this.pc.setLocalDescription(desc);
-        this.socket.emit('call', {chatRoomID: this.chatRoomID, sdp: desc, friendID: this.friendID});
+        this.socket.emit('call', { sdp: desc, friendID: this.friendID});
         return this;
     }
 

@@ -3,6 +3,7 @@ import {messengerIO} from "../../../../socket/sockets";
 import {PeerConnection} from "../../../../common/call-services/PeerConnection";
 import {CALL_TYPES} from "../../../../common/call-services/call-services";
 import {MediaDevice} from "../../../../common/call-services/MediaDevice";
+import isFunction from "lodash/isFunction"
 
 const CALL_STATUS = {
     "CONNECTING": 1,
@@ -29,14 +30,14 @@ export class MediaCallLayout extends Component {
     }
 
     componentDidMount() {
-        // this.io
-        //     .on('call', (data) => {
-        //         if (data.sdp) {
-        //             this.pc.setRemoteDescription(data.sdp);
-        //             if (data.sdp.type === 'offer') this.pc.createAnswer();
-        //         } else this.pc.addIceCandidate(data.candidate);
-        //     })
-        //     .on('end', this.endCall.bind(this, false))
+        this.io
+            .on('call', (data) => {
+                if (data.sdp) {
+                    this.pc.setRemoteDescription(data.sdp);
+                    if (data.sdp.type === 'offer') this.pc.createAnswer();
+                } else this.pc.addIceCandidate(data.candidate);
+            })
+            .on('reject', () => this.endCall(false))
         let state = {
             microphone_granted: localStorage.getItem("microphone_granted"),
             webcam_granted:  localStorage.getItem("webcam_granted"),
@@ -52,7 +53,7 @@ export class MediaCallLayout extends Component {
     }
 
     startCall = (isCaller) => {
-        this.pc = new PeerConnection(this.props.callTo, this.props.chatRoomID, this.props.callType)
+        this.pc = new PeerConnection(this.props.callTo, this.props.callType)
             .on('localStream', (src) => {
                 const newState = {localSrc: src};
                 this.setState(newState);
@@ -84,6 +85,13 @@ export class MediaCallLayout extends Component {
             .start(isCaller);
 
     };
+
+    endCall(isStarter) {
+        if (isFunction(this.pc.stop)) {
+            this.pc.stop(isStarter);
+        }
+        this.props.onClose();
+    }
 
     render() {
         console.log(this.state)
