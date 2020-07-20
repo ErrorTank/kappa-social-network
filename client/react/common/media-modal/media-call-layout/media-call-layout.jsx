@@ -34,10 +34,10 @@ export class MediaCallLayout extends Component {
     }
 
     componentDidMount() {
-        console.log("alhejap")
         this.io
             .on('call', (data) => {
                 if (data.sdp) {
+                    this.setState({callStatus: CALL_STATUS.CALLING})
                     this.pc.setRemoteDescription(data.sdp);
                     if (data.sdp.type === 'offer') this.pc.createAnswer();
                 } else this.pc.addIceCandidate(data.candidate);
@@ -49,7 +49,8 @@ export class MediaCallLayout extends Component {
                     this.setState({callStatus: CALL_STATUS.RINGING})
                 }
             })
-            .on('reject', () => this.endCall(false))
+            .on('reject', () => this.rejectCall(false))
+            .on('end', () => this.endCall(false))
         let state = {
             microphone_granted: localStorage.getItem("microphone_granted") !== "false",
             webcam_granted:  localStorage.getItem("webcam_granted") !== "false",
@@ -118,18 +119,24 @@ export class MediaCallLayout extends Component {
 
     };
 
+    rejectCall(isStarter){
+        if (isFunction(this.pc.stop)) {
+            this.pc.stop(isStarter);
+        }
+        this.pc = {};
+        this.setState({...this.initState, callStatus: CALL_STATUS.NO_ANSWER})
+    }
+
     endCall(isStarter) {
 
         if (isFunction(this.pc.stop)) {
             this.pc.stop(isStarter);
         }
         this.pc = {};
-        this.setState({...this.initState, callStatus: isStarter ? CALL_STATUS.END :CALL_STATUS.NO_ANSWER})
+        this.setState({...this.initState, callStatus: CALL_STATUS.END })
     }
 
     render() {
-
-        console.log(this.state)
         return this.state.error ? (
             <div className="media-call-error">
 
@@ -138,7 +145,7 @@ export class MediaCallLayout extends Component {
             startCall: this.startCall,
             ...this.state,
             pc: this.pc,
-            onReject: () => this.endCall(true),
+            onEndCall: () => this.endCall(true),
             onRedial: () => {
                 this.setState({callStatus: CALL_STATUS.CONNECTING});
                 this.startCall(true)

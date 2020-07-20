@@ -14,9 +14,12 @@ export class PeerConnection extends Emitter {
         super();
         this.socket = messengerIO.getIOInstance();
         this.pc = new RTCPeerConnection(PC_CONFIG);
-        this.pc.onicecandidate = (event) => this.socket.emit('call', {
-            candidate: event.candidate
-        });
+        this.pc.onicecandidate = (event) => {
+            console.log("dau buoi")
+            return this.socket.emit('call', {
+                candidate: event.candidate
+            });
+        };
         this.pc.ontrack = (event) => this.emit('peerStream', event.streams[0]);
         this.friendID = friendID;
         this.mediaDevice = new MediaDevice(callType);
@@ -60,7 +63,7 @@ export class PeerConnection extends Emitter {
      */
     stop(isStarter) {
         if (isStarter) {
-            this.socket.emit('reject', { friendID: this.friendID});
+            this.socket.emit('end', { friendID: this.friendID});
         }
         this.mediaDevice.stop();
         this.pc.close();
@@ -70,6 +73,7 @@ export class PeerConnection extends Emitter {
     }
 
     createOffer() {
+        console.log("offer")
         this.pc.createOffer()
             .then(this.getDescription.bind(this))
             .catch((err) => console.log(err));
@@ -77,6 +81,7 @@ export class PeerConnection extends Emitter {
     }
 
     createAnswer() {
+        console.log("answer")
         this.pc.createAnswer()
             .then(this.getDescription.bind(this))
             .catch((err) => console.log(err));
