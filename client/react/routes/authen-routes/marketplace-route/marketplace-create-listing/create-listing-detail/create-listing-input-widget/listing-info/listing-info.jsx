@@ -3,26 +3,53 @@ import { ListingInfoInput } from '../../../../../../../common/listing-info-input
 import {
   fieldByCategory,
   itemField,
+  vehicleField,
+  fieldByVehicleType,
+  homeField,
 } from './../../../../../../../../const/listing';
 import { customHistory } from './../../../../../../routes';
 import { ListingInfoSelect } from './../../../../../../../common/listing-info-select/listing-info-select';
 import { v4 as uuidv4 } from 'uuid';
+import omit from 'lodash/omit';
 
 export class ListingInfo extends Component {
   constructor(props) {
     super(props);
-    this.state = {
-      // category: props.state.category,
-      // condition: props.state.condition,
-      // material: props.state.material,
-    };
+    this.state = {};
   }
+  componentDidUpdate = () => {
+    const { state, updateValue } = this.props;
+    let { pictureLimit, type, category, ...other } = state;
+    switch (type) {
+      case 'item':
+        this.setState({ inputField: itemField });
+        if (category) {
+          fieldByCategory.map((each) => {
+            if (each.name === category) {
+              let result = omit(each, ['_id', 'name']);
+              this.setState({ ...result });
+            }
+          });
+        }
 
+        // console.log(state.category);
+        break;
+      case 'vehicle':
+        this.setState({ inputField: vehicleField });
+        break;
+      case 'home':
+        this.setState({ inputField: homeField });
+        break;
+    }
+  };
   render() {
     const { state, updateValue } = this.props;
+    let { pictureLimit, type, category, ...other } = state;
 
-    let { pictureLimit, type, ...other } = state;
-    console.log(this.props.state);
+    const { inputField } = this.state;
+    // console.log(this.props.state);
+    // console.log(customHistory);
+    console.log(this.state);
 
     return (
       <div className='listing-info'>
@@ -39,9 +66,9 @@ export class ListingInfo extends Component {
           <div className='add-picture-section'></div>
         </div>
 
-        {type &&
-          itemField.map((each, i) => {
-            let listingInfoID = uuidv4();
+        {inputField &&
+          inputField.map((each, i) => {
+            // let listingInfoID = uuidv4();
             return !each.isSelected ? (
               <ListingInfoInput
                 label={each.name}
@@ -58,7 +85,7 @@ export class ListingInfo extends Component {
                 label={each.name}
                 options={each.options}
                 displayAs={(item) => item}
-                key={listingInfoID}
+                key={each.englishName}
                 id={each.englishName}
                 value={state[each.englishName]}
                 isSelected={(option) => option === state[each.englishName]}

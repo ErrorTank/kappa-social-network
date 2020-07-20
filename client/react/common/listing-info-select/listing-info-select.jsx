@@ -66,6 +66,7 @@ export class ListingInfoSelect extends Component {
                 {options.map((each, i) => {
                   return each.isDisabled ? (
                     <div
+                      key={getOptionKey(each, i)}
                       className={classnames('not-option', {
                         linked: each.link,
                       })}

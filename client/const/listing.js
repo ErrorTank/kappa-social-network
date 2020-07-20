@@ -395,7 +395,7 @@ export const fieldByCategory = [
   },
 ];
 
-export const listingVehicle = [
+export const vehicleField = [
   //Vehicle
   {
     name: 'Số khung(không bắt buộc)',
@@ -570,7 +570,7 @@ export const fieldByVehicleType = [
   },
 ];
 
-export const listingHome = [
+export const homeField = [
   //Home is a little different
 
   //Home for Rent/Sale

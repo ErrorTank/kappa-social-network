@@ -20,7 +20,7 @@ export class CreateListingInputWidget extends Component {
       title: 'Xe',
     },
     {
-      name: 'house',
+      name: 'home',
       pictureLimit: 50,
       title: 'Nhà',
     },
