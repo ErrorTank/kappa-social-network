@@ -36,7 +36,6 @@ export class PeerConnection extends Emitter {
                 this.emit('localStream', stream);
 
                 if (isCaller) {
-                    console.log("dasdas")
                     this.socket.emit('request', {
                         callType: this.callType,
                         friendID: this.friendID,

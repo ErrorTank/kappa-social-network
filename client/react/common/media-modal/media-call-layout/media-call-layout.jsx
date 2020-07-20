@@ -34,6 +34,7 @@ export class MediaCallLayout extends Component {
     }
 
     componentDidMount() {
+        console.log("alhejap")
         this.io
             .on('call', (data) => {
                 if (data.sdp) {
@@ -50,8 +51,8 @@ export class MediaCallLayout extends Component {
             })
             .on('reject', () => this.endCall(false))
         let state = {
-            microphone_granted: localStorage.getItem("microphone_granted") === "true",
-            webcam_granted:  localStorage.getItem("webcam_granted") === "true",
+            microphone_granted: localStorage.getItem("microphone_granted") !== "false",
+            webcam_granted:  localStorage.getItem("webcam_granted") !== "false",
             init: false
         }
         if(this.props.callType === CALL_TYPES.VOICE ? state.microphone_granted !== false : (state.microphone_granted !== false && state.webcam_granted !== false)){
@@ -65,7 +66,8 @@ export class MediaCallLayout extends Component {
 
 
     componentWillUnmount() {
-        clearTimeout(this.ackTimeout)
+        if(this.ackTimeout)
+            clearTimeout(this.ackTimeout)
         if(this.io){
             this.io.off("call");
             this.io.off("ack");
@@ -74,12 +76,15 @@ export class MediaCallLayout extends Component {
     }
 
     startCall = (isCaller) => {
-        this.ackTimeout = setTimeout(() => {
+        if(isCaller){
+            this.ackTimeout = setTimeout(() => {
 
-            this.ackTimeout = null;
-            this.setState({...this.initState, callStatus: CALL_STATUS.CANNOT_CONNECTED})
+                this.ackTimeout = null;
+                this.setState({...this.initState, callStatus: CALL_STATUS.CANNOT_CONNECTED})
 
-        }, 6000);
+            }, 6000);
+        }
+
         this.pc = new PeerConnection(this.props.callTo, this.props.callType)
             .on('localStream', (src) => {
                 const newState = {localSrc: src};
@@ -114,7 +119,7 @@ export class MediaCallLayout extends Component {
     };
 
     endCall(isStarter) {
-        console.log("dit me")
+
         if (isFunction(this.pc.stop)) {
             this.pc.stop(isStarter);
         }

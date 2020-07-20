@@ -35,6 +35,8 @@ const initializeAuthenticateUser = ({userInfo: uInfo, authToken}) => {
                     }).then(result => {
                         console.log(result)
                         if(result){
+                                let openVoiceModal = callServices.createCallModal(callType)
+                                openVoiceModal({isCaller: false, multiple: false, callTo: from})
 
                         }else{
                             messengerIO.emit('reject', { friendID: from });

@@ -48,7 +48,7 @@ class VoiceCallWidget extends Component {
             shareScreen
         } = this.state;
         let {user, onClose, type, onMinimize, callStatus, onReject, onRedial, disabledMicrophone, disabledWebcam, toggleVideo, toggleAudio, toggleShareScreen, disabledShareScreen} = this.props;
-
+        console.log(user)
         let actions = [CALL_STATUS.END, CALL_STATUS.NO_ANSWER].includes(callStatus) ? [
             {
                 icon: <i className="fas fa-phone-alt"></i>,
@@ -135,10 +135,12 @@ class VoiceCallWidget extends Component {
                         ) : type === CALL_TYPES.VIDEO ? (
                             <div>
                             </div>
-                        ) : (
+                        ) : user && (
                             <div className="center-calling-info">
                                 <div className="avatar-wrapper">
-                                    <Avatar/>
+                                    <Avatar
+                                        user={user}
+                                    />
                                 </div>
                                 <div className="call-info">
 
