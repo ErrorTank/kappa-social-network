@@ -143,7 +143,7 @@ export const itemField = [
     name: 'Tình Trạng',
     englishName: 'condition',
     isSelected: true,
-    categoryDepend: true,
+    isDepended: true,
     options: [
       { name: 'Mới' },
       { name: 'Đã qua sử dụng - Như mới' },
@@ -154,13 +154,13 @@ export const itemField = [
   {
     name: 'Thương hiệu',
     englishName: 'brand',
-    categoryDepend: true,
+    isDepended: true,
   },
   {
     name: 'Chất liệu',
     englishName: 'material',
     isSelected: true,
-    categoryDepend: true,
+    isDepended: true,
     options: [
       { name: 'Gỗ' },
       { name: 'Kim loại' },
@@ -398,8 +398,13 @@ export const fieldByCategory = [
 export const listingVehicle = [
   //Vehicle
   {
+    name: 'Số khung(không bắt buộc)',
+    englishName: 'vehicleIdentificationNumber',
+    isDepended: true,
+  },
+  {
     name: 'Loại xe',
-    englishName: 'vehicle type',
+    englishName: 'vehicleType',
     isSelected: true,
     options: [
       { name: 'Xe hơi/Xe tải' },
@@ -441,6 +446,57 @@ export const listingVehicle = [
     name: 'Mẫu xe',
     englishName: 'model',
   },
+  {
+    name: 'Kiểu thân xe',
+    englishName: 'bodyType',
+    isSelected: true,
+    isDepended: true,
+    options: [
+      { name: 'Ô tô 2 cửa' },
+      { name: 'Xe tải' },
+      { name: 'Xedan' },
+      { name: 'Khác' },
+      //more
+    ],
+  },
+  {
+    name: 'Số dặm đã đi',
+    englishName: 'mileage',
+    isDepended: true,
+  },
+  {
+    name: 'Hộp số',
+    englishName: 'tranmission',
+    isSelected: true,
+    isDepended: true,
+    options: [{ name: 'Hộp số tự động' }, { name: 'Hộp số sàn' }],
+  },
+  {
+    name: 'Loại nhiên liệu',
+    englishName: 'fuelType',
+    isSelected: true,
+    isDepended: true,
+    options: [
+      { name: 'Diesel' },
+      { name: 'Điện' },
+      { name: 'Xăng' },
+      { name: 'Khác' },
+      //more
+    ],
+  },
+  {
+    name: 'Tình trạng xe',
+    englishName: 'vehicleCondition',
+    isSelected: true,
+    isDepended: true,
+    options: [
+      { name: 'Tuyệt vời' },
+      { name: 'Rất tốt' },
+      { name: 'Tốt' },
+      { name: 'Trung bình' }, // thêm
+      { name: 'Kém' },
+    ],
+  },
 
   // vị trí ở đây
 
@@ -453,31 +509,64 @@ export const listingVehicle = [
     englishName: 'decription',
     isTextArea: true,
   },
-  //  {
-  //    _id: 'Vehicle',
-  //    name: 'Vehicle',
-  //    //must
-  //    vehicleType: true,
-  //    year: true,
-  //    make: true,
-  //    //make + year + model = title
-  //    model: true,
-  //    mileage: true,
-
-  //    //option
-  //    //vehicleIdentificationNumber: true, (only for motocycle and car)
-  //    //nothing else here
-  //  },
 ];
 
 export const fieldByVehicleType = [
-  //Home & Garden
+  //Car/Truck
   {
-    _id: 'Tools',
-    name: 'Công cụ',
+    _id: 'Car/Truck',
+    name: 'Xe hơi/Xe tải',
     //must
-    condition: true,
-    brand: true,
+    bodyStyle: true,
+    mileage: true,
+    tranmission: true,
+    fuelType: true,
+    vehicleCondition: true,
+    //option
+    vehicleIdentificationNumber: true,
+  },
+  {
+    _id: 'Motorcycle',
+    name: 'Xe máy',
+    //must
+    mileage: true,
+    fuelType: true,
+    vehicleCondition: true, // tự thêm :v
+    //option
+    vehicleIdentificationNumber: true,
+  },
+  {
+    _id: 'Powersport',
+    name: 'Xe mô tô thể thao',
+    //must
+    fuelType: true,
+    //option
+  },
+  {
+    _id: 'RV/Camper',
+    name: 'RV/Nhà xe lưu động',
+    //must
+    fuelType: true,
+    //option
+  },
+  {
+    _id: 'Trailer',
+    name: 'Xe moóc',
+    //must
+    //option
+  },
+  {
+    _id: 'Commercial/Industrial',
+    name: 'Thương mại/Công nghiệp',
+    //must
+    fuelType: true,
+    //option
+  },
+  {
+    _id: 'Other',
+    name: 'Khác',
+    //must
+    //option
   },
 ];
 
