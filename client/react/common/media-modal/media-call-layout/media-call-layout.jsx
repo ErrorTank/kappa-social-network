@@ -88,10 +88,12 @@ export class MediaCallLayout extends Component {
 
     this.pc = new PeerConnection(this.props.callTo, this.props.callType)
         .on('localStream', (src) => {
-          const newState = {localSrc: src};
-          this.setState(newState);
+          this.setState({localSrc: src});
         })
-        .on('peerStream', (src) => this.setState({peerSrc: src}))
+        .on('peerStream', (src) => {
+          console.log(src)
+          this.setState({peerSrc: src})
+        })
         .on("device-denied", () => {
           MediaDevice.checkMediaDevicesPermissionStatus()
               .then(({video, audio}) => {
@@ -120,6 +122,7 @@ export class MediaCallLayout extends Component {
   };
 
   rejectCall(isStarter){
+    console.log("buoi")
     if (isFunction(this.pc.stop)) {
       this.pc.stop(isStarter);
     }
@@ -137,6 +140,7 @@ export class MediaCallLayout extends Component {
   }
 
   render() {
+    console.log(this.state.callStatus)
     return this.state.error ? (
         <div className="media-call-error">
 
@@ -153,8 +157,16 @@ export class MediaCallLayout extends Component {
       disabledMicrophone: localStorage.getItem("microphone_granted") !== "true",
       disabledWebcam: localStorage.getItem("webcam_granted") !== "true",
       disabledShareScreen: true,
-      toggleVideo: () => this.pc.mediaDevice.toggle("Video"),
-      toggleAudio: () => this.pc.mediaDevice.toggle("Audio"),
+      toggleVideo: (on) => {
+          if(this.pc.mediaDevice){
+            this.pc.mediaDevice.toggle("Video", on)
+          }
+      },
+      toggleAudio: (on) => {
+        if(this.pc.mediaDevice){
+          this.pc.mediaDevice.toggle("Audio", on)
+        }
+      },
       toggleShareScreen: () => null
     })
   }

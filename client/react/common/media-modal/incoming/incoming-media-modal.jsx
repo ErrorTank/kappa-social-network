@@ -36,7 +36,7 @@ class IncomingMediaModal extends Component {
             .then(user => this.setState({user}))
         this.io = messengerIO.getIOInstance();
         this.io.on("end", ({from}) => {
-            props.onClose(false);
+            props.onClose(null);
         })
     }
 

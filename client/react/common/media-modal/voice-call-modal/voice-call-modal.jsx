@@ -41,6 +41,23 @@ class VoiceCallWidget extends Component {
 
     }
 
+    componentDidMount() {
+        this.props.toggleVideo(this.state.webcam);
+        this.props.toggleAudio(this.state.microphone);
+        this.updateVideoSrc();
+    }
+
+    componentDidUpdate(prevProps, prevState, snapshot) {
+        this.updateVideoSrc();
+    }
+
+    updateVideoSrc = () => {
+
+        if (this.peerVideo && this.props.peerSrc) this.peerVideo.srcObject = this.props.peerSrc;
+        if (this.localVideo && this.props.localSrc) this.localVideo.srcObject = this.props.localSrc;
+        console.log(this.peerVideo && this.peerVideo.srcObject)
+    }
+
     render() {
         let {
             microphone,
@@ -132,20 +149,23 @@ class VoiceCallWidget extends Component {
                                     {CALL_STATUS_MATCHER[callStatus]}
                                 </div>
                             </div>
-                        ) : type === CALL_TYPES.VIDEO ? (
-                            <div>
-                            </div>
-                        ) : user && (
-                            <div className="center-calling-info">
-                                <div className="avatar-wrapper">
-                                    <Avatar
-                                        user={user}
-                                    />
-                                </div>
-                                <div className="call-info">
+                        ) : (
+                            <>
+                                {user && type === CALL_TYPES.VOICE && (
+                                    <div className="center-calling-info">
+                                        <div className="avatar-wrapper">
+                                            <Avatar
+                                                user={user}
+                                            />
+                                        </div>
+                                        <div className="call-info">
 
-                                </div>
-                            </div>
+                                        </div>
+                                    </div>
+                                )}
+                                <video className={classnames("peerVideo", {hide: type === CALL_TYPES.VOICE })} ref={peerVideo => this.peerVideo = peerVideo} autoPlay />
+                                <video className={classnames("localVideo", {hide: type === CALL_TYPES.VOICE })} ref={localVideo => this.localVideo = localVideo} autoPlay  />
+                            </>
                         )}
                     </div>
                     <div className="footer-actions">
