@@ -28,6 +28,7 @@ const initializeAuthenticateUser = ({userInfo: uInfo, authToken}) => {
                     }
                 })
                 messengerIO.on("request", ({from, callType}) => {
+                    messengerIO.emit("ack-call", {friendID: from});
                     let openRequestModal = callServices.createIncomingModal(callType)
                     openRequestModal({
                         callFrom: from

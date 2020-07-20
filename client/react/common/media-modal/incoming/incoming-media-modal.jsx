@@ -40,7 +40,11 @@ class IncomingMediaModal extends Component {
         })
     }
 
-
+    componentWillUnmount() {
+        if(this.io){
+            this.io.off("reject");
+        }
+    }
 
 
     render() {
@@ -54,7 +58,7 @@ class IncomingMediaModal extends Component {
                         title={type === CALL_TYPES.VOICE ? "Cuộc gọi đến" : "Cuộc gọi video đến"}
                         actions={[ {
                             className: "btn-decline",
-                            onClick: onClose,
+                            onClick: () => onClose(false),
                             content: "Từ chối"
                         }, {
                             className: "btn-accept",

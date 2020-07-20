@@ -4,6 +4,8 @@ import {CALL_STATUS, MediaCallLayout} from "../media-call-layout/media-call-layo
 import {CALL_TYPES} from "../../../../common/call-services/call-services";
 import classnames from "classnames"
 import {Avatar} from "../../avatar/avatar";
+import {userApi} from "../../../../api/common/user-api";
+import {Tooltip} from "../../tooltip/tooltip";
 
 export const voiceCallModal = {
     open(config) {
@@ -22,18 +24,19 @@ export const voiceCallModal = {
 
 const CALL_STATUS_MATCHER = {
     1: "Đang kêt nối...",
-    2: "Rung chuông...",
+    2: "Đang rung chuông...",
     4: "Kết thúc.",
-    5: "Không phản hồi."
+    5: "Không phản hồi.",
+    6: "Không thể kết nối."
 }
 
 class VoiceCallWidget extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            microphone: true,
-            webcam: true,
-            shareScreen: true
+            microphone: !props.disabledMicrophone,
+            webcam: !props.disabledWebcam,
+            shareScreen: !props.disabledShareScreen,
         }
 
     }
@@ -44,7 +47,8 @@ class VoiceCallWidget extends Component {
             webcam,
             shareScreen
         } = this.state;
-        let {onClose, type, onMinimize, callStatus, onReject, onRedial, disabledMicrophone, disabledWebcam, toggleVideo, toggleAudio, toggleShareScreen, disabledShareScreen} = this.props;
+        let {user, onClose, type, onMinimize, callStatus, onReject, onRedial, disabledMicrophone, disabledWebcam, toggleVideo, toggleAudio, toggleShareScreen, disabledShareScreen} = this.props;
+
         let actions = [CALL_STATUS.END, CALL_STATUS.NO_ANSWER].includes(callStatus) ? [
             {
                 icon: <i className="fas fa-phone-alt"></i>,
@@ -76,6 +80,7 @@ class VoiceCallWidget extends Component {
                 isActive: microphone,
                 toolTip: microphone ? "Tắt microphone" : "Bật microphone",
                 onClick: () => {
+                    this.setState({microphone: !microphone})
                     toggleAudio();
                 },
                 disabled: disabledMicrophone
@@ -84,13 +89,14 @@ class VoiceCallWidget extends Component {
                 isActive: shareScreen,
                 toolTip: microphone ? "Tắt chia sẻ màn hình" : "Bật chia sẻ màn hình",
                 onClick: () => {
+                    this.setState({shareScreen: !shareScreen})
                     toggleShareScreen();
                 },
                 disabled: disabledShareScreen
             }, {
                 icon: <i className="fas fa-phone-slash"></i>,
                 className: "cancel",
-                toolTip: "Kêt thúd",
+                toolTip: "Kêt thúc",
                 onClick: () => {
                     onReject();
                 },
@@ -112,9 +118,16 @@ class VoiceCallWidget extends Component {
                     <div className="voice-modal-content">
                         {callStatus !== CALL_STATUS.CALLING ? (
                             <div className="center-calling-info">
-                                <div className="avatar-wrapper">
-                                    <Avatar/>
-                                </div>
+                                {user && (
+                                    <>
+                                        <div className="avatar-wrapper">
+                                            <Avatar
+                                                user={user}
+                                            />
+                                        </div>
+                                        <div className="username">{user.basic_info.username}</div>
+                                    </>
+                                )}
                                 <div className="call-info">
                                     {CALL_STATUS_MATCHER[callStatus]}
                                 </div>
@@ -134,11 +147,17 @@ class VoiceCallWidget extends Component {
                         )}
                     </div>
                     <div className="footer-actions">
-                        {actions.map(({className, isActive = true, icon, onClick = () => null, disabled = false}, i) => (
-                            <div className={classnames("footer-action", className, {active: isActive, disabled})} key={i}
-                                 onClick={onClick}>
-                                {icon}
-                            </div>
+                        {actions.map(({className, isActive = true, icon, onClick = () => null, disabled = false, toolTip = ""}, i) => (
+                            <Tooltip
+                                text={() => toolTip}
+                                position={"top"}
+                                key={i}
+                            >
+                                <div className={classnames("footer-action", className, {active: isActive, disabled})}
+                                     onClick={onClick}>
+                                    {icon}
+                                </div>
+                            </Tooltip>
                         ))}
                     </div>
                 </div>
@@ -150,8 +169,10 @@ class VoiceCallWidget extends Component {
 class VoiceCallModal extends Component {
     constructor(props) {
         super(props);
-        this.state = {}
-
+        this.state = {
+            user: null
+        }
+        userApi.getUserBasicInfo(props.config.callTo).then(user => this.setState({user}))
     }
 
 
@@ -170,6 +191,7 @@ class VoiceCallModal extends Component {
                         <VoiceCallWidget
                             {...this.props}
                             {...layoutProps}
+                            user={this.state.user}
                         />
                     )
                 }}

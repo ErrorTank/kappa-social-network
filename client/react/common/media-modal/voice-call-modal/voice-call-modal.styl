@@ -3,8 +3,51 @@
     position relative
     width 80vw
     height 80vh
-    .voice-modal-content{
+    &.active{
 
+      .header-actions {
+        opacity 0.6
+        .action{
+          i{
+            color white
+          }
+        }
+
+      }
+
+    }
+    .voice-modal-content{
+      width 100%
+      height 100%
+      display flex
+      justify-content center
+      align-items center
+      .center-calling-info{
+        text-align center
+        .common-avatar{
+          width 80px
+          height 80px
+          .avatar-holder{
+            span{
+              font-size 3rem
+
+            }
+          }
+        }
+        .username{
+          font-size 2rem
+          color commonTextLight
+          font-weight 500
+          margin-top 10px
+
+        }
+        .call-info{
+          margin-top 15px
+          color greyTextLight
+          font-size 1.6rem
+          font-weight 500
+        }
+      }
     }
     .header-actions{
       position absolute
@@ -34,16 +77,78 @@
           font-size 2.2rem
           color commonTextLight
         }
-        &.active{
-          opacity 0.6
-          i{
-            color white
-          }
-        }
+
       }
     }
     .footer-actions{
-
+      position absolute
+      bottom 0
+      left 0
+      width: 100%;
+      display flex
+      justify-content center
+      align-items center
+      padding 15px 0
+      .footer-action{
+        margin 0 12px
+        position relative
+        border-radius 50%
+        width 50px
+        height 50px
+        border 1px solid greyTextLight
+        cursor pointer
+        &.close{
+          border-color danger !important
+          &:hover{
+            border-color darken(danger, 10%)
+            i{
+              color darken(danger, 10%)
+            }
+          }
+          i{
+            color danger !important
+          }
+        }
+        &.cancel{
+          background-color danger !important
+          border-color unset !important
+          border 0 !important
+          &:hover{
+            background-color darken(danger, 10%) !important
+            border-color unset !important
+            border 0 !important
+          }
+          i{
+            color white !important
+          }
+        }
+        &.disabled{
+          pointer-events none
+        }
+        &:hover{
+          border-color lighten(greyTextLight, 10%)
+          i{
+            color lighten(greyTextLight, 10%)
+          }
+        }
+        &.active{
+          border-color primaryButton
+          &:hover{
+            border-color darken(primaryButton, 10%)
+            i{
+              color darken(primaryButton, 10%)
+            }
+          }
+          i{
+            color primaryButton
+          }
+        }
+        i{
+          absoluteMiddle();
+          font-size 2rem
+          color greyTextLight
+        }
+      }
     }
   }
 }

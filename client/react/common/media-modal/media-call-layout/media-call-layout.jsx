@@ -10,7 +10,8 @@ export const CALL_STATUS = {
     "RINGING": 2,
     "CALLING": 3,
     "END": 4,
-    "NO_ANSWER": 5
+    "NO_ANSWER": 5,
+    "CANNOT_CONNECTED": 6
 };
 
 export class MediaCallLayout extends Component {
@@ -23,12 +24,13 @@ export class MediaCallLayout extends Component {
             microphone_granted: false,
             webcam_granted: false,
             init: true,
-            error: false
+            error: false,
         };
         this.state = {...this.initState}
 
         this.pc = {};
         this.io = messengerIO.getIOInstance();
+        this.ackTimeout = null;
     }
 
     componentDidMount() {
@@ -39,10 +41,17 @@ export class MediaCallLayout extends Component {
                     if (data.sdp.type === 'offer') this.pc.createAnswer();
                 } else this.pc.addIceCandidate(data.candidate);
             })
+            .on('ack', (data) => {
+                if(data.from === this.props.callTo){
+                    clearTimeout(this.ackTimeout);
+                    this.ackTimeout = null;
+                    this.setState({callStatus: CALL_STATUS.RINGING})
+                }
+            })
             .on('reject', () => this.endCall(false))
         let state = {
-            microphone_granted: localStorage.getItem("microphone_granted"),
-            webcam_granted:  localStorage.getItem("webcam_granted"),
+            microphone_granted: localStorage.getItem("microphone_granted") === "true",
+            webcam_granted:  localStorage.getItem("webcam_granted") === "true",
             init: false
         }
         if(this.props.callType === CALL_TYPES.VOICE ? state.microphone_granted !== false : (state.microphone_granted !== false && state.webcam_granted !== false)){
@@ -54,7 +63,23 @@ export class MediaCallLayout extends Component {
 
     }
 
+
+    componentWillUnmount() {
+        clearTimeout(this.ackTimeout)
+        if(this.io){
+            this.io.off("call");
+            this.io.off("ack");
+            this.io.off("reject");
+        }
+    }
+
     startCall = (isCaller) => {
+        this.ackTimeout = setTimeout(() => {
+
+            this.ackTimeout = null;
+            this.setState({...this.initState, callStatus: CALL_STATUS.CANNOT_CONNECTED})
+
+        }, 6000);
         this.pc = new PeerConnection(this.props.callTo, this.props.callType)
             .on('localStream', (src) => {
                 const newState = {localSrc: src};
@@ -89,13 +114,16 @@ export class MediaCallLayout extends Component {
     };
 
     endCall(isStarter) {
+        console.log("dit me")
         if (isFunction(this.pc.stop)) {
             this.pc.stop(isStarter);
         }
-        this.setState({...this.initState, callStatus: CALL_STATUS.NO_ANSWER})
+        this.pc = {};
+        this.setState({...this.initState, callStatus: isStarter ? CALL_STATUS.END :CALL_STATUS.NO_ANSWER})
     }
 
     render() {
+
         console.log(this.state)
         return this.state.error ? (
             <div className="media-call-error">
@@ -110,10 +138,12 @@ export class MediaCallLayout extends Component {
                 this.setState({callStatus: CALL_STATUS.CONNECTING});
                 this.startCall(true)
             },
-            disabledMicrophone: localStorage.getItem("microphone_granted") !== true,
-            disabledWebcam: localStorage.getItem("webcam_granted") !== true,
+            disabledMicrophone: localStorage.getItem("microphone_granted") !== "true",
+            disabledWebcam: localStorage.getItem("webcam_granted") !== "true",
             disabledShareScreen: true,
-
+            toggleVideo: () => this.pc.mediaDevice.toggle("Video"),
+            toggleAudio: () => this.pc.mediaDevice.toggle("Audio"),
+            toggleShareScreen: () => null
         })
     }
 }
