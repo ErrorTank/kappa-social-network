@@ -39,7 +39,10 @@ const initializeAuthenticateUser = ({userInfo: uInfo, authToken}) => {
                                 openVoiceModal({isCaller: false, multiple: false, callTo: from})
 
                         }else{
-                            messengerIO.emit('reject', { friendID: from });
+                            if(result === false){
+                                messengerIO.emit('reject', { friendID: from });
+                            }
+
                         }
                     });
                 })

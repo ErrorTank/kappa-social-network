@@ -36,7 +36,7 @@ export class MediaDevice extends Emitter {
         })
 
     start() {
-        console.log("dit me")
+
 
         navigator.mediaDevices
             .getUserMedia(this.constraints)

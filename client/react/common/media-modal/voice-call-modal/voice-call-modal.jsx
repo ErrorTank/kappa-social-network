@@ -41,14 +41,31 @@ class VoiceCallWidget extends Component {
 
     }
 
+    componentDidMount() {
+        this.props.toggleVideo(this.state.webcam);
+        this.props.toggleAudio(this.state.microphone);
+        this.updateVideoSrc();
+    }
+
+    componentDidUpdate(prevProps, prevState, snapshot) {
+        this.updateVideoSrc();
+    }
+
+    updateVideoSrc = () => {
+
+        if (this.peerVideo && this.props.peerSrc) this.peerVideo.srcObject = this.props.peerSrc;
+        if (this.localVideo && this.props.localSrc) this.localVideo.srcObject = this.props.localSrc;
+        console.log(this.peerVideo && this.peerVideo.srcObject)
+    }
+
     render() {
         let {
             microphone,
             webcam,
             shareScreen
         } = this.state;
-        let {user, onClose, type, onMinimize, callStatus, onReject, onRedial, disabledMicrophone, disabledWebcam, toggleVideo, toggleAudio, toggleShareScreen, disabledShareScreen} = this.props;
-        console.log(user)
+        let {user, onClose, type, onMinimize, callStatus, onEndCall, onRedial, disabledMicrophone, disabledWebcam, toggleVideo, toggleAudio, toggleShareScreen, disabledShareScreen} = this.props;
+
         let actions = [CALL_STATUS.END, CALL_STATUS.NO_ANSWER].includes(callStatus) ? [
             {
                 icon: <i className="fas fa-phone-alt"></i>,
@@ -98,7 +115,7 @@ class VoiceCallWidget extends Component {
                 className: "cancel",
                 toolTip: "Kêt thúc",
                 onClick: () => {
-                    onReject();
+                    onEndCall();
                 },
             }
         ]
@@ -111,7 +128,7 @@ class VoiceCallWidget extends Component {
                         <div className="action" onClick={() => onMinimize()}>
                             <i className="fal fa-horizontal-rule"></i>
                         </div>
-                        <div className="action close" onClick={() => onReject()}>
+                        <div className="action close" onClick={() => onEndCall()}>
                             <i className="fal fa-times"></i>
                         </div>
                     </div>
@@ -132,20 +149,23 @@ class VoiceCallWidget extends Component {
                                     {CALL_STATUS_MATCHER[callStatus]}
                                 </div>
                             </div>
-                        ) : type === CALL_TYPES.VIDEO ? (
-                            <div>
-                            </div>
-                        ) : user && (
-                            <div className="center-calling-info">
-                                <div className="avatar-wrapper">
-                                    <Avatar
-                                        user={user}
-                                    />
-                                </div>
-                                <div className="call-info">
+                        ) : (
+                            <>
+                                {user && type === CALL_TYPES.VOICE && (
+                                    <div className="center-calling-info">
+                                        <div className="avatar-wrapper">
+                                            <Avatar
+                                                user={user}
+                                            />
+                                        </div>
+                                        <div className="call-info">
 
-                                </div>
-                            </div>
+                                        </div>
+                                    </div>
+                                )}
+                                <video className={classnames("peerVideo", {hide: type === CALL_TYPES.VOICE })} ref={peerVideo => this.peerVideo = peerVideo} autoPlay />
+                                <video className={classnames("localVideo", {hide: type === CALL_TYPES.VOICE })} ref={localVideo => this.localVideo = localVideo} autoPlay  />
+                            </>
                         )}
                     </div>
                     <div className="footer-actions">

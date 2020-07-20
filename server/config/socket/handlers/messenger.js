@@ -58,6 +58,12 @@ module.exports = (io, socket, context) => {
         }
 
     });
+    socket.on("end", function (data) {
+        if (data.friendID) {
+            io.to(`/messenger-user-room/user/${data.friendID}`).emit('end', {from: socket.userID});
+        }
+
+    });
     socket.on("reject", function (data) {
         if (data.friendID) {
             io.to(`/messenger-user-room/user/${data.friendID}`).emit('reject', {from: socket.userID});

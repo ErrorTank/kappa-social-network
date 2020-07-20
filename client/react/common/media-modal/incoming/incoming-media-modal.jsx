@@ -35,14 +35,14 @@ class IncomingMediaModal extends Component {
         userApi.getUserBasicInfo(props.callFrom)
             .then(user => this.setState({user}))
         this.io = messengerIO.getIOInstance();
-        this.io.on("reject", ({from}) => {
-            props.onClose(false);
+        this.io.on("end", ({from}) => {
+            props.onClose(null);
         })
     }
 
     componentWillUnmount() {
         if(this.io){
-            this.io.off("reject");
+            this.io.off("end");
         }
     }
 
