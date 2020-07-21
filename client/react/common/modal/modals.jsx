@@ -3,6 +3,7 @@ import {Modal} from "./modal";
 import {CSSTransition, TransitionGroup} from "react-transition-group";
 import remove from "lodash/remove";
 import classnames from "classnames"
+import {v4 as uuidv4} from 'uuid';
 
 export const appModal = {
     alert({text, title, btnText = "OK", style, className}) {

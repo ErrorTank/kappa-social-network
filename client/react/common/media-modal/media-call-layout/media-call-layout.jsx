@@ -35,6 +35,7 @@ export class MediaCallLayout extends Component {
   }
 
   componentDidMount() {
+    console.log("register")
     this.io
         .on('call', (data) => {
           if (data.sdp) {
@@ -55,6 +56,7 @@ export class MediaCallLayout extends Component {
           this.rejectCall(false)
         })
         .on('end', () => {
+          console.log("troi du")
           callServices.finishCall();
           return this.endCall(false)
         })
@@ -77,6 +79,7 @@ export class MediaCallLayout extends Component {
     if(this.ackTimeout)
       clearTimeout(this.ackTimeout)
     if(this.io){
+      console.log("unregister")
       this.io.off("call");
       this.io.off("ack");
       this.io.off("reject");

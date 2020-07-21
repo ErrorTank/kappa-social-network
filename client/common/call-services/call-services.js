@@ -41,24 +41,22 @@ const createCallServices = () => {
                     .then(() => {
                         let modalKey = uuidv4();
                         console.log(modalKey)
-                        modal = {
-                            ...modals.openModal({
-                                key: modalKey,
-                                content: (
-                                    <VoiceCallModal
-                                        config={config}
-                                        clientID={clientID}
-                                        type={type}
-                                        onClose={(r) => modal.close(r)}
-                                        minimize={() => {
-                                            modal.toggleMinimize();
-                                        }}
-                                    />
-                                ),
-                                disabledOverlayClose: true,
+                        modal = modals.openModal({
+                            key: modalKey,
+                            content: (
+                                <VoiceCallModal
+                                    config={config}
+                                    clientID={clientID}
+                                    type={type}
+                                    onClose={(r) => modal.close(r)}
+                                    minimize={() => {
+                                        modal.toggleMinimize();
+                                    }}
+                                />
+                            ),
+                            disabledOverlayClose: true,
 
-                            })
-                        };
+                        })
 
                         return modal.result;
 
