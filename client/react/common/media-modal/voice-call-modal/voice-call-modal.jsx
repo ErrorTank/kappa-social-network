@@ -6,17 +6,24 @@ import classnames from "classnames"
 import {Avatar} from "../../avatar/avatar";
 import {userApi} from "../../../../api/common/user-api";
 import {Tooltip} from "../../tooltip/tooltip";
+import {v4 as uuidv4} from 'uuid';
 
 export const voiceCallModal = {
     open(config) {
+        let modalKey = uuidv4();
         const modal = modals.openModal({
+            key: modalKey,
             content: (
                 <VoiceCallModal
                     {...config}
                     onClose={(r) => modal.close(r)}
+                    minimize={() => {
+                        return config.config.onMinimize(modal.toggleMinimize())
+                    }}
                 />
             ),
-            disabledOverlayClose: true
+            disabledOverlayClose: true,
+
         });
         return modal.result;
     }
@@ -64,7 +71,7 @@ class VoiceCallWidget extends Component {
             webcam,
             shareScreen
         } = this.state;
-        let {user, onClose, type, onMinimize, callStatus, onEndCall, onRedial, disabledMicrophone, disabledWebcam, toggleVideo, toggleAudio, toggleShareScreen, disabledShareScreen} = this.props;
+        let {minimize, user, onClose, type, callStatus, onEndCall, onRedial, disabledMicrophone, disabledWebcam, toggleVideo, toggleAudio, toggleShareScreen, disabledShareScreen} = this.props;
 
         let actions = [CALL_STATUS.END, CALL_STATUS.NO_ANSWER].includes(callStatus) ? [
             {
@@ -125,7 +132,7 @@ class VoiceCallWidget extends Component {
 
                 <div className="voice-modal-body">
                     <div className="header-actions">
-                        <div className="action" onClick={() => onMinimize()}>
+                        <div className="action" onClick={() => minimize()}>
                             <i className="fal fa-horizontal-rule"></i>
                         </div>
                         <div className="action close" onClick={() => onEndCall()}>
@@ -164,7 +171,7 @@ class VoiceCallWidget extends Component {
                                     </div>
                                 )}
                                 <video className={classnames("peerVideo", {hide: type === CALL_TYPES.VOICE })} ref={peerVideo => this.peerVideo = peerVideo} autoPlay />
-                                <video className={classnames("localVideo", {hide: type === CALL_TYPES.VOICE })} ref={localVideo => this.localVideo = localVideo} autoPlay  />
+                                <video className={classnames("localVideo", {hide: type === CALL_TYPES.VOICE })} ref={localVideo => this.localVideo = localVideo} autoPlay muted/>
                             </>
                         )}
                     </div>

@@ -25,7 +25,8 @@ const createCallServices = () => {
                 return voiceCallModal.open({
                     config,
                     clientID,
-                    type
+                    type,
+
                 })
             }
         }

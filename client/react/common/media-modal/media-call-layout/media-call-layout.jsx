@@ -122,7 +122,6 @@ export class MediaCallLayout extends Component {
   };
 
   rejectCall(isStarter){
-    console.log("buoi")
     if (isFunction(this.pc.stop)) {
       this.pc.stop(isStarter);
     }

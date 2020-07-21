@@ -14,6 +14,7 @@ import {chatApi} from "../../../../../api/common/chat-api";
 import {userInfo} from "../../../../../common/states/common";
 import {createStateHolder} from "../../../../../common/states/state-holder";
 import omit from "lodash/omit"
+import isFunction from "lodash/isFunction"
 import {KComponent} from "../../../../common/k-component";
 import {messengerIO} from "../../../../../socket/sockets";
 import {ChatBoxHeaderUserInfo} from "./chat-box-header-user-info";
@@ -32,7 +33,9 @@ export class ChatBox extends KComponent {
         this.state = {
             chat_room_brief: null,
             nickname_map: [],
-            default_emoji: null
+            default_emoji: null,
+            reOpen: null,
+            isCalling: false
         };
 
         this.messageState = createStateHolder([]);
@@ -143,20 +146,52 @@ export class ChatBox extends KComponent {
     }
 
     startVideoCall = () => {
-        let openVideoModal = callServices.createCallModal(CALL_TYPES.VIDEO);
-        openVideoModal({isCaller: true, chatRoomID: this.state.chat_room_brief?._id, multiple: false, callTo: this.state.chat_room_brief.involve_person.filter(each => each.related !== userInfo.getState()._id)[0].related})
-            .then(callInfo => {
+        if(!this.state.isCalling){
+            this.setState({isCalling: true});
+            let openVideoModal = callServices.createCallModal(CALL_TYPES.VIDEO);
+            openVideoModal({
+                isCaller: true,
+                chatRoomID: this.state.chat_room_brief?._id,
+                multiple: false,
+                callTo: this.state.chat_room_brief.involve_person.filter(each => each.related !== userInfo.getState()._id)[0].related,
+                onMinimize: reOpen => {
+                    this.setState({reOpen})
+                }
+            })
+                .then(callInfo => {
+                    this.setState({isCalling: false});
+                });
+        }else{
+            if(isFunction(this.state.reOpen)){
+                this.state.reOpen();
+                this.setState({reOpen: null});
+            }
+        }
 
-            });
     };
 
     startVoiceCall = () => {
-        let openVoiceModal = callServices.createCallModal(CALL_TYPES.VOICE);
-        console.log(this.props.chatRoomID)
-        openVoiceModal({isCaller: true, chatRoomID: this.state.chat_room_brief?._id, multiple: false, callTo: this.state.chat_room_brief.involve_person.filter(each => each.related !== userInfo.getState()._id)[0].related})
-            .then(callInfo => {
+        if(!this.state.isCalling){
+            this.setState({isCalling: true});
+            let openVoiceModal = callServices.createCallModal(CALL_TYPES.VOICE);
+            openVoiceModal({isCaller: true,
+                chatRoomID: this.state.chat_room_brief?._id,
+                multiple: false,
+                callTo: this.state.chat_room_brief.involve_person.filter(each => each.related !== userInfo.getState()._id)[0].related,
+                onMinimize: reOpen => {
+                    this.setState({reOpen})
+                }
+            })
+                .then(callInfo => {
+                    this.setState({isCalling: false});
+                });
+        }else{
+            if(isFunction(this.state.reOpen)){
+                this.state.reOpen();
+                this.setState({reOpen: null});
+            }
+        }
 
-            });
     };
 
     headerActions = [
@@ -343,6 +378,7 @@ export class ChatBox extends KComponent {
                                                         chatRoomID={this.state.chat_room_brief?._id}
                                                         nicknameMap={this.state.nickname_map}
                                                         defaultEmoji={this.state.default_emoji}
+                                                        reOpen={this.state.reOpen}
                                                      />
                                                 ) : (
 
