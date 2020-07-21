@@ -1,9 +1,10 @@
 import React, {Component} from 'react';
 import {messengerIO} from "../../../../socket/sockets";
 import {PeerConnection} from "../../../../common/call-services/PeerConnection";
-import {CALL_TYPES} from "../../../../common/call-services/call-services";
+import {CALL_TYPES, callServices} from "../../../../common/call-services/call-services";
 import {MediaDevice} from "../../../../common/call-services/MediaDevice";
 import isFunction from "lodash/isFunction"
+import {appModal} from "../../modal/modals";
 
 export const CALL_STATUS = {
   "CONNECTING": 1,
@@ -49,8 +50,14 @@ export class MediaCallLayout extends Component {
             this.setState({callStatus: CALL_STATUS.RINGING})
           }
         })
-        .on('reject', () => this.rejectCall(false))
-        .on('end', () => this.endCall(false))
+        .on('reject', () => {
+          callServices.finishCall();
+          this.rejectCall(false)
+        })
+        .on('end', () => {
+          callServices.finishCall();
+          return this.endCall(false)
+        })
     let state = {
       microphone_granted: localStorage.getItem("microphone_granted") !== "false",
       webcam_granted:  localStorage.getItem("webcam_granted") !== "false",
@@ -148,10 +155,21 @@ export class MediaCallLayout extends Component {
       startCall: this.startCall,
       ...this.state,
       pc: this.pc,
-      onEndCall: () => this.endCall(true),
+      onEndCall: () => {
+        callServices.finishCall();
+        return this.endCall(true);
+      },
       onRedial: () => {
-        this.setState({callStatus: CALL_STATUS.CONNECTING});
-        this.startCall(true)
+        if(!callServices.isCalling()){
+          this.setState({callStatus: CALL_STATUS.CONNECTING});
+          this.startCall(true)
+        }else{
+          appModal.alert({
+            title: "Thông báo",
+            text: "Bạn đang tham gia một cuộc gọi khác.",
+            btnText: "Đóng",
+          })
+        }
       },
       disabledMicrophone: localStorage.getItem("microphone_granted") !== "true",
       disabledWebcam: localStorage.getItem("webcam_granted") !== "true",

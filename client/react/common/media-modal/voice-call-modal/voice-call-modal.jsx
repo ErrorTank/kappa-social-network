@@ -8,27 +8,6 @@ import {userApi} from "../../../../api/common/user-api";
 import {Tooltip} from "../../tooltip/tooltip";
 import {v4 as uuidv4} from 'uuid';
 
-export const voiceCallModal = {
-    open(config) {
-        let modalKey = uuidv4();
-        const modal = modals.openModal({
-            key: modalKey,
-            content: (
-                <VoiceCallModal
-                    {...config}
-                    onClose={(r) => modal.close(r)}
-                    minimize={() => {
-                        return config.config.onMinimize(modal.toggleMinimize())
-                    }}
-                />
-            ),
-            disabledOverlayClose: true,
-
-        });
-        return modal.result;
-    }
-}
-
 const CALL_STATUS_MATCHER = {
     1: "Đang kêt nối...",
     2: "Đang rung chuông...",
@@ -37,7 +16,7 @@ const CALL_STATUS_MATCHER = {
     6: "Không thể kết nối."
 }
 
-class VoiceCallWidget extends Component {
+export class VoiceCallWidget extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -111,7 +90,7 @@ class VoiceCallWidget extends Component {
             }, {
                 icon: <i className="fal fa-desktop"></i>,
                 isActive: shareScreen,
-                toolTip: microphone ? "Tắt chia sẻ màn hình" : "Bật chia sẻ màn hình",
+                toolTip: shareScreen ? "Tắt chia sẻ màn hình" : "Bật chia sẻ màn hình",
                 onClick: () => {
                     this.setState({shareScreen: !shareScreen})
                     toggleShareScreen();
@@ -195,15 +174,19 @@ class VoiceCallWidget extends Component {
     }
 }
 
-class VoiceCallModal extends Component {
+export class VoiceCallModal extends Component {
     constructor(props) {
         super(props);
         this.state = {
             user: null
         }
         userApi.getUserBasicInfo(props.config.callTo).then(user => this.setState({user}))
+        console.log("dech mo")
     }
 
+    componentWillUnmount() {
+        console.log("what")
+    }
 
     render() {
         let {config, clientID, onClose, type, onMinimize} = this.props;

@@ -14,12 +14,13 @@ import {chatApi} from "../../../../../api/common/chat-api";
 import {userInfo} from "../../../../../common/states/common";
 import {createStateHolder} from "../../../../../common/states/state-holder";
 import omit from "lodash/omit"
-import isFunction from "lodash/isFunction"
+
 import {KComponent} from "../../../../common/k-component";
 import {messengerIO} from "../../../../../socket/sockets";
 import {ChatBoxHeaderUserInfo} from "./chat-box-header-user-info";
 import {MESSAGE_TYPES} from "./message-section/message";
 import {CALL_TYPES, callServices} from "../../../../../common/call-services/call-services";
+import {appModal} from "../../../../common/modal/modals";
 
 export const MessageState = {
     CACHED: "CACHED",
@@ -34,8 +35,6 @@ export class ChatBox extends KComponent {
             chat_room_brief: null,
             nickname_map: [],
             default_emoji: null,
-            reOpen: null,
-            isCalling: false
         };
 
         this.messageState = createStateHolder([]);
@@ -146,7 +145,7 @@ export class ChatBox extends KComponent {
     }
 
     startVideoCall = () => {
-        if(!this.state.isCalling){
+        if(!callServices.isCalling()){
             this.setState({isCalling: true});
             let openVideoModal = callServices.createCallModal(CALL_TYPES.VIDEO);
             openVideoModal({
@@ -162,17 +161,17 @@ export class ChatBox extends KComponent {
                     this.setState({isCalling: false});
                 });
         }else{
-            if(isFunction(this.state.reOpen)){
-                this.state.reOpen();
-                this.setState({reOpen: null});
-            }
+            appModal.alert({
+                title: "Thông báo",
+                text: "Bạn đang tham gia một cuộc gọi khác.",
+                btnText: "Đóng",
+            })
         }
 
     };
 
     startVoiceCall = () => {
-        if(!this.state.isCalling){
-            this.setState({isCalling: true});
+        if(!callServices.isCalling()){
             let openVoiceModal = callServices.createCallModal(CALL_TYPES.VOICE);
             openVoiceModal({isCaller: true,
                 chatRoomID: this.state.chat_room_brief?._id,
@@ -186,10 +185,11 @@ export class ChatBox extends KComponent {
                     this.setState({isCalling: false});
                 });
         }else{
-            if(isFunction(this.state.reOpen)){
-                this.state.reOpen();
-                this.setState({reOpen: null});
-            }
+            appModal.alert({
+                title: "Thông báo",
+                text: "Bạn đang tham gia một cuộc gọi khác.",
+                btnText: "Đóng",
+            })
         }
 
     };
