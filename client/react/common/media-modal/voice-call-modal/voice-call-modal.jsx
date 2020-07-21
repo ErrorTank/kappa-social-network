@@ -6,21 +6,7 @@ import classnames from "classnames"
 import {Avatar} from "../../avatar/avatar";
 import {userApi} from "../../../../api/common/user-api";
 import {Tooltip} from "../../tooltip/tooltip";
-
-export const voiceCallModal = {
-    open(config) {
-        const modal = modals.openModal({
-            content: (
-                <VoiceCallModal
-                    {...config}
-                    onClose={(r) => modal.close(r)}
-                />
-            ),
-            disabledOverlayClose: true
-        });
-        return modal.result;
-    }
-}
+import {v4 as uuidv4} from 'uuid';
 
 const CALL_STATUS_MATCHER = {
     1: "Đang kêt nối...",
@@ -30,7 +16,7 @@ const CALL_STATUS_MATCHER = {
     6: "Không thể kết nối."
 }
 
-class VoiceCallWidget extends Component {
+export class VoiceCallWidget extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -64,7 +50,7 @@ class VoiceCallWidget extends Component {
             webcam,
             shareScreen
         } = this.state;
-        let {user, onClose, type, onMinimize, callStatus, onEndCall, onRedial, disabledMicrophone, disabledWebcam, toggleVideo, toggleAudio, toggleShareScreen, disabledShareScreen} = this.props;
+        let {minimize, user, onClose, type, callStatus, onEndCall, onRedial, disabledMicrophone, disabledWebcam, toggleVideo, toggleAudio, toggleShareScreen, disabledShareScreen} = this.props;
 
         let actions = [CALL_STATUS.END, CALL_STATUS.NO_ANSWER].includes(callStatus) ? [
             {
@@ -104,7 +90,7 @@ class VoiceCallWidget extends Component {
             }, {
                 icon: <i className="fal fa-desktop"></i>,
                 isActive: shareScreen,
-                toolTip: microphone ? "Tắt chia sẻ màn hình" : "Bật chia sẻ màn hình",
+                toolTip: shareScreen ? "Tắt chia sẻ màn hình" : "Bật chia sẻ màn hình",
                 onClick: () => {
                     this.setState({shareScreen: !shareScreen})
                     toggleShareScreen();
@@ -125,7 +111,7 @@ class VoiceCallWidget extends Component {
 
                 <div className="voice-modal-body">
                     <div className="header-actions">
-                        <div className="action" onClick={() => onMinimize()}>
+                        <div className="action" onClick={() => minimize()}>
                             <i className="fal fa-horizontal-rule"></i>
                         </div>
                         <div className="action close" onClick={() => onEndCall()}>
@@ -164,7 +150,7 @@ class VoiceCallWidget extends Component {
                                     </div>
                                 )}
                                 <video className={classnames("peerVideo", {hide: type === CALL_TYPES.VOICE })} ref={peerVideo => this.peerVideo = peerVideo} autoPlay />
-                                <video className={classnames("localVideo", {hide: type === CALL_TYPES.VOICE })} ref={localVideo => this.localVideo = localVideo} autoPlay  />
+                                <video className={classnames("localVideo", {hide: type === CALL_TYPES.VOICE })} ref={localVideo => this.localVideo = localVideo} autoPlay muted/>
                             </>
                         )}
                     </div>
@@ -188,15 +174,19 @@ class VoiceCallWidget extends Component {
     }
 }
 
-class VoiceCallModal extends Component {
+export class VoiceCallModal extends Component {
     constructor(props) {
         super(props);
         this.state = {
             user: null
         }
         userApi.getUserBasicInfo(props.config.callTo).then(user => this.setState({user}))
+        console.log("dech mo")
     }
 
+    componentWillUnmount() {
+        console.log("what")
+    }
 
     render() {
         let {config, clientID, onClose, type, onMinimize} = this.props;

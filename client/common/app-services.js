@@ -1,13 +1,14 @@
 import {authenCache} from "./cache/authen-cache";
 import {userChatSettings, userInfo, userSearchHistory} from "./states/common";
 import omit from "lodash/omit";
-import { messengerIO} from "../socket/sockets";
+import {messengerIO} from "../socket/sockets";
 import {messengerApi} from "../api/common/messenger-api";
 import {messageWidgetController} from "../react/layout/authen-layout/create-message-widget/create-message-widget";
 import {CALL_TYPES, callServices} from "./call-services/call-services";
+import {appModal} from "../react/common/modal/modals";
 
 const initializeAuthenticateUser = ({userInfo: uInfo, authToken}) => {
-    if(authToken){
+    if (authToken) {
         authenCache.setAuthen(authToken, {expires: 7});
     }
 
@@ -21,7 +22,7 @@ const initializeAuthenticateUser = ({userInfo: uInfo, authToken}) => {
                 messengerIO.emit("join-own-room", {userID: uInfo._id});
                 callServices.initClientID(uInfo._id);
                 messengerIO.on("new-incoming-message", ({senderID}) => {
-                    if(senderID){
+                    if (senderID) {
                         messageWidgetController.focusOnChatBox({
                             userID: senderID
                         })
@@ -29,18 +30,29 @@ const initializeAuthenticateUser = ({userInfo: uInfo, authToken}) => {
                 })
                 messengerIO.on("request", ({from, callType}) => {
                     messengerIO.emit("ack-call", {friendID: from});
+
                     let openRequestModal = callServices.createIncomingModal(callType)
                     openRequestModal({
                         callFrom: from
                     }).then(result => {
                         console.log(result)
-                        if(result){
+                        if (result) {
+                            if(!callServices.isCalling()){
+                                messageWidgetController.focusOnChatBox({userID: from});
                                 let openVoiceModal = callServices.createCallModal(callType)
                                 openVoiceModal({isCaller: false, multiple: false, callTo: from})
+                            }else{
+                                appModal.alert({
+                                    title: "Thông báo",
+                                    text: "Bạn đang tham gia một cuộc gọi khác.",
+                                    btnText: "Đóng",
+                                })
+                            }
 
-                        }else{
-                            if(result === false){
-                                messengerIO.emit('reject', { friendID: from });
+
+                        } else {
+                            if (result === false) {
+                                messengerIO.emit('reject', {friendID: from});
                             }
 
                         }
@@ -112,10 +124,7 @@ const clearAuthenticateUserSession = () => {
         });
 
 
-
-
 };
-
 
 
 export {

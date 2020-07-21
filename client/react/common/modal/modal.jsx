@@ -19,10 +19,10 @@ export class Modal extends React.Component {
 
 
   render() {
-    const {className, onDismiss, content, disabledOverlayClose} = this.props;
+    const {className, onDismiss, content, disabledOverlayClose, minimize} = this.props;
 
     return (
-      <div className={classnames("modal k-modal", className)}
+      <div className={classnames("modal k-modal", className, {minimize})}
            onMouseDown={(e) => e.target === this.overlayElem && !disabledOverlayClose && onDismiss()}
            ref={(elem) => this.overlayElem = elem}
       >

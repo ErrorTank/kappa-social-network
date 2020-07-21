@@ -14,11 +14,14 @@ import {chatApi} from "../../../../../api/common/chat-api";
 import {userInfo} from "../../../../../common/states/common";
 import {createStateHolder} from "../../../../../common/states/state-holder";
 import omit from "lodash/omit"
+
 import {KComponent} from "../../../../common/k-component";
 import {messengerIO} from "../../../../../socket/sockets";
 import {ChatBoxHeaderUserInfo} from "./chat-box-header-user-info";
 import {MESSAGE_TYPES} from "./message-section/message";
 import {CALL_TYPES, callServices} from "../../../../../common/call-services/call-services";
+import {appModal} from "../../../../common/modal/modals";
+import {ToggleMinimize} from "./toggle-minimize";
 
 export const MessageState = {
     CACHED: "CACHED",
@@ -32,7 +35,7 @@ export class ChatBox extends KComponent {
         this.state = {
             chat_room_brief: null,
             nickname_map: [],
-            default_emoji: null
+            default_emoji: null,
         };
 
         this.messageState = createStateHolder([]);
@@ -143,20 +146,53 @@ export class ChatBox extends KComponent {
     }
 
     startVideoCall = () => {
-        let openVideoModal = callServices.createCallModal(CALL_TYPES.VIDEO);
-        openVideoModal({isCaller: true, chatRoomID: this.state.chat_room_brief?._id, multiple: false, callTo: this.state.chat_room_brief.involve_person.filter(each => each.related !== userInfo.getState()._id)[0].related})
-            .then(callInfo => {
+        if(!callServices.isCalling()){
+            this.setState({isCalling: true});
+            let openVideoModal = callServices.createCallModal(CALL_TYPES.VIDEO);
+            openVideoModal({
+                isCaller: true,
+                chatRoomID: this.state.chat_room_brief?._id,
+                multiple: false,
+                callTo: this.state.chat_room_brief.involve_person.filter(each => each.related !== userInfo.getState()._id)[0].related,
+                onMinimize: reOpen => {
+                    this.setState({reOpen})
+                }
+            })
+                .then(callInfo => {
+                    this.setState({isCalling: false});
+                });
+        }else{
+            appModal.alert({
+                title: "Thông báo",
+                text: "Bạn đang tham gia một cuộc gọi khác.",
+                btnText: "Đóng",
+            })
+        }
 
-            });
     };
 
     startVoiceCall = () => {
-        let openVoiceModal = callServices.createCallModal(CALL_TYPES.VOICE);
-        console.log(this.props.chatRoomID)
-        openVoiceModal({isCaller: true, chatRoomID: this.state.chat_room_brief?._id, multiple: false, callTo: this.state.chat_room_brief.involve_person.filter(each => each.related !== userInfo.getState()._id)[0].related})
-            .then(callInfo => {
+        if(!callServices.isCalling()){
+            let openVoiceModal = callServices.createCallModal(CALL_TYPES.VOICE);
+            openVoiceModal({isCaller: true,
+                chatRoomID: this.state.chat_room_brief?._id,
+                multiple: false,
+                callTo: this.state.chat_room_brief.involve_person.filter(each => each.related !== userInfo.getState()._id)[0].related,
+                onMinimize: reOpen => {
+                    this.setState({reOpen})
+                }
+            })
+                .then(callInfo => {
+                    this.setState({isCalling: false});
+                });
+        }else{
+            appModal.alert({
+                title: "Thông báo",
+                text: "Bạn đang tham gia một cuộc gọi khác.",
+                btnText: "Đóng",
+            })
+        }
 
-            });
     };
 
     headerActions = [
@@ -335,45 +371,53 @@ export class ChatBox extends KComponent {
                                     className={classnames({hide: !active})}
                                     renderHeader={() => (
                                         <div className="chat-box-header message-widget-header">
-                                            <div className="left-panel">
-                                                {userInfo ? (
-                                                     <ChatBoxHeaderUserInfo
-                                                        userInfo={userInfo}
-                                                        userStatus={userStatus}
-                                                        chatRoomID={this.state.chat_room_brief?._id}
-                                                        nicknameMap={this.state.nickname_map}
-                                                        defaultEmoji={this.state.default_emoji}
-                                                     />
-                                                ) : (
+                                            <div className="main-wrapper">
+                                                <div className="left-panel">
+                                                    {userInfo ? (
+                                                        <ChatBoxHeaderUserInfo
+                                                            userInfo={userInfo}
+                                                            userStatus={userStatus}
+                                                            chatRoomID={this.state.chat_room_brief?._id}
+                                                            nicknameMap={this.state.nickname_map}
+                                                            defaultEmoji={this.state.default_emoji}
+                                                        />
+                                                    ) : (
 
-                                                    <SkeletonTheme color={darkMode ? "#242526" : "#e3e3e3"}
-                                                                   highlightColor={darkMode ? "#333436" : "#ebebeb"}>
-                                                        <div className="loading-wrapper">
-                                                            <Skeleton count={1} height={32} width={32} duration={1}
-                                                                      circle={true}/>
-                                                            <span style={{width: "5px"}}/>
-                                                            <Skeleton count={1} height={20} width={80} duration={1}/>
-                                                        </div>
-                                                    </SkeletonTheme>
-
-                                                )}
-                                            </div>
-                                            <div className="right-panel">
-                                                <div className="actions">
-                                                    {actions.map((each, i) => (
-                                                        <Tooltip
-                                                            text={() => each.toolTipContent}
-                                                            position={"top"}
-                                                            key={i}
-                                                        >
-                                                            <div className={classnames("icon-wrapper", each.className)}
-                                                                 onClick={each.onClick}>
-                                                                {each.icon}
+                                                        <SkeletonTheme color={darkMode ? "#242526" : "#e3e3e3"}
+                                                                       highlightColor={darkMode ? "#333436" : "#ebebeb"}>
+                                                            <div className="loading-wrapper">
+                                                                <Skeleton count={1} height={32} width={32} duration={1}
+                                                                          circle={true}/>
+                                                                <span style={{width: "5px"}}/>
+                                                                <Skeleton count={1} height={20} width={80} duration={1}/>
                                                             </div>
-                                                        </Tooltip>
-                                                    ))}
+                                                        </SkeletonTheme>
+
+                                                    )}
+                                                </div>
+                                                <div className="right-panel">
+                                                    <div className="actions">
+                                                        {actions.map((each, i) => (
+                                                            <Tooltip
+                                                                text={() => each.toolTipContent}
+                                                                position={"top"}
+                                                                key={i}
+                                                            >
+                                                                <div className={classnames("icon-wrapper", each.className)}
+                                                                     onClick={each.onClick}>
+                                                                    {each.icon}
+                                                                </div>
+                                                            </Tooltip>
+                                                        ))}
+                                                    </div>
                                                 </div>
                                             </div>
+                                            {userInfo && (
+                                                <ToggleMinimize
+                                                    userInfo={userInfo}
+                                                />
+                                            )}
+
                                         </div>
                                     )}
                                     renderBody={() => (

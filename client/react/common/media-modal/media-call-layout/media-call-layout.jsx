@@ -1,9 +1,10 @@
 import React, {Component} from 'react';
 import {messengerIO} from "../../../../socket/sockets";
 import {PeerConnection} from "../../../../common/call-services/PeerConnection";
-import {CALL_TYPES} from "../../../../common/call-services/call-services";
+import {CALL_TYPES, callServices} from "../../../../common/call-services/call-services";
 import {MediaDevice} from "../../../../common/call-services/MediaDevice";
 import isFunction from "lodash/isFunction"
+import {appModal} from "../../modal/modals";
 
 export const CALL_STATUS = {
   "CONNECTING": 1,
@@ -36,6 +37,7 @@ export class MediaCallLayout extends Component {
   componentDidMount() {
     this.io
         .on('call', (data) => {
+          console.log("al")
           if (data.sdp) {
             this.setState({callStatus: CALL_STATUS.CALLING})
             this.pc.setRemoteDescription(data.sdp);
@@ -49,14 +51,24 @@ export class MediaCallLayout extends Component {
             this.setState({callStatus: CALL_STATUS.RINGING})
           }
         })
-        .on('reject', () => this.rejectCall(false))
-        .on('end', () => this.endCall(false))
+        .on('reject', () => {
+          callServices.finishCall();
+          this.rejectCall(false)
+        })
+        .on('end', () => {
+
+          callServices.finishCall();
+          return this.endCall(false)
+        })
     let state = {
       microphone_granted: localStorage.getItem("microphone_granted") !== "false",
       webcam_granted:  localStorage.getItem("webcam_granted") !== "false",
       init: false
     }
+    // console.log(this.props.callType)
+    // console.log(state)
     if(this.props.callType === CALL_TYPES.VOICE ? state.microphone_granted !== false : (state.microphone_granted !== false && state.webcam_granted !== false)){
+      console.log("la")
       this.startCall(this.props.isCaller);
     }else{
       state.error = true;
@@ -70,6 +82,7 @@ export class MediaCallLayout extends Component {
     if(this.ackTimeout)
       clearTimeout(this.ackTimeout)
     if(this.io){
+      console.log("unregister")
       this.io.off("call");
       this.io.off("ack");
       this.io.off("reject");
@@ -77,6 +90,7 @@ export class MediaCallLayout extends Component {
   }
 
   startCall = (isCaller) => {
+
     if(isCaller){
       this.ackTimeout = setTimeout(() => {
 
@@ -122,7 +136,6 @@ export class MediaCallLayout extends Component {
   };
 
   rejectCall(isStarter){
-    console.log("buoi")
     if (isFunction(this.pc.stop)) {
       this.pc.stop(isStarter);
     }
@@ -149,10 +162,21 @@ export class MediaCallLayout extends Component {
       startCall: this.startCall,
       ...this.state,
       pc: this.pc,
-      onEndCall: () => this.endCall(true),
+      onEndCall: () => {
+        callServices.finishCall();
+        return this.endCall(true);
+      },
       onRedial: () => {
-        this.setState({callStatus: CALL_STATUS.CONNECTING});
-        this.startCall(true)
+        if(!callServices.isCalling()){
+          this.setState({callStatus: CALL_STATUS.CONNECTING});
+          this.startCall(true)
+        }else{
+          appModal.alert({
+            title: "Thông báo",
+            text: "Bạn đang tham gia một cuộc gọi khác.",
+            btnText: "Đóng",
+          })
+        }
       },
       disabledMicrophone: localStorage.getItem("microphone_granted") !== "true",
       disabledWebcam: localStorage.getItem("webcam_granted") !== "true",
