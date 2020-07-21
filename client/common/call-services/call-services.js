@@ -12,7 +12,6 @@ export const CALL_TYPES = {
 };
 
 
-
 const createCallServices = () => {
     let clientID = null;
     let callingState = createStateHolder(false);
@@ -29,31 +28,33 @@ const createCallServices = () => {
         createCallModal: type => {
 
             return (config) => {
-                if(modal){
-                    console.log("cho ma")
+                if (modal) {
+
                     modal.close();
-                    modal=null;
+                    modal = null;
                 }
                 return callingState.setState(true)
                     .then(() => {
                         let modalKey = uuidv4();
 
-                        modal = modals.openModal({
-                            key: modalKey,
-                            content: (
-                                <VoiceCallModal
-                                    config={config}
-                                    clientID={clientID}
-                                    type={type}
-                                    onClose={(r) => modal.close(r)}
-                                    minimize={() => {
-                                        modal.toggleMinimize();
-                                    }}
-                                />
-                            ),
-                            disabledOverlayClose: true,
+                        modal = {
+                            ...modals.openModal({
+                                key: modalKey,
+                                content: (
+                                    <VoiceCallModal
+                                        config={config}
+                                        clientID={clientID}
+                                        type={type}
+                                        onClose={(r) => modal.close(r)}
+                                        minimize={() => {
+                                            modal.toggleMinimize();
+                                        }}
+                                    />
+                                ),
+                                disabledOverlayClose: true,
 
-                        });
+                            })
+                        };
 
                         return modal.result;
 
@@ -68,8 +69,8 @@ const createCallServices = () => {
         },
         isCalling: () => callingState.getState(),
         toggleMinimize: () => {
-            if(modal){
-               modal.toggleMinimize();
+            if (modal) {
+                modal.toggleMinimize();
             }
         },
         finishCall: () => {
