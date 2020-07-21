@@ -76,7 +76,6 @@ export class PeerConnection extends Emitter {
      */
     stop(isStarter) {
         if (isStarter) {
-            console.log("?????")
             this.socket.emit('end', {friendID: this.friendID});
         }
         this.mediaDevice.stop();

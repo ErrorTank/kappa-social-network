@@ -35,9 +35,9 @@ export class MediaCallLayout extends Component {
   }
 
   componentDidMount() {
-    console.log("register")
     this.io
         .on('call', (data) => {
+          console.log("al")
           if (data.sdp) {
             this.setState({callStatus: CALL_STATUS.CALLING})
             this.pc.setRemoteDescription(data.sdp);
@@ -56,7 +56,7 @@ export class MediaCallLayout extends Component {
           this.rejectCall(false)
         })
         .on('end', () => {
-          console.log("troi du")
+
           callServices.finishCall();
           return this.endCall(false)
         })
@@ -65,7 +65,10 @@ export class MediaCallLayout extends Component {
       webcam_granted:  localStorage.getItem("webcam_granted") !== "false",
       init: false
     }
+    // console.log(this.props.callType)
+    // console.log(state)
     if(this.props.callType === CALL_TYPES.VOICE ? state.microphone_granted !== false : (state.microphone_granted !== false && state.webcam_granted !== false)){
+      console.log("la")
       this.startCall(this.props.isCaller);
     }else{
       state.error = true;
@@ -87,6 +90,7 @@ export class MediaCallLayout extends Component {
   }
 
   startCall = (isCaller) => {
+
     if(isCaller){
       this.ackTimeout = setTimeout(() => {
 

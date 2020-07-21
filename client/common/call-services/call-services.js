@@ -31,13 +31,20 @@ const createCallServices = () => {
         createCallModal: type => {
 
             return (config) => {
-                if (modal) {
 
-                    modal.close();
-                    modal = null;
-                }
                 callTo = config.callTo;
-                return callingState.setState(true)
+                return Promise.all([
+                    callingState.setState(true),
+                    (() => {
+                        console.log("dit")
+                        console.log(modal)
+                        return modal ? modal.closePromise()
+                            .then(() => {
+                                modal = null;
+                                return ;
+                            }) : Promise.resolve();
+                    })()
+                ])
                     .then(() => {
                         let modalKey = uuidv4();
                         console.log(modalKey)

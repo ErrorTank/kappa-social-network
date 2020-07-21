@@ -91,13 +91,15 @@ export class ModalsRegistry extends React.Component {
                     this.dismiss(modalOptions);
                 },
                 close: (result) => {
-                    console.log("dau buuuuu")
-                    console.log(modalOptions.options.key)
                     this.close(modalOptions, result);
                 },
                 result: result,
                 toggleMinimize: () => {
                     return this.toggleMinimize(modalOptions)
+                },
+                closePromise: (result) => {
+
+                    return this.closePromise(modalOptions, result);
                 }
             };
         };
@@ -128,6 +130,16 @@ export class ModalsRegistry extends React.Component {
         this.forceUpdate();
     }
 
+    closePromise(modal, result) {
+        remove(this.state.modalList, modal);
+        modal.resolve(result);
+        return new Promise(resolve => {
+            console.log(this.state.modalList)
+            this.forceUpdate(() => resolve());
+        })
+
+    }
+
     render() {
         const {modalList} = this.state;
 
@@ -141,7 +153,6 @@ export class ModalsRegistry extends React.Component {
                         classNames={"slideIn"}
                     >
                         <Modal
-                            key={i}
                             isStack={modalList.length > 1}
                             className={modal.options.className}
                             content={modal.options.content}
