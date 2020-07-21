@@ -21,6 +21,7 @@ import {ChatBoxHeaderUserInfo} from "./chat-box-header-user-info";
 import {MESSAGE_TYPES} from "./message-section/message";
 import {CALL_TYPES, callServices} from "../../../../../common/call-services/call-services";
 import {appModal} from "../../../../common/modal/modals";
+import {ToggleMinimize} from "./toggle-minimize";
 
 export const MessageState = {
     CACHED: "CACHED",
@@ -370,46 +371,53 @@ export class ChatBox extends KComponent {
                                     className={classnames({hide: !active})}
                                     renderHeader={() => (
                                         <div className="chat-box-header message-widget-header">
-                                            <div className="left-panel">
-                                                {userInfo ? (
-                                                     <ChatBoxHeaderUserInfo
-                                                        userInfo={userInfo}
-                                                        userStatus={userStatus}
-                                                        chatRoomID={this.state.chat_room_brief?._id}
-                                                        nicknameMap={this.state.nickname_map}
-                                                        defaultEmoji={this.state.default_emoji}
-                                                        reOpen={this.state.reOpen}
-                                                     />
-                                                ) : (
+                                            <div className="main-wrapper">
+                                                <div className="left-panel">
+                                                    {userInfo ? (
+                                                        <ChatBoxHeaderUserInfo
+                                                            userInfo={userInfo}
+                                                            userStatus={userStatus}
+                                                            chatRoomID={this.state.chat_room_brief?._id}
+                                                            nicknameMap={this.state.nickname_map}
+                                                            defaultEmoji={this.state.default_emoji}
+                                                        />
+                                                    ) : (
 
-                                                    <SkeletonTheme color={darkMode ? "#242526" : "#e3e3e3"}
-                                                                   highlightColor={darkMode ? "#333436" : "#ebebeb"}>
-                                                        <div className="loading-wrapper">
-                                                            <Skeleton count={1} height={32} width={32} duration={1}
-                                                                      circle={true}/>
-                                                            <span style={{width: "5px"}}/>
-                                                            <Skeleton count={1} height={20} width={80} duration={1}/>
-                                                        </div>
-                                                    </SkeletonTheme>
-
-                                                )}
-                                            </div>
-                                            <div className="right-panel">
-                                                <div className="actions">
-                                                    {actions.map((each, i) => (
-                                                        <Tooltip
-                                                            text={() => each.toolTipContent}
-                                                            position={"top"}
-                                                            key={i}
-                                                        >
-                                                            <div className={classnames("icon-wrapper", each.className)}
-                                                                 onClick={each.onClick}>
-                                                                {each.icon}
+                                                        <SkeletonTheme color={darkMode ? "#242526" : "#e3e3e3"}
+                                                                       highlightColor={darkMode ? "#333436" : "#ebebeb"}>
+                                                            <div className="loading-wrapper">
+                                                                <Skeleton count={1} height={32} width={32} duration={1}
+                                                                          circle={true}/>
+                                                                <span style={{width: "5px"}}/>
+                                                                <Skeleton count={1} height={20} width={80} duration={1}/>
                                                             </div>
-                                                        </Tooltip>
-                                                    ))}
+                                                        </SkeletonTheme>
+
+                                                    )}
+                                                </div>
+                                                <div className="right-panel">
+                                                    <div className="actions">
+                                                        {actions.map((each, i) => (
+                                                            <Tooltip
+                                                                text={() => each.toolTipContent}
+                                                                position={"top"}
+                                                                key={i}
+                                                            >
+                                                                <div className={classnames("icon-wrapper", each.className)}
+                                                                     onClick={each.onClick}>
+                                                                    {each.icon}
+                                                                </div>
+                                                            </Tooltip>
+                                                        ))}
+                                                    </div>
                                                 </div>
                                             </div>
+                                            {userInfo && (
+                                                <ToggleMinimize
+                                                    userInfo={userInfo}
+                                                />
+                                            )}
+
                                         </div>
                                     )}
                                     renderBody={() => (

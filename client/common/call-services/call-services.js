@@ -16,7 +16,9 @@ const createCallServices = () => {
     let clientID = null;
     let callingState = createStateHolder(false);
     let modal = null;
+    let callTo = null;
     return {
+        ...callingState,
         initClientID: _clientID => clientID = _clientID,
         createIncomingModal: (type) => {
             return ({callFrom}) => incomingMediaModal.open({
@@ -25,6 +27,7 @@ const createCallServices = () => {
                 clientID
             })
         },
+        isCallTo: id => callTo === id,
         createCallModal: type => {
 
             return (config) => {
@@ -33,10 +36,11 @@ const createCallServices = () => {
                     modal.close();
                     modal = null;
                 }
+                callTo = config.callTo;
                 return callingState.setState(true)
                     .then(() => {
                         let modalKey = uuidv4();
-
+                        console.log(modalKey)
                         modal = {
                             ...modals.openModal({
                                 key: modalKey,
@@ -61,6 +65,7 @@ const createCallServices = () => {
                     })
                     .then(result => {
                         modal = null;
+                        callTo = null;
                         return callingState.setState(false)
                             .then(() => result);
                     });

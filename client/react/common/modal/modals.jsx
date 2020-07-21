@@ -90,6 +90,8 @@ export class ModalsRegistry extends React.Component {
                     this.dismiss(modalOptions);
                 },
                 close: (result) => {
+                    console.log("dau buuuuu")
+                    console.log(modalOptions.options.key)
                     this.close(modalOptions, result);
                 },
                 result: result,
@@ -103,7 +105,7 @@ export class ModalsRegistry extends React.Component {
     toggleMinimize(modal) {
         let modals = [...this.state.modalList];
         for (let m of modals) {
-            if (m.options.modalKey === modal.modalKey) {
+            if (m.options.key === modal.options.key) {
                 m.options.minimize = !m.options.minimize;
             }
         }

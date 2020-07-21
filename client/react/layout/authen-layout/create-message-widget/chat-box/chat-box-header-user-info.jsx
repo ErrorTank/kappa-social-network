@@ -4,15 +4,19 @@ import {ClickOutside} from "../../../../common/click-outside/click-outside";
 import {nicknameEditModal} from "../../../../common/nickname-edit-modal/nickname-edit-modal";
 import {emojiEditModal} from "../../../../common/edit-emoji-modal/edit-emoji-modal";
 import {chatApi} from "../../../../../api/common/chat-api";
+import {KComponent} from "../../../../common/k-component";
+import {userInfo} from "../../../../../common/states/common";
+import {callServices} from "../../../../../common/call-services/call-services";
 
 const moment = require("moment");
 
-export class ChatBoxHeaderUserInfo extends Component {
+export class ChatBoxHeaderUserInfo extends KComponent {
     constructor(props) {
         super(props);
         this.state = {
             showMenu: false
         }
+
     }
 
     editNickname = () => {
@@ -48,6 +52,7 @@ export class ChatBoxHeaderUserInfo extends Component {
     render() {
         let {userStatus, userInfo, nicknameMap} = this.props;
         let nickname = nicknameMap.find(each => each.related === userInfo._id)?.nickname;
+
         return (
             <div className="chat-box-header-user-info">
                 <ClickOutside onClickOut={() => this.state.showMenu && this.setState({showMenu: false})}>
@@ -79,6 +84,8 @@ export class ChatBoxHeaderUserInfo extends Component {
                         <i className="fal fa-angle-down"></i>
                     </div>
                 </ClickOutside>
+
+
             </div>
         );
     }
