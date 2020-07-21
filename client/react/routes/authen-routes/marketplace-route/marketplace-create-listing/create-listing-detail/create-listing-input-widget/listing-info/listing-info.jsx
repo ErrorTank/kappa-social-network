@@ -10,29 +10,19 @@ import {
 import { customHistory } from './../../../../../../routes';
 import { ListingInfoSelect } from './../../../../../../../common/listing-info-select/listing-info-select';
 import { v4 as uuidv4 } from 'uuid';
-import omit from 'lodash/omit';
+import { omit, toArray } from 'lodash';
 
 export class ListingInfo extends Component {
   constructor(props) {
     super(props);
     this.state = {};
   }
-  componentDidUpdate = () => {
+  handleInputDisplay = () => {
     const { state, updateValue } = this.props;
     let { pictureLimit, type, category, ...other } = state;
     switch (type) {
       case 'item':
         this.setState({ inputField: itemField });
-        if (category) {
-          fieldByCategory.map((each) => {
-            if (each.name === category) {
-              let result = omit(each, ['_id', 'name']);
-              this.setState({ ...result });
-            }
-          });
-        }
-
-        // console.log(state.category);
         break;
       case 'vehicle':
         this.setState({ inputField: vehicleField });
@@ -42,13 +32,46 @@ export class ListingInfo extends Component {
         break;
     }
   };
+  handleCheckDependent = () => {
+    const { state, updateValue } = this.props;
+    let { pictureLimit, type, category, ...other } = state;
+    switch (type) {
+      case 'item':
+        this.handleSetDependent(fieldByCategory);
+        break;
+      case 'vehicle':
+        this.handleSetDependent(fieldByVehicleType);
+        break;
+      case 'home':
+        // this.handleSetDependent();
+        break;
+    }
+  };
+  handleSetDependent = (obj) => {
+    const { state, updateValue } = this.props;
+    let { pictureLimit, type, category, ...other } = state;
+    obj.map((each) => {
+      if (each.name === category) {
+        let result = omit(each, ['_id', 'name']);
+        Object.keys(result).map((each) => {
+          this.setState({ [each]: result[each] });
+        });
+      }
+    });
+  };
+  componentDidUpdate(prevProps) {
+    if (prevProps.state.type !== this.props.state.type) {
+      this.handleInputDisplay();
+    }
+    if (prevProps.state.category !== this.props.state.category) {
+      this.handleCheckDependent();
+    }
+  }
+
   render() {
     const { state, updateValue } = this.props;
     let { pictureLimit, type, category, ...other } = state;
-
     const { inputField } = this.state;
-    // console.log(this.props.state);
-    // console.log(customHistory);
     console.log(this.state);
 
     return (
@@ -69,30 +92,35 @@ export class ListingInfo extends Component {
         {inputField &&
           inputField.map((each, i) => {
             // let listingInfoID = uuidv4();
-            return !each.isSelected ? (
-              <ListingInfoInput
-                label={each.name}
-                key={each.englishName}
-                textArea={each.isTextArea}
-                id={each.englishName}
-                value={state[each.englishName]}
-                onChange={(e) => {
-                  updateValue(`${each.englishName}`, e.target.value);
-                }}
-              />
-            ) : (
-              <ListingInfoSelect
-                label={each.name}
-                options={each.options}
-                displayAs={(item) => item}
-                key={each.englishName}
-                id={each.englishName}
-                value={state[each.englishName]}
-                isSelected={(option) => option === state[each.englishName]}
-                onChange={(value) => {
-                  updateValue(`${each.englishName}`, value.name);
-                }}
-              />
+            return (
+              (!each.isDepended ||
+                (each.isDepended && this.state[each.englishName])) &&
+              (!each.isSelected ? (
+                <ListingInfoInput
+                  label={each.name}
+                  key={each.englishName}
+                  textArea={each.isTextArea}
+                  id={each.englishName}
+                  value={state[each.englishName]}
+                  // updateValue={updateValue}
+                  onChange={(e) => {
+                    updateValue(`${each.englishName}`, e.target.value);
+                  }}
+                />
+              ) : (
+                <ListingInfoSelect
+                  label={each.name}
+                  options={each.options}
+                  displayAs={(item) => item}
+                  key={each.englishName}
+                  id={each.englishName}
+                  value={state[each.englishName]}
+                  isSelected={(option) => option === state[each.englishName]}
+                  onChange={(value) => {
+                    updateValue(`${each.englishName}`, value.name);
+                  }}
+                />
+              ))
             );
           })}
       </div>

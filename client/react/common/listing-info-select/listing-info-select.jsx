@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom';
 import classnames from 'classnames';
 import { ClickOutside } from './../click-outside/click-outside';
 import { customHistory } from './../../routes/routes';
+import { split } from 'lodash';
 
 export class ListingInfoSelect extends Component {
   constructor(props) {
@@ -35,6 +36,7 @@ export class ListingInfoSelect extends Component {
       getOptionKey = (each, index) => index,
       id,
       isSelected = (option) => false,
+      updateValue,
     } = this.props;
 
     // console.log(options);
@@ -70,7 +72,12 @@ export class ListingInfoSelect extends Component {
                       className={classnames('not-option', {
                         linked: each.link,
                       })}
-                      onClick={() => each.link && customHistory.push(each.link)}
+                      onClick={() => {
+                        if (each.link) {
+                          customHistory.push(each.link);
+                          updateValue('type', each.link.split(20));
+                        }
+                      }}
                     >
                       <div
                         className={classnames({
