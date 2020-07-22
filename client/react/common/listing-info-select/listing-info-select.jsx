@@ -75,7 +75,7 @@ export class ListingInfoSelect extends Component {
                       onClick={() => {
                         if (each.link) {
                           customHistory.push(each.link);
-                          updateValue('type', each.link.split(20));
+                          updateValue('type', each.link.slice(20));
                         }
                       }}
                     >

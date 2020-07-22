@@ -6,6 +6,7 @@ import {
   vehicleField,
   fieldByVehicleType,
   homeField,
+  fieldByHomeFor,
 } from './../../../../../../../../const/listing';
 import { customHistory } from './../../../../../../routes';
 import { ListingInfoSelect } from './../../../../../../../common/listing-info-select/listing-info-select';
@@ -43,7 +44,7 @@ export class ListingInfo extends Component {
         this.handleSetDependent(fieldByVehicleType);
         break;
       case 'home':
-        // this.handleSetDependent();
+        this.handleSetDependent(fieldByHomeFor);
         break;
     }
   };

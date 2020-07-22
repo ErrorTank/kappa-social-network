@@ -181,6 +181,13 @@ export const itemField = [
     englishName: 'decription',
     isTextArea: true,
   },
+
+  //special, need to build later
+  {
+    name: 'Vị trí',
+    englishName: 'position',
+  },
+
   {
     name: 'Tình trạng hàng',
     englishName: 'availability',
@@ -572,48 +579,110 @@ export const fieldByVehicleType = [
 
 export const homeField = [
   //Home is a little different
-
-  //Home for Rent/Sale
   {
-    _id: 'Home for Rent',
-    name: 'Home for Rent',
-    //must
-    homeFor: true,
-    homeType: true,
-    numberOfBedrooms: true,
-    numberOfBathrooms: true,
-    pricePerMonth: true, //
-    address: true,
-    decription: true,
-    //option
-    squareFeet: true,
-    dateAvailable: true,
-    laundryType: true,
-    parkingType: true,
-    airConditioningType: true,
-    heatingType: true,
-    catFriendly: true,
-    dogFriendly: true,
+    name: 'Nhà dùng để',
+    englishName: 'homeFor',
+    isSelected: true,
+    options: [{ name: 'Bán' }, { name: 'Cho thuê' }],
   },
   {
-    _id: 'Home for Sale',
-    name: 'Home for Sale',
+    name: 'Loại tài sản',
+    englishName: 'homeType',
+    isSelected: true,
+    options: [
+      { name: 'Nhà' },
+      { name: 'Nhà liền kề' },
+      { name: 'Căn hộ/Căn hộ cao cấp' },
+      { name: 'Phòng' },
+    ],
+  },
+  {
+    name: 'Số phòng ngủ',
+    englishName: 'numberOfBedrooms',
+  },
+  {
+    name: 'Số phòng tắm',
+    englishName: 'numberOfBathrooms',
+  },
+  {
+    name: 'Giá mỗi tháng',
+    englishName: 'pricePerMonth',
+    isDepended: true,
+  },
+  {
+    name: 'Giá',
+    englishName: 'price',
+    isDepended: true,
+  },
+  //special, need to build later
+  {
+    name: 'Địa chỉ tài sản',
+    englishName: 'address',
+  },
+
+  {
+    name: 'Mô tả về tài sản',
+    englishName: 'decription',
+    isTextArea: true,
+  },
+  //Home for Rent/Sale
+  //  {
+  //    _id: 'Home for Rent',
+  //    name: 'Home for Rent',
+  //    //must
+  //    homeFor: true,
+  //    homeType: true,
+  //    numberOfBedrooms: true,
+  //    numberOfBathrooms: true,
+  //    pricePerMonth: true, //
+  //    address: true,
+  //    decription: true,
+  //    //option
+  //    squareFeet: true,
+  //    dateAvailable: true,
+  //    laundryType: true,
+  //    parkingType: true,
+  //    airConditioningType: true,
+  //    heatingType: true,
+  //    catFriendly: true,
+  //    dogFriendly: true,
+  //  },
+  //  {
+  //    _id: 'Home for Sale',
+  //    name: 'Home for Sale',
+  //    //must
+  //    homeFor: true,
+  //    homeType: true,
+  //    numberOfBedrooms: true,
+  //    numberOfBathrooms: true,
+  //    price: true, //
+  //    address: true,
+  //    decription: true,
+  //    //option
+  //    squareFeet: true,
+  //    dateAvailable: true,
+  //    laundryType: true,
+  //    parkingType: true,
+  //    airConditioningType: true,
+  //    heatingType: true,
+  //    catFriendly: true,
+  //    dogFriendly: true,
+  //  },
+];
+
+export const fieldByHomeFor = [
+  {
+    _id: 'Bán',
+    name: 'Sell',
     //must
-    homeFor: true,
-    homeType: true,
-    numberOfBedrooms: true,
-    numberOfBathrooms: true,
-    price: true, //
-    address: true,
-    decription: true,
+    price: true,
     //option
-    squareFeet: true,
-    dateAvailable: true,
-    laundryType: true,
-    parkingType: true,
-    airConditioningType: true,
-    heatingType: true,
-    catFriendly: true,
-    dogFriendly: true,
+  },
+  {
+    _id: 'Thuê',
+    name: 'Rent',
+    //must
+    pricePerMonth: true,
+    //option
   },
 ];
