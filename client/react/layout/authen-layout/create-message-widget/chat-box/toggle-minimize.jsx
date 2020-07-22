@@ -14,15 +14,15 @@ export class ToggleMinimize extends KComponent {
         }));
     }
     render() {
-        let showMinimizeToggle = callServices.isCallTo(this.props.userInfo._id);
-        console.log(callServices.getCallTo())
-        console.log(this.props.userInfo._id)
+        let showMinimizeToggle = callServices.isCallTo(this.props.userInfo._id) && callServices.isCalling();
+        console.log(callServices.isCallTo(this.props.userInfo._id))
+        console.log(callServices.isCalling())
         return showMinimizeToggle ? (
             <div className={"toggle-minimize"}>
                 <button className="btn btn-back" onClick={() => callServices.toggleMinimize()}>
                     Trờ lại cuộc gọi
                 </button>
-                <button className="btn btn-cancel">
+                <button className="btn btn-cancel" onClick={() => callServices.endCall()}>
                     Hủy cuộc gọi
                 </button>
             </div>

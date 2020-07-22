@@ -14,6 +14,7 @@ export const CALL_STATUS = {
     "NO_ANSWER": 5,
     "CANNOT_CONNECTED": 6
 };
+export let callController = {};
 
 export class MediaCallLayout extends Component {
     constructor(props) {
@@ -32,6 +33,9 @@ export class MediaCallLayout extends Component {
         this.pc = {};
         this.io = messengerIO.getIOInstance();
         this.ackTimeout = null;
+        callController = {
+            endCall: () => this.endCall(true)
+        }
     }
 
     initSocketListeners = () => {
@@ -146,6 +150,8 @@ export class MediaCallLayout extends Component {
 
     rejectCall(isStarter) {
         this.removeListeners();
+        if (this.ackTimeout)
+            clearTimeout(this.ackTimeout)
         if (isFunction(this.pc.stop)) {
             this.pc.stop(isStarter);
         }
@@ -154,12 +160,17 @@ export class MediaCallLayout extends Component {
     }
 
     endCall(isStarter) {
-        this.removeListeners();
-        if (isFunction(this.pc.stop)) {
-            this.pc.stop(isStarter);
-        }
-        this.pc = {};
-        this.setState({...this.initState, callStatus: CALL_STATUS.END})
+        return new Promise(resolve => {
+            this.removeListeners();
+            if (this.ackTimeout)
+                clearTimeout(this.ackTimeout)
+            if (isFunction(this.pc.stop)) {
+                this.pc.stop(isStarter);
+            }
+            this.pc = {};
+            this.setState({...this.initState, callStatus: CALL_STATUS.END}, () => resolve())
+        })
+
     }
 
     render() {
@@ -173,12 +184,17 @@ export class MediaCallLayout extends Component {
             ...this.state,
             pc: this.pc,
             onEndCall: () => {
-                callServices.finishCall();
-                return this.endCall(true);
+
+                return Promise.all([
+                    callServices.finishCall(),
+                    this.endCall(true)
+                ]);
+
             },
             onRedial: () => {
                 if (!callServices.isCalling()) {
                     this.setState({callStatus: CALL_STATUS.CONNECTING});
+                    callServices.setCallStatus(true);
                     this.startCall(true)
                 } else {
                     appModal.alert({

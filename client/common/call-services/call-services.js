@@ -5,6 +5,7 @@ import {createStateHolder} from "../states/state-holder";
 import {modals} from "../../react/common/modal/modals";
 import React from "react";
 import {v4 as uuidv4} from 'uuid';
+import {callController} from "../../react/common/media-modal/media-call-layout/media-call-layout";
 
 export const CALL_TYPES = {
     "VOICE": 1,
@@ -75,12 +76,22 @@ const createCallServices = () => {
             }
         },
         isCalling: () => callingState.getState().status === true,
+        setCallStatus: (status) => {
+            return callingState.setState({status, callTo: callingState.getState().callTo})
+        },
         toggleMinimize: () => {
             if (modal) {
                 modal.toggleMinimize();
             }
         },
         finishCall: () => {
+            return callingState.setState({status: false, callTo: callingState.getState().callTo})
+        },
+        endCall: () => {
+            if (modal) {
+                modal.toggleMinimize();
+            }
+            callController.endCall();
             return callingState.setState({status: false, callTo: callingState.getState().callTo})
         }
 

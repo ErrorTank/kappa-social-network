@@ -114,7 +114,9 @@ export class VoiceCallWidget extends Component {
                         <div className="action" onClick={() => minimize()}>
                             <i className="fal fa-horizontal-rule"></i>
                         </div>
-                        <div className="action close" onClick={() => onEndCall()}>
+                        <div className="action close" onClick={() => {
+                            onEndCall().then(() => onClose())
+                        }}>
                             <i className="fal fa-times"></i>
                         </div>
                     </div>
