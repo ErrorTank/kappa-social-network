@@ -189,12 +189,13 @@ export class VoiceCallModal extends Component {
     }
 
     render() {
-        let {config, clientID, onClose, type, onMinimize} = this.props;
+        let {config, clientID, onClose, type, mKey} = this.props;
         return (
             <MediaCallLayout
                 callType={CALL_TYPES.VOICE}
                 {...config}
                 clientID={clientID}
+                mKey={mKey}
                 onClose={onClose}
             >
                 {(layoutProps) => {

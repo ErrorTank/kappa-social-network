@@ -76,7 +76,8 @@ export class ModalsRegistry extends React.Component {
         modals.openModal = (options) => {
             let modalOptions = {
                 options,
-                resolve: null
+                resolve: null,
+                key: uuidv4()
             };
 
             let {modalList} = this.state;
@@ -97,9 +98,9 @@ export class ModalsRegistry extends React.Component {
                 toggleMinimize: () => {
                     return this.toggleMinimize(modalOptions)
                 },
-                closePromise: (result) => {
+                closePromise: (triggerClose, result) => {
 
-                    return this.closePromise(modalOptions, result);
+                    return this.closePromise(modalOptions, result, triggerClose);
                 }
             };
         };
@@ -130,11 +131,14 @@ export class ModalsRegistry extends React.Component {
         this.forceUpdate();
     }
 
-    closePromise(modal, result) {
+    closePromise(modal, result, triggerClose = true) {
         remove(this.state.modalList, modal);
-        modal.resolve(result);
+        if(triggerClose){
+            modal.resolve(result);
+        }
+
         return new Promise(resolve => {
-            console.log(this.state.modalList)
+
             this.forceUpdate(() => resolve());
         })
 
@@ -144,26 +148,32 @@ export class ModalsRegistry extends React.Component {
         const {modalList} = this.state;
 
 
-        return (
-            <TransitionGroup className="modals">
-                {modalList.map((modal, i) => (
-                    <CSSTransition
-                        key={i}
-                        timeout={300}
-                        classNames={"slideIn"}
-                    >
-                        <Modal
-                            isStack={modalList.length > 1}
-                            className={modal.options.className}
-                            content={modal.options.content}
-                            minimize={modal.options.minimize}
-                            disabledOverlayClose={modal.options.disabledOverlayClose}
-                            onDismiss={() => this.dismiss(modal)}
-                        />
-                    </CSSTransition>
-                ))}
-            </TransitionGroup>
-        );
+        return modalList.map((modal, i) => (
+            <Modal
+                key={modal.options.key || modal.key}
+                isStack={modalList.length > 1}
+                className={modal.options.className}
+                content={modal.options.content}
+                minimize={modal.options.minimize}
+                disabledOverlayClose={modal.options.disabledOverlayClose}
+                onDismiss={() => this.dismiss(modal)}
+            />
+        ))
+        //return (
+        //     <TransitionGroup className="modals">
+        //         {modalList.map((modal, i) => (
+        //             <Modal
+        //                 key={modal.options.key || modal.key}
+        //                 isStack={modalList.length > 1}
+        //                 className={modal.options.className}
+        //                 content={modal.options.content}
+        //                 minimize={modal.options.minimize}
+        //                 disabledOverlayClose={modal.options.disabledOverlayClose}
+        //                 onDismiss={() => this.dismiss(modal)}
+        //             />
+        //         ))}
+        //     </TransitionGroup>
+        // );
     }
 }
 

@@ -1,5 +1,5 @@
 import {incomingMediaModal} from "../../react/common/media-modal/incoming/incoming-media-modal";
-import {VoiceCallModal, voiceCallModal} from "../../react/common/media-modal/voice-call-modal/voice-call-modal";
+import {VoiceCallModal} from "../../react/common/media-modal/voice-call-modal/voice-call-modal";
 import isFunction from "lodash/isFunction"
 import {createStateHolder} from "../states/state-holder";
 import {modals} from "../../react/common/modal/modals";
@@ -28,30 +28,32 @@ const createCallServices = () => {
             })
         },
         isCallTo: id => callTo === id,
+        getCallTo: () => callTo,
         createCallModal: type => {
 
             return (config) => {
 
-                callTo = config.callTo;
+
+
                 return Promise.all([
                     callingState.setState(true),
                     (() => {
-                        console.log("dit")
-                        console.log(modal)
-                        return modal ? modal.closePromise()
+                        return modal ? modal.closePromise(false)
                             .then(() => {
                                 modal = null;
+                                callTo = null;
                                 return ;
                             }) : Promise.resolve();
                     })()
                 ])
                     .then(() => {
                         let modalKey = uuidv4();
-                        console.log(modalKey)
+                        callTo = config.callTo;
                         modal = modals.openModal({
                             key: modalKey,
                             content: (
                                 <VoiceCallModal
+                                    mKey={modalKey}
                                     config={config}
                                     clientID={clientID}
                                     type={type}
@@ -63,7 +65,7 @@ const createCallServices = () => {
                             ),
                             disabledOverlayClose: true,
 
-                        })
+                        });
 
                         return modal.result;
 

@@ -35,7 +35,6 @@ const initializeAuthenticateUser = ({userInfo: uInfo, authToken}) => {
                     openRequestModal({
                         callFrom: from
                     }).then(result => {
-                        console.log(result)
                         if (result) {
                             if(!callServices.isCalling()){
                                 messageWidgetController.focusOnChatBox({userID: from});
