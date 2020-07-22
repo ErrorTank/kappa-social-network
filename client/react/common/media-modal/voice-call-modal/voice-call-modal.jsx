@@ -181,12 +181,9 @@ export class VoiceCallModal extends Component {
             user: null
         }
         userApi.getUserBasicInfo(props.config.callTo).then(user => this.setState({user}))
-        console.log("dech mo")
+
     }
 
-    componentWillUnmount() {
-        console.log("what")
-    }
 
     render() {
         let {config, clientID, onClose, type, mKey} = this.props;
