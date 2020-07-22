@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { KComponent } from '../../../../../common/k-component';
 import { CommonLayout } from '../../../../../layout/common-layout/common-layout';
 import { PageTitle } from '../../../../../common/page-title/page-title';
-import { CreateListingInputWidget } from './create-listing-input-widget/create-listing-input-widget';
+import { CreateListingInputWidget } from './cl-input-widget/cl-input-widget';
 import { customHistory } from './../../../../routes';
 
 class CreateListingDetail extends KComponent {

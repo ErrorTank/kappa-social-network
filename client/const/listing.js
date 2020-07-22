@@ -132,7 +132,7 @@ export const itemField = [
         name: 'Nhà đất',
         icon: 'fas fa-home',
         isDisabled: true,
-        link: '/marketplace/create/rental',
+        link: '/marketplace/create/home',
       },
     ],
   },
@@ -583,7 +583,7 @@ export const homeField = [
     name: 'Nhà dùng để',
     englishName: 'homeFor',
     isSelected: true,
-    options: [{ name: 'Bán' }, { name: 'Cho thuê' }],
+    options: [{ name: 'Bán' }, { name: 'Thuê' }],
   },
   {
     name: 'Loại tài sản',
@@ -672,15 +672,15 @@ export const homeField = [
 
 export const fieldByHomeFor = [
   {
-    _id: 'Bán',
-    name: 'Sell',
+    _id: 'Sell',
+    name: 'Bán',
     //must
     price: true,
     //option
   },
   {
-    _id: 'Thuê',
-    name: 'Rent',
+    _id: 'Rent',
+    name: 'Thuê',
     //must
     pricePerMonth: true,
     //option

@@ -23,7 +23,7 @@ export class PickListingTypeWidget extends Component {
       className: 'vehicle',
     },
     {
-      url: '/marketplace/create/rental',
+      url: '/marketplace/create/home',
       icon: <i className='fad fa-home'></i>,
       title: 'Nhà bán/cho thuê',
       description: 'Đăng bán ngôi nhà hoặc căn hộ cho thuê.',

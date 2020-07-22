@@ -7,9 +7,9 @@ import {
   fieldByVehicleType,
   homeField,
   fieldByHomeFor,
-} from './../../../../../../../../const/listing';
-import { customHistory } from './../../../../../../routes';
-import { ListingInfoSelect } from './../../../../../../../common/listing-info-select/listing-info-select';
+} from '../../../../../../../../const/listing';
+import { customHistory } from '../../../../../../routes';
+import { ListingInfoSelect } from '../../../../../../../common/listing-info-select/listing-info-select';
 import { v4 as uuidv4 } from 'uuid';
 import { omit, toArray } from 'lodash';
 
@@ -35,24 +35,31 @@ export class ListingInfo extends Component {
   };
   handleCheckDependent = () => {
     const { state, updateValue } = this.props;
-    let { pictureLimit, type, category, ...other } = state;
+    let {
+      pictureLimit,
+      type,
+      category,
+      vehicleType,
+      homeFor,
+      ...other
+    } = state;
     switch (type) {
       case 'item':
-        this.handleSetDependent(fieldByCategory);
+        this.handleSetDependent(fieldByCategory, category);
         break;
       case 'vehicle':
-        this.handleSetDependent(fieldByVehicleType);
+        this.handleSetDependent(fieldByVehicleType, vehicleType);
         break;
       case 'home':
-        this.handleSetDependent(fieldByHomeFor);
+        this.handleSetDependent(fieldByHomeFor, homeFor);
         break;
     }
   };
-  handleSetDependent = (obj) => {
+  handleSetDependent = (obj, dependent) => {
     const { state, updateValue } = this.props;
-    let { pictureLimit, type, category, ...other } = state;
+    let { pictureLimit, type, ...other } = state;
     obj.map((each) => {
-      if (each.name === category) {
+      if (each.name === dependent) {
         let result = omit(each, ['_id', 'name']);
         Object.keys(result).map((each) => {
           this.setState({ [each]: result[each] });
@@ -67,6 +74,12 @@ export class ListingInfo extends Component {
     if (prevProps.state.category !== this.props.state.category) {
       this.handleCheckDependent();
     }
+    if (prevProps.state.vehicleType !== this.props.state.vehicleType) {
+      this.handleCheckDependent();
+    }
+    if (prevProps.state.homeFor !== this.props.state.homeFor) {
+      this.handleCheckDependent();
+    }
   }
 
   render() {
@@ -74,6 +87,7 @@ export class ListingInfo extends Component {
     let { pictureLimit, type, category, ...other } = state;
     const { inputField } = this.state;
     console.log(this.state);
+    console.log(this.props);
 
     return (
       <div className='listing-info'>
