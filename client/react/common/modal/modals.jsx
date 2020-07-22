@@ -133,7 +133,7 @@ export class ModalsRegistry extends React.Component {
 
     closePromise(modal, result, triggerClose = true) {
         remove(this.state.modalList, modal);
-        if(triggerClose){
+        if (triggerClose) {
             modal.resolve(result);
         }
 
@@ -159,18 +159,26 @@ export class ModalsRegistry extends React.Component {
                 onDismiss={() => this.dismiss(modal)}
             />
         ))
-        //return (
+        // return (
         //     <TransitionGroup className="modals">
         //         {modalList.map((modal, i) => (
-        //             <Modal
-        //                 key={modal.options.key || modal.key}
-        //                 isStack={modalList.length > 1}
-        //                 className={modal.options.className}
-        //                 content={modal.options.content}
-        //                 minimize={modal.options.minimize}
-        //                 disabledOverlayClose={modal.options.disabledOverlayClose}
-        //                 onDismiss={() => this.dismiss(modal)}
-        //             />
+        //
+        //                 <CSSTransition
+        //                     key={modal.options.key || modal.key}
+        //                     timeout={300}
+        //                     classNames={"slideIn"}
+        //                 >
+        //                     <Modal
+        //                         // key={modal.options.key || modal.key}
+        //                         isStack={modalList.length > 1}
+        //                         className={modal.options.className}
+        //                         content={modal.options.content}
+        //                         minimize={modal.options.minimize}
+        //                         disabledOverlayClose={modal.options.disabledOverlayClose}
+        //                         onDismiss={() => this.dismiss(modal)}
+        //                     />
+        //                 </CSSTransition>
+        //
         //         ))}
         //     </TransitionGroup>
         // );

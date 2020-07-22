@@ -14,9 +14,8 @@ export const CALL_TYPES = {
 
 const createCallServices = () => {
     let clientID = null;
-    let callingState = createStateHolder(false);
+    let callingState = createStateHolder({callTo: null, status: false});
     let modal = null;
-    let callTo = null;
     return {
         ...callingState,
         initClientID: _clientID => clientID = _clientID,
@@ -27,8 +26,8 @@ const createCallServices = () => {
                 clientID
             })
         },
-        isCallTo: id => callTo === id,
-        getCallTo: () => callTo,
+        isCallTo: id => callingState.getState().callTo === id,
+        getCallTo: () => callingState.getState().callTo,
         createCallModal: type => {
 
             return (config) => {
@@ -36,19 +35,16 @@ const createCallServices = () => {
 
 
                 return Promise.all([
-                    callingState.setState(true),
+                    callingState.setState({status: true, callTo: config.callTo}),
                     (() => {
                         return modal ? modal.closePromise(false)
                             .then(() => {
                                 modal = null;
-                                callTo = null;
-                                return ;
                             }) : Promise.resolve();
                     })()
                 ])
                     .then(() => {
                         let modalKey = uuidv4();
-                        callTo = config.callTo;
                         modal = modals.openModal({
                             key: modalKey,
                             content: (
@@ -57,7 +53,11 @@ const createCallServices = () => {
                                     config={config}
                                     clientID={clientID}
                                     type={type}
-                                    onClose={(r) => modal.close(r)}
+                                    onClose={(r) => {
+                                        modal.close(r);
+                                        modal = null;
+                                        return callingState.setState({status: false, callTo: null})
+                                    }}
                                     minimize={() => {
                                         modal.toggleMinimize();
                                     }}
@@ -70,23 +70,18 @@ const createCallServices = () => {
                         return modal.result;
 
                     })
-                    .then(result => {
-                        modal = null;
-                        callTo = null;
-                        return callingState.setState(false)
-                            .then(() => result);
-                    });
+
 
             }
         },
-        isCalling: () => callingState.getState(),
+        isCalling: () => callingState.getState().status === true,
         toggleMinimize: () => {
             if (modal) {
                 modal.toggleMinimize();
             }
         },
         finishCall: () => {
-            return callingState.setState(false)
+            return callingState.setState({status: false, callTo: callingState.getState().callTo})
         }
 
     }

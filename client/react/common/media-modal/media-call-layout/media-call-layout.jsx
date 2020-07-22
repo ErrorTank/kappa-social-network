@@ -34,8 +34,7 @@ export class MediaCallLayout extends Component {
         this.ackTimeout = null;
     }
 
-    componentDidMount() {
-        console.log(this.props.mKey)
+    initSocketListeners = () => {
         this.io.on('call', (data) => {
 
             if (data.sdp) {
@@ -60,6 +59,11 @@ export class MediaCallLayout extends Component {
             callServices.finishCall();
             return this.endCall(false)
         })
+    };
+
+    componentDidMount() {
+
+
         let state = {
             microphone_granted: localStorage.getItem("microphone_granted") !== "false",
             webcam_granted: localStorage.getItem("webcam_granted") !== "false",
@@ -77,10 +81,7 @@ export class MediaCallLayout extends Component {
 
     }
 
-
-    componentWillUnmount() {
-        if (this.ackTimeout)
-            clearTimeout(this.ackTimeout)
+    removeListeners = () => {
         if (this.io) {
             console.log("unregister")
             this.io.off("call");
@@ -89,8 +90,16 @@ export class MediaCallLayout extends Component {
         }
     }
 
-    startCall = (isCaller) => {
 
+    componentWillUnmount() {
+        if (this.ackTimeout)
+            clearTimeout(this.ackTimeout)
+        this.removeListeners();
+    }
+
+    startCall = (isCaller) => {
+        console.log("loz ma")
+        this.initSocketListeners();
         if (isCaller) {
             this.ackTimeout = setTimeout(() => {
 
@@ -136,6 +145,7 @@ export class MediaCallLayout extends Component {
     };
 
     rejectCall(isStarter) {
+        this.removeListeners();
         if (isFunction(this.pc.stop)) {
             this.pc.stop(isStarter);
         }
@@ -144,7 +154,7 @@ export class MediaCallLayout extends Component {
     }
 
     endCall(isStarter) {
-
+        this.removeListeners();
         if (isFunction(this.pc.stop)) {
             this.pc.stop(isStarter);
         }
