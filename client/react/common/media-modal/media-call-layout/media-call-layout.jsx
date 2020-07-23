@@ -75,8 +75,7 @@ export class MediaCallLayout extends Component {
             webcam_granted: localStorage.getItem("webcam_granted") !== "false",
             init: false
         }
-        // console.log(this.props.callType)
-        // console.log(state)
+
         if (this.props.callType === CALL_TYPES.VOICE ? state.microphone_granted !== false : (state.microphone_granted !== false && state.webcam_granted !== false)) {
             this.startCall(this.props.isCaller);
         } else {
@@ -212,8 +211,8 @@ export class MediaCallLayout extends Component {
                     })
                 }
             },
-            disabledMicrophone: localStorage.getItem("microphone_granted") !== "true",
-            disabledWebcam: localStorage.getItem("webcam_granted") !== "true",
+            disabledMicrophone: this.state.microphone_granted === false,
+            disabledWebcam: this.state.webcam_granted === false,
             disabledShareScreen: true,
             toggleVideo: (on) => {
                 if (this.pc.mediaDevice) {

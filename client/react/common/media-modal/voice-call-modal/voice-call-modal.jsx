@@ -27,6 +27,20 @@ export class VoiceCallWidget extends Component {
 
     }
 
+    componentWillReceiveProps(nextProps, nextContext) {
+        let newState = {};
+        if(nextProps.disabledWebcam !== this.props.disabledWebcam){
+            newState.webcam = !nextProps.disabledWebcam;
+        }
+        if(nextProps.disabledMicrophone !== this.props.disabledMicrophone){
+            newState.microphone = !nextProps.disabledMicrophone;
+        }
+        if(nextProps.disabledShareScreen !== this.props.disabledShareScreen){
+            newState.shareScreen = !nextProps.disabledShareScreen;
+        }
+        this.setState({...newState})
+    }
+
     componentDidMount() {
         this.props.toggleVideo(this.state.webcam);
         this.props.toggleAudio(this.state.microphone);
@@ -50,6 +64,8 @@ export class VoiceCallWidget extends Component {
             webcam,
             shareScreen
         } = this.state;
+        console.log(microphone)
+        console.log(webcam)
         let {minimize, user, onClose, type, callStatus, onEndCall, onRedial, disabledMicrophone, disabledWebcam, toggleVideo, toggleAudio, toggleShareScreen, disabledShareScreen} = this.props;
 
         let actions = [CALL_STATUS.END, CALL_STATUS.NO_ANSWER].includes(callStatus) ? [
@@ -152,7 +168,7 @@ export class VoiceCallWidget extends Component {
                                     </div>
                                 )}
                                 <video className={classnames("peerVideo", {hide: type === CALL_TYPES.VOICE })} ref={peerVideo => this.peerVideo = peerVideo} autoPlay />
-                                <video className={classnames("localVideo", {hide: type === CALL_TYPES.VOICE })} ref={localVideo => this.localVideo = localVideo} autoPlay muted/>
+                                <video className={classnames("localVideo", {hide: type === CALL_TYPES.VOICE })} ref={localVideo => this.localVideo = localVideo} autoPlay />
                             </>
                         )}
                     </div>
