@@ -39,11 +39,11 @@ export class MediaCallLayout extends Component {
     }
 
     initSocketListeners = () => {
-        this.io.on('call', (data) => {
+        this.io.on('call', async (data) => {
 
             if (data.sdp) {
                 this.setState({callStatus: CALL_STATUS.CALLING})
-                this.pc.setRemoteDescription(data.sdp);
+                await this.pc.setRemoteDescription(data.sdp);
                 if (data.sdp.type === 'offer') this.pc.createAnswer();
             } else this.pc.addIceCandidate(data.candidate);
         })
