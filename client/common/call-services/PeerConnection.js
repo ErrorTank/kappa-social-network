@@ -2,6 +2,7 @@ import {MediaDevice} from './MediaDevice';
 import {Emitter} from './Emitter';
 import {messengerIO} from "../../socket/sockets";
 import {userInfo} from "../states/common";
+import isFunction from "lodash/isFunction";
 
 const PC_CONFIG = {
     'iceServers': [
@@ -9,9 +10,13 @@ const PC_CONFIG = {
             'urls': 'stun:stun.l.google.com:19302'
         },
         {
-            'urls': 'turn:192.158.29.39:3478?transport=udp',
-            credential: 'JZEOEt2V3Qb0y27GRntt2u2PAYA=',
-            username: '28224511:1379330808'
+            'urls': 'stun:stun.anyfirewall.com:3478'
+        },
+        {
+            'urls': "turn:turn.bistri.com:80", credential: "homeo",   username: 'homeo'
+        },
+        {
+            'urls': "turn:turn.anyfirewall.com:443?transport=tcp", credential: "webrtc",   username: 'webrtc'
         },
     ]
 };
@@ -25,7 +30,7 @@ export class PeerConnection extends Emitter {
     constructor(friendID, callType) {
         super();
         this.socket = messengerIO.getIOInstance();
-        this.pc = new RTCPeerConnection();
+        this.pc = new RTCPeerConnection(PC_CONFIG);
         this.pc.onicecandidate = (event) => {
 
             return this.socket.emit('call', {
@@ -77,6 +82,12 @@ export class PeerConnection extends Emitter {
     stop(isStarter) {
         if (isStarter) {
             this.socket.emit('end', {friendID: this.friendID});
+        }
+        if(isFunction(this.mediaDevice.off)) {
+            this.mediaDevice
+                .off('stream')
+                .off('not-allowed')
+                .off('allowed');
         }
         this.mediaDevice.stop();
         this.pc.close();

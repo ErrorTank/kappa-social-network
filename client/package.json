@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "dev": "gulp dev",
-    "wp": "webpack --watch",
+    "wp": "webpack --watch --https",
     "prod": "gulp build-prod"
   },
   "author": "Kappa",

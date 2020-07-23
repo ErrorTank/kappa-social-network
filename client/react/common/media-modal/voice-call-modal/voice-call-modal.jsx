@@ -41,7 +41,7 @@ export class VoiceCallWidget extends Component {
 
         if (this.peerVideo && this.props.peerSrc) this.peerVideo.srcObject = this.props.peerSrc;
         if (this.localVideo && this.props.localSrc) this.localVideo.srcObject = this.props.localSrc;
-        console.log(this.peerVideo && this.peerVideo.srcObject)
+
     }
 
     render() {

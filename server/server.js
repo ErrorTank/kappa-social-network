@@ -2,7 +2,7 @@ require('dotenv').config({
   path:
     process.env.NODE_ENV === 'production' ? './env/prod.env' : './env/dev.env',
 });
-const http = require('http');
+const https = require('https');
 const fs = require('fs');
 const path = require('path');
 const createExpressServer = require('./config/express');
@@ -20,7 +20,21 @@ dbManager
   })
   .then((appDb) => {
     // require('./scripts/feedMarketplace');
-    let server = http.createServer(app);
+    let environment = process.env.NODE_ENV;
+    let server = https.createServer( {
+      key: fs.readFileSync(
+          path.join(
+              __dirname,
+              `./ssl/${environment}/${process.env.SSL_KEY_PATH}`
+          )
+      ),
+      cert: fs.readFileSync(
+          path.join(
+              __dirname,
+              `./ssl/${environment}/${process.env.SSL_CRT_PATH}`
+          )
+      )
+    },app);
     const namespacesIO = createSocketNamespaces(server, { db: appDb });
     app.use('/', createRoutes(appDb, namespacesIO));
     app.use(createErrorHandlersMiddleware);

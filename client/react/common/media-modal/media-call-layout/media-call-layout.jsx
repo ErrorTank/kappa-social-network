@@ -23,8 +23,8 @@ export class MediaCallLayout extends Component {
             localSrc: null,
             peerSrc: null,
             callStatus: props.isCaller ? CALL_STATUS.CONNECTING : CALL_STATUS.CALLING,
-            microphone_granted: false,
-            webcam_granted: false,
+            microphone_granted: true,
+            webcam_granted: true,
             init: true,
             error: false,
         };
@@ -48,6 +48,7 @@ export class MediaCallLayout extends Component {
             } else this.pc.addIceCandidate(data.candidate);
         })
         this.io.on('ack', (data) => {
+
             if (data.from === this.props.callTo) {
                 clearTimeout(this.ackTimeout);
                 this.ackTimeout = null;
@@ -55,11 +56,12 @@ export class MediaCallLayout extends Component {
             }
         })
         this.io.on('reject', () => {
+
             callServices.finishCall();
             this.rejectCall(false)
         })
         this.io.on('end', () => {
-            console.log("????????????????")
+
             callServices.finishCall();
             return this.endCall(false)
         })
@@ -76,7 +78,6 @@ export class MediaCallLayout extends Component {
         // console.log(this.props.callType)
         // console.log(state)
         if (this.props.callType === CALL_TYPES.VOICE ? state.microphone_granted !== false : (state.microphone_granted !== false && state.webcam_granted !== false)) {
-            console.log("la")
             this.startCall(this.props.isCaller);
         } else {
             state.error = true;
@@ -87,11 +88,18 @@ export class MediaCallLayout extends Component {
 
     removeListeners = () => {
         if (this.io) {
-            console.log("unregister")
             this.io.off("call");
             this.io.off("ack");
             this.io.off("reject");
+            this.io.off("end");
         }
+        if(isFunction(this.pc.off)){
+            this.pc.off('localStream');
+            this.pc.off('peerStream');
+            this.pc.off('device-denied');
+            this.pc.off('device-granted');
+        }
+
     }
 
 
@@ -102,7 +110,6 @@ export class MediaCallLayout extends Component {
     }
 
     startCall = (isCaller) => {
-        console.log("loz ma")
         this.initSocketListeners();
         if (isCaller) {
             this.ackTimeout = setTimeout(() => {
@@ -115,13 +122,15 @@ export class MediaCallLayout extends Component {
 
         this.pc = new PeerConnection(this.props.callTo, this.props.callType)
             .on('localStream', (src) => {
+
                 this.setState({localSrc: src});
             })
             .on('peerStream', (src) => {
-                console.log(src)
+
                 this.setState({peerSrc: src})
             })
             .on("device-denied", () => {
+
                 MediaDevice.checkMediaDevicesPermissionStatus()
                     .then(({video, audio}) => {
                         localStorage.setItem("microphone_granted", audio);
@@ -134,6 +143,7 @@ export class MediaCallLayout extends Component {
                     })
             })
             .on("device-granted", () => {
+
                 MediaDevice.checkMediaDevicesPermissionStatus()
                     .then(({video, audio}) => {
                         localStorage.setItem("microphone_granted", audio);
@@ -174,7 +184,6 @@ export class MediaCallLayout extends Component {
     }
 
     render() {
-        console.log(this.state.callStatus)
         return this.state.error ? (
             <div className="media-call-error">
 
@@ -184,11 +193,10 @@ export class MediaCallLayout extends Component {
             ...this.state,
             pc: this.pc,
             onEndCall: () => {
-
-                return Promise.all([
+                return callServices.isCalling() ? Promise.all([
                     callServices.finishCall(),
                     this.endCall(true)
-                ]);
+                ]) : Promise.resolve();
 
             },
             onRedial: () => {
