@@ -58,14 +58,15 @@ export class ListingInfo extends Component {
   handleSetDependent = (obj, dependent) => {
     const { state, updateValue } = this.props;
     let { pictureLimit, type, ...other } = state;
-    obj.map((each) => {
-      if (each.name === dependent) {
-        let result = omit(each, ['_id', 'name']);
-        Object.keys(result).map((each) => {
+    for (let i = 0; i < obj.length; i++) {
+      if (obj[i].name === dependent) {
+        let result = omit(obj[i], ['_id', 'name']);
+        Object.keys(result).forEach((each) => {
           this.setState({ [each]: result[each] });
+          s;
         });
       }
-    });
+    }
   };
   componentDidUpdate(prevProps) {
     if (prevProps.state.type !== this.props.state.type) {
@@ -105,7 +106,7 @@ export class ListingInfo extends Component {
         </div>
 
         {inputField &&
-          inputField.map((each, i) => {
+          inputField.forEach((each, i) => {
             // let listingInfoID = uuidv4();
             return (
               (!each.isDepended ||
