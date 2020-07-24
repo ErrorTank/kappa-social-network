@@ -45,6 +45,7 @@ export class VoiceCallWidget extends Component {
         this.props.toggleVideo(this.state.webcam);
         this.props.toggleAudio(this.state.microphone);
         this.updateVideoSrc();
+
     }
 
     componentDidUpdate(prevProps, prevState, snapshot) {
@@ -53,7 +54,7 @@ export class VoiceCallWidget extends Component {
 
     updateVideoSrc = () => {
 
-
+        console.log(this.props.localSrc)
         if (this.localVideo && this.props.localSrc) this.localVideo.srcObject = this.props.localSrc;
         if (this.peerVideo && this.props.peerSrc) this.peerVideo.srcObject = this.props.peerSrc;
 
