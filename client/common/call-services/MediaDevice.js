@@ -1,4 +1,5 @@
 import set from 'lodash/set';
+import isNil from 'lodash/isNil';
 import {Emitter} from './Emitter';
 import {appModal} from "../../react/common/modal/modals";
 import {messengerIO} from "../../socket/sockets";
@@ -62,10 +63,9 @@ export class MediaDevice extends Emitter {
      * @param {Boolean} [on] - State of the device
      */
     toggle(type, on) {
-        const len = arguments.length;
         if (this.stream) {
             this.stream[`get${type}Tracks`]().forEach((track) => {
-                const state = len === 2 ? on : !track.enabled;
+                const state = !isNil(on) ? on : !track.enabled;
                 set(track, 'enabled', state);
             });
         }

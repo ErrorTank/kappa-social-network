@@ -27,10 +27,25 @@ export class VoiceCallWidget extends Component {
 
     }
 
+    componentWillReceiveProps(nextProps, nextContext) {
+        let newState = {};
+        if(nextProps.disabledWebcam !== this.props.disabledWebcam){
+            newState.webcam = !nextProps.disabledWebcam;
+        }
+        if(nextProps.disabledMicrophone !== this.props.disabledMicrophone){
+            newState.microphone = !nextProps.disabledMicrophone;
+        }
+        if(nextProps.disabledShareScreen !== this.props.disabledShareScreen){
+            newState.shareScreen = !nextProps.disabledShareScreen;
+        }
+        this.setState({...newState})
+    }
+
     componentDidMount() {
         this.props.toggleVideo(this.state.webcam);
         this.props.toggleAudio(this.state.microphone);
         this.updateVideoSrc();
+
     }
 
     componentDidUpdate(prevProps, prevState, snapshot) {
@@ -39,8 +54,10 @@ export class VoiceCallWidget extends Component {
 
     updateVideoSrc = () => {
 
-        if (this.peerVideo && this.props.peerSrc) this.peerVideo.srcObject = this.props.peerSrc;
+        console.log(this.props.localSrc)
         if (this.localVideo && this.props.localSrc) this.localVideo.srcObject = this.props.localSrc;
+        if (this.peerVideo && this.props.peerSrc) this.peerVideo.srcObject = this.props.peerSrc;
+
 
     }
 
@@ -50,6 +67,7 @@ export class VoiceCallWidget extends Component {
             webcam,
             shareScreen
         } = this.state;
+
         let {minimize, user, onClose, type, callStatus, onEndCall, onRedial, disabledMicrophone, disabledWebcam, toggleVideo, toggleAudio, toggleShareScreen, disabledShareScreen} = this.props;
 
         let actions = [CALL_STATUS.END, CALL_STATUS.NO_ANSWER].includes(callStatus) ? [

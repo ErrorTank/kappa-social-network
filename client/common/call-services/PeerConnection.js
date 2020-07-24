@@ -6,18 +6,24 @@ import isFunction from "lodash/isFunction";
 
 const PC_CONFIG = {
     'iceServers': [
+        { 'urls': "stun:numb.viagenie.ca" },
         {
-            'urls': 'stun:stun.l.google.com:19302'
+            'urls': "turn:numb.viagenie.ca",
+            'credential': 'iloveha123',
+            'username': 'ncq998@gmail.com'
         },
-        {
-            'urls': 'stun:stun.anyfirewall.com:3478'
-        },
-        {
-            'urls': "turn:turn.bistri.com:80", credential: "homeo",   username: 'homeo'
-        },
-        {
-            'urls': "turn:turn.anyfirewall.com:443?transport=tcp", credential: "webrtc",   username: 'webrtc'
-        },
+        // {
+        //     'urls': 'stun:stun.l.google.com:19302'
+        // },
+        // {
+        //     'urls': 'stun:stun.anyfirewall.com:3478'
+        // },
+        // {
+        //     'urls': "turn:turn.bistri.com:80", credential: "homeo", username: 'homeo'
+        // },
+        // {
+        //     'urls': "turn:turn.anyfirewall.com:443?transport=tcp", credential: "webrtc", username: 'webrtc'
+        // },
     ]
 };
 
@@ -52,7 +58,9 @@ export class PeerConnection extends Emitter {
     start(isCaller) {
         this.mediaDevice
             .on('stream', (stream) => {
+
                 stream.getTracks().forEach((track) => {
+
                     this.pc.addTrack(track, stream);
                 });
                 this.emit('localStream', stream);
@@ -83,7 +91,7 @@ export class PeerConnection extends Emitter {
         if (isStarter) {
             this.socket.emit('end', {friendID: this.friendID});
         }
-        if(isFunction(this.mediaDevice.off)) {
+        if (isFunction(this.mediaDevice.off)) {
             this.mediaDevice
                 .off('stream')
                 .off('not-allowed')
@@ -112,18 +120,20 @@ export class PeerConnection extends Emitter {
         return this;
     }
 
-    getDescription(desc) {
-        this.pc.setLocalDescription(desc);
+    async getDescription(desc) {
+        console.log("call")
+        await this.pc.setLocalDescription(new RTCSessionDescription(desc))
         this.socket.emit('call', {sdp: desc, friendID: this.friendID});
+
         return this;
     }
 
     /**
      * @param {Object} sdp - Session description
      */
-    setRemoteDescription(sdp) {
+    async setRemoteDescription(sdp) {
         const rtcSdp = new RTCSessionDescription(sdp);
-        this.pc.setRemoteDescription(rtcSdp);
+        await this.pc.setRemoteDescription(rtcSdp);
         return this;
     }
 
