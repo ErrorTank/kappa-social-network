@@ -63,7 +63,6 @@ export class ListingInfo extends Component {
         let result = omit(obj[i], ['_id', 'name']);
         Object.keys(result).forEach((each) => {
           this.setState({ [each]: result[each] });
-          s;
         });
       }
     }
@@ -106,7 +105,7 @@ export class ListingInfo extends Component {
         </div>
 
         {inputField &&
-          inputField.forEach((each, i) => {
+          inputField.map((each, i) => {
             // let listingInfoID = uuidv4();
             return (
               (!each.isDepended ||

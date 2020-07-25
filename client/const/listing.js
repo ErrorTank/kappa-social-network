@@ -174,7 +174,61 @@ export const itemField = [
       { name: 'Không rõ' },
     ],
   },
-
+  {
+    name: 'Màu sắc',
+    englishName: 'color',
+    isSelected: true,
+    isDepended: true,
+    options: [
+      { name: 'Đen' },
+      { name: 'Trắng' },
+      { name: 'Đỏ' },
+      { name: 'Khác' },
+      //more
+    ],
+  },
+  {
+    name: 'Nền tảng',
+    englishName: 'platform',
+    isSelected: true,
+    isDepended: true,
+    options: [
+      { name: 'PlayStation 4' },
+      { name: 'Xbox One' },
+      { name: 'Máy Tính' },
+      { name: 'Khác' },
+      //more
+    ],
+  },
+  {
+    name: 'Kích thước',
+    englishName: 'size',
+    isDepended: true,
+  },
+  {
+    name: 'Nhà mạng',
+    englishName: 'carrie',
+    isSelected: true,
+    isDepended: true,
+    options: [
+      { name: 'VNPT' }, // fake :V
+      { name: 'Viettel' },
+      { name: 'Khác' },
+      //more
+    ],
+  },
+  {
+    name: 'Tên thiết bị',
+    englishName: 'deviceName',
+    isSelected: true,
+    isDepended: true,
+    options: [
+      { name: 'IPhone XR' },
+      { name: 'IPhone X' },
+      { name: 'Khác' },
+      //more
+    ],
+  },
   //
   {
     name: 'Mô tả',
