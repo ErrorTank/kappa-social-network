@@ -18,7 +18,6 @@ export class ListingInfo extends Component {
     super(props);
     this.state = {
       dependedInput: '',
-      inputDependedObj: '',
       inputField: '',
     };
   }
@@ -44,28 +43,7 @@ export class ListingInfo extends Component {
         break;
     }
   };
-  handleCheckDependent = () => {
-    const { state, updateValue } = this.props;
-    let {
-      pictureLimit,
-      type,
-      category,
-      vehicleType,
-      homeFor,
-      ...other
-    } = state;
-    switch (type) {
-      case 'item':
-        this.handleSetDependent(fieldByCategory, category);
-        break;
-      case 'vehicle':
-        this.handleSetDependent(fieldByVehicleType, vehicleType);
-        break;
-      case 'home':
-        this.handleSetDependent(fieldByHomeFor, homeFor);
-        break;
-    }
-  };
+
   handleSetDependent = (obj, dependent) => {
     const { state, updateValue } = this.props;
     let { pictureLimit, type, ...other } = state;
@@ -80,15 +58,20 @@ export class ListingInfo extends Component {
     if (prevProps.state.type !== this.props.state.type) {
       this.handleInputDisplay();
     }
+    if (
+      prevProps.match.params.categoryName !==
+      this.props.match.params.categoryName
+    ) {
+      this.props.updateValue('type', this.props.match.params.categoryName);
+    }
     if (prevProps.state.category !== this.props.state.category) {
-      this.handleCheckDependent();
-      // this.handleSetDependent(fieldByCategory, this.props.state.category);
+      this.handleSetDependent(fieldByCategory, this.props.state.category);
     }
     if (prevProps.state.vehicleType !== this.props.state.vehicleType) {
-      this.handleCheckDependent();
+      this.handleSetDependent(fieldByVehicleType, this.props.state.vehicleType);
     }
     if (prevProps.state.homeFor !== this.props.state.homeFor) {
-      this.handleCheckDependent();
+      this.handleSetDependent(fieldByHomeFor, this.props.state.homeFor);
     }
   }
 
@@ -128,7 +111,6 @@ export class ListingInfo extends Component {
                   textArea={each.isTextArea}
                   id={each.englishName}
                   value={state[each.englishName]}
-                  // updateValue={updateValue}
                   onChange={(e) => {
                     updateValue(`${each.englishName}`, e.target.value);
                   }}

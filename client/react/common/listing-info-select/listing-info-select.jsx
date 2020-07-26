@@ -13,7 +13,7 @@ export class ListingInfoSelect extends Component {
     };
   }
 
-  // componentDidUpdate = (prevProps, prevState, snapshot) => {
+  // componentDidUpdate(prevProps, prevState, snapshot) {
   //   if (this.state.show && prevState.show === false) {
   //     let selectDropdownElem = ReactDOM.findDOMNode(this).querySelector(
   //       '.select-dropdown'
@@ -21,7 +21,7 @@ export class ListingInfoSelect extends Component {
   //     let selectedTarget = selectDropdownElem.querySelector('.selected');
   //     selectDropdownElem.scrollTop = selectedTarget.offsetTop;
   //   }
-  // };
+  // }
 
   render() {
     let {
@@ -36,7 +36,6 @@ export class ListingInfoSelect extends Component {
       getOptionKey = (each, index) => index,
       id,
       isSelected = (option) => false,
-      updateValue,
     } = this.props;
 
     // console.log(options);
@@ -54,10 +53,15 @@ export class ListingInfoSelect extends Component {
               onClick={() => this.setState({ show: !this.state.show })}
               id={id}
             >
-              <div className='label-wrapper'>
-                <span className='listing-info-label'>
+              <div
+                className={classnames('label-wrapper', {
+                  'has-value': value,
+                })}
+              >
+                <span className='listing-info-value'>
                   {value ? displayAs(value) : label ? label : 'Chọn'}
                 </span>
+                <span className='listing-info-label'>{value && label}</span>
               </div>
               <div className='toggle-icon'>
                 <i className='fas fa-caret-down'></i>
@@ -75,7 +79,6 @@ export class ListingInfoSelect extends Component {
                       onClick={() => {
                         if (each.link) {
                           customHistory.push(each.link);
-                          updateValue('type', each.link.slice(20));
                         }
                       }}
                     >

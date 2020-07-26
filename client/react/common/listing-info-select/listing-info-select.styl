@@ -19,7 +19,32 @@
       .label-wrapper{
         position relative
         width 90%;
-        .listing-info-label{
+        &.has-value{
+          .listing-info-label{  
+            position: absolute;
+            left: 16px;
+            font-size: 16px;
+            white-space: nowrap;
+            line-height: 20px;
+            top: 18px;
+            max-width 100%;
+            right: 8px;
+            color: gray;
+            font-weight: 400;
+            transition-property: transform;
+            transition-duration: 200ms;
+            transform: scale(.75) translateY(-11px);
+            transform-origin: top left; 
+          }
+          .listing-info-value{
+            color: normalTextLight;
+            transition-property: transform;
+            transition-duration: 200ms;
+            transform: translateY(8px);
+            transform-origin: top left; 
+          }
+        }
+        .listing-info-value{
           position: absolute;
           left: 16px;
           font-size: 16px;
@@ -108,7 +133,10 @@
         &.disabled {
           cursor none
         }
-        
+        &.selected {
+          background-color primaryButton
+          color white
+        }
         .option-name{
           font-weight: 400;
           display inline-block;

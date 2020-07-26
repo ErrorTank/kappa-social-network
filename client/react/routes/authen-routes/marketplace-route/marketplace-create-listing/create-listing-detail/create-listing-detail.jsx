@@ -4,6 +4,7 @@ import { CommonLayout } from '../../../../../layout/common-layout/common-layout'
 import { PageTitle } from '../../../../../common/page-title/page-title';
 import { CreateListingInputWidget } from './cl-input-widget/cl-input-widget';
 import { customHistory } from './../../../../routes';
+import { CreateListingPreviewWidget } from './cl-preview-widget/cl-preview-widget';
 
 class CreateListingDetail extends KComponent {
   constructor(props) {
@@ -24,7 +25,7 @@ class CreateListingDetail extends KComponent {
         <PageTitle title={'Tạo niêm yết'}>
           <CommonLayout
             // className={}
-            mainRender={() => <div>xem truoc</div>}
+            mainRender={() => <CreateListingPreviewWidget state={this.state} />}
             haveRightRender={false}
             leftRender={() => (
               <CreateListingInputWidget
