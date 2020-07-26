@@ -16,11 +16,22 @@ import { omit, toArray } from 'lodash';
 export class ListingInfo extends Component {
   constructor(props) {
     super(props);
-    this.state = {};
+    this.state = {
+      dependedInput: '',
+      inputDependedObj: '',
+      inputField: '',
+    };
   }
   handleInputDisplay = () => {
     const { state, updateValue } = this.props;
-    let { pictureLimit, type, category, ...other } = state;
+    let {
+      pictureLimit,
+      type,
+      category,
+      vehicleType,
+      homeFor,
+      ...other
+    } = state;
     switch (type) {
       case 'item':
         this.setState({ inputField: itemField });
@@ -61,9 +72,7 @@ export class ListingInfo extends Component {
     for (let i = 0; i < obj.length; i++) {
       if (obj[i].name === dependent) {
         let result = omit(obj[i], ['_id', 'name']);
-        Object.keys(result).forEach((each) => {
-          this.setState({ [each]: result[each] });
-        });
+        this.setState({ dependedInput: result });
       }
     }
   };
@@ -73,6 +82,7 @@ export class ListingInfo extends Component {
     }
     if (prevProps.state.category !== this.props.state.category) {
       this.handleCheckDependent();
+      // this.handleSetDependent(fieldByCategory, this.props.state.category);
     }
     if (prevProps.state.vehicleType !== this.props.state.vehicleType) {
       this.handleCheckDependent();
@@ -109,7 +119,8 @@ export class ListingInfo extends Component {
             // let listingInfoID = uuidv4();
             return (
               (!each.isDepended ||
-                (each.isDepended && this.state[each.englishName])) &&
+                (each.isDepended &&
+                  this.state.dependedInput[each.englishName])) &&
               (!each.isSelected ? (
                 <ListingInfoInput
                   label={each.name}
