@@ -1,6 +1,11 @@
 .listing-info-select{
   padding: 16px 16px 0px 16px;
   box-sizing: border-box;
+  &.focus {
+    .listing-info-wrapper {
+      border-color primaryButton !important
+    }
+  }
   .listing-info-wrapper{
     cursor pointer
     border-radius: 6px;
@@ -12,6 +17,7 @@
     &:hover{
       border-color: gray
     }
+    
     .listing-info-toggle{
       display: flex
       height: 56px;
@@ -134,7 +140,7 @@
           cursor none
         }
         &.selected {
-          background-color primaryButton
+          background-color iconActive
           color white
         }
         .option-name{

@@ -123,7 +123,9 @@ export class ListingInfo extends Component {
                   key={each.englishName}
                   id={each.englishName}
                   value={state[each.englishName]}
-                  isSelected={(option) => option === state[each.englishName]}
+                  isSelected={(option) =>
+                    option.name === state[each.englishName]
+                  }
                   onChange={(value) => {
                     updateValue(`${each.englishName}`, value.name);
                   }}

@@ -10,6 +10,7 @@ export class ListingInfoSelect extends Component {
     super(props);
     this.state = {
       show: false,
+      focus: false,
     };
   }
 
@@ -38,7 +39,6 @@ export class ListingInfoSelect extends Component {
       isSelected = (option) => false,
     } = this.props;
 
-    // console.log(options);
     return (
       <div
         className={classnames('listing-info-select', className, {
@@ -50,7 +50,11 @@ export class ListingInfoSelect extends Component {
           <label htmlFor={id} className='listing-info-wrapper'>
             <div
               className={classnames('listing-info-toggle')}
-              onClick={() => this.setState({ show: !this.state.show })}
+              onClick={() =>
+                this.setState({
+                  show: !this.state.show,
+                })
+              }
               id={id}
             >
               <div
