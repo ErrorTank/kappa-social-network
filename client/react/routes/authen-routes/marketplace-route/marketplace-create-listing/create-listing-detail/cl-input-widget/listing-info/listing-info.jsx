@@ -19,6 +19,7 @@ export class ListingInfo extends Component {
     this.state = {
       dependedInput: '',
       inputField: '',
+      error: [{ title: '', price: '' }],
     };
   }
   handleInputDisplay = () => {
@@ -75,10 +76,21 @@ export class ListingInfo extends Component {
     }
   }
 
+  handleErrorDisplay = (name, message) => {
+    const { state, updateValue } = this.props;
+    if (!state[name]) {
+      this.setState((prevState) => ({
+        error: {
+          ...prevState.error,
+          [name]: message,
+        },
+      }));
+    }
+  };
   render() {
     const { state, updateValue } = this.props;
     let { pictureLimit, type, category, ...other } = state;
-    const { inputField } = this.state;
+    const { inputField, error, dependedInput } = this.state;
     console.log(this.state);
     console.log(this.props);
 
@@ -102,8 +114,7 @@ export class ListingInfo extends Component {
             // let listingInfoID = uuidv4();
             return (
               (!each.isDepended ||
-                (each.isDepended &&
-                  this.state.dependedInput[each.englishName])) &&
+                (each.isDepended && dependedInput[each.englishName])) &&
               (!each.isSelected ? (
                 <ListingInfoInput
                   label={each.name}
@@ -111,7 +122,13 @@ export class ListingInfo extends Component {
                   textArea={each.isTextArea}
                   id={each.englishName}
                   value={state[each.englishName]}
+                  error={error[each.englishName]}
                   onChange={(e) => {
+                    each.errorMessage &&
+                      this.handleErrorDisplay(
+                        each.englishName,
+                        each.errorMessage
+                      );
                     updateValue(`${each.englishName}`, e.target.value);
                   }}
                 />

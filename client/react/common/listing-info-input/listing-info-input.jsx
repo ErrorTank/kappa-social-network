@@ -75,6 +75,7 @@ export class ListingInfoInput extends Component {
                 <span className='listing-info-label'>{label}</span>
               </label>
             )}
+            {error && <div className='invalid-feedback'>{error}</div>}
           </div>
         )}
       </ThemeContext.Consumer>
