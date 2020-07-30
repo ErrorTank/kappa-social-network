@@ -198,9 +198,78 @@ const getUserUnseenMessagesCount = (userID) => {
     })
 }
 
+const getUserChatRooms = (userID, skip) =>{
+    return User.aggregate([
+        {
+            $match: {
+                _id: ObjectId(userID)
+            }
+        },
+        {$lookup: {from: 'chatrooms', localField: 'chat_rooms', foreignField: '_id', as: "chat_rooms"}},
+        {$unwind: "$chat_rooms"},
+        {
+            $group: {
+                _id: "$chat_rooms._id",
+                cr: {
+                    $first: "$chat_rooms"
+                }
+            }
+        },
+        {
+            $unwind: "$cr.involve_person"
+        },
+        {$lookup: {from: 'users', localField: 'cr.involve_person.related', foreignField: '_id', as: "cr.involve_person.related"}},
+        {
+            $addFields: {
+                "cr.involve_person.related": {
+                    $arrayElemAt: ["$cr.involve_person.related", 0]
+                }
+            }
+        },
+        {
+            $group: {
+                _id: "$_id",
+                cr: {
+                    $first: "$cr"
+                },
+                updated_at: {
+                    $first: "$cr.updated_at"
+                },
+                "involve_person": {
+                    $push: "$cr.involve_person"
+                },
+
+            }
+        },
+        {
+            $sort: {
+                "cr.updated_at": -1
+            }
+        },
+        {
+            $skip: Number(skip)
+        }
+
+    ]).then(data => {
+
+        return data.map(each => {
+            let contact = each.involve_person.find(each => each.related._id.toString() !== userID);
+            return {
+                _id: each._id,
+                contact: {
+                    ...pick(contact.related, ["_id", "avatar", "basic_info", "active", "last_active_at"]),
+                    nickname: contact.nickname
+                },
+                latest_message: each.cr.context[each.cr.context.length - 1],
+            }
+        })
+    })
+}
+
 module.exports = {
     getAllUserActiveRelations,
     getUserBubbleChatBrief,
     getUserChatRoomBrief,
-    getUserUnseenMessagesCount
+    getUserUnseenMessagesCount,
+    getUserChatRooms
 };

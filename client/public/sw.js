@@ -145,6 +145,10 @@ var exceptionRequestsDev = [
     endpoint: /https:\/\/localhost:4000\/api\/messenger\/user\/\w+\/unseen-messages\/count/,
     method: 'GET',
   },
+  {
+    endpoint: /https:\/\/localhost:4000\/api\/messenger\/user\/\w+\/chat-rooms/,
+    method: 'GET',
+  },
 ];
 
 var notGetRequests = [
@@ -160,8 +164,8 @@ var notGetRequests = [
   },
 ];
 
-var CACHE_STATIC_NAME = 'static-v1596096358327';
-var CACHE_DYNAMIC_NAME = 'dynamic-v1596096358327';
+var CACHE_STATIC_NAME = 'static-v1596103340034';
+var CACHE_DYNAMIC_NAME = 'dynamic-v1596103340034';
 
 var STATIC_FILES = [
   '/',

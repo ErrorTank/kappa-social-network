@@ -16,5 +16,7 @@ export const messengerApi = {
     getUserUnseenMessagesCount(userID){
         return authenApi.get(`/messenger/user/${userID}/unseen-messages/count`)
     },
-
+    getUserChatRooms(userID, skip){
+        return authenApi.get(`/messenger/user/${userID}/chat-rooms?skip=${skip}`)
+    }
 };
