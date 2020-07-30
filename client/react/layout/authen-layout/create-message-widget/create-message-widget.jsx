@@ -154,7 +154,7 @@ export class CreateMessageWidget extends Component {
                             )}
                             renderBody={() => (
                                 <CreatePanel
-
+                                    onCreate={(userID) => messageWidgetController.createNewChatBox({userID})}
                                 />
                             )}
                         />

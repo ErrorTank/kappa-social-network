@@ -8,6 +8,7 @@ import {GroupChatAvatar} from "../../../../common/group-chat-avatar/group-chat-a
 import {generateGroupChatName} from "../../../../../common/utils/common";
 import classnames from "classnames"
 import {ThemeContext} from "../../../../context/theme-context";
+import {messageWidgetController} from "../../create-message-widget/create-message-widget";
 
 export class SearchMessageBox extends Component {
     constructor(props) {
@@ -31,6 +32,10 @@ export class SearchMessageBox extends Component {
         this.searchInput.focus();
         this.searchByKeyword(this.state.keyword);
     }
+
+    handleSelect = ({contact}) => {
+        messageWidgetController.createNewChatBox({userID: contact._id});
+    };
 
     render() {
         let {results, loading, keyword, touching} = this.state;
@@ -74,7 +79,7 @@ export class SearchMessageBox extends Component {
                                                             </div>
                                                             <div className="list">
                                                                 {results.contacts.map(each => (
-                                                                    <div className="list-row" key={each._id}>
+                                                                    <div className="list-row" key={each._id} onClick={() => this.handleSelect({contact: each})}>
                                                                         <div className="user-avatar">
                                                                             <StatusAvatar
                                                                                 user={each}

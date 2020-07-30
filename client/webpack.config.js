@@ -125,6 +125,9 @@ module.exports = {
         inline: true,
         writeToDisk: true,
         disableHostCheck: true,
+        open: true,
+        useLocalIp: true,
+        https: true,
         historyApiFallback: true,
         watchContentBase: true,
         watchOptions: {

@@ -22,7 +22,11 @@ export class CreatePanel extends Component {
     };
 
     handleOpenChatBox = () => {
-
+        if(this.state.values.length === 1){
+            let userID = this.state.values[0]._id;
+            this.setState({values: []});
+            this.props.onCreate(userID);
+        }
     };
 
 

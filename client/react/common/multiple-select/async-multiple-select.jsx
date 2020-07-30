@@ -35,6 +35,7 @@ export class AsyncMultipleSelect extends Component {
         if(onSelectItem) onSelectItem(item);
         this.input.current.focus();
         if(addCondition(item)){
+            this.setState({keyword: ""})
             return onChange(values.concat(item))
         }
 

@@ -41,9 +41,9 @@ gulp.task("dev", (done) => {
         stylusCompiler.watch("build", done).then(() => {
             // spawn("node", ["./scripts/copy-assets", "dev"], {stdio: "inherit"})
             if (!/^win/.test(process.platform)) { // linux
-                return spawn("webpack-dev-server --https ", {stdio: "inherit"});
+                return spawn("webpack-dev-server", {stdio: "inherit"});
             } else {
-                return spawn('cmd', ['/s', "/c", "webpack-dev-server --https "], {stdio: "inherit"});
+                return spawn('cmd', ['/s', "/c", "webpack-dev-server"], {stdio: "inherit"});
             }
         }).catch(err => console.log(err));
     });
