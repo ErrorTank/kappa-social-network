@@ -61,6 +61,9 @@ const createNewMessage = ({chatRoomID, value}) => {
     return ChatRoom.findOneAndUpdate({
         _id: ObjectId(chatRoomID)
     }, {
+        $set: {
+          last_updated: Date.now()
+        },
         $push: {
             context: {...newMessage, state: MessageState.SAVED}
         }
@@ -229,7 +232,7 @@ const getChatRoomMessages = (chatRoomID, {take = 10, skip = 0}) => {
 const updateSavedMessagesToSent = (chatRoomID, messageIds) => {
     return ChatRoom.findOneAndUpdate({
         _id: ObjectId(chatRoomID)
-    }, {"$set": {"context.$[elem].state": "SENT"}}, {
+    }, {"$set": {"context.$[elem].state": "SENT", "last_updated": Date.now()}}, {
         "arrayFilters": [{"elem._id": {$in: messageIds}}],
         "multi": true,
         new: true
@@ -240,7 +243,7 @@ const updateSavedMessagesToSent = (chatRoomID, messageIds) => {
 const seenMessages = (userID, chatRoomID, messageIds) => {
     return ChatRoom.findOneAndUpdate({
         _id: ObjectId(chatRoomID)
-    }, {"$push": {"context.$[elem].seenBy": ObjectId(userID)}}, {
+    }, {"$push": {"context.$[elem].seenBy": ObjectId(userID), "last_updated": Date.now()}}, {
         "arrayFilters": [{"elem._id": {$in: messageIds}, "elem.seenBy": {$ne: ObjectId(userID)}}],
         "multi": true,
         new: true
@@ -251,7 +254,7 @@ const seenMessages = (userID, chatRoomID, messageIds) => {
 const deleteMessage = (chatRoomID, messageID) => {
     return ChatRoom.findOneAndUpdate({
         _id: ObjectId(chatRoomID)
-    }, {"$set": {"context.$[elem].is_deleted": true}}, {
+    }, {"$set": {"context.$[elem].is_deleted": true, "last_updated": Date.now()}}, {
         "arrayFilters": [{"elem._id": ObjectId(messageID)}],
         "multi": true,
         new: true
@@ -269,7 +272,7 @@ const getChatRoomNicknames = (chatRoomID) => {
 };
 
 const updateUserNickname = (chatRoomID, userID, nickname) => {
-    return ChatRoom.findOneAndUpdate({_id: ObjectId(chatRoomID)}, {"$set": {"involve_person.$[elem].nickname": nickname}}, {
+    return ChatRoom.findOneAndUpdate({_id: ObjectId(chatRoomID)}, {"$set": {"involve_person.$[elem].nickname": nickname, "last_updated": Date.now()}}, {
         "arrayFilters": [{"elem.related": ObjectId(userID)}],
         new: true
     })  .populate({
@@ -281,7 +284,7 @@ const updateUserNickname = (chatRoomID, userID, nickname) => {
 }
 
 const updateChatRoomDefaultEmoji = (chatRoomID,  emoji) => {
-    return ChatRoom.findOneAndUpdate({_id: ObjectId(chatRoomID)}, {"$set": {"default_emoji": emoji}}, {
+    return ChatRoom.findOneAndUpdate({_id: ObjectId(chatRoomID)}, {"$set": {"default_emoji": emoji, "last_updated": Date.now()}}, {
         new: true
     })
         .lean()
@@ -289,8 +292,10 @@ const updateChatRoomDefaultEmoji = (chatRoomID,  emoji) => {
 }
 
 const updateMessageReaction = (chatRoomID,userID,  messageID, reactionConfig) => {
-    let execCommand = {};
-    console.log(reactionConfig)
+    let execCommand = {
+        $set: {"last_updated": Date.now()}
+    };
+
     let {on, off} = reactionConfig;
     if(on){
         execCommand["$push"] = {
