@@ -47,6 +47,7 @@ module.exports = () => {
     });
     router.get("/search-for-create/dialogs", authorizationUserMiddleware, (req, res, next) => {
         return searchRelated(req.user._id, req.query.keyword).then((data) => {
+            console.log(data)
             return res.status(200).json(data.contacts);
         }).catch(err => next(err));
 

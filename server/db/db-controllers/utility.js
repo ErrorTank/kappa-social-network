@@ -36,6 +36,19 @@ const searchRelated = (userID, keyword = "") => {
             }
         },
         {
+            $lookup: {
+                from: 'chatrooms', localField: 'chat_rooms', foreignField: '_id', as: "chat_rooms"
+            }
+        },
+        // {
+        //     $addFields: {
+        //         "chat_rooms": {
+        //             $arrayElemAt: ["$chat_rooms", 0]
+        //         },
+        //     }
+        // },
+        //TODO Do last update when interact with chat box
+        {
             $unwind: "$friends"
         },
         {
@@ -43,6 +56,7 @@ const searchRelated = (userID, keyword = "") => {
                 from: 'users', localField: 'friends.info', foreignField: '_id', as: "friends.info"
             }
         },
+
         {
             $addFields: {
                 "friends.info": {
@@ -56,37 +70,37 @@ const searchRelated = (userID, keyword = "") => {
                 info: {
                     $first: "$friends.info"
                 },
-                last_interact: {
-                    $first: "$friends.last_interact"
+                user_chat_rooms: {
+                    $first: "$chat_rooms"
                 }
             }
-        }
+        },
+
     ];
     if (keyword) {
         pipelines = pipelines.concat([
             {
                 $match: {
-                    "info.basic_info.username":  { $regex: keyword, $options: "i" }
+                    "info.basic_info.username": {$regex: keyword, $options: "i"}
                 }
-            }
-        ])
-    }
-    if(!keyword){
-        pipelines = pipelines.concat([
-            {
-                $sort: {
-                    "last_interact":  1
-                }
-            },
-            {
-                $limit: 10
             }
         ])
     }
     return User.aggregate(pipelines)
+        .then(users => {
+
+            return users.map(each => {
+                // console.log(each.user_chat_rooms)
+                return ({
+                    _id: each._id, ...pick(each.info, ["avatar", "basic_info"]),
+                    last_interact: each.user_chat_rooms.find(cr => !cr.is_group_chat && cr.involve_person.find(p => p.related.toString() === each._id.toString())).last_updated
+                })
+            }).sort((a,b) => new Date(a.last_interact).getTime() - new Date(b.last_interact).getTime())
+        })
         .then(users => ({
-            contacts: users.map(each => ({_id: each._id, ...pick(each.info, ["avatar", "basic_info"]), last_interact: each.last_interact}))
-        }));
+            contacts: !keyword ? users.slice(0, 10) : users
+        }))
+
 };
 
 module.exports = {

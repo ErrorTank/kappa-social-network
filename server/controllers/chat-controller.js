@@ -36,6 +36,7 @@ module.exports = (db, namespacesIO) => {
     router.post("/:chatRoomID/send-message", authorizationUserMiddleware, (req, res, next) => {
 
         return createNewMessage({value: req.body, chatRoomID: req.params.chatRoomID}).then((data) => {
+
             let result = data.toObject();
             getChatRoomBrief(req.params.chatRoomID).then((cr) => {
 
