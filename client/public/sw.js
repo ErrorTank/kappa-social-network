@@ -2,162 +2,166 @@ importScripts('/assets/vendor/idb.js');
 importScripts('/assets/vendor/sw-utilities.js');
 var exceptionRequestsDev = [
   {
-    endpoint: 'http://localhost:4000/api/register',
+    endpoint: 'https://localhost:4000/api/register',
     method: 'POST',
   },
   {
-    endpoint: 'http://localhost:4000/api/session/check',
+    endpoint: 'https://localhost:4000/api/session/check',
     method: 'POST',
   },
   {
-    endpoint: 'http://localhost:4000/api/confirm-token/resend',
+    endpoint: 'https://localhost:4000/api/confirm-token/resend',
     method: 'POST',
   },
   {
-    endpoint: 'http://localhost:4000/api/verify-user',
+    endpoint: 'https://localhost:4000/api/verify-user',
     method: 'POST',
   },
   {
-    endpoint: 'http://localhost:4000/api/user/init-credentials',
+    endpoint: 'https://localhost:4000/api/user/init-credentials',
     method: 'GET',
   },
   {
-    endpoint: 'http://localhost:4000/api/user/login',
+    endpoint: 'https://localhost:4000/api/user/login',
     method: 'POST',
   },
   {
-    endpoint: 'http://localhost:4000/api/user/send-change-password-token',
+    endpoint: 'https://localhost:4000/api/user/send-change-password-token',
     method: 'POST',
   },
   {
-    endpoint: 'http://localhost:4000/api/user/verify-change-password-token',
+    endpoint: 'https://localhost:4000/api/user/verify-change-password-token',
     method: 'POST',
   },
   {
-    endpoint: 'http://localhost:4000/api/user/resend-change-password-token',
+    endpoint: 'https://localhost:4000/api/user/resend-change-password-token',
     method: 'POST',
   },
   {
-    endpoint: /http:\/\/localhost:4000\/api\/user\/change-password\/brief\/session\//,
+    endpoint: /https:\/\/localhost:4000\/api\/user\/change-password\/brief\/session\//,
     method: 'GET',
   },
   {
-    endpoint: 'http://localhost:4000/api/user/change-password',
+    endpoint: 'https://localhost:4000/api/user/change-password',
     method: 'PUT',
   },
   {
-    endpoint: /http:\/\/localhost:4000\/api\/utility\/search-global/,
+    endpoint: /https:\/\/localhost:4000\/api\/utility\/search-global/,
     method: 'GET',
   },
   {
-    endpoint: /http:\/\/localhost:4000\/api\/utility\/pre-search/,
+    endpoint: /https:\/\/localhost:4000\/api\/utility\/pre-search/,
     method: 'GET',
   },
   {
-    endpoint: /http:\/\/localhost:4000\/api\/user\/search-history\/history/,
+    endpoint: /https:\/\/localhost:4000\/api\/user\/search-history\/history/,
     method: 'DELETE',
   },
   {
-    endpoint: /http:\/\/localhost:4000\/api\/user\/search-history\/history/,
+    endpoint: /https:\/\/localhost:4000\/api\/user\/search-history\/history/,
     method: 'PUT',
   },
   {
-    endpoint: 'http://localhost:4000/api/user/search-history/create',
+    endpoint: 'https://localhost:4000/api/user/search-history/create',
     method: 'POST',
   },
   {
-    endpoint: 'http://localhost:4000/api/user/short-login',
+    endpoint: 'https://localhost:4000/api/user/short-login',
     method: 'POST',
   },
   {
-    endpoint: /http:\/\/localhost:4000\/api\/user\/\w+\/basic-info/,
+    endpoint: /https:\/\/localhost:4000\/api\/user\/\w+\/basic-info/,
     method: 'GET',
   },
   {
-    endpoint: 'http://localhost:4000/api/user/toggle-dark-mode',
+    endpoint: 'https://localhost:4000/api/user/toggle-dark-mode',
     method: 'PUT',
   },
   {
-    endpoint: /http:\/\/localhost:4000\/api\/utility\/search\/dialogs/,
+    endpoint: /https:\/\/localhost:4000\/api\/utility\/search\/dialogs/,
     method: 'GET',
   },
   {
-    endpoint: /http:\/\/localhost:4000\/api\/utility\/search-for-create\/dialogs/,
+    endpoint: /https:\/\/localhost:4000\/api\/utility\/search-for-create\/dialogs/,
     method: 'GET',
   },
   {
-    endpoint: /http:\/\/localhost:4000\/api\/utility\/url\/\w+\/metadata/,
+    endpoint: /https:\/\/localhost:4000\/api\/utility\/url\/\w+\/metadata/,
     method: 'GET',
   },
   {
-    endpoint: /http:\/\/localhost:4000\/api\/messenger\/status\/active/,
+    endpoint: /https:\/\/localhost:4000\/api\/messenger\/status\/active/,
     method: 'GET',
   },
   {
-    endpoint: /http:\/\/localhost:4000\/api\/messenger\/bubble\/user\/\w+\/brief/,
+    endpoint: /https:\/\/localhost:4000\/api\/messenger\/bubble\/user\/\w+\/brief/,
     method: 'GET',
   },
   {
-    endpoint: /http:\/\/localhost:4000\/api\/messenger\/chat-room\/user\/\w+\/brief/,
+    endpoint: /https:\/\/localhost:4000\/api\/messenger\/chat-room\/user\/\w+\/brief/,
     method: 'GET',
   },
   {
-    endpoint: /http:\/\/localhost:4000\/api\/chat\/\w+\/send-message/,
+    endpoint: /https:\/\/localhost:4000\/api\/chat\/\w+\/send-message/,
     method: 'POST',
   },
   {
-    endpoint: /http:\/\/localhost:4000\/api\/chat\/\w+\/send-file-message/,
+    endpoint: /https:\/\/localhost:4000\/api\/chat\/\w+\/send-file-message/,
     method: 'POST',
   },
   {
-    endpoint: /http:\/\/localhost:4000\/api\/chat\/\w+\/messages\/seen-messages/,
+    endpoint: /https:\/\/localhost:4000\/api\/chat\/\w+\/messages\/seen-messages/,
     method: 'PUT',
   },
   {
-    endpoint: /http:\/\/localhost:4000\/api\/chat\/\w+\/messages\/update-to-sent/,
+    endpoint: /https:\/\/localhost:4000\/api\/chat\/\w+\/messages\/update-to-sent/,
     method: 'PUT',
   },
   {
-    endpoint: /http:\/\/localhost:4000\/api\/chat\/\w+\/get-messages/,
+    endpoint: /https:\/\/localhost:4000\/api\/chat\/\w+\/get-messages/,
     method: 'GET',
   },
   {
-    endpoint: /http:\/\/localhost:4000\/api\/chat\/\w+\/mentions/,
+    endpoint: /https:\/\/localhost:4000\/api\/chat\/\w+\/mentions/,
     method: 'GET',
   },
   {
-    endpoint: /http:\/\/localhost:4000\/api\/chat\/\w+\/nicknames/,
+    endpoint: /https:\/\/localhost:4000\/api\/chat\/\w+\/nicknames/,
     method: 'GET',
   },
   {
-    endpoint: /http:\/\/localhost:4000\/api\/utilites\/download\/\w+\/original-name\/\w+/,
+    endpoint: /https:\/\/localhost:4000\/api\/utilites\/download\/\w+\/original-name\/\w+/,
     method: 'GET',
   },
   {
-    endpoint: /http:\/\/localhost:4000\/api\/chat\/\w+\/user\/\w+\/nickname/,
+    endpoint: /https:\/\/localhost:4000\/api\/chat\/\w+\/user\/\w+\/nickname/,
     method: 'PUT',
   },
   {
-    endpoint: /http:\/\/localhost:4000\/api\/chat\/\w+\/default-emoji/,
+    endpoint: /https:\/\/localhost:4000\/api\/chat\/\w+\/default-emoji/,
     method: 'PUT',
+  },
+  {
+    endpoint: /https:\/\/localhost:4000\/api\/messenger\/user\/\w+\/unseen-messages\/count/,
+    method: 'GET',
   },
 ];
 
 var notGetRequests = [
   {
-    endpoint: 'http://localhost:4000/api/utility/login-sessions/brief',
+    endpoint: 'https://localhost:4000/api/utility/login-sessions/brief',
     method: 'POST',
     dbCollectionName: 'login-sessions',
   },
   {
-    endpoint: 'http://localhost:4000/api/chat/contacts',
+    endpoint: 'https://localhost:4000/api/chat/contacts',
     method: 'GET',
     dbCollectionName: 'contacts',
   },
 ];
 
-var CACHE_STATIC_NAME = 'static-v1596089157905';
-var CACHE_DYNAMIC_NAME = 'dynamic-v1596089157905';
+var CACHE_STATIC_NAME = 'static-v1596096358327';
+var CACHE_DYNAMIC_NAME = 'dynamic-v1596096358327';
 
 var STATIC_FILES = [
   '/',

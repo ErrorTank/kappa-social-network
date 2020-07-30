@@ -100,7 +100,7 @@ const getUserBubbleChatBrief = (ownerID, userID) => {
             return {
                 ...user,
                 latest_message: (chat_room && chat_room.context.length) ? chat_room.context[chat_room.context.length - 1] : "",
-                unseen_messages: ((chat_room && chat_room.context) || []).filter(each => (each.sentBy ? each.sentBy.toString() !== ownerID : false)  && !each.seenBy.find(each => each.toString() === ownerID)).map((each) => each._id)
+                unseen_messages: ((chat_room && chat_room.context) || []).filter(each => (each.sentBy ? each.sentBy.toString() !== ownerID : false) && !each.seenBy.find(each => each.toString() === ownerID)).map((each) => each._id)
             };
 
         })
@@ -119,7 +119,7 @@ const getUserChatRoomBrief = (ownerID, userID) => {
             if (!user) {
                 return Promise.reject(new ApplicationError("cannot_reach_out"));
             }
-            if(!chat_room){
+            if (!chat_room) {
                 return new ChatRoom({
                     involve_person: [{related: ObjectId(ownerID)}, {related: ObjectId(userID)}],
                     context: [
@@ -137,13 +137,70 @@ const getUserChatRoomBrief = (ownerID, userID) => {
             return ({chat_room})
 
         })
-        // .then(({chatRoomID, user}) => {
-        //
-        // });
+    // .then(({chatRoomID, user}) => {
+    //
+    // });
 };
+
+const getUserUnseenMessagesCount = (userID) => {
+    return User.aggregate([
+        {
+            $match: {
+                _id: ObjectId(userID)
+            }
+        },
+        {$lookup: {from: 'chatrooms', localField: 'chat_rooms', foreignField: '_id', as: "chat_rooms"}},
+        {$unwind: "$chat_rooms"},
+        {
+            $group: {
+                _id: "$chat_rooms._id",
+                cr: {
+                    $first: "$chat_rooms"
+                }
+            }
+        },
+        {$unwind: "$cr.context"},
+        {
+            $match: {
+                "cr.context.is_init": false
+            }
+        },
+        {
+            $addFields: {
+                is_seen: {
+                    $or: [
+                        {
+                            $in: [ObjectId(userID), "$cr.context.seenBy"]
+                        },
+                        {
+                            $eq: [
+                                "$cr.context.sentBy",
+                                ObjectId(userID)
+                            ]
+                        }
+                    ]
+                }
+            }
+        },
+        {
+            $match: {
+                is_seen: false
+            }
+        },
+        {
+            $group: {
+                _id: "$cr._id",
+            }
+        },
+    ]).then(data => {
+        console.log(data)
+        return data
+    })
+}
 
 module.exports = {
     getAllUserActiveRelations,
     getUserBubbleChatBrief,
-    getUserChatRoomBrief
+    getUserChatRoomBrief,
+    getUserUnseenMessagesCount
 };

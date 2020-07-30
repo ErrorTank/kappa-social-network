@@ -12,6 +12,9 @@ export const messengerApi = {
     },
     getUserChatRoomBrief(userID){
         return authenApi.get(`/messenger/chat-room/user/${userID}/brief`)
-    }
+    },
+    getUserUnseenMessagesCount(userID){
+        return authenApi.get(`/messenger/user/${userID}/unseen-messages/count`)
+    },
 
 };

@@ -243,7 +243,7 @@ const updateSavedMessagesToSent = (chatRoomID, messageIds) => {
 const seenMessages = (userID, chatRoomID, messageIds) => {
     return ChatRoom.findOneAndUpdate({
         _id: ObjectId(chatRoomID)
-    }, {"$push": {"context.$[elem].seenBy": ObjectId(userID), "last_updated": Date.now()}}, {
+    }, {"$push": {"context.$[elem].seenBy": ObjectId(userID)}, $set: {"last_updated": Date.now()}}, {
         "arrayFilters": [{"elem._id": {$in: messageIds}, "elem.seenBy": {$ne: ObjectId(userID)}}],
         "multi": true,
         new: true

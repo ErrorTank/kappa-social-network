@@ -130,6 +130,28 @@
       border-radius 50%
       width 40px
       border 1px solid common-border
+
+      &.messenger-action{
+        position relative
+        .unseen-count{
+          position absolute
+          width 18px
+          height 18px
+          display flex
+          justify-content center
+          border-radius 50%
+          background-color danger
+          right -5px
+          top -5px
+          span{
+            align-self center
+            font-size 1rem
+            color white
+          }
+        }
+
+
+      }
     }
 
     .avatar-wrapper {

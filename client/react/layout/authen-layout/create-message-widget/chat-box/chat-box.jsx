@@ -22,6 +22,7 @@ import {MESSAGE_TYPES} from "./message-section/message";
 import {CALL_TYPES, callServices} from "../../../../../common/call-services/call-services";
 import {appModal} from "../../../../common/modal/modals";
 import {ToggleMinimize} from "./toggle-minimize";
+import {userAction} from "../../authen-navbar/user-action/user-action";
 
 export const MessageState = {
     CACHED: "CACHED",
@@ -331,6 +332,7 @@ export class ChatBox extends KComponent {
         this.props.onSeenMessages(unseenMessages)
         console.log(unseenMessages)
         if (unseenMessages.length) {
+            userAction.removeChatRoom(this.state.chat_room_brief._id);
             chatApi.seenMessages(this.state.chat_room_brief._id, unseenMessages)
         }
     };

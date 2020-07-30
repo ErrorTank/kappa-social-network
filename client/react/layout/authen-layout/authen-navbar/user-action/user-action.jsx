@@ -6,6 +6,8 @@ import {userInfo} from "../../../../../common/states/common";
 import {ClickOutside} from "../../../../common/click-outside/click-outside";
 import {UserSpecificAction} from "./user-specific-action";
 import {Tooltip} from "../../../../common/tooltip/tooltip";
+import {ChatBoxList} from "../chat-box-list/chat-box-list";
+import {messengerApi} from "../../../../../api/common/messenger-api";
 
 class UserActionDropdownable extends Component {
     constructor(props) {
@@ -38,10 +40,20 @@ class UserActionDropdownable extends Component {
     }
 }
 
+export let userAction = {};
+
 export class UserAction extends KComponent {
     constructor(props) {
         super(props);
-        this.state = {}
+        this.state = {
+            unseen: []
+
+        }
+        messengerApi.getUserUnseenMessagesCount(userInfo.getState()._id)
+            .then((unseen) => this.setState({unseen}))
+        userAction = {
+            removeChatRoom: crID => this.setState({unseen: this.state.unseen.filter(each => each._id !== crID)})
+        }
     }
 
     render() {
@@ -85,12 +97,24 @@ export class UserAction extends KComponent {
                             className={"user-action-tooltip"}
                             text={() => "Chat"}
                         >
-                            <div className="circle-action">
+                            <div className="circle-action messenger-action">
+                                {!!this.state.unseen.length && (
+                                    <div className="unseen-count">
+                                        <span>{this.state.unseen.length}</span>
+
+                                    </div>
+                                )}
                                 <i className="fas fa-comment"></i>
                             </div>
                         </Tooltip>
 
 
+                    )}
+                    dropdownRender={() => (
+                        <ChatBoxList
+                            darkMode={this.props.darkMode}
+                            unseen={this.state.unseen}
+                        />
                     )}
 
                 />
