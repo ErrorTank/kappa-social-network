@@ -53,6 +53,9 @@ export class ChatBoxList extends Component {
 
             >
                 <div className="chat-box-list">
+                    <div className="cbl-title">
+                        Tin nhắn
+                    </div>
                     {chat_rooms.map(each => (
                         <div className={classnames("chat-room-box", {"unseen": unseen.find(r => r._id === each._id)})}
                              key={each._id}

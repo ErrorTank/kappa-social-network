@@ -3,7 +3,7 @@ import Editor, {createEditorStateWithText} from 'draft-js-plugins-editor';
 import createEmojiMartPlugin from 'draft-js-emoji-mart-plugin';
 import createMentionPlugin from 'draft-js-mention-plugin';
 import classnames from "classnames"
-import Draft ,{ convertToRaw  ,EditorState, ContentState} from 'draft-js';
+import Draft, {convertToRaw, EditorState, ContentState} from 'draft-js';
 import data from 'emoji-mart/data/facebook.json';
 
 import 'emoji-mart/css/emoji-mart.css'
@@ -15,6 +15,9 @@ import {transformEditorState} from "../../../../../../../common/utils/editor-uti
 import {messengerIO} from "../../../../../../../socket/sockets";
 import {userInfo} from "../../../../../../../common/states/common";
 import isNil from "lodash/isNil"
+import {Tooltip} from "../../../../../../common/tooltip/tooltip";
+import {Emoji} from "emoji-mart";
+import Skeleton, {SkeletonTheme} from "react-loading-skeleton";
 
 export const emojiPlugin = createEmojiMartPlugin({
     data,
@@ -43,7 +46,7 @@ export class ChatInput extends Component {
         this.mentionPlugin = createMentionPlugin({
             entityMutability: 'IMMUTABLE',
             supportWhitespace: true,
-            positionSuggestions: () =>({}),
+            positionSuggestions: () => ({}),
             mentionPrefix: "@",
             mentions: [],
             mentionComponent: (mentionProps) => {
@@ -62,17 +65,17 @@ export class ChatInput extends Component {
         let nextState = {
             editorState
         };
-        if(this.state.showEmojiPicker){
+        if (this.state.showEmojiPicker) {
             nextState.showEmojiPicker = false;
         }
-        if(!this.state.isTyping && value){
+        if (!this.state.isTyping && value) {
             nextState.isTyping = true;
         }
-        if(this.state.isTyping && !value){
+        if (this.state.isTyping && !value) {
             nextState.isTyping = false;
         }
 
-        if(!isNil(nextState.isTyping)){
+        if (!isNil(nextState.isTyping)) {
             this.emitTypingStatus(nextState.isTyping)
         }
 
@@ -84,7 +87,7 @@ export class ChatInput extends Component {
     };
 
     componentWillReceiveProps(nextProps, nextContext) {
-        if(nextProps.chatRoomID && nextProps.chatRoomID !== this.props.chatRoomID){
+        if (nextProps.chatRoomID && nextProps.chatRoomID !== this.props.chatRoomID) {
             this.loadSuggestion(nextProps.chatRoomID);
         }
 
@@ -107,13 +110,13 @@ export class ChatInput extends Component {
     }
 
 
-    filterSuggestions =  (data, keyword) => {
+    filterSuggestions = (data, keyword) => {
 
         return keyword ? data.map(each => {
-            if((each.basic_info.username || "").toLowerCase().indexOf(keyword.toLowerCase()) > -1){
+            if ((each.basic_info.username || "").toLowerCase().indexOf(keyword.toLowerCase()) > -1) {
                 return {...each, name: each.basic_info.username}
             }
-            if((each.nickname || "").toLowerCase().indexOf(keyword.toLowerCase()) > -1){
+            if ((each.nickname || "").toLowerCase().indexOf(keyword.toLowerCase()) > -1) {
                 return {...each, name: each.nickname}
             }
             return each
@@ -129,25 +132,33 @@ export class ChatInput extends Component {
         return Draft.getDefaultKeyBinding(e)
     }
 
+    getInputRawContent = () => {
+        return transformEditorState(convertToRaw(this.state.editorState.getCurrentContent())).content;
+    }
+
     getInitialState = () => {
         const newEditorState = EditorState.push(this.state.editorState, ContentState.createFromText(''), 'remove-range');
         return EditorState.moveFocusToEnd(newEditorState);
     }
 
+    submitContent = () => {
+        let {editorState} = this.state;
+        // console.log(convertToRaw(editorState.getCurrentContent()))
+        let transformedState = transformEditorState(convertToRaw(editorState.getCurrentContent()));
+        if (transformedState.content || this.props.haveFiles) {
+
+            this.props.onSubmit(transformedState);
+
+            this.emitTypingStatus(false);
+            this.setState({isTyping: false})
+
+            this.setState({editorState: this.getInitialState()});
+        }
+    }
+
     handleKeyCommand = (command) => {
         if (command === 'chat-input-enter') {
-            let {editorState} = this.state;
-            // console.log(convertToRaw(editorState.getCurrentContent()))
-            let transformedState = transformEditorState(convertToRaw(editorState.getCurrentContent()));
-            if(transformedState.content || this.props.haveFiles){
-                console.log(transformedState)
-                this.props.onSubmit(transformedState);
-
-                this.emitTypingStatus(false);
-                this.setState({isTyping: false})
-
-                this.setState({ editorState: this.getInitialState()});
-            }
+            this.submitContent();
             return 'handled'
         }
 
@@ -157,80 +168,129 @@ export class ChatInput extends Component {
 
     emitTypingStatus = isTyping => {
 
-        this.io.emit(`typing-${isTyping ? "start" : "done"}`, {chatRoomID: this.props.chatRoomID, user: pick(userInfo.getState(), ["_id", "basic_info", "avatar"])})
+        this.io.emit(`typing-${isTyping ? "start" : "done"}`, {
+            chatRoomID: this.props.chatRoomID,
+            user: pick(userInfo.getState(), ["_id", "basic_info", "avatar"])
+        })
     };
 
     render() {
-        const { MentionSuggestions } = this.mentionPlugin;
+        const {MentionSuggestions} = this.mentionPlugin;
 
         let plugins = [emojiPlugin];
-        if(this.props.canMention){
+        if (this.props.canMention) {
             plugins.push(this.mentionPlugin);
         }
 
 
         return (
+            <>
+                <div className="chat-input-wrapper">
+                    <ClickOutside onClickOut={() => this.setState({showEmojiPicker: false})}>
+                        <div>
+                            <div className="chat-input">
+                                <div>
+                                    <Editor
+                                        editorState={this.state.editorState}
+                                        onChange={this.onChange}
+                                        plugins={plugins}
+                                        ref={(element) => {
+                                            this.editor = element;
+                                        }}
+                                        onFocus={() => {
+                                            this.props.onFocusEditor()
+                                        }}
+                                        onBlur={() => {
+                                            this.setState({isTyping: false})
+                                            this.emitTypingStatus(false);
+                                        }}
+                                        placeholder={"Nhập tin nhắn"}
 
-                <ClickOutside onClickOut={() => this.setState({showEmojiPicker: false})}>
-                  <div>
-                      <div className="chat-input">
-                          <div>
-                              <Editor
-                                  editorState={this.state.editorState}
-                                  onChange={this.onChange}
-                                  plugins={plugins}
-                                  ref={(element) => {
-                                      this.editor = element;
-                                  }}
-                                  onFocus={() => {
-                                      this.props.onFocusEditor()
-                                  }}
-                                  onBlur={() => {
-                                      this.setState({isTyping: false})
-                                      this.emitTypingStatus(false);
-                                  }}
-                                  placeholder={"Nhập tin nhắn"}
+                                        keyBindingFn={this.keyBindingFn}
 
-                                  keyBindingFn={this.keyBindingFn}
+                                        handleKeyCommand={this.handleKeyCommand}
+                                    />
+                                    <MentionSuggestions
+                                        onSearchChange={this.onSearchChange}
+                                        suggestions={this.state.filteredSuggestions}
+                                        popoverComponent={<MentionPopover/>}
+                                        entryComponent={MentionEntry}
+                                    />
+                                </div>
 
-                                  handleKeyCommand={this.handleKeyCommand}
-                              />
-                              <MentionSuggestions
-                                  onSearchChange={this.onSearchChange}
-                                  suggestions={this.state.filteredSuggestions}
-                                  popoverComponent={<MentionPopover/>}
-                                  entryComponent={MentionEntry}
-                              />
-                          </div>
-                          <div className={"emoji-select"} onClick={(e) => {
-                              e.stopPropagation();
-                              this.setState({showEmojiPicker: !this.state.showEmojiPicker})
-                          }}>
-                              <i className="fas fa-smile"></i>
-                          </div>
+                                <div className={"emoji-select"} onClick={(e) => {
+                                    e.stopPropagation();
+                                    this.setState({showEmojiPicker: !this.state.showEmojiPicker})
+                                }}>
+                                    <i className="fas fa-smile"></i>
+                                </div>
 
-                      </div>
-                      {this.state.showEmojiPicker && (
-                          <div className={"emoji-picker"}>
-                              <Picker
-                                  perLine={7}
-                                  showPreview={false}
-                                  autoFocus={true}
-                              />
-                          </div>
+                            </div>
+                            {this.state.showEmojiPicker && (
+                                <div className={"emoji-picker"}>
+                                    <Picker
+                                        perLine={7}
+                                        showPreview={false}
+                                        autoFocus={true}
+                                    />
+                                </div>
 
-                      )}
-                      </div>
-                </ClickOutside>
+                            )}
+                        </div>
+                    </ClickOutside>
+                </div>
 
+                {transformEditorState(convertToRaw(this.state.editorState.getCurrentContent())).content ? (
+                        <div className='icon-wrapper react' onClick={this.submitContent}>
+                            <i className="fas fa-paper-plane"></i>
+                        </div>
+                    ) :
+                    this.props.defaultEmoji ? (
+                        <Tooltip
+                            text={() => (
+                                <div style={{display: "flex"}}>
+                                    <span style={{marginRight: "3px"}}>Gửi </span>
+                                    <Emoji
+                                        set={'facebook'}
+                                        emoji={this.props.defaultEmoji}
+                                        size={18}
+                                        skin={this.props.defaultEmoji.skin || 1}
+                                    />
+                                </div>
+                            )}
+                            position={"top"}
+                        >
+                            <div className="icon-wrapper react"
+                                 onClick={() => {
+
+                                     this.props.onSubmit({emoji: this.props.defaultEmoji, content: "huh"})
+                                 }}
+                            >
+                                <Emoji
+                                    set={'facebook'}
+                                    emoji={this.props.defaultEmoji}
+                                    skin={this.props.defaultEmoji.skin || 1}
+                                    size={24}
+                                />
+                            </div>
+                        </Tooltip>
+                    ) : (
+                        <SkeletonTheme color={this.props.darkMode ? "#242526" : "#e3e3e3"}
+                                       highlightColor={this.props.darkMode ? "#333436" : "#ebebeb"}>
+                            <Skeleton count={1} height={32} width={32} duration={1}
+                                      circle={true}/>
+
+                        </SkeletonTheme>
+                    )
+                }
+            </>
 
         );
     }
 }
 
 
-
-class MentionPopover extends React.Component{
+class MentionPopover extends React.Component {
     render() {
 
         return (
@@ -240,6 +300,7 @@ class MentionPopover extends React.Component{
         )
     }
 }
+
 const MentionEntry = props => {
 
     const {

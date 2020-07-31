@@ -68,7 +68,7 @@ export class MessageUtilities extends Component {
     render() {
         let {files, reply} = this.state;
         let userID = userInfo.getState()._id;
-        console.log(reply)
+
         return (
             <ThemeContext.Consumer>
                 {({darkMode}) => (
@@ -162,55 +162,19 @@ export class MessageUtilities extends Component {
                                 )}
 
                             </InputFileWrapper>
-                            <div className="chat-input-wrapper">
-                                <ChatInput
-                                    chatRoomID={this.props.chatRoom?._id}
-                                    onSubmit={this.onSubmit}
-                                    canMention={this.props.chatRoom?.is_group_chat || true}
-                                    onFocusEditor={this.props.onFocusEditor}
-                                    haveFiles={!!this.state.files.length}
-                                    ref={input => this.input = input}
-                                />
-                            </div>
+                            <ChatInput
+                                chatRoomID={this.props.chatRoom?._id}
+                                onSubmit={this.onSubmit}
+                                canMention={this.props.chatRoom?.is_group_chat || true}
+                                onFocusEditor={this.props.onFocusEditor}
+                                haveFiles={!!this.state.files.length}
+                                ref={input => this.input = input}
+                                darkMode={darkMode}
+                                defaultEmoji={this.props.defaultEmoji}
+                            />
 
 
-                            {this.props.defaultEmoji ? (
-                                <Tooltip
-                                    text={() => (
-                                        <div style={{display: "flex"}}>
-                                            <span style={{marginRight: "3px"}}>Gửi </span>
-                                            <Emoji
-                                                set={'facebook'}
-                                                emoji={this.props.defaultEmoji}
-                                                size={18}
-                                                skin={this.props.defaultEmoji.skin || 1}
-                                            />
-                                        </div>
-                                    )}
-                                    position={"top"}
-                                >
-                                    <div className="icon-wrapper react"
-                                         onClick={() => {
 
-                                             this.onSubmit({emoji: this.props.defaultEmoji, content: "huh"})
-                                         }}
-                                    >
-                                        <Emoji
-                                            set={'facebook'}
-                                            emoji={this.props.defaultEmoji}
-                                            skin={this.props.defaultEmoji.skin || 1}
-                                            size={24}
-                                        />
-                                    </div>
-                                </Tooltip>
-                            ) : (
-                                <SkeletonTheme color={darkMode ? "#242526" : "#e3e3e3"}
-                                               highlightColor={darkMode ? "#333436" : "#ebebeb"}>
-                                    <Skeleton count={1} height={32} width={32} duration={1}
-                                              circle={true}/>
-
-                                </SkeletonTheme>
-                            )}
 
 
                         </div>

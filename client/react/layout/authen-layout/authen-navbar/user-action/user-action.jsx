@@ -58,7 +58,7 @@ export class UserAction extends KComponent {
 
     render() {
         let user = userInfo.getState();
-        console.log(user)
+
         return (
             <div className={classnames("user-action", {darkMode: this.props.darkMode})}>
                 <UserActionDropdownable
