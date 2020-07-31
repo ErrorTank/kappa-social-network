@@ -19,7 +19,10 @@ export class ListingInfo extends Component {
     this.state = {
       dependedInput: '',
       inputField: '',
-      error: [{ title: '', price: '' }],
+      error: {
+        title: '',
+        price: '',
+      },
     };
   }
   handleInputDisplay = () => {
@@ -75,14 +78,20 @@ export class ListingInfo extends Component {
       this.handleSetDependent(fieldByHomeFor, this.props.state.homeFor);
     }
   }
-
-  handleErrorDisplay = (name, message) => {
+  handleCheckError = (name, message) => {
     const { state, updateValue } = this.props;
     if (!state[name]) {
       this.setState((prevState) => ({
         error: {
           ...prevState.error,
           [name]: message,
+        },
+      }));
+    } else {
+      this.setState((prevState) => ({
+        error: {
+          ...prevState.error,
+          [name]: '',
         },
       }));
     }
@@ -125,7 +134,7 @@ export class ListingInfo extends Component {
                   error={error[each.englishName]}
                   onChange={(e) => {
                     each.errorMessage &&
-                      this.handleErrorDisplay(
+                      this.handleCheckError(
                         each.englishName,
                         each.errorMessage
                       );
