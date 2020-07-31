@@ -198,60 +198,62 @@ export class MessageSection extends Component {
                     }}
                 >
 
-                    <div className="message-section">
-                        {!this.isBottom() && this.state.unSeenCount !== 0 && (
-                            <div className="new-message-notify" onClick={() => {
-                                this.scrollToBottom();
-                            }}>
-                                Bạn có <span className="high-light">{this.state.unSeenCount}</span> tin nhắn mới <span
-                                style={{marginLeft: "5px"}} className="high-light"><i
-                                className="far fa-arrow-down"></i></span>
-                            </div>
-                        )}
-                        {this.state.loadingMessages && (
-                            <div className={classnames("loading-wrapper", {expand: messages.length === 0})}>
-                                <LoadingInline/>
-                            </div>
-                        )}
-                        <div className="messages">
-
-                            {firstMessage && firstMessage.is_init && !this.props.chatRoom?.is_group_chat && (
-                                <ReceiverInfo
-                                    chatRoom={this.props.chatRoom}
-                                />
-                            )}
-
-                            {messages.map((each, index) => {
-                                let position = this.getMessagePositionState(messages, index)
-                                return each.is_init ? null : (
-                                    <Message
-                                        chatRoomID={this.props.chatRoomID}
-                                        position={position}
-                                        message={each}
-                                        isUserLastMessage={each._id === lastUserMessage?._id}
-                                        key={each._id}
-                                        haveAvatar={position === "single" || position === "tail"}
-                                        onUpload={this.props.onUpload}
-                                        removeMessage={() => this.removeMessage(each._id)}
-                                        onReply={() => this.props.onReply(each)}
-                                        onChangeReaction={(config) => this.changeReaction(config, each._id)}
-                                    />
-                                )
-                            })}
-                            {this.state.typing.map((each) => (
-                                <div className="typing" key={each._id}>
-                                    <div className="avatar">
-                                        <Avatar
-                                            user={each}
-                                        />
-                                    </div>
-                                    <div className="message-holder">
-                                        <ThreeDotLoading/>
-                                    </div>
+                    {({isBottom}) => (
+                        <div className="message-section">
+                            {!isBottom && this.state.unSeenCount !== 0 && (
+                                <div className="new-message-notify" onClick={() => {
+                                    this.scrollToBottom();
+                                }}>
+                                    Bạn có <span className="high-light">{this.state.unSeenCount}</span> tin nhắn mới <span
+                                    style={{marginLeft: "5px"}} className="high-light"><i
+                                    className="far fa-arrow-down"></i></span>
                                 </div>
-                            ))}
+                            )}
+                            {this.state.loadingMessages && (
+                                <div className={classnames("loading-wrapper", {expand: messages.length === 0})}>
+                                    <LoadingInline/>
+                                </div>
+                            )}
+                            <div className="messages">
+
+                                {firstMessage && firstMessage.is_init && !this.props.chatRoom?.is_group_chat && (
+                                    <ReceiverInfo
+                                        chatRoom={this.props.chatRoom}
+                                    />
+                                )}
+
+                                {messages.map((each, index) => {
+                                    let position = this.getMessagePositionState(messages, index)
+                                    return each.is_init ? null : (
+                                        <Message
+                                            chatRoomID={this.props.chatRoomID}
+                                            position={position}
+                                            message={each}
+                                            isUserLastMessage={each._id === lastUserMessage?._id}
+                                            key={each._id}
+                                            haveAvatar={position === "single" || position === "tail"}
+                                            onUpload={this.props.onUpload}
+                                            removeMessage={() => this.removeMessage(each._id)}
+                                            onReply={() => this.props.onReply(each)}
+                                            onChangeReaction={(config) => this.changeReaction(config, each._id)}
+                                        />
+                                    )
+                                })}
+                                {this.state.typing.map((each) => (
+                                    <div className="typing" key={each._id}>
+                                        <div className="avatar">
+                                            <Avatar
+                                                user={each}
+                                            />
+                                        </div>
+                                        <div className="message-holder">
+                                            <ThreeDotLoading/>
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
                         </div>
-                    </div>
+                    )}
 
                 </InfiniteScrollWrapper>
             </>

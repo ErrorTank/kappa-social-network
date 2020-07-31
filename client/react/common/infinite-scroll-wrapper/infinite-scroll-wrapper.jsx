@@ -6,7 +6,9 @@ import {checkElemInContainerView} from "../../../common/utils/dom-utils";
 export class InfiniteScrollWrapper extends KComponent {
     constructor(props) {
         super(props);
-
+        this.state = {
+            isBottom: true
+        }
 
         this.onUnmount(() => {
             if (this.cancelAction) {
@@ -37,11 +39,13 @@ export class InfiniteScrollWrapper extends KComponent {
                 // console.log(elemClone.clientHeight)
 
                 this.props.onScrollTop();
+                this.setState({isBottom: false});
             } else if (elemClone.scrollTop + elem.clientHeight >= elem.scrollHeight) {
-
+                this.setState({isBottom: true});
                 this.props.onScrollBottom(e);
             } else {
                 this.props.onScroll(e)
+                this.setState({isBottom: false});
             }
 
         };
@@ -56,6 +60,6 @@ export class InfiniteScrollWrapper extends KComponent {
 
 
     render() {
-        return this.props.children
+        return this.props.children({isBottom: this.state.isBottom})
     }
 }
