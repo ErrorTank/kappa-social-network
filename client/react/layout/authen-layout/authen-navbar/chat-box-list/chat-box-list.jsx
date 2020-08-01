@@ -29,7 +29,6 @@ export class ChatBoxList extends Component {
     }
 
     fetchUserChatRooms = () => {
-        console.log("cac")
         return messengerApi.getUserChatRooms(userInfo.getState()._id, this.state.skip).then((chat_rooms) => {
             this.setState({
                 chat_rooms: this.state.chat_rooms.concat(chat_rooms),
@@ -44,55 +43,59 @@ export class ChatBoxList extends Component {
         let {chat_rooms, fetching} = this.state;
         let {unseen} = this.props;
         return (
-            <InfiniteScrollWrapper
-                onScrollTop={() => {
-                    this.setState({fetching: true})
-                    this.fetchUserChatRooms();
 
-                }}
+            <div className="chat-box-list">
+                <div className="cbl-title">
+                    Tin nhắn
+                </div>
+                <InfiniteScrollWrapper
+                    onScrollTop={() => {
+                        this.setState({fetching: true})
+                        this.fetchUserChatRooms();
 
-            >
-                <div className="chat-box-list">
-                    <div className="cbl-title">
-                        Tin nhắn
-                    </div>
-                    {chat_rooms.map(each => (
-                        <div className={classnames("chat-room-box", {"unseen": unseen.find(r => r._id === each._id)})}
-                             key={each._id}
-                             onClick={() => messageWidgetController.createNewChatBox({userID: each.contact._id})}
-                        >
-                            <div className="avatar">
-                                <WithUserStatus
-                                    userID={each.contact._id}
-                                    status={{
-                                        active: each.contact?.active,
-                                        last_active_at: each.contact?.last_active_at
-                                    }}
+                    }}
+
+                >
+                    {() => (
+                        <div className="cbl-content">
+                            {chat_rooms.map(each => (
+                                <div
+                                    className={classnames("chat-room-box", {"unseen": unseen.find(r => r._id === each._id)})}
+                                    key={each._id}
+                                    onClick={() => messageWidgetController.createNewChatBox({userID: each.contact._id})}
                                 >
-                                    {(userStatus) => {
+                                    <div className="avatar">
+                                        <WithUserStatus
+                                            userID={each.contact._id}
+                                            status={{
+                                                active: each.contact?.active,
+                                                last_active_at: each.contact?.last_active_at
+                                            }}
+                                        >
+                                            {(userStatus) => {
 
-                                        return (
-                                            <StatusAvatar
-                                                user={each.contact}
-                                                active={userStatus.active}
-                                            />
-                                        )
-                                    }}
+                                                return (
+                                                    <StatusAvatar
+                                                        user={each.contact}
+                                                        active={userStatus.active}
+                                                    />
+                                                )
+                                            }}
 
-                                </WithUserStatus>
-                            </div>
-                            <div className="content-wrapper">
-                                <div className="chat-room-name">
-                                    {each.contact.nickname || each.contact.basic_info.username}
-                                </div>
-                                <div className="latest-message">
+                                        </WithUserStatus>
+                                    </div>
+                                    <div className="content-wrapper">
+                                        <div className="chat-room-name">
+                                            {each.contact.nickname || each.contact.basic_info.username}
+                                        </div>
+                                        <div className="latest-message">
 
-                                    {each.latest_message.is_deleted ? (
-                                        <span className="deleted-msg">
+                                            {each.latest_message.is_deleted ? (
+                                                <span className="deleted-msg">
                                            Tin nhắn đã bị xóa bỏ
                                         </span>
-                                    ) : each.latest_message.emoji ? (
-                                        <span className="emoji-message">
+                                            ) : each.latest_message.emoji ? (
+                                                <span className="emoji-message">
                                             <Emoji set={'facebook'}
                                                    emoji={each.latest_message.emoji}
                                                    skin={each.latest_message.emoji?.skin || 1}
@@ -101,45 +104,48 @@ export class ChatBoxList extends Component {
                                             />
 
                                         </span>
-                                    ) : (
-                                        <>
-
-                                            {each.latest_message.file ? (
-                                                <span>{each.latest_message.sentBy === userInfo.getState()._id && "Bạn"} đã gửi một {isImageFile(each.latest_message.file.name) ? "ảnh" : "file"}</span>
                                             ) : (
-                                                <span>{each.latest_message.sentBy === userInfo.getState()._id && "Bạn:"} {getRenderableContentFromMessage(each.latest_message)}</span>
+                                                <>
+
+                                                    {each.latest_message.file ? (
+                                                        <span>{each.latest_message.sentBy === userInfo.getState()._id && "Bạn"} đã gửi một {isImageFile(each.latest_message.file.name) ? "ảnh" : "file"}</span>
+                                                    ) : (
+                                                        <span>{each.latest_message.sentBy === userInfo.getState()._id && "Bạn:"} {getRenderableContentFromMessage(each.latest_message)}</span>
+                                                    )}
+                                                </>
                                             )}
-                                        </>
-                                    )}
 
+                                        </div>
+                                    </div>
                                 </div>
-                            </div>
+                            ))}
+                            {fetching && (
+                                <SkeletonTheme color={"#e3e3e3"}
+                                               highlightColor={"#ebebeb"}>
+                                    <div className={classnames("chat-room-box")}>
+
+                                        <div className="avatar">
+                                            <Skeleton count={1} height={50} width={50} duration={1}
+                                                      circle={true}/>
+                                        </div>
+                                        <div className="content-wrapper">
+                                            <div className="chat-room-name">
+                                                <Skeleton count={1} height={24} width={100} duration={1}/>
+                                            </div>
+                                            <div className="latest-message">
+                                                <Skeleton count={1} height={20} width={200} duration={1}/>
+                                            </div>
+                                        </div>
+
+
+                                    </div>
+                                </SkeletonTheme>
+                            )}
                         </div>
-                    ))}
-                    {fetching && (
-                        <SkeletonTheme color={"#e3e3e3"}
-                                       highlightColor={"#ebebeb"}>
-                            <div className={classnames("chat-room-box")}>
-
-                                <div className="avatar">
-                                    <Skeleton count={1} height={50} width={50} duration={1}
-                                              circle={true}/>
-                                </div>
-                                <div className="content-wrapper">
-                                    <div className="chat-room-name">
-                                        <Skeleton count={1} height={24} width={100} duration={1}/>
-                                    </div>
-                                    <div className="latest-message">
-                                        <Skeleton count={1} height={20} width={200} duration={1}/>
-                                    </div>
-                                </div>
-
-
-                            </div>
-                        </SkeletonTheme>
                     )}
-                </div>
-            </InfiniteScrollWrapper>
+                </InfiniteScrollWrapper>
+            </div>
+
         );
     }
 }

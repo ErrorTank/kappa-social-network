@@ -277,7 +277,7 @@ export class ChatBox extends KComponent {
         this.messageState.setState([...newMessages]).then(() => {
             setTimeout(() => {
                 scrollToLatest(true);
-            })
+            }, 100)
         });
         if(newMessage){
             chatApi.sendMessage(this.state.chat_room_brief._id, omit({
@@ -330,7 +330,6 @@ export class ChatBox extends KComponent {
         let userID = userInfo.getState()._id;
         let unseenMessages = messages.filter(each => each.sentBy._id !== userID && each.state === "SENT" && !each.seenBy.find(seen => seen._id === userID));
         this.props.onSeenMessages(unseenMessages)
-        console.log(unseenMessages)
         if (unseenMessages.length) {
             userAction.removeChatRoom(this.state.chat_room_brief._id);
             chatApi.seenMessages(this.state.chat_room_brief._id, unseenMessages)

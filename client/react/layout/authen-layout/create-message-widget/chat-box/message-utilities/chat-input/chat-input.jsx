@@ -241,9 +241,14 @@ export class ChatInput extends Component {
                 </div>
 
                 {transformEditorState(convertToRaw(this.state.editorState.getCurrentContent())).content ? (
+                    <Tooltip
+                        text={() => "Gửi"}
+                        position={"top"}
+                    >
                         <div className='icon-wrapper react' onClick={this.submitContent}>
                             <i className="fas fa-paper-plane"></i>
                         </div>
+                    </Tooltip>
                     ) :
                     this.props.defaultEmoji ? (
                         <Tooltip
