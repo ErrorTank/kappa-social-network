@@ -58,7 +58,11 @@ export class ChatBoxList extends Component {
                 >
                     {() => (
                         <div className="cbl-content">
-                            {chat_rooms.map(each => (
+                            {!chat_rooms.length ? (
+                                <div className="empty-notify">
+                                    Bạn chưa có tin nhắn nào
+                                </div>
+                            ) : chat_rooms.map(each => (
                                 <div
                                     className={classnames("chat-room-box", {"unseen": unseen.find(r => r._id === each._id)})}
                                     key={each._id}

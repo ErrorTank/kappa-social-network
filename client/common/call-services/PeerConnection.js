@@ -6,11 +6,11 @@ import isFunction from "lodash/isFunction";
 
 const PC_CONFIG = {
     'iceServers': [
-        { 'urls': "stun:numb.viagenie.ca" },
+        { 'urls': "stun:stun.stunprotocol.org" },
         {
             'urls': "turn:numb.viagenie.ca",
-            'credential': 'iloveha123',
-            'username': 'ncq998@gmail.com'
+            'credential': 'muazkh',
+            'username': 'webrtc@live.com'
         },
         // {
         //     'urls': 'stun:stun.l.google.com:19302'
@@ -25,6 +25,7 @@ const PC_CONFIG = {
         //     'urls': "turn:turn.anyfirewall.com:443?transport=tcp", credential: "webrtc", username: 'webrtc'
         // },
     ]
+
 };
 
 export class PeerConnection extends Emitter {
