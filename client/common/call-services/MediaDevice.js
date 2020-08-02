@@ -13,14 +13,18 @@ export class MediaDevice extends Emitter {
         super();
         this.constraints = callType === CALL_TYPES.VOICE ? {
             audio: true,
-            video: false
+            video: false,
+            command : "publish",
+            streamId : "stream1",
         } : {
             video: {
                 facingMode: 'user',
                 width: { min: 1024, ideal: 1280, max: 1920 },
                 height: { min: 576, ideal: 720, max: 1080 }
             },
-            audio: true
+            audio: true,
+            command : "publish",
+            streamId : "stream1",
         };
     }
 

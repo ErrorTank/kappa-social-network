@@ -7,6 +7,11 @@ import isFunction from "lodash/isFunction";
 const PC_CONFIG = {
     'iceServers': [
         { 'urls': "stun:stun.stunprotocol.org" },
+        // {
+        //     'urls': "turn:192.168.100.13:6969",
+        //     'credential': '123123qwe',
+        //     'username': 'kappa'
+        // },
         {
             'urls': "turn:numb.viagenie.ca",
             'credential': 'muazkh',
@@ -39,7 +44,7 @@ export class PeerConnection extends Emitter {
         this.socket = messengerIO.getIOInstance();
         this.pc = new RTCPeerConnection(PC_CONFIG);
         this.pc.onicecandidate = (event) => {
-
+            // console.log(event)
             return this.socket.emit('call', {
                 candidate: event.candidate
             });
