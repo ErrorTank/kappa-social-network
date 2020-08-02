@@ -12,6 +12,7 @@ import { customHistory } from '../../../../../../routes';
 import { ListingInfoSelect } from '../../../../../../../common/listing-info-select/listing-info-select';
 import { v4 as uuidv4 } from 'uuid';
 import { omit, toArray } from 'lodash';
+import * as yup from 'yup';
 
 export class ListingInfo extends Component {
   constructor(props) {
@@ -25,6 +26,7 @@ export class ListingInfo extends Component {
       },
     };
   }
+  const;
   handleInputDisplay = () => {
     const { state, updateValue } = this.props;
     let {
@@ -100,8 +102,8 @@ export class ListingInfo extends Component {
     const { state, updateValue } = this.props;
     let { pictureLimit, type, category, ...other } = state;
     const { inputField, error, dependedInput } = this.state;
-    console.log(this.state);
-    console.log(this.props);
+    console.log(this.state.error);
+    console.log(this.props.state);
 
     return (
       <div className='listing-info'>
