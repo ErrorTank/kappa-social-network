@@ -43,6 +43,7 @@ export class MediaCallLayout extends Component {
 
             if (data.sdp) {
                 this.setState({callStatus: CALL_STATUS.CALLING})
+                this.props.onCalling();
                 await this.pc.setRemoteDescription(data.sdp);
                 if (data.sdp.type === 'offer') this.pc.createAnswer();
             } else this.pc.addIceCandidate(data.candidate);
@@ -158,6 +159,7 @@ export class MediaCallLayout extends Component {
     };
 
     rejectCall(isStarter) {
+        this.props.onFinish();
         this.removeListeners();
         if (this.ackTimeout)
             clearTimeout(this.ackTimeout)
@@ -169,6 +171,7 @@ export class MediaCallLayout extends Component {
     }
 
     endCall(isStarter) {
+        this.props.onFinish();
         return new Promise(resolve => {
             this.removeListeners();
             if (this.ackTimeout)
