@@ -169,7 +169,8 @@ export class ChatBox extends KComponent {
                             duration,
                             call_type: "VIDEO",
                             call_status: callStatus
-                        }
+                        },
+                        files: []
                     })
                 }
             })
@@ -204,7 +205,8 @@ export class ChatBox extends KComponent {
                             duration,
                             call_type: "VOICE",
                             call_status: callStatus
-                        }
+                        },
+                        files: []
                     })
                 }
             })
@@ -257,6 +259,7 @@ export class ChatBox extends KComponent {
             special: MESSAGE_TYPES.CASUAL,
             hyperlinks: state.hyperlinks || [],
             state: MessageState.CACHED,
+            call_info: state.call_info || null,
             reactions: {
                 angry: [],
                 cry: [],
@@ -361,6 +364,14 @@ export class ChatBox extends KComponent {
         }
     };
 
+    recall = callType => {
+        if(callType === "VIDEO"){
+            this.startVideoCall()
+        }else{
+            this.startVoiceCall()
+        }
+    }
+
     removeMessage = (messageID) => {
         let scrollToLatest = messagesContainerUtilities.createScrollLatest();
         let messages = [...this.messageState.getState()];
@@ -460,6 +471,7 @@ export class ChatBox extends KComponent {
                                                 onUpload={this.onUploadMessage}
                                                 removeMessage={this.removeMessage}
                                                 onReply={messageUtilities.openReplyPanel}
+                                                recall={this.recall}
                                             />
                                             <MessageUtilities
                                                 chatRoom={this.state.chat_room_brief}
