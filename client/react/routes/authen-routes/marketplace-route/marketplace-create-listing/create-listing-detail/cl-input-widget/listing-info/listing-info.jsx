@@ -80,9 +80,9 @@ export class ListingInfo extends Component {
       this.handleSetDependent(fieldByHomeFor, this.props.state.homeFor);
     }
   }
-  handleCheckError = (name, message) => {
+  handleCheckError = (name, message, value) => {
     const { state, updateValue } = this.props;
-    if (!state[name]) {
+    if (!value) {
       this.setState((prevState) => ({
         error: {
           ...prevState.error,
@@ -103,7 +103,7 @@ export class ListingInfo extends Component {
     let { pictureLimit, type, category, ...other } = state;
     const { inputField, error, dependedInput } = this.state;
     console.log(this.state.error);
-    console.log(this.props.state);
+    console.log(state);
 
     return (
       <div className='listing-info'>
@@ -138,7 +138,8 @@ export class ListingInfo extends Component {
                     each.errorMessage &&
                       this.handleCheckError(
                         each.englishName,
-                        each.errorMessage
+                        each.errorMessage,
+                        e.target.value
                       );
                     updateValue(`${each.englishName}`, e.target.value);
                   }}
