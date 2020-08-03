@@ -117,6 +117,10 @@ const chatRoomSchema = new Schema({
                         call_type: {
                             type: String,
                             enum: ["VOICE", "VIDEO"]
+                        },
+                        call_status: {
+                            type: String,
+                            enum: ["MISSED", "FINISH"]
                         }
                     },
                     default: null

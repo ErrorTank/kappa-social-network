@@ -159,7 +159,7 @@ export class MediaCallLayout extends Component {
     };
 
     rejectCall(isStarter, callStatus = CALL_STATUS.NO_ANSWER) {
-        this.props.onFinish();
+        this.props.onFinish(callStatus);
         this.removeListeners();
         if (this.ackTimeout){
             clearTimeout(this.ackTimeout);

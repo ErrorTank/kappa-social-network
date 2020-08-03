@@ -247,7 +247,10 @@ export class VoiceCallModal extends Component {
                 {...config}
                 clientID={clientID}
                 onCalling={this.startDurationCount}
-                onFinish={this.stopDurationCount}
+                onFinish={(callStatus) => {
+                    this.stopDurationCount();
+                    config.onFinish({callStatus: callStatus ? "FINISH" : "MISSED", duration: this.state.duration});
+                }}
                 mKey={mKey}
                 onClose={onClose}
             >
