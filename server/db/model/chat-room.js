@@ -111,6 +111,16 @@ const chatRoomSchema = new Schema({
                     type: Boolean,
                     default: false
                 },
+                call_info: {
+                    type: {
+                        duration: Number,
+                        call_type: {
+                            type: String,
+                            enum: ["VOICE", "VIDEO"]
+                        }
+                    },
+                    default: null
+                },
                 special: {
                     type: String,
                     enum: ["CASUAL", "KICK", "NICKNAME", "EMOJI"],

@@ -77,7 +77,7 @@ export class VoiceCallWidget extends Component {
 
         let {duration, minimize, user, onClose, type, callStatus, onEndCall, onRedial, disabledMicrophone, disabledWebcam, toggleVideo, toggleAudio, toggleShareScreen, disabledShareScreen} = this.props;
 
-        let actions = [CALL_STATUS.END, CALL_STATUS.NO_ANSWER].includes(callStatus) ? [
+        let actions = [CALL_STATUS.END, CALL_STATUS.NO_ANSWER, CALL_STATUS.CANNOT_CONNECTED].includes(callStatus) ? [
             {
                 icon: <i className="fas fa-phone-alt"></i>,
                 toolTip: "Gọi lại",

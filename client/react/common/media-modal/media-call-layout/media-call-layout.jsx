@@ -114,8 +114,8 @@ export class MediaCallLayout extends Component {
         if (isCaller) {
             this.ackTimeout = setTimeout(() => {
 
-                this.ackTimeout = null;
-                this.setState({...this.initState, callStatus: CALL_STATUS.CANNOT_CONNECTED})
+                callServices.finishCall();
+                this.rejectCall(false, CALL_STATUS.CANNOT_CONNECTED)
 
             }, 6000);
         }
@@ -158,24 +158,28 @@ export class MediaCallLayout extends Component {
 
     };
 
-    rejectCall(isStarter) {
+    rejectCall(isStarter, callStatus = CALL_STATUS.NO_ANSWER) {
         this.props.onFinish();
         this.removeListeners();
-        if (this.ackTimeout)
-            clearTimeout(this.ackTimeout)
+        if (this.ackTimeout){
+            clearTimeout(this.ackTimeout);
+            this.ackTimeout = null;
+        }
         if (isFunction(this.pc.stop)) {
             this.pc.stop(isStarter);
         }
         this.pc = {};
-        this.setState({...this.initState, callStatus: CALL_STATUS.NO_ANSWER})
+        this.setState({...this.initState, callStatus})
     }
 
     endCall(isStarter) {
         this.props.onFinish();
         return new Promise(resolve => {
             this.removeListeners();
-            if (this.ackTimeout)
-                clearTimeout(this.ackTimeout)
+            if (this.ackTimeout){
+                clearTimeout(this.ackTimeout);
+                this.ackTimeout = null;
+            }
             if (isFunction(this.pc.stop)) {
                 this.pc.stop(isStarter);
             }
