@@ -85,14 +85,14 @@ export class ChatBox extends KComponent {
                     this.messageState.setState(clone);
                 });
                 this.io.on("update-nicknames", ({data}) => {
-                   this.setState({nickname_map: data})
+                    this.setState({nickname_map: data})
                 });
                 this.io.on("update-default-emoji", ({data}) => {
                     this.setState({default_emoji: data})
                 });
                 this.io.on("remove-message", ({messageID}) => {
 
-                   this.removeMessage(messageID)
+                    this.removeMessage(messageID)
                 });
                 this.io.on("new-message", ({message, senderID, forceUpdate = false}) => {
                     let scrollToLatest = messagesContainerUtilities.createScrollLatest();
@@ -106,7 +106,7 @@ export class ChatBox extends KComponent {
                                 scrollToLatest();
                             })
                         });
-                        if(!isOwned){
+                        if (!isOwned) {
                             this.io.emit("received-message", {
                                 userID: userInfo.getState()._id,
                                 chatRoomID: chat_room._id,
@@ -117,7 +117,11 @@ export class ChatBox extends KComponent {
                     }
 
                 });
-                this.setState({chat_room_brief: chat_room, nickname_map: chat_room.involve_person, default_emoji: chat_room.default_emoji});
+                this.setState({
+                    chat_room_brief: chat_room,
+                    nickname_map: chat_room.involve_person,
+                    default_emoji: chat_room.default_emoji
+                });
 
             });
         this.onUnmount(this.messageState.onChange((nextState, oldState) => {
@@ -136,7 +140,7 @@ export class ChatBox extends KComponent {
             this.io.off("change-message-reactions");
             this.io.off("push-to-seen-by");
             let userID = userInfo.getState()?._id;
-            if(this.state.chat_room_brief._id && userID){
+            if (this.state.chat_room_brief._id && userID) {
                 this.io.emit("left-chat-room", {
                     chatRoomID: this.state.chat_room_brief._id,
                     userID
@@ -147,7 +151,7 @@ export class ChatBox extends KComponent {
     }
 
     startVideoCall = () => {
-        if(!callServices.isCalling()){
+        if (!callServices.isCalling()) {
             this.setState({isCalling: true});
             let openVideoModal = callServices.createCallModal(CALL_TYPES.VIDEO);
             openVideoModal({
@@ -157,12 +161,23 @@ export class ChatBox extends KComponent {
                 callTo: this.state.chat_room_brief.involve_person.filter(each => each.related !== userInfo.getState()._id)[0].related,
                 onMinimize: reOpen => {
                     this.setState({reOpen})
+                },
+                onFinish: ({callStatus, duration}) => {
+                    this.handleSubmitChat({
+                        content: "huh",
+                        call_info: {
+                            duration,
+                            call_type: "VIDEO",
+                            call_status: callStatus
+                        },
+                        files: []
+                    })
                 }
             })
                 .then(callInfo => {
                     this.setState({isCalling: false});
                 });
-        }else{
+        } else {
             appModal.alert({
                 title: "Thông báo",
                 text: "Bạn đang tham gia một cuộc gọi khác.",
@@ -173,20 +188,32 @@ export class ChatBox extends KComponent {
     };
 
     startVoiceCall = () => {
-        if(!callServices.isCalling()){
+        if (!callServices.isCalling()) {
             let openVoiceModal = callServices.createCallModal(CALL_TYPES.VOICE);
-            openVoiceModal({isCaller: true,
+            openVoiceModal({
+                isCaller: true,
                 chatRoomID: this.state.chat_room_brief?._id,
                 multiple: false,
                 callTo: this.state.chat_room_brief.involve_person.filter(each => each.related !== userInfo.getState()._id)[0].related,
                 onMinimize: reOpen => {
                     this.setState({reOpen})
+                },
+                onFinish: ({callStatus, duration}) => {
+                    this.handleSubmitChat({
+                        content: "huh",
+                        call_info: {
+                            duration,
+                            call_type: "VOICE",
+                            call_status: callStatus
+                        },
+                        files: []
+                    })
                 }
             })
                 .then(callInfo => {
                     this.setState({isCalling: false});
                 });
-        }else{
+        } else {
             appModal.alert({
                 title: "Thông báo",
                 text: "Bạn đang tham gia một cuộc gọi khác.",
@@ -232,6 +259,7 @@ export class ChatBox extends KComponent {
             special: MESSAGE_TYPES.CASUAL,
             hyperlinks: state.hyperlinks || [],
             state: MessageState.CACHED,
+            call_info: state.call_info || null,
             reactions: {
                 angry: [],
                 cry: [],
@@ -246,7 +274,7 @@ export class ChatBox extends KComponent {
             needUploadFile,
             file,
             emoji: state.emoji || null,
-            reply_for:  state.reply ? {
+            reply_for: state.reply ? {
                 file: state.reply.file,
                 content: state.reply.content,
                 sentBy: state.reply.sentBy,
@@ -256,7 +284,7 @@ export class ChatBox extends KComponent {
     };
 
     componentWillReceiveProps(nextProps) {
-        if(this.props.active === false && nextProps.active){
+        if (this.props.active === false && nextProps.active) {
             this.utilities.input.editor.focus();
             this.emitSeenMessageEvent();
         }
@@ -264,8 +292,8 @@ export class ChatBox extends KComponent {
 
     handleSubmitChat = (chatState) => {
         let newMessage = null;
-        if(chatState.content){
-             newMessage = this.createTempMessage({state: chatState});
+        if (chatState.content) {
+            newMessage = this.createTempMessage({state: chatState});
         }
 
         let fileMessages = chatState.files.map((each) => this.createTempMessage({file: each, needUploadFile: true}));
@@ -279,7 +307,7 @@ export class ChatBox extends KComponent {
                 scrollToLatest(true);
             }, 100)
         });
-        if(newMessage){
+        if (newMessage) {
             chatApi.sendMessage(this.state.chat_room_brief._id, omit({
                 ...newMessage,
                 sentBy: newMessage.sentBy._id,
@@ -336,11 +364,19 @@ export class ChatBox extends KComponent {
         }
     };
 
+    recall = callType => {
+        if(callType === "VIDEO"){
+            this.startVideoCall()
+        }else{
+            this.startVoiceCall()
+        }
+    }
+
     removeMessage = (messageID) => {
         let scrollToLatest = messagesContainerUtilities.createScrollLatest();
         let messages = [...this.messageState.getState()];
-        for(let msg of messages){
-            if(msg._id === messageID){
+        for (let msg of messages) {
+            if (msg._id === messageID) {
                 msg.is_deleted = true;
                 break;
             }
@@ -390,7 +426,8 @@ export class ChatBox extends KComponent {
                                                                 <Skeleton count={1} height={32} width={32} duration={1}
                                                                           circle={true}/>
                                                                 <span style={{width: "5px"}}/>
-                                                                <Skeleton count={1} height={20} width={80} duration={1}/>
+                                                                <Skeleton count={1} height={20} width={80}
+                                                                          duration={1}/>
                                                             </div>
                                                         </SkeletonTheme>
 
@@ -404,8 +441,9 @@ export class ChatBox extends KComponent {
                                                                 position={"top"}
                                                                 key={i}
                                                             >
-                                                                <div className={classnames("icon-wrapper", each.className)}
-                                                                     onClick={each.onClick}>
+                                                                <div
+                                                                    className={classnames("icon-wrapper", each.className)}
+                                                                    onClick={each.onClick}>
                                                                     {each.icon}
                                                                 </div>
                                                             </Tooltip>
@@ -433,6 +471,7 @@ export class ChatBox extends KComponent {
                                                 onUpload={this.onUploadMessage}
                                                 removeMessage={this.removeMessage}
                                                 onReply={messageUtilities.openReplyPanel}
+                                                recall={this.recall}
                                             />
                                             <MessageUtilities
                                                 chatRoom={this.state.chat_room_brief}

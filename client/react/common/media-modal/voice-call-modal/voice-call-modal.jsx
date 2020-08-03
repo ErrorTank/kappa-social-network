@@ -7,6 +7,7 @@ import {Avatar} from "../../avatar/avatar";
 import {userApi} from "../../../../api/common/user-api";
 import {Tooltip} from "../../tooltip/tooltip";
 import {v4 as uuidv4} from 'uuid';
+import {transformSecondsToTime} from "../../../../common/utils/time-utils";
 
 const CALL_STATUS_MATCHER = {
     1: "Đang kêt nối...",
@@ -56,11 +57,11 @@ export class VoiceCallWidget extends Component {
 
         // console.log(this.props.localSrc)
         if (this.localVideo && this.props.localSrc) {
-            console.log(this.props.localSrc)
+            // console.log(this.props.localSrc)
             this.localVideo.srcObject = this.props.localSrc;
         }
         if (this.peerVideo && this.props.peerSrc) {
-            console.log(this.props.peerSrc)
+            // console.log(this.props.peerSrc)
             this.peerVideo.srcObject = this.props.peerSrc;
         }
 
@@ -74,9 +75,9 @@ export class VoiceCallWidget extends Component {
             shareScreen
         } = this.state;
 
-        let {minimize, user, onClose, type, callStatus, onEndCall, onRedial, disabledMicrophone, disabledWebcam, toggleVideo, toggleAudio, toggleShareScreen, disabledShareScreen} = this.props;
+        let {duration, minimize, user, onClose, type, callStatus, onEndCall, onRedial, disabledMicrophone, disabledWebcam, toggleVideo, toggleAudio, toggleShareScreen, disabledShareScreen} = this.props;
 
-        let actions = [CALL_STATUS.END, CALL_STATUS.NO_ANSWER].includes(callStatus) ? [
+        let actions = [CALL_STATUS.END, CALL_STATUS.NO_ANSWER, CALL_STATUS.CANNOT_CONNECTED].includes(callStatus) ? [
             {
                 icon: <i className="fas fa-phone-alt"></i>,
                 toolTip: "Gọi lại",
@@ -129,6 +130,8 @@ export class VoiceCallWidget extends Component {
                 },
             }
         ]
+        let {hours, minutes, seconds} = duration;
+        console.log(hours)
         return (
             <div
                 className={classnames("voice-call-modal", {active: callStatus === CALL_STATUS.CALLING && type === CALL_TYPES.VIDEO})}>
@@ -171,7 +174,11 @@ export class VoiceCallWidget extends Component {
                                             />
                                         </div>
                                         <div className="call-info">
-
+                                            {hours > 0 && (
+                                                <span>{hours < 10 && "0"}{hours}:</span>
+                                            )}
+                                            <span>{minutes < 10 && "0"}{minutes}</span>
+                                            :<span>{seconds < 10 && "0"}{seconds}</span>
                                         </div>
                                     </div>
                                 )}
@@ -204,20 +211,47 @@ export class VoiceCallModal extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            user: null
+            user: null,
+            duration: 0
         }
         userApi.getUserBasicInfo(props.config.callTo).then(user => this.setState({user}))
 
     }
 
+    startDurationCount = () => {
+        this.interval = setInterval(() => {
+            this.setState({duration: this.state.duration + 1})
+        }, 1000);
+    };
+
+    stopDurationCount = () => {
+        if(this.interval){
+            clearInterval(this.interval)
+        }
+        this.setState({duration: 0})
+    }
+
+    componentWillMount() {
+        if(this.interval){
+            clearInterval(this.interval)
+        }
+    }
+
 
     render() {
         let {config, clientID, onClose, type, mKey} = this.props;
+
         return (
             <MediaCallLayout
                 callType={CALL_TYPES.VOICE}
                 {...config}
                 clientID={clientID}
+                onCalling={this.startDurationCount}
+                onFinish={(callStatus) => {
+
+                    config.onFinish?.({callStatus: callStatus ? "MISSED" : "FINISH", duration: this.state.duration});
+                    this.stopDurationCount();
+                }}
                 mKey={mKey}
                 onClose={onClose}
             >
@@ -228,6 +262,7 @@ export class VoiceCallModal extends Component {
                             {...this.props}
                             {...layoutProps}
                             user={this.state.user}
+                            duration={transformSecondsToTime(this.state.duration)}
                         />
                     )
                 }}

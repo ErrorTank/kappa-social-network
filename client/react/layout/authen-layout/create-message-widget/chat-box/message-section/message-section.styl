@@ -291,6 +291,55 @@
       }
     }
     .content-wrapper{
+      .call-info-message{
+        padding 8px
+        //display inline-block
+        background-color bgLight
+        border-radius 5px
+        width 200px
+        .call-btn{
+          width 100%
+          background-color btnCancelLight
+          color commonTextLight
+          font-size 1.4rem
+          font-weight 500
+          padding 5px 10px !important
+          margin-top 6px !important
+        }
+        .upper-info{
+          display flex
+          align-items center
+          text-align left
+          .icon-wrapper{
+            flex  0 0 36px
+            height 36px
+            border-radius 50%
+            background-color btnCancelLight
+            position relative
+            i{
+              absoluteMiddle()
+              color commonTextLight
+              font-size 2.2rem
+            }
+          }
+
+          .call-info{
+            flex  0 0 150px
+            color commonTextLight
+
+            padding-left 10px
+            .call-info-type{
+
+              font-size 1.5rem
+              font-weight 500
+            }
+            .call-info-report{
+
+              font-size 1.3rem
+            }
+          }
+        }
+      }
       max-width calc(100% - 56px - 5px - 10px - 44px)
       &.owned {
         max-width calc(100% - 22px - 78px - 5px - 10px)
