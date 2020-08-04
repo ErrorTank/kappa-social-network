@@ -6,7 +6,7 @@ export const itemField = [
     errorMessage: 'Vui lòng nhập tiêu đề hợp lệ.',
   },
   {
-    name: 'Giá',
+    name: 'Giá (₫)',
     englishName: 'price',
     errorMessage: 'Nhập giá cho mặt hàng của bạn.',
   },

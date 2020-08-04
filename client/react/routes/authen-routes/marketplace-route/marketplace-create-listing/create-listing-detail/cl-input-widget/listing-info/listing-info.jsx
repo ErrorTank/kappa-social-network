@@ -11,7 +11,7 @@ import {
 import { customHistory } from '../../../../../../routes';
 import { ListingInfoSelect } from '../../../../../../../common/listing-info-select/listing-info-select';
 import { v4 as uuidv4 } from 'uuid';
-import { omit, toArray } from 'lodash';
+import { omit, toArray, indexOf } from 'lodash';
 import * as yup from 'yup';
 
 export class ListingInfo extends Component {
@@ -98,11 +98,23 @@ export class ListingInfo extends Component {
       }));
     }
   };
+  handlePriceDisplay = (name, value) => {
+    const re = /^[0-9\b]+$/;
+    let newValue = value.split('.').join('');
+    if (re.test(newValue)) {
+      if (newValue.length > 9) {
+        this.props.updateValue([name], '');
+      } else {
+        let money = newValue.replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+        this.props.updateValue([name], money);
+      }
+    }
+  };
   render() {
     const { state, updateValue } = this.props;
     let { pictureLimit, type, category, ...other } = state;
     const { inputField, error, dependedInput } = this.state;
-    console.log(this.state.error);
+    // console.log(this.state.error);
     console.log(state);
 
     return (
@@ -141,7 +153,13 @@ export class ListingInfo extends Component {
                         each.errorMessage,
                         e.target.value
                       );
-                    updateValue(`${each.englishName}`, e.target.value);
+
+                    each.englishName === 'price'
+                      ? this.handlePriceDisplay(
+                          each.englishName,
+                          e.target.value
+                        )
+                      : updateValue(`${each.englishName}`, e.target.value);
                   }}
                 />
               ) : (
