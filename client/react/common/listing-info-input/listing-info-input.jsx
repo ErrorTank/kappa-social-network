@@ -57,6 +57,8 @@ export class ListingInfoInput extends Component {
                 htmlFor={id}
                 className={classnames('listing-info-wrapper', {
                   'has-value': value,
+                  'is-invalid': error,
+                  'is-valid': success,
                 })}
               >
                 <input

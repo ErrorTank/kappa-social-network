@@ -504,10 +504,12 @@ export const vehicleField = [
   {
     name: 'Hãng',
     englishName: 'make',
+    errorMessage: 'Hãy thêm hãng phương tiện.',
   },
   {
     name: 'Mẫu xe',
     englishName: 'model',
+    errorMessage: 'Hãy thêm dòng phương tiện.',
   },
   {
     name: 'Kiểu thân xe',
@@ -526,6 +528,7 @@ export const vehicleField = [
     name: 'Số dặm đã đi',
     englishName: 'mileage',
     isDepended: true,
+    errorMessage: 'Hãy thêm số dặm mà phương tiện đã đi được.',
   },
   {
     name: 'Hộp số',
@@ -566,6 +569,7 @@ export const vehicleField = [
   {
     name: 'Giá',
     englishName: 'price',
+    errorMessage: 'Nhập giá cho mặt hàng của bạn.',
   },
   {
     name: 'Mô tả',

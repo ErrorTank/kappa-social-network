@@ -74,7 +74,10 @@ export class CreateListingInputWidget extends Component {
 
           <ListingInfo {...this.props} />
         </div>
-        <div className='cs-input-footer'></div>
+
+        <div className='cs-input-footer'>
+          <div className='cl-button'>Tiếp</div>
+        </div>
       </div>
     );
   }

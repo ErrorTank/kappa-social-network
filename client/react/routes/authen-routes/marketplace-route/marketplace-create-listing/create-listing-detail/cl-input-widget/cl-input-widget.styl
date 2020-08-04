@@ -66,7 +66,8 @@
 .cs-input-body{
   margin-top: 8px; 
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-
+  overflow: auto;
+  height: 71vh;
   .user-info-display{
     padding: 0 16px;
     min-height: 44px;
@@ -128,5 +129,25 @@
         }
       }
     }
+  }
+}
+
+.cs-input-footer{
+  padding: 16px;
+  border-top: 1px solid lightgray
+  
+  .cl-button{
+    box-sizing: border-box;
+    height 40px;
+    background-color: activeIcon;
+    border-radius: 6px;
+    display: flex;
+    justify-content: center;
+    align-self center;
+    width: 100%;
+    font-size: 17px
+    font-weight: 600
+    color: white
+    padding-top:5px;
   }
 }
