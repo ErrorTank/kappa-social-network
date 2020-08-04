@@ -4,6 +4,7 @@ const ObjectId = mongoose.Schema.Types.ObjectId;
 const {editorContentSchema} = require("./common-schema/common");
 const Mixed = mongoose.Schema.Types.Mixed;
 const omit = require("lodash/omit");
+const {ReactionSchema} = require("./common-schema/reactions");
 
 const CommonEmojiSchema = {
     type: {
@@ -17,25 +18,7 @@ const CommonEmojiSchema = {
     default: null
 }
 
-const SingleReactionSchema = {
-    type: [
-        {
-            type: ObjectId,
-        },
 
-    ],
-    default: []
-}
-
-const ReactionSchema = {
-    love: SingleReactionSchema,
-    laugh: SingleReactionSchema,
-    wow: SingleReactionSchema,
-    cry: SingleReactionSchema,
-    angry: SingleReactionSchema,
-    thump_up: SingleReactionSchema,
-    thump_down: SingleReactionSchema
-}
 
 const chatRoomSchema = new Schema({
     last_updated: {

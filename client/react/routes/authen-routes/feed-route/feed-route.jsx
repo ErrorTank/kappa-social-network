@@ -3,6 +3,7 @@ import {PageTitle} from "../../../common/page-title/page-title";
 import {ChatWidget} from "./chat-widget/chat-widget";
 import {CommonLayout} from "../../../layout/common-layout/common-layout";
 import {NavigationWidget} from "./navigation-widget/navigation-widget";
+import {FeedWidget} from "./feed-widget/feed-widget";
 
 class FeedRoute extends Component {
     constructor(props) {
@@ -21,6 +22,9 @@ class FeedRoute extends Component {
                         )}
                         leftRender={() => (
                             <NavigationWidget/>
+                        )}
+                        mainRender={() => (
+                            <FeedWidget/>
                         )}
                     />
                 </div>
