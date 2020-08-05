@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import classnames from 'classnames';
 import { ThemeContext } from '../../context/theme-context';
+import { ContentEditable } from 'react-contenteditable';
 
 export class ListingInfoInput extends Component {
   constructor(props) {
@@ -24,8 +25,10 @@ export class ListingInfoInput extends Component {
       id,
       inputType = 'input',
       value,
+      contentEditable = false,
       ...others
     } = this.props;
+    contentEditable && console.log(typeof value);
     return (
       <ThemeContext.Consumer>
         {(theme) => (
@@ -61,19 +64,34 @@ export class ListingInfoInput extends Component {
                   'is-valid': success,
                 })}
               >
-                <input
-                  type='text'
-                  className={classnames('form-control', {
-                    'is-invalid': error,
-                    'is-valid': success,
-                  })}
-                  onFocus={() => this.setState({ focus: true })}
-                  onBlur={() => this.setState({ focus: false })}
-                  id={id}
-                  value={value}
-                  {...others}
-                  ref={(input) => (this.input = input)}
-                />
+                {contentEditable ? (
+                  <ContentEditable
+                    html={value} // innerHTML of the editable div
+                    disabled={others.disable} // use true to disable editing
+                    onChange={others.onChange} // handle innerHTML change
+                    // onFocus={() => this.setState({ focus: true })}
+                    // onBlur={() => this.setState({ focus: false })}
+                    // className={classnames('form-control', {
+                    //   'is-invalid': error,
+                    //   'is-valid': success,
+                    // })}
+                  />
+                ) : (
+                  <input
+                    type='text'
+                    className={classnames('form-control', {
+                      'is-invalid': error,
+                      'is-valid': success,
+                    })}
+                    onFocus={() => this.setState({ focus: true })}
+                    onBlur={() => this.setState({ focus: false })}
+                    id={id}
+                    value={value}
+                    {...others}
+                    ref={(input) => (this.input = input)}
+                  />
+                )}
+
                 <span className='listing-info-label'>{label}</span>
               </label>
             )}

@@ -102,11 +102,12 @@ export class ListingInfo extends Component {
     const re = /^[0-9\b]+$/;
     let newValue = value.split('.').join('');
     if (re.test(newValue)) {
-      if (newValue.length > 9) {
+      if (newValue.length > 10) {
         this.props.updateValue([name], '');
       } else {
         let money = newValue.replace(/\B(?=(\d{3})+(?!\d))/g, '.');
         this.props.updateValue([name], money);
+        // this.props.updateValue([name], `"<b><i>${money}</i> ₫</b>"`);
       }
     }
   };
@@ -115,7 +116,7 @@ export class ListingInfo extends Component {
     let { pictureLimit, type, category, ...other } = state;
     const { inputField, error, dependedInput } = this.state;
     // console.log(this.state.error);
-    console.log(state);
+    // console.log(state);
 
     return (
       <div className='listing-info'>
@@ -146,6 +147,7 @@ export class ListingInfo extends Component {
                   id={each.englishName}
                   value={state[each.englishName]}
                   error={error[each.englishName]}
+                  // contentEditable={each.contentEditable}
                   onChange={(e) => {
                     each.errorMessage &&
                       this.handleCheckError(

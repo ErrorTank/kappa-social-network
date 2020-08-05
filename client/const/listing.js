@@ -9,6 +9,7 @@ export const itemField = [
     name: 'Giá (₫)',
     englishName: 'price',
     errorMessage: 'Nhập giá cho mặt hàng của bạn.',
+    contentEditable: true,
   },
   {
     name: 'Hạng mục',
@@ -659,20 +660,24 @@ export const homeField = [
   {
     name: 'Số phòng ngủ',
     englishName: 'numberOfBedrooms',
+    errorMessage: 'Vui lòng nhập số phòng ngủ.',
   },
   {
     name: 'Số phòng tắm',
     englishName: 'numberOfBathrooms',
+    errorMessage: 'Vui lòng nhập số phòng tắm.',
   },
   {
     name: 'Giá mỗi tháng',
     englishName: 'pricePerMonth',
     isDepended: true,
+    errorMessage: 'Vui lòng nhập giá tài sản cho thuê.',
   },
   {
     name: 'Giá',
     englishName: 'price',
     isDepended: true,
+    errorMessage: 'Vui lòng nhập giá tài sản muốn bán.',
   },
   //special, need to build later
   {
