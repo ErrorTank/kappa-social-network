@@ -93,7 +93,12 @@ export class ListingInfoInput extends Component {
                   />
                 )}
 
-                <span className='listing-info-label'>{label}</span>
+                <span
+                  className='listing-info-label'
+                  onClick={() => this.contentEditable.current.focus()}
+                >
+                  {label}
+                </span>
               </label>
             )}
             {error && <div className='invalid-feedback'>{error}</div>}

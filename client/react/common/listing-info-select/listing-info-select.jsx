@@ -14,15 +14,16 @@ export class ListingInfoSelect extends Component {
     };
   }
 
-  // componentDidUpdate(prevProps, prevState, snapshot) {
-  //   if (this.state.show && prevState.show === false) {
-  //     let selectDropdownElem = ReactDOM.findDOMNode(this).querySelector(
-  //       '.select-dropdown'
-  //     );
-  //     let selectedTarget = selectDropdownElem.querySelector('.selected');
-  //     selectDropdownElem.scrollTop = selectedTarget.offsetTop;
-  //   }
-  // }
+  componentDidUpdate(prevProps, prevState, snapshot) {
+    if (this.state.show && prevState.show === false) {
+      let selectDropdownElem = ReactDOM.findDOMNode(this).querySelector(
+        '.select-dropdown'
+      );
+      let selectedTarget = selectDropdownElem.querySelector('.selected');
+      if (selectedTarget)
+        selectDropdownElem.scrollTop = selectedTarget.offsetTop;
+    }
+  }
 
   render() {
     let {
