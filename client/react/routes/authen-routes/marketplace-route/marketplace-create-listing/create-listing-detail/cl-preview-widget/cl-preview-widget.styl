@@ -2,17 +2,44 @@
   background-color: white;
   border-radius: 8px;
   max-width: calc(100% - 78px);
-  margin: 0 24px 32px 24px;
+  margin: 10px 24px 32px 24px;
   width: 972px;
   box-shadow 0 2px 12px rgba(69, 65, 78, 0.2);
   color: normalTextLight;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  display flex;
-  justify-content: center;
   .preview-header-wrapper{
-    padding: 20px 16px 4px 16px;
+    padding: 10px 16px 4px 10px;
+    box-sizing: border-box;
     .preview-header{
-      
+      font-size: 15px;
+      font-weight: 600;
     }  
+  }
+  .preview-display-wrapper{
+    padding: 16px;
+    display: flex;
+    height calc(100% - 32px);
+    box-sizing: border-box
+    .picture-display-section{
+      background-color: btnCancelLight;
+      flex-basis: 50%;
+      flex-grow: 1;
+      border-top-left-radius: 8px;
+      border-bottom-left-radius: 8px;
+      
+      .image-empty{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height 100%
+        font-size: 24px;
+      }
+      
+    }
+    .listing-info-section{
+      flex-basis: 360px;
+      width: 100%;
+    } 
+
   }
 }

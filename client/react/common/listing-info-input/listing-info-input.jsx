@@ -1,11 +1,12 @@
 import React, { Component } from 'react';
 import classnames from 'classnames';
 import { ThemeContext } from '../../context/theme-context';
-import { ContentEditable } from 'react-contenteditable';
+import ContentEditable from 'react-contenteditable';
 
 export class ListingInfoInput extends Component {
   constructor(props) {
     super(props);
+    this.contentEditable = React.createRef();
     this.state = {
       focus: false,
     };
@@ -28,7 +29,7 @@ export class ListingInfoInput extends Component {
       contentEditable = false,
       ...others
     } = this.props;
-    contentEditable && console.log(typeof value);
+    // contentEditable && console.log(value);
     return (
       <ThemeContext.Consumer>
         {(theme) => (
@@ -66,15 +67,15 @@ export class ListingInfoInput extends Component {
               >
                 {contentEditable ? (
                   <ContentEditable
-                    html={value} // innerHTML of the editable div
-                    disabled={others.disable} // use true to disable editing
+                    innerRef={this.contentEditable}
+                    html={value || ''} // innerHTML of the editable div
                     onChange={others.onChange} // handle innerHTML change
                     // onFocus={() => this.setState({ focus: true })}
                     // onBlur={() => this.setState({ focus: false })}
-                    // className={classnames('form-control', {
-                    //   'is-invalid': error,
-                    //   'is-valid': success,
-                    // })}
+                    className={classnames('form-control', {
+                      'is-invalid': error,
+                      'is-valid': success,
+                    })}
                   />
                 ) : (
                   <input

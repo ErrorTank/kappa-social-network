@@ -17,6 +17,7 @@ import * as yup from 'yup';
 export class ListingInfo extends Component {
   constructor(props) {
     super(props);
+
     this.state = {
       dependedInput: '',
       inputField: '',
@@ -99,16 +100,20 @@ export class ListingInfo extends Component {
     }
   };
   handlePriceDisplay = (name, value) => {
+    // this.props.updateValue([name], value);
     const re = /^[0-9\b]+$/;
+    value = value.replace(' ₫', '');
     let newValue = value.split('.').join('');
+    console.log(newValue);
     if (re.test(newValue)) {
       if (newValue.length > 10) {
         this.props.updateValue([name], '');
       } else {
         let money = newValue.replace(/\B(?=(\d{3})+(?!\d))/g, '.');
-        this.props.updateValue([name], money);
-        // this.props.updateValue([name], `"<b><i>${money}</i> ₫</b>"`);
+        this.props.updateValue([name], `${money} ₫`);
       }
+    } else {
+      this.props.updateValue([name], '');
     }
   };
   render() {
@@ -147,7 +152,7 @@ export class ListingInfo extends Component {
                   id={each.englishName}
                   value={state[each.englishName]}
                   error={error[each.englishName]}
-                  // contentEditable={each.contentEditable}
+                  contentEditable={each.contentEditable}
                   onChange={(e) => {
                     each.errorMessage &&
                       this.handleCheckError(
