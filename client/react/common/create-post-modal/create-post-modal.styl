@@ -1,3 +1,47 @@
 .create-post-modal{
   width 500px
+  .btn-post{
+    background-color btnCancelLight
+    color commonTextLight
+    margin 0 !important
+    font-weight 500
+    &:hover{
+      background darken(btnCancelLight, 5%)
+    }
+  }
+  .cpm-wrapper{
+    .cpm-header{
+      display flex
+      align-items center
+      .avatar-wrapper{
+        flex 0 0 50px
+
+      }
+      .right-panel{
+        flex 0 0 calc(100% - 50px)
+        .username{
+          color commonTextLight
+          font-weight 500
+          font-size 1.5rem
+        }
+        .action{
+          .policy-picker{
+            width 150px
+            .post-policy{
+              span{
+                &:last-of-type{
+                  margin-left 6px
+                }
+              }
+            }
+            .select-toggle{
+              padding 4px 8px !important
+
+            }
+
+          }
+        }
+      }
+    }
+  }
 }

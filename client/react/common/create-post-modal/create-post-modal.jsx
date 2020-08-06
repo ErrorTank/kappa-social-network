@@ -76,7 +76,7 @@ class CreatePostModal extends Component {
                         onClose={onClose}
                         title={"Tạo bài đăng"}
                         actions={[ {
-                            className: "btn-cancel btn-block",
+                            className: "btn-post btn-block",
                             onClick: this.post,
                             content: "Đăng",
                         }]}
