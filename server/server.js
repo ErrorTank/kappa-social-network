@@ -35,6 +35,7 @@ dbManager
           )
       )
     },app);
+
     const namespacesIO = createSocketNamespaces(server, { db: appDb });
     app.use('/', createRoutes(appDb, namespacesIO));
     app.use(createErrorHandlersMiddleware);
