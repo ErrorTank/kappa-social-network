@@ -192,6 +192,7 @@ export class App extends React.Component {
   }
 
   render() {
+
     return (
       <div className='app'>
         <ThemeController>
@@ -213,6 +214,7 @@ export class App extends React.Component {
                     </NotificationStateContext.Provider>
                     <ModalsRegistry />
                   </Router>
+                  <button></button>
                 </div>
               </>
 
