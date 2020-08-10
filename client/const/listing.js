@@ -672,12 +672,14 @@ export const homeField = [
     englishName: 'pricePerMonth',
     isDepended: true,
     errorMessage: 'Vui lòng nhập giá tài sản cho thuê.',
+    contentEditable: true,
   },
   {
     name: 'Giá',
     englishName: 'price',
     isDepended: true,
     errorMessage: 'Vui lòng nhập giá tài sản muốn bán.',
+    contentEditable: true,
   },
   //special, need to build later
   {

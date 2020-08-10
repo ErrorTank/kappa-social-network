@@ -70,8 +70,8 @@ export class ListingInfoInput extends Component {
                     innerRef={this.contentEditable}
                     html={value || ''} // innerHTML of the editable div
                     onChange={others.onChange} // handle innerHTML change
-                    // onFocus={() => this.setState({ focus: true })}
-                    // onBlur={() => this.setState({ focus: false })}
+                    onFocus={() => this.setState({ focus: true })}
+                    onBlur={() => this.setState({ focus: false })}
                     className={classnames('form-control', {
                       'is-invalid': error,
                       'is-valid': success,
