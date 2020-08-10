@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 const ObjectId = mongoose.Schema.Types.ObjectId;
-const editorContentSchema = require("./editor-content");
+const editorContentSchema = require("./common-schema/editor-content");
 
 const commentSchema = new Schema({
     ...editorContentSchema,

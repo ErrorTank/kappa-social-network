@@ -9,7 +9,26 @@ const postSchema = {
         enum: ["PERSONAL", "FRIENDS", "PUBLIC"],
         default: "PUBLIC"
     },
-
+    belonged_page: {
+        type: ObjectId,
+        ref: "Page"
+    },
+    is_pinned: {
+        type: Boolean,
+        default: false
+    },
+    is_approved: {
+        type: Boolean,
+        default: false
+    },
+    belonged_group: {
+        type: ObjectId,
+        ref: "Group"
+    },
+    belonged_person: {
+        type: ObjectId,
+        ref: "User"
+    },
     tagged: {
         default: [],
         type: [

@@ -71,83 +71,32 @@ const userSchema = new Schema({
         ],
         default: []
     },
-    blocked_person_posts: {
+    blocked_posts: {
         type: [
             {
                 type: ObjectId,
-                ref: "PersonPost"
+                ref: "Post"
             }
         ],
         default: []
     },
-    blocked_group_posts: {
+
+    saved_posts: {
         type: [
             {
                 type: ObjectId,
-                ref: "GroupPost"
+                ref: "Post"
             }
         ],
         default: []
     },
-    blocked_page_posts: {
+
+
+    followed_posts: {
         type: [
             {
                 type: ObjectId,
-                ref: "PagePost"
-            }
-        ],
-        default: []
-    },
-    saved_person_posts: {
-        type: [
-            {
-                type: ObjectId,
-                ref: "PersonPost"
-            }
-        ],
-        default: []
-    },
-    saved_group_posts: {
-        type: [
-            {
-                type: ObjectId,
-                ref: "GroupPost"
-            }
-        ],
-        default: []
-    },
-    saved_page_posts: {
-        type: [
-            {
-                type: ObjectId,
-                ref: "PagePost"
-            }
-        ],
-        default: []
-    },
-    followed_person_posts: {
-        type: [
-            {
-                type: ObjectId,
-                ref: "PersonPost"
-            }
-        ],
-        default: []
-    },
-    followed_group_posts: {
-        type: [
-            {
-                type: ObjectId,
-                ref: "GroupPost"
-            }
-        ],
-        default: []
-    },
-    followed_page_posts: {
-        type: [
-            {
-                type: ObjectId,
-                ref: "PagePost"
+                ref: "Post"
             }
         ],
         default: []
@@ -225,9 +174,9 @@ const userSchema = new Schema({
                     type: ObjectId,
                     ref: "User"
                 },
-                person_post: {
+                post: {
                     type: ObjectId,
-                    ref: "PersonPost"
+                    ref: "Post"
                 },
                 page_post: {
                     type: ObjectId,
