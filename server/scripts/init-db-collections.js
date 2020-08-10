@@ -8,6 +8,7 @@ const initDbCollections = (appDb) => {
   const Page = require('../db/model/page')(appDb);
   const GroupPost = require('../db/model/group-post')(appDb);
   const Group = require('../db/model/group')(appDb);
+  const Comment = require('../db/model/comment')(appDb);
   const ChatRoom = require('../db/model/chat-room')(appDb);
   const ConfirmToken = require('../db/model/confirm-token')(appDb);
   const ResetPasswordToken = require('../db/model/reset-password-token')(appDb);

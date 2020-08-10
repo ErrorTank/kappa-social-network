@@ -76,33 +76,8 @@ const postSchema = {
         default: [],
         type: [
             {
-                ...editorContentSchema,
-                mentioned_page: {
-                    default: [],
-                    type: [
-                        {
-                            type: ObjectId,
-                            ref: "Page"
-                        }
-                    ]
-                },
-                mentioned_person: {
-                    default: [],
-                    type: [
-                        {
-                            type: ObjectId,
-                            ref: "User"
-                        }
-                    ]
-                },
-                from_page: {
-                    type: ObjectId,
-                    ref: "Page"
-                },
-                from_person: {
-                    type: ObjectId,
-                    ref: "User"
-                }
+                type: ObjectId,
+                ref: "Comment"
             }
         ]
     }

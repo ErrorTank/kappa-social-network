@@ -55,7 +55,11 @@ class CreatePostModal extends Component {
         this.state = {
             loading: true,
             content: "",
-            policy: PostPolicies[0]
+            policy: PostPolicies[0],
+            editorState: createEditorStateWithText(""),
+            suggestions: [],
+            loadSuggestion: true,
+            filteredSuggestions: [],
         }
 
     }
