@@ -3,7 +3,7 @@ import React, {Component} from 'react';
 import {modals} from "../modal/modals";
 import {LoadingInline} from "../loading-inline/loading-inline";
 import {CommonModalLayout} from "../modal/common-modal-layout";
-import {chatApi} from "../../../api/common/chat-api";
+import Editor, {createEditorStateWithText} from 'draft-js-plugins-editor';
 import {ThemeContext} from "../../context/theme-context";
 import Skeleton, {SkeletonTheme} from "react-loading-skeleton";
 import {Avatar} from "../avatar/avatar";
@@ -12,12 +12,21 @@ import {Tooltip} from "../tooltip/tooltip";
 import {Button} from "../button/button";
 import {userInfo} from "../../../common/states/common";
 import {Select} from "../select/select";
+import createMentionPlugin from "draft-js-mention-plugin";
+import classnames from "classnames";
+import {ClickOutside} from "../click-outside/click-outside";
+import {emojiPlugin} from "../../layout/authen-layout/create-message-widget/chat-box/message-utilities/chat-input/chat-input";
+import {transformEditorState} from "../../../common/utils/editor-utils";
+import {convertToRaw} from "draft-js";
+import isNil from "lodash/isNil";
+
 
 // export const PostPolicy = {
 //     PUBLIC: "PUBLIC",
 //     PERSONAL: "PERSONAL",
 //     FRIENDS: "FRIENDS"
 // }
+const {Picker} = emojiPlugin;
 
 export const PostPolicies = [
     {
@@ -59,12 +68,60 @@ class CreatePostModal extends Component {
             editorState: createEditorStateWithText(""),
             suggestions: [],
             loadSuggestion: true,
+            showEmojiPicker: false,
             filteredSuggestions: [],
         }
+        this.mentionPlugin = createMentionPlugin({
+            entityMutability: 'IMMUTABLE',
+            supportWhitespace: true,
+            positionSuggestions: () => ({}),
+            mentionPrefix: "@",
+            mentions: [],
+            mentionComponent: (mentionProps) => {
+                return (
+                    <span className={classnames("create-post-mention", mentionProps.className)}>
+          {mentionProps.children}
+        </span>
+                )
+            },
+        });
+    }
 
+    onChange = (editorState) => {
+
+
+        let nextState = {
+            editorState
+        };
+        if (this.state.showEmojiPicker) {
+            nextState.showEmojiPicker = false;
+        }
+
+
+        this.setState(nextState);
+    };
+
+    onSearchChange = ({value}) => {
+        this.setState({filteredSuggestions: this.filterSuggestions(this.state.suggestions, value)});
     }
 
     post = () => {
+
+    }
+
+    focus = () => {
+        this.editor.focus();
+    };
+
+    uploadMedia = () => {
+
+    }
+
+    uploadFile = () => {
+
+    }
+
+    tagFriends = () => {
 
     }
 
@@ -72,6 +129,29 @@ class CreatePostModal extends Component {
         let {onClose,} = this.props;
         let {loading, policy} = this.state;
         let user = userInfo.getState();
+        const {MentionSuggestions} = this.mentionPlugin;
+
+        let plugins = [emojiPlugin];
+        plugins.push(this.mentionPlugin);
+        let actions = [
+            {
+                icon: <i className="far fa-photo-video"></i>,
+                label: "Ảnh/Video",
+                onClick: this.uploadMedia,
+                className: "media"
+            },{
+                icon: <i className="far fa-paperclip"></i>,
+                label: "Đính kèm",
+                onClick: this.uploadFile,
+                className: "file"
+            }, {
+                icon: <i className="fas fa-user-tag"></i>,
+                label: "Tag bạn bè",
+                onClick: this.tagFriends,
+                className: "tag"
+
+            }
+        ]
         return (
             <ThemeContext.Consumer>
                 {({darkMode}) => (
@@ -114,6 +194,71 @@ class CreatePostModal extends Component {
                                     </div>
                                 </div>
                             </div>
+                            <div className="cpm-body">
+                                <div className="cpm-input-wrapper">
+                                    <ClickOutside onClickOut={() => this.setState({showEmojiPicker: false})}>
+                                        <div>
+                                            <div className="cpm-input" onClick={this.focus}>
+                                                <div>
+                                                    <Editor
+                                                        editorState={this.state.editorState}
+                                                        onChange={this.onChange}
+                                                        plugins={plugins}
+                                                        ref={(element) => {
+                                                            this.editor = element;
+                                                        }}
+                                                        placeholder={`Hôm nay bạn nghĩ gì, ${user.basic_info.username}?`}
+
+                                                    />
+                                                    <MentionSuggestions
+                                                        onSearchChange={this.onSearchChange}
+                                                        suggestions={this.state.filteredSuggestions}
+                                                        popoverComponent={<MentionPopover/>}
+                                                        entryComponent={MentionEntry}
+                                                    />
+                                                </div>
+
+
+
+                                            </div>
+                                            <div className={"emoji-select"} onClick={(e) => {
+                                                e.stopPropagation();
+                                                this.setState({showEmojiPicker: !this.state.showEmojiPicker})
+                                            }}>
+                                                <i className="fal fa-smile"></i>
+                                            </div>
+                                            {this.state.showEmojiPicker && (
+                                                <div className={"emoji-picker"}>
+                                                    <Picker
+                                                        perLine={7}
+                                                        showPreview={false}
+                                                        autoFocus={true}
+                                                    />
+                                                </div>
+
+                                            )}
+                                        </div>
+                                    </ClickOutside>
+                                </div>
+                                <div className="actions-bar">
+                                    <div className="bar-title">
+                                        Thêm vào bài đăng
+                                    </div>
+                                    <div className="actions">
+                                        {actions.map(each => (
+                                            <Tooltip
+                                                key={each.label}
+                                                position={"top"}
+                                                text={() => each.label}
+                                            >
+                                                <div className={classnames("action", each.className)}>
+                                                    {each.icon}
+                                                </div>
+                                            </Tooltip>
+                                        ))}
+                                    </div>
+                                </div>
+                            </div>
                         </div>
 
 
@@ -126,77 +271,45 @@ class CreatePostModal extends Component {
 
 
 
-class NicknameRow extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            value: props.info.nickname || "",
-            showInput: false,
-            saving: false
-        };
-    };
-
-    setNickname = () => {
-        if(this.state.value.trim() === (this.props.info.nickname || "").trim()){
-
-            this.setState({showInput: false});
-            return;
-        }
-        this.setState({saving: true});
-        this.props.onChange(this.state.value.trim()).then(() => {
-            this.setState({showInput: false, saving: false, value: this.state.value.trim()})
-        })
-    }
-
+class MentionPopover extends React.Component {
     render() {
-        let {info} = this.props;
+
         return (
-            <div className="user-row" >
-                <div className="left-panel">
-                    <div className="user-info">
-                        <Avatar
-                            user={info.related}
-                        />
-                        <div className="names">
-                            <div className="name">{info.related.basic_info.username}</div>
-                            {info.nickname && (
-                                <div className="nickname">{info.nickname}</div>
-                            )}
-
-                        </div>
-
-                    </div>
-                </div>
-                <div className="right-panel">
-                    {this.state.showInput ? (
-                        <div className="nickname-input-wrapper">
-                            <CommonInput
-                                type={"text"}
-                                className={"nickname-input"}
-                                value={this.state.value || ""}
-                                placeholder={info.related.basic_info.username}
-                                onChange={e => this.setState({value: e.target.value})}
-                            />
-                            <Tooltip
-                                text={() => "Hủy bỏ"}
-                            >
-                                <button className="btn action-btn cancel" onClick={() => this.setState({value: this.props.info.nickname || "", showInput: false})}><i className="far fa-times"></i></button>
-                            </Tooltip>
-                            <Tooltip
-                                text={() => "Lưu biệt danh"}
-                            >
-                                <Button className="btn action-btn save"  disabled={this.state.saving} loading={this.state.saving} onClick={this.setNickname}><i className="far fa-check"></i></Button>
-                            </Tooltip>
-
-
-                        </div>
-                    ) : (
-                        <Button className="btn edit-nickname-btn" onClick={() => this.setState({showInput: true})}><i className="far fa-pen"></i> Đặt biệt danh</Button>
-                    )}
-
-                </div>
+            <div className={classnames("cpm-mention-popover")} id={this.props.id} role={"list-box"}>
+                {this.props.children}
             </div>
-        );
+        )
     }
 }
 
+const MentionEntry = props => {
+
+    const {
+        mention,
+        theme,
+        searchValue,
+        isFocused,
+        className,
+        ...parentProps
+    } = props;
+
+    return (
+
+        <div className={classnames("cpm-entry")} {...parentProps} >
+            <div className="content-wrapper">
+                <Avatar user={mention}/>
+                <div className="user-info">
+                    <div className="username">
+                        {mention.basic_info.username}
+                    </div>
+                    {mention.nickname && (
+                        <div className="nickname">
+                            {mention.nickname}
+                        </div>
+                    )}
+                </div>
+            </div>
+
+        </div>
+    );
+}
