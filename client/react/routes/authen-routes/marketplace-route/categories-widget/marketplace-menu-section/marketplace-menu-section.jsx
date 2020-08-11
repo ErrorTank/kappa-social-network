@@ -8,18 +8,31 @@ export class MarketplaceMenuSection extends Component {
     super(props);
     this.state = {};
   }
+  menuNavigation = [
+    {
+      icon: <i className='fas fa-store'></i>,
+      title: 'Lướt xem tất cả',
+      type: 'main',
+    },
+    {
+      icon: <i className='fas fa-tags'></i>,
+      title: 'Đang bán',
+    },
+    {
+      icon: <i className='fas fa-user'></i>,
+      title: 'Tài khoản của bạn',
+    },
+  ];
   render() {
     return (
       <div className='marketplace-menu-section'>
-        <MenuNavigationWithIcon
-          icon={<i className='fas fa-store'></i>}
-          title={'Lướt xem tất cả'}
-          type={'main'}
-        />
-        <MenuNavigationWithIcon
-          icon={<i className='fas fa-user'></i>}
-          title={'Tài khoản của bạn'}
-        />
+        {this.menuNavigation.map((each) => (
+          <MenuNavigationWithIcon
+            icon={each.icon}
+            title={each.title}
+            type={each.type}
+          />
+        ))}
         <div
           className='create-listing-button'
           onClick={() => customHistory.push('/marketplace/create')}

@@ -27,18 +27,41 @@
       border-top-left-radius: 8px;
       border-bottom-left-radius: 8px;
       
-      .image-empty{
+      .image-empty-placeholder{
         display: flex;
         justify-content: center;
         align-items: center;
         height 100%
         font-size: 24px;
+        text-align: center;
+        flex-direction: column;
+        .ie-placeholder-title{
+          margin: 7px 0;
+          font-size: 24px;
+          font-weight: 700;
+          color: secondaryTextLight;
+        }
+        .ie-placeholder-content{
+          color: secondaryTextLight;
+          font-size: 20px;
+          font-weight: 400
+        }
       }
       
     }
     .listing-info-section{
       flex-basis: 360px;
       width: 100%;
+      border-left: 0.5px solid lightgray;
+      
+      .info-display-wrapper{
+        display: flex;
+        flex-direction: column;
+        .main-info-wrapper{
+          padding: 16px;
+          padding-bottom: 0;
+        }
+      }
     } 
 
   }
