@@ -6,14 +6,7 @@ const editorContentSchema = {
         type: String,
         required: true
     },
-    photos: {
-        default: [],
-        type: [
-            {
-                type: String,
-            }
-        ]
-    },
+
     mentions: {
         default: [],
         type: [
@@ -26,22 +19,8 @@ const editorContentSchema = {
             }
         ]
     },
-    files: {
-        default: [],
-        type: [
-            {
-                type: String,
-            }
-        ]
-    },
-    videos: {
-        default: [],
-        type: [
-            {
-                type: String,
-            }
-        ]
-    },
+
+
     hyperlinks: {
         default: [],
         type: [
