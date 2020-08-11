@@ -32,6 +32,15 @@ export class CreateListingPreviewWidget extends Component {
               <div className='main-info-wrapper'>
                 <div className='info-title'>{title ? title : 'Tiêu đề'}</div>
                 <div className='info-price'>{price ? price : 'Giá'}</div>
+                <div className='info-time-position'>
+                  Đã niêm yết vài giây trước tại Hà Nội{' '}
+                </div>
+                <div className='button-section-wrapper'>
+                  <div className='button-display'></div>
+                  <div className='button-display'></div>
+                  <div className='button-display'></div>
+                  <div className='button-display'></div>
+                </div>
               </div>
             </div>
             <div className='send-info-wrapper'></div>
