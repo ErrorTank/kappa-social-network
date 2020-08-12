@@ -36,8 +36,9 @@ export class CreateListingPreviewWidget extends Component {
                   Đã niêm yết vài giây trước tại Hà Nội{' '}
                 </div>
               </div>
+
               <div className='button-section-wrapper'>
-                <div className='button-display'>
+                <div className='button-display send-text'>
                   <i class='fab fa-facebook-messenger'></i>
                   <span>Nhắn tin</span>
                 </div>
@@ -50,6 +51,10 @@ export class CreateListingPreviewWidget extends Component {
                 <div className='button-display'>
                   <i class='fas fa-ellipsis-h'></i>
                 </div>
+              </div>
+
+              <div className='addition-info-wrapper'>
+                <div className='addition-info-title'>Chi tiết</div>
               </div>
             </div>
             <div className='send-info-wrapper'></div>
