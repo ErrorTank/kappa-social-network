@@ -88,6 +88,7 @@ class CreatePostModal extends Component {
     render() {
         let {onClose,} = this.props;
         let {loading} = this.state;
+        console.log(this.state.files)
 
         let steps = [
             {
