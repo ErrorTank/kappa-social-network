@@ -45,6 +45,7 @@
           color: secondaryTextLight;
           font-size: 20px;
           font-weight: 400
+          word-break: break-word;
         }
       }
       
@@ -77,17 +78,32 @@
             font-size: 13px;
             font-weight: 400;
             line-height: 16px;
+
           }
         }
         .button-section-wrapper{
           margin: 8px 8px 4px 16px
+          display: flex;
           .button-display{
             margin-right: 8px;
             height 36px;
             cursor not-allowed;
-            padding: 0 12px;
+            padding: 0 16px;
             border-radius: 6px
-            background-color: btnCancelColor;
+            background-color: btnCancelLight;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 15px;
+            font-weight: 600;
+            i{
+              font-size: 16px;
+              margin: 0 3px;
+            }
+            span{
+              margin: 0 3px;
+              max-width 100%;
+            }
           }
         }      
       }

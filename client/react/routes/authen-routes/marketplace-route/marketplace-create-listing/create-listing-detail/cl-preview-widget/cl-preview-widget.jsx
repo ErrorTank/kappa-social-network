@@ -35,11 +35,20 @@ export class CreateListingPreviewWidget extends Component {
                 <div className='info-time-position'>
                   Đã niêm yết vài giây trước tại Hà Nội{' '}
                 </div>
-                <div className='button-section-wrapper'>
-                  <div className='button-display'></div>
-                  <div className='button-display'></div>
-                  <div className='button-display'></div>
-                  <div className='button-display'></div>
+              </div>
+              <div className='button-section-wrapper'>
+                <div className='button-display'>
+                  <i class='fab fa-facebook-messenger'></i>
+                  <span>Nhắn tin</span>
+                </div>
+                <div className='button-display'>
+                  <i class='fas fa-bookmark'></i>
+                </div>
+                <div className='button-display'>
+                  <i class='fas fa-share'></i>
+                </div>
+                <div className='button-display'>
+                  <i class='fas fa-ellipsis-h'></i>
                 </div>
               </div>
             </div>
