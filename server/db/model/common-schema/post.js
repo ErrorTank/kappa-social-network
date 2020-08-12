@@ -61,6 +61,17 @@ const postSchema = {
             }
         ]
     },
+    files: {
+        default: [],
+        type: [
+            {
+                path: String,
+                name: String,
+                origin_path: String,
+                caption: String
+            }
+        ]
+    },
     mentioned_person: {
         default: [],
         type: [

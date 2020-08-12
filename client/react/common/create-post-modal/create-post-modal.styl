@@ -1,132 +1,14 @@
 .create-post-modal{
   width 500px
   .btn-post{
-    background-color btnCancelLight
-    color commonTextLight
+    background-color primaryButton
+    color white
+    font-size 1.5rem
     margin 0 !important
     font-weight bold
     &:hover{
-      background darken(btnCancelLight, 5%)
+      background darken(primaryButton, 8%)
     }
   }
-  .cpm-wrapper{
-    .cpm-body{
-      .actions-bar{
-        margin-top 15px
-        border 1px solid common-border
-        border-radius 5px
-        padding 8px
-        display flex
-        align-items center
-        & > div{
-          flex-grow 1
-        }
-        .bar-title{
-          font-size 1.5rem
-          font-weight 500
-          padding 5px
-        }
-        .actions{
-          display flex
-          justify-content flex-end
-          align-items center
-          & > div{
-            &:not(:last-of-type){
-              margin-right 8px
-            }
-          }
-          .action{
-            margin-right 5px
-            border-radius 50%
-            width 36px
-            height 36px
-            position relative
-            cursor pointer
-            &.media{
-              color success
-            }
-            &.file{
-              color danger
-            }
-            &.tag{
-              color primaryButton
-            }
-            &:hover{
-              background-color darken(white, 8%)
-            }
-            i{
-              font-size 2rem
-              absoluteMiddle()
-            }
-          }
-        }
-      }
 
-      .cpm-input-wrapper{
-        position relative
-        .cpm-input{
-          margin-top 15px
-          width 100%
-          position relative
-          min-height 100px
-          max-height 300px
-          cursor text
-          overflow-y auto
-        }
-        .emoji-picker{
-          bottom 0
-          top 100%
-
-          left 200px
-        }
-        .emoji-select{
-          text-align right
-          i{
-            font-size 2.5rem
-            cursor pointer
-            color greyTextLight
-
-          }
-        }
-      }
-    }
-    .cpm-header{
-      display flex
-      align-items center
-      .avatar-wrapper{
-        flex 0 0 50px
-
-      }
-      .right-panel{
-        flex 0 0 calc(100% - 50px)
-        .username{
-          color commonTextLight
-          font-weight 500
-          font-size 1.5rem
-        }
-        .action{
-
-          .select-dropdown{
-            z-index 2
-            background white
-          }
-          .policy-picker{
-            width 150px
-            .post-policy{
-              span{
-                &:last-of-type{
-                  margin-left 6px
-                }
-              }
-            }
-            .select-toggle{
-              padding 4px 8px !important
-
-            }
-
-          }
-        }
-      }
-    }
-  }
 }

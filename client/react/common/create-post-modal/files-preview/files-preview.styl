@@ -1,0 +1,174 @@
+.files-preview {
+  position relative
+  margin-top 15px
+
+  &:hover {
+    .fp-actions {
+      display block
+    }
+  }
+
+  .fp-actions {
+    position absolute
+    width 100%
+    height 100%
+    background-color rgba(black, 0.2)
+    display none
+    z-index 2
+    border-radius 5px
+    padding 10px
+    .btn-edit{
+      background-color bgLight
+      color commonTextLight
+      padding 5px 10px !important
+      font-size 1.5rem
+      font-weight 500
+      &:hover{
+        background-color darken(bgLight, 8%)
+      }
+      i{
+        margin-right 6px
+      }
+    }
+  }
+
+  .close-wrapper {
+    position absolute
+    z-index 3
+    right 10px
+    top 10px
+    border-radius 50%
+    height 32px
+    width 32px
+    display flex
+    align-items center
+    justify-content center
+    cursor pointer
+    &:hover{
+      background-color darken(danger, 8%)
+    }
+    background-color danger
+    color white
+    i{
+      font-size 2rem
+    }
+  }
+
+  .fp-list {
+    position relative
+    border-radius 5px
+    overflow hidden
+    border 1px solid common-border
+
+    .file-preview {
+      position relative
+      display inline-block
+      overflow hidden
+      .count-overlay{
+        width 100%
+        height 100%
+        z-index 2
+        absoluteMiddle()
+        background-color rgba(black, 0.4)
+        display flex
+        align-items center
+        justify-content center
+        span{
+          color white
+          font-size 3rem
+          font-weight 700
+        }
+      }
+      img {
+
+        position absolute
+        absoluteMiddle()
+      }
+    }
+
+    &.list-1 {
+      .pic-1 {
+        width 100%
+        height 250px
+      }
+    }
+
+    &.list-2 {
+      .pic-1 {
+        width 100%
+        height 235px
+      }
+
+      .pic-2 {
+        width 100%
+        height 235px
+      }
+    }
+
+    &.list-3 {
+      .pic-1 {
+        width 100%
+        height 235px
+      }
+
+      .pic-2 {
+        width 50%
+        height 150px
+      }
+
+      .pic-3 {
+        width 50%
+        height 150px
+      }
+    }
+
+    &.list-4 {
+      .pic-1 {
+        width 100%
+        height 235px
+      }
+
+      .pic-2 {
+        width 33.33%
+        height 150px
+      }
+
+      .pic-3 {
+        width 33.33%
+        height 150px
+      }
+
+      .pic-4 {
+        width 33.33%
+        height 150px
+      }
+    }
+
+    &.list-5 {
+      .pic-1 {
+        width 50%
+        height 235px
+      }
+
+      .pic-2 {
+        width 50%
+        height 235px
+      }
+
+      .pic-3 {
+        width 33.33%
+        height 150px
+      }
+
+      .pic-4 {
+        width 33.33%
+        height 150px
+      }
+
+      .pic-5 {
+        width 33.33%
+        height 150px
+      }
+    }
+  }
+}
