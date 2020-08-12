@@ -2,54 +2,20 @@ import React, {Component} from 'react';
 import {modals} from "../modal/modals";
 import {LoadingInline} from "../loading-inline/loading-inline";
 import {CommonModalLayout} from "../modal/common-modal-layout";
-import Editor, {createEditorStateWithText} from 'draft-js-plugins-editor';
+
 import {ThemeContext} from "../../context/theme-context";
-import Skeleton, {SkeletonTheme} from "react-loading-skeleton";
-import {Avatar} from "../avatar/avatar";
-import {CommonInput} from "../common-input/common-input";
+
+
+import {createEditorStateWithText} from 'draft-js-plugins-editor';
+import {CreatePostMain} from "./create-post-main/create-post-main";
 import {Tooltip} from "../tooltip/tooltip";
-import {Button} from "../button/button";
-import {userInfo} from "../../../common/states/common";
-import {Select} from "../select/select";
-import createMentionPlugin from "draft-js-mention-plugin";
 import classnames from "classnames";
-import {ClickOutside} from "../click-outside/click-outside";
-import {emojiPlugin} from "../../layout/authen-layout/create-message-widget/chat-box/message-utilities/chat-input/chat-input";
-import {v4 as uuidv4} from 'uuid';
-import {DropZone} from "../file-input/dropzone";
-import {isImageFile} from "../../../common/utils/file-upload-utils";
 import {InputFileWrapper} from "../file-input/file-input";
+import {isImageFile} from "../../../common/utils/file-upload-utils";
+import {FilesDisplay} from "./files-display/files-display";
+import {FileConfig} from "./file-config/file-config";
+import {TagFriends} from "./tag-friends/tag-friends";
 
-
-const CreatePostDropZone = props => {
-    const handleUploadFiles = (files) => {
-        props.onAddFiles(files);
-        return Promise.resolve();
-    };
-    return (
-        <DropZone
-            name="chat-box-file-upload"
-            limitSize={10 * 1024 * 1024}
-            className="background-dropzone"
-            accept={"image/*,image/heif,image/heic,video/*"}
-            multiple={true}
-            dropPlaceHolder={(
-                <div className="background-dropzone-placeholder">
-                    <span>Thả files vào đây</span>
-                </div>
-            )}
-            onChange={(files) => this.handleUploadFiles(files)}
-        />
-    )
-}
-
-
-// export const PostPolicy = {
-//     PUBLIC: "PUBLIC",
-//     PERSONAL: "PERSONAL",
-//     FRIENDS: "FRIENDS"
-// }
-const {Picker} = emojiPlugin;
 
 export const PostPolicies = [
     {
@@ -89,226 +55,147 @@ class CreatePostModal extends Component {
             content: "",
             policy: PostPolicies[0],
             editorState: createEditorStateWithText(""),
-            suggestions: [],
-            loadSuggestion: true,
-            showEmojiPicker: false,
-            filteredSuggestions: [],
-            files: []
+            files: [],
+            tagged: [],
+            selected: null,
+            stepIndex: 0
         }
-        this.mentionPlugin = createMentionPlugin({
-            entityMutability: 'IMMUTABLE',
-            supportWhitespace: true,
-            positionSuggestions: () => ({}),
-            mentionPrefix: "@",
-            mentions: [],
-            mentionComponent: (mentionProps) => {
-                return (
-                    <span className={classnames("create-post-mention", mentionProps.className)}>
-          {mentionProps.children}
-        </span>
-                )
-            },
-        });
+
     }
 
-    onChange = (editorState) => {
+    submit = () => {
 
-
-        let nextState = {
-            editorState
-        };
-        if (this.state.showEmojiPicker) {
-            nextState.showEmojiPicker = false;
-        }
-
-
-        this.setState(nextState);
-    };
-
-    onSearchChange = ({value}) => {
-        this.setState({filteredSuggestions: this.filterSuggestions(this.state.suggestions, value)});
-    };
-
-    post = () => {
-
-    };
-
-    focus = () => {
-        this.editor.focus();
-    };
-
-
-
-    tagFriends = () => {
-
-    };
+    }
 
     addFiles = (files) => {
         let newFiles = Array.from(files).map(file => {
             return isImageFile(file.name) ? {fileID: uuidv4(), file, type: "image"} : {
                 fileID: uuidv4(),
                 file,
-                type: "common"
+                caption: "",
             };
         });
 
         this.setState({files: this.state.files.concat(newFiles)});
     };
 
+
     render() {
         let {onClose,} = this.props;
-        let {loading, policy} = this.state;
-        let user = userInfo.getState();
-        const {MentionSuggestions} = this.mentionPlugin;
+        let {loading} = this.state;
 
-        let plugins = [emojiPlugin];
-        plugins.push(this.mentionPlugin);
-        let actions = [
+        let steps = [
             {
-                icon: <i className="far fa-photo-video"></i>,
-                label: "Ảnh/Video",
-                className: "media"
-            },  {
-                icon: <i className="fas fa-user-tag"></i>,
-                label: "Tag bạn bè",
-                onClick: this.tagFriends,
-                className: "tag"
+                title: "Tạo bài đăng",
+                actions: [{
+                    className: "btn-post btn-block",
+                    onClick: this.submit,
+                    content: "Đăng",
+                }],
 
+                component: (
+                    <CreatePostMain
+                        {...this.state}
+                        onChange={data => this.setState({...data})}
+                    />
+                )
+            }, {
+                title: "Ảnh và videos",
+                onBack: () => this.setState({stepIndex: 0}),
+                actions: [{
+                    className: "btn-add-more",
+                    onClick: () => this.upload.click(),
+                    content: "Thêm ảnh/videos",
+                }, {
+                    className: "btn-done",
+                    onClick: () => this.setState({stepIndex: 0}),
+                    content: "Xong",
+
+                }],
+                component: (
+                    <FilesDisplay
+                        files={this.state.files}
+                        onChangeFiles={files => this.setState({files})}
+                        onSelect={(file) => this.setState({selected: file})}
+                    />
+                )
+            }, {
+                title: "Chi tiết ảnh",
+                onBack: () => this.setState({stepIndex: 1}),
+                actions: [{
+                    className: "btn-done",
+                    onClick: (file) => {
+                        let newFiles = [...this.state.files];
+                        newFiles.splice(newFiles.findIndex(each => each.fileID === file.fileID), 1, file);
+                        this.setState({files: newFiles, stepIndex: 1})
+                    },
+                    content: "Lưu",
+
+                }],
+                component: (
+                    <FileConfig
+                        file={this.state.selected}
+                    />
+                )
+            },{
+                title: "Tag bạn bè",
+                actions: [],
+                onBack: () => this.setState({stepIndex: 0}),
+                component: (
+                    <TagFriends
+                        tagged={this.state.tagged}
+                        onTag={newTag => this.setState({tagged: this.state.tagged.concat(newTag)})}
+                    />
+                )
             }
         ]
+
+        let {title, actions, component, onBack} = steps[this.state.stepIndex];
+
         return (
             <ThemeContext.Consumer>
                 {({darkMode}) => (
                     <CommonModalLayout
                         className="create-post-modal"
                         onClose={onClose}
-                        title={"Tạo bài đăng"}
-                        actions={[{
-                            className: "btn-post btn-block",
-                            onClick: this.post,
-                            content: "Đăng",
-                        }]}
+                        title={title}
+                        actions={actions}
                     >
+
                         <>
-                            <CreatePostDropZone
-                                onAddFiles={this.addFiles}
-                            />
-                            <div className="cpm-wrapper">
+                            {onBack && (
+                                <div className="back-wrapper">
+                                    <Tooltip
+                                        position={"top"}
+                                        text={() => "Trở lại"}
+                                        className={"d-none"}
+                                    >
+                                        <button className="btn btn-back" onClick={onBack}>
 
-                                <div className="cpm-header">
-                                    <div className="avatar-wrapper">
-                                        <Avatar
-                                            user={user}
-                                        />
-                                    </div>
-                                    <div className="right-panel">
-                                        <div className="username">{user.basic_info.username}</div>
-                                        <div className="action">
-                                            <Select
-                                                className={"policy-picker"}
-                                                options={PostPolicies}
-                                                value={policy}
-                                                onChange={policy => {
-                                                    this.setState({policy});
-                                                }}
-                                                displayAs={value => (
-                                                    <div className="post-policy">
-                                                        <span>{value.icon}</span>
-                                                        <span>{value.label}</span>
-                                                    </div>
-                                                )}
-                                                isSelected={option => option.value === policy.value}
-                                            />
-                                        </div>
-                                    </div>
+                                        </button>
+
+                                    </Tooltip>
                                 </div>
-                                <div className="cpm-body">
-                                    <div className="cpm-input-wrapper">
-                                        <ClickOutside onClickOut={() => this.setState({showEmojiPicker: false})}>
-                                            <div>
-                                                <div className={classnames("cpm-input", {collapse: this.state.files.length})} onClick={this.focus}>
-                                                    <div>
-                                                        <Editor
-                                                            editorState={this.state.editorState}
-                                                            onChange={this.onChange}
-                                                            plugins={plugins}
-                                                            ref={(element) => {
-                                                                this.editor = element;
-                                                            }}
-                                                            placeholder={`Hôm nay bạn nghĩ gì, ${user.basic_info.username}?`}
+                            )}
+                            {component}
+                            <InputFileWrapper
+                                multiple={true}
+                                accept={"image/*,image/heif,image/heic,video/*"}
+                                onUploaded={this.addFiles}
+                                limitSize={10 * 1024 * 1024}
+                            >
+                                {({onClick}) => (
+                                    <Tooltip
+                                        position={"top"}
+                                        text={() => ""}
+                                        className={"d-none"}
+                                    >
+                                        <div style={{display: "none"}} ref={upload => this.upload = upload} onClick={onClick}/>
 
-                                                        />
-                                                        <MentionSuggestions
-                                                            onSearchChange={this.onSearchChange}
-                                                            suggestions={this.state.filteredSuggestions}
-                                                            popoverComponent={<MentionPopover/>}
-                                                            entryComponent={MentionEntry}
-                                                        />
-                                                    </div>
-
-
-                                                </div>
-                                                <div className={"emoji-select"} onClick={(e) => {
-                                                    e.stopPropagation();
-                                                    this.setState({showEmojiPicker: !this.state.showEmojiPicker})
-                                                }}>
-                                                    <i className="fal fa-smile"></i>
-                                                </div>
-                                                {this.state.showEmojiPicker && (
-                                                    <div className={"emoji-picker"}>
-                                                        <Picker
-                                                            perLine={7}
-                                                            showPreview={false}
-                                                            autoFocus={true}
-                                                        />
-                                                    </div>
-
-                                                )}
-                                            </div>
-                                        </ClickOutside>
-                                    </div>
-                                    <div className="actions-bar">
-                                        <div className="bar-title">
-                                            Thêm vào bài đăng
-                                        </div>
-                                        <div className="actions">
-                                            {actions.map(each => each.className !== 'tag' ? (
-                                                <InputFileWrapper
-                                                    multiple={true}
-                                                    accept={each.className === 'media' ? "image/*,image/heif,image/heic,video/*" : "*"}
-                                                    onUploaded={this.addFiles}
-                                                    key={each.label}
-                                                    limitSize={10 * 1024 * 1024}
-                                                >
-                                                    {({onClick}) => (
-                                                        <Tooltip
-                                                            key={each.label}
-                                                            position={"top"}
-                                                            text={() => each.label}
-                                                        >
-                                                            <div className={classnames("action", each.className)} onClick={onClick}>
-                                                                {each.icon}
-                                                            </div>
-                                                        </Tooltip>
-                                                    )}
-                                                </InputFileWrapper>
-                                            ) : (
-                                                <Tooltip
-                                                    key={each.label}
-                                                    position={"top"}
-                                                    text={() => each.label}
-                                                >
-                                                    <div className={classnames("action", each.className)} onClick={each.onClick}>
-                                                        {each.icon}
-                                                    </div>
-                                                </Tooltip>
-                                            ))}
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+                                    </Tooltip>
+                                )}
+                            </InputFileWrapper>
                         </>
-
                     </CommonModalLayout>
                 )}
             </ThemeContext.Consumer>
@@ -317,45 +204,3 @@ class CreatePostModal extends Component {
 }
 
 
-class MentionPopover extends React.Component {
-    render() {
-
-        return (
-            <div className={classnames("cpm-mention-popover")} id={this.props.id} role={"list-box"}>
-                {this.props.children}
-            </div>
-        )
-    }
-}
-
-const MentionEntry = props => {
-
-    const {
-        mention,
-        theme,
-        searchValue,
-        isFocused,
-        className,
-        ...parentProps
-    } = props;
-
-    return (
-
-        <div className={classnames("cpm-entry")} {...parentProps} >
-            <div className="content-wrapper">
-                <Avatar user={mention}/>
-                <div className="user-info">
-                    <div className="username">
-                        {mention.basic_info.username}
-                    </div>
-                    {mention.nickname && (
-                        <div className="nickname">
-                            {mention.nickname}
-                        </div>
-                    )}
-                </div>
-            </div>
-
-        </div>
-    );
-}
