@@ -55,6 +55,7 @@
 
       .cpm-input-wrapper{
         position relative
+        margin-bottom 15px
         .cpm-input{
           margin-top 15px
           width 100%
@@ -63,6 +64,10 @@
           max-height 300px
           cursor text
           overflow-y auto
+          &.collapsed{
+            min-height 60px
+            max-height 200px
+          }
         }
         .emoji-picker{
           bottom 0

@@ -13,6 +13,8 @@ import {isImageFile} from "../../../../common/utils/file-upload-utils";
 import classnames from "classnames";
 import Editor from 'draft-js-plugins-editor';
 const {Picker} = emojiPlugin;
+import {v4 as uuidv4} from 'uuid';
+import {FilesPreview} from "../files-preview/files-preview";
 
 const CreatePostDropZone = props => {
     const handleUploadFiles = (files) => {
@@ -169,10 +171,15 @@ export class CreatePostMain extends Component {
                         </div>
                     </div>
                     <div className="cpm-body">
+                        {!!this.props.files.length && (
+                            <FilesPreview
+                                files={this.props.files}
+                            />
+                        )}
                         <div className="cpm-input-wrapper">
                             <ClickOutside onClickOut={() => this.setState({showEmojiPicker: false})}>
                                 <div>
-                                    <div className={classnames("cpm-input", {collapse: this.props.files.length})} onClick={this.focus}>
+                                    <div className={classnames("cpm-input", {collapsed: this.props.files.length})} onClick={this.focus}>
                                         <div>
                                             <Editor
                                                 editorState={this.props.editorState}

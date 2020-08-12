@@ -15,6 +15,8 @@ import {isImageFile} from "../../../common/utils/file-upload-utils";
 import {FilesDisplay} from "./files-display/files-display";
 import {FileConfig} from "./file-config/file-config";
 import {TagFriends} from "./tag-friends/tag-friends";
+import {transformEditorState} from "../../../common/utils/editor-utils";
+import {convertToRaw} from "draft-js";
 
 
 export const PostPolicies = [
@@ -66,6 +68,9 @@ class CreatePostModal extends Component {
     submit = () => {
 
     }
+    getInputRawContent = () => {
+        return transformEditorState(convertToRaw(this.state.editorState.getCurrentContent())).content;
+    }
 
     addFiles = (files) => {
         let newFiles = Array.from(files).map(file => {
@@ -91,6 +96,7 @@ class CreatePostModal extends Component {
                     className: "btn-post btn-block",
                     onClick: this.submit,
                     content: "Đăng",
+                    disabled: !this.getInputRawContent() && !this.state.files.length
                 }],
 
                 component: (
@@ -131,6 +137,7 @@ class CreatePostModal extends Component {
                     },
                     content: "Lưu",
 
+
                 }],
                 component: (
                     <FileConfig
@@ -158,25 +165,32 @@ class CreatePostModal extends Component {
                     <CommonModalLayout
                         className="create-post-modal"
                         onClose={onClose}
-                        title={title}
+                        title={(
+                            <>
+                                {onBack && (
+                                    <div className="back-wrapper">
+                                        <Tooltip
+                                            position={"top"}
+                                            text={() => "Trở lại"}
+                                            className={"d-none"}
+                                        >
+                                            <button className="btn btn-back" onClick={onBack}>
+
+                                            </button>
+
+                                        </Tooltip>
+                                    </div>
+                                )}
+                                <span style={{marginLeft: onBack ? "15px" : "0"}}>{title}</span>
+                            </>
+                        )
+
+                        }
                         actions={actions}
                     >
 
                         <>
-                            {onBack && (
-                                <div className="back-wrapper">
-                                    <Tooltip
-                                        position={"top"}
-                                        text={() => "Trở lại"}
-                                        className={"d-none"}
-                                    >
-                                        <button className="btn btn-back" onClick={onBack}>
 
-                                        </button>
-
-                                    </Tooltip>
-                                </div>
-                            )}
                             {component}
                             <InputFileWrapper
                                 multiple={true}
