@@ -23,6 +23,7 @@ class CreateListingDetail extends KComponent {
       year: '',
       model: '',
       make: '',
+      hoverArr: '',
     };
   }
   updateValue = (key, val) => {

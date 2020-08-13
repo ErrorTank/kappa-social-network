@@ -64,6 +64,7 @@ export class ListingInfoInput extends Component {
                   'is-invalid': error,
                   'is-valid': success,
                 })}
+                {...others}
               >
                 {contentEditable ? (
                   <ContentEditable
@@ -88,7 +89,6 @@ export class ListingInfoInput extends Component {
                     onBlur={() => this.setState({ focus: false })}
                     id={id}
                     value={value}
-                    {...others}
                     ref={(input) => (this.input = input)}
                   />
                 )}

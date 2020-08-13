@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { classnames } from 'classnames';
+import classnames from 'classnames';
 import { userInfo } from './../../../../../../../common/states/common';
 export class CreateListingPreviewWidget extends Component {
   constructor(props) {
@@ -33,10 +33,31 @@ export class CreateListingPreviewWidget extends Component {
       title: 'Chất liệu',
     },
   ];
+  checkHover = (type) => {
+    const { hoverArr } = this.props;
+    // return true;
+    // const { title = false, make, year, model, homeType } = hoverArr;
+
+    switch (type) {
+      case 'title':
+        if (hoverArr['title'] || make || year || model || homeType) return true;
+        break;
+      default:
+        return false;
+    }
+  };
   render() {
     let user = userInfo.getState();
     const { state } = this.props;
-    const { title, price, category, condition, type, ...other } = state;
+    const {
+      title,
+      price,
+      category,
+      condition,
+      type,
+      hoverArr,
+      ...other
+    } = state;
     console.log(state);
 
     return (
@@ -59,7 +80,11 @@ export class CreateListingPreviewWidget extends Component {
           <div className='listing-info-section'>
             <div className='info-display-wrapper'>
               <div className='main-info-wrapper'>
-                <div className='info-title'>
+                <div
+                  className={classnames('info-title', {
+                    'on-mouse': this.checkHover('title'),
+                  })}
+                >
                   {type === 'item'
                     ? title
                       ? title

@@ -116,6 +116,12 @@ export class ListingInfo extends Component {
       this.props.updateValue([name], '');
     }
   };
+  mouse = (name) => {
+    this.props.updateValue('hoverArr', { [name]: true });
+  };
+  mouseOut = (name) => {
+    this.props.updateValue('hoverArr', { [name]: false });
+  };
   render() {
     const { state, updateValue } = this.props;
     let { pictureLimit, type, category, ...other } = state;
@@ -152,6 +158,8 @@ export class ListingInfo extends Component {
                   id={each.englishName}
                   value={state[each.englishName]}
                   error={error[each.englishName]}
+                  onMouseEnter={() => this.mouse(each.englishName)}
+                  onMouseLeave={() => this.mouseOut(each.englishName)}
                   contentEditable={each.contentEditable}
                   onChange={(e) => {
                     each.errorMessage &&
