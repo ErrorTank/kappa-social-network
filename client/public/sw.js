@@ -134,6 +134,10 @@ var exceptionRequestsDev = [
     method: 'GET',
   },
   {
+    endpoint: /https:\/\/localhost:4000\/api\/utilites\/friends/,
+    method: 'GET',
+  },
+  {
     endpoint: /https:\/\/localhost:4000\/api\/chat\/\w+\/user\/\w+\/nickname/,
     method: 'PUT',
   },
@@ -164,8 +168,8 @@ var notGetRequests = [
   },
 ];
 
-var CACHE_STATIC_NAME = 'static-v1597248780291';
-var CACHE_DYNAMIC_NAME = 'dynamic-v1597248780291';
+var CACHE_STATIC_NAME = 'static-v1597292887578';
+var CACHE_DYNAMIC_NAME = 'dynamic-v1597292887578';
 
 var STATIC_FILES = [
   '/',

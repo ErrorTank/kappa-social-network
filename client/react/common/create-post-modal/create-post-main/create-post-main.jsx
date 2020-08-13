@@ -102,7 +102,7 @@ export class CreatePostMain extends Component {
 
 
     tagFriends = () => {
-
+        this.props.openTagFriendTab();
     };
 
     addFiles = (files) => {

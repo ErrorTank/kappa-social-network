@@ -1,5 +1,23 @@
 .create-post-modal{
   width 500px
+  .back-wrapper{
+    width 35px
+    height 35px
+    position relative
+    border 1px solid common-border
+    background-color bgLight
+    cursor pointer
+    display inline-block
+    vertical-align middle
+    border-radius 50%
+    &:hover{
+      background-color darken(bgLight, 5%)
+    }
+    i{
+      absoluteMiddle()
+      font-size 2rem
+    }
+  }
   .btn-post{
     background-color primaryButton
     color white

@@ -41,6 +41,7 @@ export class CreatePanel extends Component {
                                 Đến:
                             </div>
                             <AsyncMultipleSelect
+                                deleteFilterFunc={(each, item) => each._id !== item._id}
                                 className={"create-panel-input"}
                                 addCondition={item => item.basic_info.username}
                                 onSelectItem={item => !item.basic_info.username && this.openMessageBox(item)}

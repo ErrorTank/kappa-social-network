@@ -103,8 +103,73 @@ const searchRelated = (userID, keyword = "") => {
 
 };
 
+const searchFriends = (userID, keyword) => {
+    let pipelines = [
+        {
+            $match: {
+                "_id": ObjectId(userID),
+            }
+        },
+        {
+            $lookup: {
+                from: 'chatrooms', localField: 'chat_rooms', foreignField: '_id', as: "chat_rooms"
+            }
+        },
+        {
+            $unwind: "$friends"
+        },
+        {
+            $lookup: {
+                from: 'users', localField: 'friends.info', foreignField: '_id', as: "friends.info"
+            }
+        },
+
+        {
+            $addFields: {
+                "friends.info": {
+                    $arrayElemAt: ["$friends.info", 0]
+                },
+            }
+        },
+        {
+            $group: {
+                _id: "$friends.info._id",
+                info: {
+                    $first: "$friends.info"
+                },
+                user_chat_rooms: {
+                    $first: "$chat_rooms"
+                }
+            }
+        },
+
+    ];
+    if (keyword) {
+        pipelines = pipelines.concat([
+            {
+                $match: {
+                    "info.basic_info.username": {$regex: keyword, $options: "i"}
+                }
+            }
+        ])
+    }
+    return User.aggregate(pipelines)
+        .then(users => {
+            // console.log(users)
+            return users.map(each => {
+                // console.log(each.user_chat_rooms)
+                return ({
+                    _id: each._id, ...pick(each.info, ["avatar", "basic_info"]),
+                    last_interact: each.user_chat_rooms.find(cr => !cr.is_group_chat && cr.involve_person.find(p => p.related.toString() === each._id.toString())).last_updated
+                })
+            }).sort((a,b) => new Date(a.last_interact).getTime() - new Date(b.last_interact).getTime())
+        })
+        .then(users => !keyword ? users.slice(0, 10) : users)
+};
+
 module.exports = {
     preSearch,
     getLoginSessionsBrief,
-    searchRelated
+    searchRelated,
+    searchFriends
 };

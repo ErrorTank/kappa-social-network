@@ -104,6 +104,7 @@ class CreatePostModal extends Component {
                     <CreatePostMain
                         {...this.state}
                         onChange={data => this.setState({...data})}
+                        openTagFriendTab={() => this.setState({stepIndex: 3})}
                     />
                 )
             }, {
@@ -152,7 +153,7 @@ class CreatePostModal extends Component {
                 component: (
                     <TagFriends
                         tagged={this.state.tagged}
-                        onTag={newTag => this.setState({tagged: this.state.tagged.concat(newTag)})}
+                        onTag={tagged => this.setState({tagged})}
                     />
                 )
             }
@@ -169,20 +170,11 @@ class CreatePostModal extends Component {
                         title={(
                             <>
                                 {onBack && (
-                                    <div className="back-wrapper">
-                                        <Tooltip
-                                            position={"top"}
-                                            text={() => "Trở lại"}
-                                            className={"d-none"}
-                                        >
-                                            <button className="btn btn-back" onClick={onBack}>
-
-                                            </button>
-
-                                        </Tooltip>
+                                    <div className="back-wrapper" onClick={onBack}>
+                                        <i className="far fa-long-arrow-alt-left"></i>
                                     </div>
                                 )}
-                                <span style={{marginLeft: onBack ? "15px" : "0"}}>{title}</span>
+                                <span style={{marginLeft: onBack ? "10px" : "0"}}>{title}</span>
                             </>
                         )
 
