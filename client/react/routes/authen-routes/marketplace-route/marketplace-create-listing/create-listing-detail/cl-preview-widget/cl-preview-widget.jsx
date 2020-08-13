@@ -153,6 +153,8 @@ export class CreateListingPreviewWidget extends Component {
                   Gửi tin nhắn cho người bán
                 </div>
               </div>
+              <div className='message-example'>Mặt hàng này còn chứ</div>
+              <div className='send-message-demo gray-filter'>Gửi</div>
             </div>
           </div>
         </div>
