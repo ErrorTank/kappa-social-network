@@ -5,9 +5,36 @@ export class CreateListingPreviewWidget extends Component {
     super(props);
     this.state = {};
   }
+
+  additionInfo = [
+    {
+      name: 'brand',
+      title: 'Thương hiệu',
+    },
+    {
+      name: 'platform',
+      title: 'Nền tảng',
+    },
+    {
+      name: 'size',
+      title: 'Kích thước',
+    },
+    {
+      name: 'carrie',
+      title: 'Nhà mạng',
+    },
+    {
+      name: 'deviceName',
+      title: 'Tên thiết bị',
+    },
+    {
+      name: 'material',
+      title: 'Chất liệu',
+    },
+  ];
   render() {
     const { state } = this.props;
-    const { title, price } = state;
+    const { title, price, category, condition, type, ...other } = state;
     console.log(state);
 
     return (
@@ -30,7 +57,19 @@ export class CreateListingPreviewWidget extends Component {
           <div className='listing-info-section'>
             <div className='info-display-wrapper'>
               <div className='main-info-wrapper'>
-                <div className='info-title'>{title ? title : 'Tiêu đề'}</div>
+                <div className='info-title'>
+                  {type === 'item'
+                    ? title
+                      ? title
+                      : 'Tiêu đề'
+                    : type === 'vehicle'
+                    ? state.make || state.year || state.model
+                      ? `${state.year} ${state.make} ${state.model}`
+                      : 'Tiêu đề'
+                    : state.homeType
+                    ? state.homeType
+                    : 'Tiêu đề'}
+                </div>
                 <div className='info-price'>{price ? price : 'Giá'}</div>
                 <div className='info-time-position'>
                   Đã niêm yết vài giây trước tại Hà Nội{' '}
@@ -54,8 +93,45 @@ export class CreateListingPreviewWidget extends Component {
               </div>
 
               <div className='addition-info-wrapper'>
-                <div className='addition-info-title'>Chi tiết</div>
+                <div className='addition-info-header'>Chi tiết</div>
+                <div className='addition-info-body'>
+                  {category && (
+                    <div className='addition-info'>
+                      <div className='addition-info-type'>Tình trạng</div>
+                      <div className='addition-info-content'>
+                        {condition ? condition : '___'}
+                      </div>
+                    </div>
+                  )}
+                  {this.additionInfo.map((each) => {
+                    return (
+                      state[each.name] && (
+                        <div className='addition-info'>
+                          <div className='addition-info-type'>{each.title}</div>
+                          <div className='addition-info-content'>
+                            {state[each.name]}
+                          </div>
+                        </div>
+                      )
+                    );
+                  })}
+                  <div className='decription-wrapper'>
+                    {state.decription
+                      ? state.decription
+                      : 'Phần mô tả sẽ hiển thị tại đây'}
+                  </div>
+                  <div className='location-wrapper'>
+                    <div className='location-info'>
+                      {state.position ? state.position : 'Vị trí...'}
+                    </div>
+                    <div className='addition-text'>
+                      Đây là chỉ vị trí gần đúng
+                    </div>
+                  </div>
+                </div>
               </div>
+
+              <div className='seller-info-wrapper'></div>
             </div>
             <div className='send-info-wrapper'></div>
           </div>

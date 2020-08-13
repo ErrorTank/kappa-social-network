@@ -58,6 +58,7 @@
       .info-display-wrapper{
         display: flex;
         flex-direction: column;
+        overflow-y: auto;
         .main-info-wrapper{
           padding: 16px;
           padding-bottom: 0;
@@ -113,12 +114,50 @@
 
         .addition-info-wrapper{
           margin-bottom: 12px;
-          .addition-info-title{
+          display: flex;
+          flex-direction: column;
+          
+          .addition-info-header{
             padding: 15px 16px 4px 16px;
             box-sizing: border-box;
             font-size: 17px;
             font-weight: 600;
+            
           }
+          .addition-info-body{
+            padding: 0 16px;
+            font-size: 15px;
+            color: normalTextLight;
+            .addition-info{
+              padding: 5px 0;
+              border-top: 0.8px solid lightgray
+              display: flex;
+              .addition-info-type{
+                flex-basis: 50%;
+                font-weight: 600;
+              }
+              .addition-info-content{
+                flex-basis: 50%;
+                font-weight: 400;
+              }
+            }  
+            .decription-wrapper{
+              filter: grayscale(100%) contrast(30%) brightness(150%);
+              pointer-events: none;
+            }
+            .location-wrapper{
+              margin: 12px 0px;  
+              .location-info{
+                font-weight: 600;  
+              }
+              .addition-text{
+                font-weight: 400;
+                font-size: 13px;
+                color: secondaryTextLight;  
+              }
+            }
+          }
+          
         }      
       }
     } 

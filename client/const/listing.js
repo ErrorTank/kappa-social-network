@@ -379,8 +379,6 @@ export const fieldByCategory = [
     brand: true,
   },
 
-  //below part didn't get add and fix yet
-
   //Electronics
   {
     _id: 'Electronics & Computers',

@@ -14,6 +14,15 @@ class CreateListingDetail extends KComponent {
       pictureLimit: '',
       title: '',
       price: '',
+      category: '',
+      platform: '',
+      brand: '',
+      size: '',
+      carrie: '',
+      deviceName: '',
+      year: '',
+      model: '',
+      make: '',
     };
   }
   updateValue = (key, val) => {

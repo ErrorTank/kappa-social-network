@@ -95,7 +95,9 @@ export class ListingInfoInput extends Component {
 
                 <span
                   className='listing-info-label'
-                  onClick={() => this.contentEditable.current.focus()}
+                  onClick={() =>
+                    contentEditable && this.contentEditable.current.focus()
+                  }
                 >
                   {label}
                 </span>
