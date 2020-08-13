@@ -179,6 +179,7 @@ export class CreatePostMain extends Component {
                             <FilesPreview
                                 files={this.props.files}
                                 removeAll={() => this.props.onChange({files: []})}
+                                toFilesTab={this.props.toFilesTab}
                             />
                         )}
                         <div className="cpm-input-wrapper">

@@ -105,6 +105,7 @@ class CreatePostModal extends Component {
                         {...this.state}
                         onChange={data => this.setState({...data})}
                         openTagFriendTab={() => this.setState({stepIndex: 3})}
+                        toFilesTab={() => this.setState({stepIndex: 1})}
                     />
                 )
             }, {
