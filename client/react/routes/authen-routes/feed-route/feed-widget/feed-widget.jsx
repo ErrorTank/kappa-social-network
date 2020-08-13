@@ -28,7 +28,7 @@ export class PostCreationBox extends Component {
                     />
                 </div>
                 <div className="placeholder" onClick={this.openCreatePostModal}>
-                    Hôm nay bạn nghĩ gì, {user.basic_info.username}?
+                    {user.basic_info.username} ơi, bạn đang nghĩ gì thế?
                 </div>
             </div>
         )

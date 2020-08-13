@@ -39,14 +39,14 @@ class FilePreview extends React.Component {
 }
 
 export const FilesPreview = (props) => {
-    let {files, removeAll} = props;
+    let {files, removeAll, toFilesTab} = props;
     return (
         <div className="files-preview">
             <div className="close-wrapper" onClick={removeAll}>
                 <i className="fal fa-times"></i>
             </div>
             <div className="fp-actions">
-                <button className="btn btn-edit">
+                <button className="btn btn-edit" onClick={toFilesTab}>
                     <i className="fas fa-pen"></i> Sửa danh sách
                 </button>
             </div>

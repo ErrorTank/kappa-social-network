@@ -24,6 +24,9 @@ export const utilityApi = {
     searchDialogsForCreateByKeyword(keyword){
         return authenApi.get(`/utility/search-for-create/dialogs?keyword=${keyword}`)
     },
+    searchFriends(keyword){
+        return authenApi.get(`/utility/friends?keyword=${keyword}`)
+    },
     getUrlMetadata(url){
         return offlineApi.get(`/utility/url/${encodeURIComponent(url)}/metadata`)
     }

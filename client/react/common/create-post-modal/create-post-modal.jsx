@@ -88,7 +88,7 @@ class CreatePostModal extends Component {
     render() {
         let {onClose,} = this.props;
         let {loading} = this.state;
-        console.log(this.state.files)
+
 
         let steps = [
             {
@@ -104,6 +104,10 @@ class CreatePostModal extends Component {
                     <CreatePostMain
                         {...this.state}
                         onChange={data => this.setState({...data})}
+                        openTagFriendTab={() => this.setState({stepIndex: 3})}
+                        toFilesTab={() => {
+                            this.state.files.length === 1 ? this.setState({stepIndex: 2, selected: this.state.files[0]}) :this.setState({stepIndex: 1})
+                        }}
                     />
                 )
             }, {
@@ -114,7 +118,7 @@ class CreatePostModal extends Component {
                     onClick: () => this.upload.click(),
                     content: "Thêm ảnh/videos",
                 }, {
-                    className: "btn-done",
+                    className: "btn-post",
                     onClick: () => this.setState({stepIndex: 0}),
                     content: "Xong",
 
@@ -147,12 +151,21 @@ class CreatePostModal extends Component {
                 )
             },{
                 title: "Tag bạn bè",
-                actions: [],
+                actions: [{
+                    className: "btn-post",
+                    onClick: () => {
+
+                        this.setState({stepIndex: 0})
+                    },
+                    content: "Xong",
+
+
+                }],
                 onBack: () => this.setState({stepIndex: 0}),
                 component: (
                     <TagFriends
                         tagged={this.state.tagged}
-                        onTag={newTag => this.setState({tagged: this.state.tagged.concat(newTag)})}
+                        onTag={tagged => this.setState({tagged})}
                     />
                 )
             }
@@ -169,20 +182,11 @@ class CreatePostModal extends Component {
                         title={(
                             <>
                                 {onBack && (
-                                    <div className="back-wrapper">
-                                        <Tooltip
-                                            position={"top"}
-                                            text={() => "Trở lại"}
-                                            className={"d-none"}
-                                        >
-                                            <button className="btn btn-back" onClick={onBack}>
-
-                                            </button>
-
-                                        </Tooltip>
+                                    <div className="back-wrapper" onClick={onBack}>
+                                        <i className="far fa-long-arrow-alt-left"></i>
                                     </div>
                                 )}
-                                <span style={{marginLeft: onBack ? "15px" : "0"}}>{title}</span>
+                                <span style={{marginLeft: onBack ? "10px" : "0"}}>{title}</span>
                             </>
                         )
 

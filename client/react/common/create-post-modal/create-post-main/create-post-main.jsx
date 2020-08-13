@@ -15,6 +15,8 @@ import Editor from 'draft-js-plugins-editor';
 const {Picker} = emojiPlugin;
 import {v4 as uuidv4} from 'uuid';
 import {FilesPreview} from "../files-preview/files-preview";
+import {utilityApi} from "../../../../api/common/utilities-api";
+import debounce from "lodash/debounce"
 
 const CreatePostDropZone = props => {
     const handleUploadFiles = (files) => {
@@ -43,7 +45,6 @@ export class CreatePostMain extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            suggestions: [],
             loadSuggestion: true,
             showEmojiPicker: false,
             filteredSuggestions: [],
@@ -77,22 +78,14 @@ export class CreatePostMain extends Component {
         });
     };
 
+    loadSuggestions = debounce(({value}) => {
+        return utilityApi.searchFriends(value).then(suggestions => this.setState({filteredSuggestions: this.filterSuggestions(suggestions)}))
+    }, 500);
+
     onSearchChange = ({value}) => {
-        this.setState({filteredSuggestions: this.filterSuggestions(this.state.suggestions, value)});
+        this.loadSuggestions({value})
     };
 
-    filterSuggestions = (data, keyword) => {
-
-        return keyword ? data.map(each => {
-            if ((each.basic_info.username || "").toLowerCase().indexOf(keyword.toLowerCase()) > -1) {
-                return {...each, name: each.basic_info.username}
-            }
-            if ((each.nickname || "").toLowerCase().indexOf(keyword.toLowerCase()) > -1) {
-                return {...each, name: each.nickname}
-            }
-            return each
-        }).filter(each => each.name) : data.map(each => ({...each, name: each.basic_info.username}));
-    }
 
 
     focus = () => {
@@ -102,7 +95,7 @@ export class CreatePostMain extends Component {
 
 
     tagFriends = () => {
-
+        this.props.openTagFriendTab();
     };
 
     addFiles = (files) => {
@@ -116,6 +109,11 @@ export class CreatePostMain extends Component {
 
         this.props.onChange({files: this.props.files.concat(newFiles)});
     };
+
+    filterSuggestions = (data,) => {
+
+        return data.map(each => ({...each, name: each.basic_info.username})) ;
+    }
 
     render() {
         let plugins = [emojiPlugin];
@@ -133,7 +131,7 @@ export class CreatePostMain extends Component {
 
             }
         ]
-        let {policy} = this.props;
+        let {policy, tagged} = this.props;
         let user = userInfo.getState();
         const {MentionSuggestions} = this.mentionPlugin;
         return (
@@ -150,7 +148,13 @@ export class CreatePostMain extends Component {
                             />
                         </div>
                         <div className="right-panel">
-                            <div className="username">{user.basic_info.username}</div>
+                            <div className="username">
+                                <span>{user.basic_info.username}</span>
+                                {!!tagged.length && " đang ở cùng "}
+                                {!!tagged.length && tagged.map((each, i) => (
+                                    <span key={each._id}>{each.basic_info.username}{i === tagged.length - 2 && " và "}{i < tagged.length - 2 && ", "}</span>
+                                ))}
+                            </div>
                             <div className="action">
                                 <Select
                                     className={"policy-picker"}
@@ -175,6 +179,7 @@ export class CreatePostMain extends Component {
                             <FilesPreview
                                 files={this.props.files}
                                 removeAll={() => this.props.onChange({files: []})}
+                                toFilesTab={this.props.toFilesTab}
                             />
                         )}
                         <div className="cpm-input-wrapper">
@@ -189,7 +194,7 @@ export class CreatePostMain extends Component {
                                                 ref={(element) => {
                                                     this.editor = element;
                                                 }}
-                                                placeholder={`Hôm nay bạn nghĩ gì, ${user.basic_info.username}?`}
+                                                placeholder={`${user.basic_info.username} ơi, bạn đang nghĩ gì thế?`}
 
                                             />
                                             <MentionSuggestions

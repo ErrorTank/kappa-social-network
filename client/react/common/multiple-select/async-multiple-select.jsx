@@ -27,6 +27,9 @@ export class AsyncMultipleSelect extends Component {
         if(this.props.fetchOnMount){
             this.callApi(this.state.keyword);
         }
+        if(this.props.focus){
+            this.input.current.focus();
+        }
     }
 
     handleAddItem = item => {
