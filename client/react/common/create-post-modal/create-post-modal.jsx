@@ -148,7 +148,16 @@ class CreatePostModal extends Component {
                 )
             },{
                 title: "Tag bạn bè",
-                actions: [],
+                actions: [{
+                    className: "btn-post",
+                    onClick: () => {
+
+                        this.setState({stepIndex: 0})
+                    },
+                    content: "Xong",
+
+
+                }],
                 onBack: () => this.setState({stepIndex: 0}),
                 component: (
                     <TagFriends

@@ -133,7 +133,7 @@ export class CreatePostMain extends Component {
 
             }
         ]
-        let {policy} = this.props;
+        let {policy, tagged} = this.props;
         let user = userInfo.getState();
         const {MentionSuggestions} = this.mentionPlugin;
         return (
@@ -150,7 +150,13 @@ export class CreatePostMain extends Component {
                             />
                         </div>
                         <div className="right-panel">
-                            <div className="username">{user.basic_info.username}</div>
+                            <div className="username">
+                                <span>{user.basic_info.username}</span>
+                                {!!tagged.length && " đang ở cùng "}
+                                {!!tagged.length && tagged.map((each, i) => (
+                                    <span key={each._id}>{each.basic_info.username}{i === tagged.length - 2 && " và "}{i < tagged.length - 2 && ", "}</span>
+                                ))}
+                            </div>
                             <div className="action">
                                 <Select
                                     className={"policy-picker"}
@@ -189,7 +195,7 @@ export class CreatePostMain extends Component {
                                                 ref={(element) => {
                                                     this.editor = element;
                                                 }}
-                                                placeholder={`Hôm nay bạn nghĩ gì, ${user.basic_info.username}?`}
+                                                placeholder={`${user.basic_info.username} ơi, bạn đang nghĩ gì thế?`}
 
                                             />
                                             <MentionSuggestions
