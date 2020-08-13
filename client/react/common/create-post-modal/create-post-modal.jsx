@@ -88,7 +88,7 @@ class CreatePostModal extends Component {
     render() {
         let {onClose,} = this.props;
         let {loading} = this.state;
-        console.log(this.state.files)
+
 
         let steps = [
             {
@@ -105,7 +105,9 @@ class CreatePostModal extends Component {
                         {...this.state}
                         onChange={data => this.setState({...data})}
                         openTagFriendTab={() => this.setState({stepIndex: 3})}
-                        toFilesTab={() => this.setState({stepIndex: 1})}
+                        toFilesTab={() => {
+                            this.state.files.length === 1 ? this.setState({stepIndex: 2, selected: this.state.files[0]}) :this.setState({stepIndex: 1})
+                        }}
                     />
                 )
             }, {
@@ -116,7 +118,7 @@ class CreatePostModal extends Component {
                     onClick: () => this.upload.click(),
                     content: "Thêm ảnh/videos",
                 }, {
-                    className: "btn-done",
+                    className: "btn-post",
                     onClick: () => this.setState({stepIndex: 0}),
                     content: "Xong",
 
