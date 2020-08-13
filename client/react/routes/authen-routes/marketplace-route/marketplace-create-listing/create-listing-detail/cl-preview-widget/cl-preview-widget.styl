@@ -142,8 +142,7 @@
               }
             }  
             .decription-wrapper{
-              filter: grayscale(100%) contrast(30%) brightness(150%);
-              pointer-events: none;
+              
             }
             .location-wrapper{
               margin: 12px 0px;  
@@ -162,27 +161,72 @@
         } 
         .seller-info-wrapper{
           margin-bottom: 12px;
-          .user-avatar-wrapper{
-            display: inline-block;
-            vertical-align: middle;
-            width: 40px;
-            height: 40px;
-            overflow: hidden;
-            border-radius: 50%;
-            margin: auto;
-            position: relative;
-            margin: 8px 12px 8px 0;
-            img{
-              position: absolute;
-              left: 50%;
-              top: 50%;
-              transform: translate(-50%,-50%);
-              height: 41px;
+          
+          padding: 0 8px;
+          .seller-info-header{
+            border-top: 1px solid lightgray;
+            margin: 0 8px;
+            padding: 15px 0 4px 0;
+            font-size: 17px;
+            font-weight: 600;
+          }
+          .seller-info-body{
+            display: flex;
+            align-items: center;
+            .seller-avatar-wrapper{
+              display: inline-block;
+              vertical-align: middle;
+              width: 40px;
+              height: 40px;
+              overflow: hidden;
+              border-radius: 50%;
+              margin: auto;
+              position: relative;
+              margin: 8px 12px 8px 0;
+              img{
+                position: absolute;
+                left: 50%;
+                top: 50%;
+                transform: translate(-50%,-50%);
+                height: 41px;
+              }
             }
-          }  
+            .seller-name-wrapper{
+              .user-name{
+                font-size: 15px;
+                font-weight: 600;
+              }
+            }
+          }
+          
         }     
       }
+
+      .send-message-wrapper{
+        border-top: 0.8px solid lightgray 
+        padding: 10px 16px;
+        
+        .send-message-header{
+          display: flex;
+          align-items: center
+          i{
+            font-size: 16px;
+            margin-right: 8px;
+
+          }
+          .send-message-title{
+            font-size: 15px;
+            font-weight: 400;
+          }
+        }
+      }
+
     } 
 
   }
+}
+
+.gray-filter{
+  filter: grayscale(100%) contrast(30%) brightness(150%);
+  // pointer-events: none;
 }

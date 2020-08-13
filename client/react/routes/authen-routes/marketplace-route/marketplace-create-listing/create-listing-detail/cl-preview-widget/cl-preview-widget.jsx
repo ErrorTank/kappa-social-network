@@ -78,19 +78,19 @@ export class CreateListingPreviewWidget extends Component {
                 </div>
               </div>
 
-              <div className='button-section-wrapper'>
+              <div className='button-section-wrapper gray-filter'>
                 <div className='button-display send-text'>
-                  <i class='fab fa-facebook-messenger'></i>
+                  <i className='fab fa-facebook-messenger'></i>
                   <span>Nhắn tin</span>
                 </div>
                 <div className='button-display'>
-                  <i class='fas fa-bookmark'></i>
+                  <i className='fas fa-bookmark'></i>
                 </div>
                 <div className='button-display'>
-                  <i class='fas fa-share'></i>
+                  <i className='fas fa-share'></i>
                 </div>
                 <div className='button-display'>
-                  <i class='fas fa-ellipsis-h'></i>
+                  <i className='fas fa-ellipsis-h'></i>
                 </div>
               </div>
 
@@ -133,20 +133,27 @@ export class CreateListingPreviewWidget extends Component {
                 </div>
               </div>
 
-              <div className='seller-info-wrapper'>
+              <div className='seller-info-wrapper gray-filter'>
                 <div className='seller-info-header'>Thông tin về người bán</div>
                 <div className='seller-info-body'>
-                  <div className='user-avatar-wrapper'>
-                    <img src={user.avatar} alt='user avatar' />
+                  <div className='seller-avatar-wrapper'>
+                    <img src={user.avatar} alt='seller avatar' />
                   </div>
-                  <div className='user-info-wrapper'>
+                  <div className='seller-name-wrapper'>
                     <div className='user-name'>{user.basic_info.username}</div>
                   </div>
                 </div>
               </div>
             </div>
 
-            <div className='send-info-wrapper'></div>
+            <div className='send-message-wrapper'>
+              <div className='send-message-header gray-filter'>
+                <i className='fab fa-facebook-messenger'></i>
+                <div className='send-message-title'>
+                  Gửi tin nhắn cho người bán
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>

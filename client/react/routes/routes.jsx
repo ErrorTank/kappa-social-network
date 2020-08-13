@@ -192,35 +192,31 @@ export class App extends React.Component {
   }
 
   render() {
-
     return (
       <div className='app'>
         <ThemeController>
           {() => (
-              <>
-
-                <NotificationPrompt
+            <>
+              <NotificationPrompt
+                value={this.state.showNotificationPrompt}
+                onChange={(value) =>
+                  this.setState({ showNotificationPrompt: value })
+                }
+              />
+              <div id='main-route'>
+                <TopFloatNotificationRegistry timeout={5000} />
+                <Router history={customHistory}>
+                  <NotificationStateContext.Provider
                     value={this.state.showNotificationPrompt}
-                    onChange={(value) => this.setState({ showNotificationPrompt: value })}
-                />
-                <div id='main-route'>
-
-                  <TopFloatNotificationRegistry timeout={5000} />
-                  <Router history={customHistory}>
-                    <NotificationStateContext.Provider
-                        value={this.state.showNotificationPrompt}
-                    >
-                      <MainRoute />
-                    </NotificationStateContext.Provider>
-                    <ModalsRegistry />
-                  </Router>
-                  <button></button>
-                </div>
-              </>
-
+                  >
+                    <MainRoute />
+                  </NotificationStateContext.Provider>
+                  <ModalsRegistry />
+                </Router>
+              </div>
+            </>
           )}
         </ThemeController>
-
       </div>
     );
   }
