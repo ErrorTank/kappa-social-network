@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { classnames } from 'classnames';
+import { userInfo } from './../../../../../../../common/states/common';
 export class CreateListingPreviewWidget extends Component {
   constructor(props) {
     super(props);
@@ -33,6 +34,7 @@ export class CreateListingPreviewWidget extends Component {
     },
   ];
   render() {
+    let user = userInfo.getState();
     const { state } = this.props;
     const { title, price, category, condition, type, ...other } = state;
     console.log(state);
@@ -131,8 +133,19 @@ export class CreateListingPreviewWidget extends Component {
                 </div>
               </div>
 
-              <div className='seller-info-wrapper'></div>
+              <div className='seller-info-wrapper'>
+                <div className='seller-info-header'>Thông tin về người bán</div>
+                <div className='seller-info-body'>
+                  <div className='user-avatar-wrapper'>
+                    <img src={user.avatar} alt='user avatar' />
+                  </div>
+                  <div className='user-info-wrapper'>
+                    <div className='user-name'>{user.basic_info.username}</div>
+                  </div>
+                </div>
+              </div>
             </div>
+
             <div className='send-info-wrapper'></div>
           </div>
         </div>
