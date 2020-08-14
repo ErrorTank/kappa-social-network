@@ -1,8 +1,9 @@
 import React, {Component} from 'react';
 import {CommonInput} from "../../common-input/common-input";
 import {TagBox} from "../../tag-box/tag-box";
-import {getBase64Image, getImageDimensions} from "../../../../common/utils/file-upload-utils";
+import {getBase64Image} from "../../../../common/utils/file-upload-utils";
 import pick from "lodash/pick";
+import {ImageTagWrapper} from "../../image-tag-wrapper/image-tag-wrapper";
 
 export class FileConfig extends Component {
     constructor(props) {
@@ -12,12 +13,10 @@ export class FileConfig extends Component {
             tagged: props.file.tagged || [],
             base64Image: null,
             loading: true,
-            width: 0,
-            height: 0
         }
-        Promise.all([getBase64Image(props.file.file), getImageDimensions(props.file.file)]).then(([base64Image, {width, height}]) => {
+        getBase64Image(props.file.file).then((base64Image) => {
 
-            this.setState({loading: false, base64Image, width, height})
+            this.setState({loading: false, base64Image})
         })
     }
 
@@ -26,10 +25,8 @@ export class FileConfig extends Component {
     }
 
     render() {
-        let {caption, tagged, width, height, loading, base64Image} = this.state;
-        let ratio = width / height;
-        let baseWidth = (width <= 640 ? width : 640);
-        let baseHeight = (height <= 400 ? height : 400);
+        let {caption, tagged, loading, base64Image} = this.state;
+
         return (
             <div className="file-config">
                 <div className="left-panel">
@@ -53,14 +50,17 @@ export class FileConfig extends Component {
                         <p className="tag-title">
                             Nhấn vào ảnh để tag bạn bè
                         </p>
-                        <div className="image-wrapper" style={{
-                            width: width >= height ? baseWidth : baseHeight * ratio,
-                            height: width >= height ? baseWidth / ratio : baseHeight
-                        }}>
-                            {!loading && (
-                                <img src={base64Image}/>
-                            )}
-                        </div>
+                        <ImageTagWrapper
+                            file={this.props.file.file}
+                            className={"image-wrapper"}
+                        >
+                            {() => {
+                                return !loading && (
+                                    <img src={base64Image}/>
+                                )
+                            }}
+                        </ImageTagWrapper>
+
                     </div>
                 </div>
             </div>
