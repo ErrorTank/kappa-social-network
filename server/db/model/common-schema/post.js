@@ -68,7 +68,16 @@ const postSchema = {
                 path: String,
                 name: String,
                 origin_path: String,
-                caption: String
+                caption: String,
+                tagged: {
+                    default: [],
+                    type: [
+                        {
+                            type: ObjectId,
+                            ref: "User"
+                        }
+                    ]
+                },
             }
         ]
     },

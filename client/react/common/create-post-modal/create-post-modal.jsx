@@ -5,7 +5,7 @@ import {CommonModalLayout} from "../modal/common-modal-layout";
 
 import {ThemeContext} from "../../context/theme-context";
 
-
+import {v4 as uuidv4} from 'uuid';
 import {createEditorStateWithText} from 'draft-js-plugins-editor';
 import {CreatePostMain} from "./create-post-main/create-post-main";
 import {Tooltip} from "../tooltip/tooltip";
@@ -17,6 +17,7 @@ import {FileConfig} from "./file-config/file-config";
 import {TagFriends} from "./tag-friends/tag-friends";
 import {transformEditorState} from "../../../common/utils/editor-utils";
 import {convertToRaw} from "draft-js";
+import {mergeArray} from "../../../common/utils/array-utils";
 
 
 export const PostPolicies = [
@@ -73,6 +74,7 @@ class CreatePostModal extends Component {
     }
 
     addFiles = (files) => {
+
         let newFiles = Array.from(files).map(file => {
             return isImageFile(file.name) ? {fileID: uuidv4(), file, type: "image"} : {
                 fileID: uuidv4(),
@@ -114,7 +116,7 @@ class CreatePostModal extends Component {
                 title: "Ảnh và videos",
                 onBack: () => this.setState({stepIndex: 0}),
                 actions: [{
-                    className: "btn-add-more",
+                    className: "btn-outline-primary",
                     onClick: () => this.upload.click(),
                     content: "Thêm ảnh/videos",
                 }, {
@@ -127,18 +129,20 @@ class CreatePostModal extends Component {
                     <FilesDisplay
                         files={this.state.files}
                         onChangeFiles={files => this.setState({files})}
-                        onSelect={(file) => this.setState({selected: file})}
+                        onSelect={(file) => this.setState({selected: file, stepIndex: 2})}
+                        onRemove={file => {
+                            let newFiles = this.state.files.filter(each => each.fileID !== file.fileID);
+                            this.setState({files: newFiles, stepIndex: newFiles.length ? 1 : 0})
+                        }}
                     />
                 )
             }, {
                 title: "Chi tiết ảnh",
-                onBack: () => this.setState({stepIndex: 1}),
+                onBack: () => this.setState({stepIndex: this.state.files.length === 1 ? 0 : 1}),
                 actions: [{
-                    className: "btn-done",
-                    onClick: (file) => {
-                        let newFiles = [...this.state.files];
-                        newFiles.splice(newFiles.findIndex(each => each.fileID === file.fileID), 1, file);
-                        this.setState({files: newFiles, stepIndex: 1})
+                    className: "btn-post",
+                    onClick: () => {
+                        this.fileConf.save();
                     },
                     content: "Lưu",
 
@@ -146,7 +150,15 @@ class CreatePostModal extends Component {
                 }],
                 component: (
                     <FileConfig
+                        ref={fileConf => this.fileConf = fileConf}
                         file={this.state.selected}
+                        onChange={file => {
+                            let newFiles = [...this.state.files];
+                            newFiles.splice(newFiles.findIndex(each => each.fileID === file.fileID), 1, file);
+                            this.setState({files: newFiles, stepIndex: newFiles.length === 1 ? 0 : 1})
+                            let newTagged = mergeArray(this.state.tagged, file.tagged, (item1, item2) => item1._id === item2._id);
+                            this.setState({tagged: newTagged})
+                        }}
                     />
                 )
             },{
@@ -177,7 +189,7 @@ class CreatePostModal extends Component {
             <ThemeContext.Consumer>
                 {({darkMode}) => (
                     <CommonModalLayout
-                        className="create-post-modal"
+                        className={classnames("create-post-modal", {expand: this.state.stepIndex === 2})}
                         onClose={onClose}
                         title={(
                             <>
