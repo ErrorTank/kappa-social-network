@@ -167,7 +167,12 @@ export class ListingInfo extends Component {
               - Bạn có thể thêm tối đa {pictureLimit} ảnh
             </span>
           </div>
-          <div className='add-picture-section'></div>
+          <div className='add-picture-section'>
+            <div className='add-picture-button'>
+              <i class='fas fa-file-plus'></i>
+              <span>Thêm ảnh</span>
+            </div>
+          </div>
         </div>
 
         {inputField &&

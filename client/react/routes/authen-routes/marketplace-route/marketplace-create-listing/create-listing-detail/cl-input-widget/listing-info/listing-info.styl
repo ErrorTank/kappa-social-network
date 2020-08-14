@@ -23,6 +23,27 @@
       align-items: center;
       border-radius: 4px;
       border: 1px solid lightgray;
+      .add-picture-button{
+        cursor pointer
+        border-radius: 6px;
+        padding: 0 12px;
+        background-color: secondaryBtnLight;
+        height 36px
+        display: flex;
+        align-items: center;
+        i{
+          margin: 0 3px;
+          font-size: 16px;
+        }
+        span{
+          font-size: 15px
+          font-weight: 600
+          margin: 0 3px;
+        }
+        &:hover{
+          background-color: darken(secondaryBtnLight, 10%)
+        }
+      }
     }
   }
 }
