@@ -5,7 +5,7 @@ import {CommonModalLayout} from "../modal/common-modal-layout";
 
 import {ThemeContext} from "../../context/theme-context";
 
-
+import {v4 as uuidv4} from 'uuid';
 import {createEditorStateWithText} from 'draft-js-plugins-editor';
 import {CreatePostMain} from "./create-post-main/create-post-main";
 import {Tooltip} from "../tooltip/tooltip";
@@ -73,6 +73,7 @@ class CreatePostModal extends Component {
     }
 
     addFiles = (files) => {
+        console.log("???")
         let newFiles = Array.from(files).map(file => {
             return isImageFile(file.name) ? {fileID: uuidv4(), file, type: "image"} : {
                 fileID: uuidv4(),
@@ -114,7 +115,7 @@ class CreatePostModal extends Component {
                 title: "Ảnh và videos",
                 onBack: () => this.setState({stepIndex: 0}),
                 actions: [{
-                    className: "btn-add-more",
+                    className: "btn-outline-primary",
                     onClick: () => this.upload.click(),
                     content: "Thêm ảnh/videos",
                 }, {
@@ -127,18 +128,22 @@ class CreatePostModal extends Component {
                     <FilesDisplay
                         files={this.state.files}
                         onChangeFiles={files => this.setState({files})}
-                        onSelect={(file) => this.setState({selected: file})}
+                        onSelect={(file) => this.setState({selected: file, stepIndex: 2})}
+                        onRemove={file => {
+                            let newFiles = this.state.files.filter(each => each.fileID !== file.fileID);
+                            this.setState({files: this.state.files.filter(each => each.fileID !== file.fileID), stepIndex: newFiles.length ? 1 : 0})
+                        }}
                     />
                 )
             }, {
                 title: "Chi tiết ảnh",
-                onBack: () => this.setState({stepIndex: 1}),
+                onBack: () => this.setState({stepIndex: this.state.files.length === 1 ? 0 : 1}),
                 actions: [{
-                    className: "btn-done",
+                    className: "btn-post",
                     onClick: (file) => {
                         let newFiles = [...this.state.files];
                         newFiles.splice(newFiles.findIndex(each => each.fileID === file.fileID), 1, file);
-                        this.setState({files: newFiles, stepIndex: 1})
+                        this.setState({files: newFiles, stepIndex: newFiles.length === 1 ? 0 : 1})
                     },
                     content: "Lưu",
 

@@ -21,6 +21,19 @@ html {
     margin-bottom 10px
   }
 }
+.btn-grey{
+  background-color bgLight
+  color commonTextLight
+  padding 5px 10px !important
+  font-size 1.5rem
+  font-weight 500
+  &:hover{
+    background-color darken(bgLight, 5%)
+  }
+  i{
+    margin-right 6px
+  }
+}
 .app-brand{
   color primaryButton
   font-weight 800
@@ -68,7 +81,23 @@ body {
     color white !important
   }
 }
-
+.round-icon-wrapper{
+  border-radius 50%
+  height 32px
+  width 32px
+  display flex
+  align-items center
+  justify-content center
+  cursor pointer
+  &:hover{
+    background-color darken(bgLight, 5%)
+  }
+  background-color bgLight
+  color commonTextLight
+  i{
+    font-size 2rem
+  }
+}
 .btn-disabled{
   pointer-events none
   opacity 0.5

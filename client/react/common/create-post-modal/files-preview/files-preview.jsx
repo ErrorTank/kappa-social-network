@@ -1,6 +1,6 @@
 import React from 'react';
 import classnames from "classnames"
-import {getBase64Image, getImageDimensions} from "../../../../common/utils/file-upload-utils";
+import {getBase64Image} from "../../../../common/utils/file-upload-utils";
 import {LoadingInline} from "../../loading-inline/loading-inline";
 
 class FilePreview extends React.Component {
@@ -9,18 +9,16 @@ class FilePreview extends React.Component {
         this.state = {
             base64Image: null,
             loading: true,
-            width: 0,
-            height: 0
         }
-        Promise.all([getImageDimensions(props.file.file),getBase64Image(props.file.file)]).then(([{width, height},base64Image]) => {
+        getBase64Image(props.file.file).then((base64Image) => {
 
-            this.setState({loading: false, base64Image, width, height})
+            this.setState({loading: false, base64Image})
         })
     }
 
     render() {
         let {index, length} = this.props;
-        let {loading, base64Image, width, height} = this.state;
+        let {loading, base64Image} = this.state;
         return (
             <div className={classnames("file-preview", `pic-${index + 1}`)}>
                 {length > 5 && index === 4 && (
@@ -31,7 +29,7 @@ class FilePreview extends React.Component {
                 {loading ? (
                     <LoadingInline/>
                 ) : (
-                    <img src={base64Image} style={{width: width >= height ? "auto" : "100%", height: height >= width ? "auto" : "100%"}}/>
+                    <img src={base64Image}/>
                 )}
             </div>
         );
