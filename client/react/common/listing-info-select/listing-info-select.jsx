@@ -38,6 +38,7 @@ export class ListingInfoSelect extends Component {
       getOptionKey = (each, index) => index,
       id,
       isSelected = (option) => false,
+      ...others
     } = this.props;
 
     return (
@@ -62,6 +63,7 @@ export class ListingInfoSelect extends Component {
                 className={classnames('label-wrapper', {
                   'has-value': value,
                 })}
+                {...others}
               >
                 <span className='listing-info-value'>
                   {value ? displayAs(value) : label ? label : 'Chọn'}

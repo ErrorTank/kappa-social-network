@@ -100,7 +100,6 @@ export class ListingInfo extends Component {
     }
   };
   handlePriceDisplay = (name, value) => {
-    // this.props.updateValue([name], value);
     const re = /^[0-9\b]+$/;
     value = value.replace(' ₫', '');
     let newValue = value.split('.').join('');
@@ -117,10 +116,37 @@ export class ListingInfo extends Component {
     }
   };
   mouse = (name) => {
-    this.props.updateValue('hoverArr', { [name]: true });
+    switch (name) {
+      case 'title':
+      case 'make':
+      case 'year':
+      case 'model':
+      case 'homeType':
+        this.props.updateValue('hoverArr', 'title');
+        break;
+      case 'price':
+      case 'pricePerMonth':
+        this.props.updateValue('hoverArr', 'price');
+        break;
+      case 'size':
+      case 'condition':
+      case 'brand':
+      case 'platform':
+      case 'carrie':
+      case 'deviceName':
+      case 'material':
+        this.props.updateValue('hoverArr', 'category');
+        break;
+      case 'decription':
+        this.props.updateValue('hoverArr', 'decription');
+        break;
+      case 'location':
+        this.props.updateValue('hoverArr', 'location');
+        break;
+    }
   };
   mouseOut = (name) => {
-    this.props.updateValue('hoverArr', { [name]: false });
+    this.props.updateValue('hoverArr', '');
   };
   render() {
     const { state, updateValue } = this.props;
@@ -185,6 +211,8 @@ export class ListingInfo extends Component {
                   key={each.englishName}
                   id={each.englishName}
                   value={state[each.englishName]}
+                  onMouseEnter={() => this.mouse(each.englishName)}
+                  onMouseLeave={() => this.mouseOut(each.englishName)}
                   isSelected={(option) =>
                     option.name === state[each.englishName]
                   }

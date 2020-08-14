@@ -33,19 +33,6 @@ export class CreateListingPreviewWidget extends Component {
       title: 'Chất liệu',
     },
   ];
-  checkHover = (type) => {
-    const { hoverArr } = this.props;
-    // return true;
-    // const { title = false, make, year, model, homeType } = hoverArr;
-
-    switch (type) {
-      case 'title':
-        if (hoverArr['title'] || make || year || model || homeType) return true;
-        break;
-      default:
-        return false;
-    }
-  };
   render() {
     let user = userInfo.getState();
     const { state } = this.props;
@@ -82,7 +69,7 @@ export class CreateListingPreviewWidget extends Component {
               <div className='main-info-wrapper'>
                 <div
                   className={classnames('info-title', {
-                    'on-mouse': this.checkHover('title'),
+                    'on-mouse': hoverArr === 'title',
                   })}
                 >
                   {type === 'item'
@@ -97,7 +84,13 @@ export class CreateListingPreviewWidget extends Component {
                     ? state.homeType
                     : 'Tiêu đề'}
                 </div>
-                <div className='info-price'>{price ? price : 'Giá'}</div>
+                <div
+                  className={classnames('info-price', {
+                    'on-mouse': hoverArr === 'price',
+                  })}
+                >
+                  {price ? price : 'Giá'}
+                </div>
                 <div className='info-time-position'>
                   Đã niêm yết vài giây trước tại Hà Nội{' '}
                 </div>
@@ -122,32 +115,48 @@ export class CreateListingPreviewWidget extends Component {
               <div className='addition-info-wrapper'>
                 <div className='addition-info-header'>Chi tiết</div>
                 <div className='addition-info-body'>
-                  {category && (
-                    <div className='addition-info'>
-                      <div className='addition-info-type'>Tình trạng</div>
-                      <div className='addition-info-content'>
-                        {condition ? condition : '___'}
-                      </div>
-                    </div>
-                  )}
-                  {this.additionInfo.map((each) => {
-                    return (
-                      state[each.name] && (
-                        <div className='addition-info'>
-                          <div className='addition-info-type'>{each.title}</div>
-                          <div className='addition-info-content'>
-                            {state[each.name]}
-                          </div>
+                  <div
+                    className={classnames('addition-wrapper', {
+                      'on-mouse': hoverArr === 'category',
+                    })}
+                  >
+                    {category && (
+                      <div className='addition-info'>
+                        <div className='addition-info-type'>Tình trạng</div>
+                        <div className='addition-info-content'>
+                          {condition ? condition : '___'}
                         </div>
-                      )
-                    );
-                  })}
-                  <div className='decription-wrapper'>
+                      </div>
+                    )}
+                    {this.additionInfo.map((each) => {
+                      return (
+                        state[each.name] && (
+                          <div className='addition-info'>
+                            <div className='addition-info-type'>
+                              {each.title}
+                            </div>
+                            <div className='addition-info-content'>
+                              {state[each.name]}
+                            </div>
+                          </div>
+                        )
+                      );
+                    })}
+                  </div>
+                  <div
+                    className={classnames('decription-wrapper', {
+                      'on-mouse': hoverArr === 'decription',
+                    })}
+                  >
                     {state.decription
                       ? state.decription
                       : 'Phần mô tả sẽ hiển thị tại đây'}
                   </div>
-                  <div className='location-wrapper'>
+                  <div
+                    className={classnames('location-wrapper', {
+                      'on-mouse': hoverArr === 'location',
+                    })}
+                  >
                     <div className='location-info'>
                       {state.position ? state.position : 'Vị trí...'}
                     </div>
