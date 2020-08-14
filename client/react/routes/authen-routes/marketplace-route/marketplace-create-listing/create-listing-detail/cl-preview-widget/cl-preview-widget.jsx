@@ -45,7 +45,7 @@ export class CreateListingPreviewWidget extends Component {
       hoverArr,
       ...other
     } = state;
-    console.log(state);
+    // console.log(state);
 
     return (
       <div className='create-listing-preview-widget'>
@@ -53,7 +53,11 @@ export class CreateListingPreviewWidget extends Component {
           <div className='preview-header'>Xem trước</div>
         </div>
         <div className='preview-display-wrapper'>
-          <div className='picture-display-section'>
+          <div
+            className={classnames('picture-display-section', {
+              'on-mouse-image': hoverArr === 'image',
+            })}
+          >
             <div className='image-empty-placeholder'>
               <div className='ie-placeholder-title'>
                 Xem trước bài niêm yết của bạn

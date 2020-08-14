@@ -13,6 +13,7 @@ import { ListingInfoSelect } from '../../../../../../../common/listing-info-sele
 import { v4 as uuidv4 } from 'uuid';
 import { omit, toArray, indexOf } from 'lodash';
 import * as yup from 'yup';
+import { InputFileWrapper } from './../../../../../../../common/file-input/file-input';
 
 export class ListingInfo extends Component {
   constructor(props) {
@@ -25,6 +26,7 @@ export class ListingInfo extends Component {
         title: '',
         price: '',
       },
+      files: [],
     };
   }
   const;
@@ -143,16 +145,27 @@ export class ListingInfo extends Component {
       case 'location':
         this.props.updateValue('hoverArr', 'location');
         break;
+      case 'image':
+        this.props.updateValue('hoverArr', 'image');
+        break;
     }
   };
-  mouseOut = (name) => {
+  mouseOut = () => {
     this.props.updateValue('hoverArr', '');
+  };
+
+  addFiles = (files) => {
+    let newFiles = Array.from(files).map((file) => {
+      return { fileID: uuidv4(), file, type: 'image' };
+    });
+
+    this.setState({ files: this.state.files.concat(newFiles) });
   };
   render() {
     const { state, updateValue } = this.props;
     let { pictureLimit, type, category, ...other } = state;
     const { inputField, error, dependedInput } = this.state;
-    // console.log(this.state.error);
+    console.log(this.state);
     // console.log(state);
 
     return (
@@ -167,12 +180,26 @@ export class ListingInfo extends Component {
               - Bạn có thể thêm tối đa {pictureLimit} ảnh
             </span>
           </div>
-          <div className='add-picture-section'>
-            <div className='add-picture-button'>
-              <i class='fas fa-file-plus'></i>
-              <span>Thêm ảnh</span>
-            </div>
-          </div>
+          <InputFileWrapper
+            multiple={true}
+            accept={'image/*,image/heif,image/heic'}
+            onUploaded={this.addFiles}
+            limitSize={10 * 1024 * 1024}
+          >
+            {({ onClick }) => (
+              <div
+                className='add-picture-section'
+                onClick={onClick}
+                onMouseEnter={() => this.mouse('image')}
+                onMouseLeave={() => this.mouseOut()}
+              >
+                <div className='add-picture-button'>
+                  <i class='fas fa-file-plus'></i>
+                  <span>Thêm ảnh</span>
+                </div>
+              </div>
+            )}
+          </InputFileWrapper>
         </div>
 
         {inputField &&
@@ -190,7 +217,7 @@ export class ListingInfo extends Component {
                   value={state[each.englishName]}
                   error={error[each.englishName]}
                   onMouseEnter={() => this.mouse(each.englishName)}
-                  onMouseLeave={() => this.mouseOut(each.englishName)}
+                  onMouseLeave={() => this.mouseOut()}
                   contentEditable={each.contentEditable}
                   onChange={(e) => {
                     each.errorMessage &&
@@ -217,7 +244,7 @@ export class ListingInfo extends Component {
                   id={each.englishName}
                   value={state[each.englishName]}
                   onMouseEnter={() => this.mouse(each.englishName)}
-                  onMouseLeave={() => this.mouseOut(each.englishName)}
+                  onMouseLeave={() => this.mouseOut()}
                   isSelected={(option) =>
                     option.name === state[each.englishName]
                   }
