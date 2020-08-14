@@ -17,6 +17,7 @@ import {FileConfig} from "./file-config/file-config";
 import {TagFriends} from "./tag-friends/tag-friends";
 import {transformEditorState} from "../../../common/utils/editor-utils";
 import {convertToRaw} from "draft-js";
+import {mergeArray} from "../../../common/utils/array-utils";
 
 
 export const PostPolicies = [
@@ -73,7 +74,7 @@ class CreatePostModal extends Component {
     }
 
     addFiles = (files) => {
-        console.log("???")
+
         let newFiles = Array.from(files).map(file => {
             return isImageFile(file.name) ? {fileID: uuidv4(), file, type: "image"} : {
                 fileID: uuidv4(),
@@ -131,7 +132,7 @@ class CreatePostModal extends Component {
                         onSelect={(file) => this.setState({selected: file, stepIndex: 2})}
                         onRemove={file => {
                             let newFiles = this.state.files.filter(each => each.fileID !== file.fileID);
-                            this.setState({files: this.state.files.filter(each => each.fileID !== file.fileID), stepIndex: newFiles.length ? 1 : 0})
+                            this.setState({files: newFiles, stepIndex: newFiles.length ? 1 : 0})
                         }}
                     />
                 )
@@ -140,10 +141,8 @@ class CreatePostModal extends Component {
                 onBack: () => this.setState({stepIndex: this.state.files.length === 1 ? 0 : 1}),
                 actions: [{
                     className: "btn-post",
-                    onClick: (file) => {
-                        let newFiles = [...this.state.files];
-                        newFiles.splice(newFiles.findIndex(each => each.fileID === file.fileID), 1, file);
-                        this.setState({files: newFiles, stepIndex: newFiles.length === 1 ? 0 : 1})
+                    onClick: () => {
+                        this.fileConf.save();
                     },
                     content: "Lưu",
 
@@ -151,7 +150,15 @@ class CreatePostModal extends Component {
                 }],
                 component: (
                     <FileConfig
+                        ref={fileConf => this.fileConf = fileConf}
                         file={this.state.selected}
+                        onChange={file => {
+                            let newFiles = [...this.state.files];
+                            newFiles.splice(newFiles.findIndex(each => each.fileID === file.fileID), 1, file);
+                            this.setState({files: newFiles, stepIndex: newFiles.length === 1 ? 0 : 1})
+                            let newTagged = mergeArray(this.state.tagged, file.tagged, (item1, item2) => item1._id === item2._id);
+                            this.setState({tagged: newTagged})
+                        }}
                     />
                 )
             },{
@@ -182,7 +189,7 @@ class CreatePostModal extends Component {
             <ThemeContext.Consumer>
                 {({darkMode}) => (
                     <CommonModalLayout
-                        className="create-post-modal"
+                        className={classnames("create-post-modal", {expand: this.state.stepIndex === 2})}
                         onClose={onClose}
                         title={(
                             <>
