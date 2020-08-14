@@ -68,10 +68,16 @@ const getImageDimensions = (img) => {
     }))
 };
 
+const calculateNewDimensions = (dimensions, maxWidth, maxHeight) => {
+  let {width, height} = dimensions;
+  let ratio = width / height;
+};
+
 export {
     formatBytes,
     checkFileSizeExceed,
     isImageFile,
     getBase64Image,
-    getImageDimensions
+    getImageDimensions,
+    calculateNewDimensions
 }

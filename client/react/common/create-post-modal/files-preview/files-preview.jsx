@@ -45,7 +45,7 @@ export const FilesPreview = (props) => {
             </div>
             <div className="fp-actions">
                 <button className="btn btn-edit" onClick={toFilesTab}>
-                    <i className="fas fa-pen"></i> Sửa danh sách
+                    <i className="fas fa-pen"></i> {files.length > 1 ? "Xem danh sách" : "Chỉnh sửa"}
                 </button>
             </div>
             <div className={classnames("fp-list", `list-${files.length < 6 ? files.length : 5 }`)}>
