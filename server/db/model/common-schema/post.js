@@ -73,8 +73,16 @@ const postSchema = {
                     default: [],
                     type: [
                         {
-                            type: ObjectId,
-                            ref: "User"
+                            related: {
+                                type: ObjectId,
+                                ref: "User"
+                            },
+                            ratioX: {
+                                type: Number
+                            },
+                            ratioY: {
+                                type: Number
+                            }
                         }
                     ]
                 },

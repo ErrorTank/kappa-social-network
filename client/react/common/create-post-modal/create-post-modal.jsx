@@ -91,7 +91,7 @@ class CreatePostModal extends Component {
         let {onClose,} = this.props;
         let {loading} = this.state;
 
-
+        console.log(this.state.files)
         let steps = [
             {
                 title: "Tạo bài đăng",
@@ -156,7 +156,7 @@ class CreatePostModal extends Component {
                             let newFiles = [...this.state.files];
                             newFiles.splice(newFiles.findIndex(each => each.fileID === file.fileID), 1, file);
                             this.setState({files: newFiles, stepIndex: newFiles.length === 1 ? 0 : 1})
-                            let newTagged = mergeArray(this.state.tagged, file.tagged, (item1, item2) => item1._id === item2._id);
+                            let newTagged = mergeArray(this.state.tagged, file.tagged.map(each => each.related), (item1, item2) => item1._id === item2._id);
                             this.setState({tagged: newTagged})
                         }}
                     />
@@ -189,7 +189,7 @@ class CreatePostModal extends Component {
             <ThemeContext.Consumer>
                 {({darkMode}) => (
                     <CommonModalLayout
-                        className={classnames("create-post-modal", {expand: this.state.stepIndex === 2})}
+                        className={classnames("create-post-modal", {expand: this.state.stepIndex === 2, "no-padding": this.state.stepIndex === 1})}
                         onClose={onClose}
                         title={(
                             <>

@@ -1,0 +1,37 @@
+.tagged-box{
+  border-radius 5px
+  margin-top 20px
+  padding 8px
+  border 1px solid greyTextLight
+  .tb-label{
+    font-size 1.5rem
+    color greyTextLight
+    font-weight 500
+  }
+  .tag-list{
+
+    white-space pre-wrap
+    .tag{
+      margin-top 10px
+      &:not(:last-of-type){
+        margin-right 8px
+
+      }
+      padding 8px 30px 8px 8px
+      display inline-block
+      background-color rgba(primaryButton, 0.1)
+      color primaryButton
+      font-size 1.4rem
+      font-weight 500
+      position relative
+      i{
+        position absolute
+        font-size 1.8rem
+        cursor pointer
+        top 50%
+        transform translateY(-50%)
+        right 8px
+      }
+    }
+  }
+}
