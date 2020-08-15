@@ -157,12 +157,13 @@ const searchFriends = (userID, keyword) => {
         .then(users => {
             // console.log(users)
             return users.map(each => {
-                // console.log(each.user_chat_rooms)
+                console.log(each.user_chat_rooms)
+                let last_interact = each.user_chat_rooms.find(cr => !cr.is_group_chat && cr.involve_person.find(p => p.related.toString() === each._id.toString()));
                 return ({
                     _id: each._id, ...pick(each.info, ["avatar", "basic_info"]),
-                    last_interact: each.user_chat_rooms.find(cr => !cr.is_group_chat && cr.involve_person.find(p => p.related.toString() === each._id.toString())).last_updated
+                    last_interact: last_interact ? last_interact.last_updated : -1
                 })
-            }).sort((a,b) => new Date(a.last_interact).getTime() - new Date(b.last_interact).getTime())
+            }).sort((a,b) => new Date(b.last_interact).getTime() - new Date(a.last_interact).getTime())
         })
         .then(users => !keyword ? users.slice(0, 10) : users)
 };

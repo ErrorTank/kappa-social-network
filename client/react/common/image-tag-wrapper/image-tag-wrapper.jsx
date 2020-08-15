@@ -1,6 +1,9 @@
 import React, {Component} from 'react';
 import {getImageDimensions} from "../../../common/utils/file-upload-utils";
 import classnames from "classnames"
+import {TagBox} from "./tag-box";
+import {TagSelect} from "./tag-select";
+import {ClickOutside} from "../click-outside/click-outside";
 
 export class ImageTagWrapper extends Component {
     constructor(props) {
@@ -8,53 +11,81 @@ export class ImageTagWrapper extends Component {
         this.state = {
             width: 0,
             height: 0,
-            clickPoint: null
+            centerPoint: null,
+            ratio: null
         }
         getImageDimensions(props.file).then(({width, height}) => {
-            let {maxWidth = 600, maxHeight = 400, className, children, } = props;
+            let {maxWidth = 600, maxHeight = 400} = props;
             let ratio = width / height;
             let baseWidth = (width <= maxWidth ? width : maxWidth);
             let baseHeight = (height <= maxHeight ? height : maxHeight);
             let realWidth = width >= height ? baseWidth : baseHeight * ratio;
             let realHeight = width >= height ? baseWidth / ratio : baseHeight;
-            this.setState({width: realWidth, height: realHeight})
+            this.setState({width: realWidth, height: realHeight, ratio})
         })
     }
 
     handleClickOverlay = (e) => {
         let {threshHold = 68} = this.props;
-        let {width, height,} = this.state;
-        let ratio = width / height;
-        let focusBoxLength = threshHold * ratio;
+        let {width, height, ratio} = this.state;
+        let focusBoxHalfLength = (threshHold * ratio) / 2;
         let bounds = e.target.getBoundingClientRect();
         let x = e.clientX - bounds.left;
         let y = e.clientY - bounds.top;
-        // this.setState({
-        //     checkPoint: {
-        //         x:
-        //     }
-        // })
-        console.log(x)
-        console.log(y)
+        this.setState({
+            centerPoint: {
+                x: x < focusBoxHalfLength ? focusBoxHalfLength : x > (width - focusBoxHalfLength) ? (width - focusBoxHalfLength) : x,
+                y: y < focusBoxHalfLength ? focusBoxHalfLength : y > (height - focusBoxHalfLength) ? (height - focusBoxHalfLength) : y
+            }
+        })
+
     }
 
 
     render() {
-        let {width, height,} = this.state;
-
+        let {width, height, centerPoint, ratio} = this.state;
+        let {children, className, threshHold = 68, api, isTagged, onSelect, tagged} = this.props;
+        let focusBoxLength = threshHold * ratio;
 
         return (
-            <div className={classnames("image-tag-wrapper", className)} style={{
-                width,
-                height
-            }}>
-                {children({})}
-                <div className="tag-overlay">
-                    <div className="tags-container" onClick={this.handleClickOverlay}>
+            <ClickOutside onClickOut={() => this.setState({centerPoint: null})}>
+                <div className={classnames("image-tag-wrapper", className)} style={{
+                    width,
+                    height
+                }}>
+                    {children({})}
+
+                    <div className="tag-overlay">
+                        <div className="tags-container" onClick={this.handleClickOverlay}>
+                            {centerPoint && (
+                                <TagSelect
+                                    position={centerPoint}
+                                    focusBoxLength={focusBoxLength}
+                                    api={api}
+                                    isTagged={isTagged}
+                                    onSelect={user => {
+                                        onSelect(user, width / centerPoint.x, height / centerPoint.y);
+                                        this.setState({centerPoint: null})
+                                    }}
+                                />
+                            )}
+
+                        </div>
+                    </div>
+                    <div className="tag-box-overlay">
+                        <div className="tag-box-container">
+                            {centerPoint && (
+                                <TagBox
+                                    focusBoxLength={focusBoxLength}
+                                    position={centerPoint}
+                                />
+                            )}
+                        </div>
 
                     </div>
                 </div>
-            </div>
+            </ClickOutside>
+
         );
     }
 }

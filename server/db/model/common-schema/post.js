@@ -77,10 +77,10 @@ const postSchema = {
                                 type: ObjectId,
                                 ref: "User"
                             },
-                            x_axis: {
+                            ratioX: {
                                 type: Number
                             },
-                            y_axis: {
+                            ratioY: {
                                 type: Number
                             }
                         }

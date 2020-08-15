@@ -1,9 +1,10 @@
 import React, {Component} from 'react';
 import {CommonInput} from "../../common-input/common-input";
-import {TagBox} from "../../tag-box/tag-box";
+import {TaggedBox} from "../../tagged-box/tagged-box";
 import {getBase64Image} from "../../../../common/utils/file-upload-utils";
 import pick from "lodash/pick";
 import {ImageTagWrapper} from "../../image-tag-wrapper/image-tag-wrapper";
+import {utilityApi} from "../../../../api/common/utilities-api";
 
 export class FileConfig extends Component {
     constructor(props) {
@@ -11,7 +12,7 @@ export class FileConfig extends Component {
         this.state = {
             caption: props.file.caption || "",
             tagged: props.file.tagged || [],
-            base64Image: nul,
+            base64Image: null,
             loading: true,
         }
         getBase64Image(props.file.file).then((base64Image) => {
@@ -36,14 +37,19 @@ export class FileConfig extends Component {
                         label={"Chú thích ảnh"}
                         type={"text"}
                         textArea={true}
+                        placeholder={"Nhập chú thích"}
                         onChange={e => this.setState({caption: e.target.value})}
                     />
-                    <TagBox
-                        list={tagged}
-                        label={"Được gắn thẻ trong ảnh"}
-                        displayAs={each => each.basic_info.username}
-                        onRemove={item => this.setState({tagged: this.state.tagged.filter(each => each._id !== item._id)})}
-                    />
+                    {!!tagged.length && (
+                        <TaggedBox
+                            list={tagged}
+                            label={"Được gắn thẻ trong ảnh"}
+                            displayAs={each => each.related.basic_info.username}
+                            onRemove={tagged => this.setState({tagged})}
+                            getKey={each => each.related._id}
+                            deleteCondition={(t1, t2) => t1.related._id !== t2.related._id}
+                        />
+                    )}
                 </div>
                 <div className="right-panel">
                     <div className="overlay-container">
@@ -52,7 +58,13 @@ export class FileConfig extends Component {
                         </p>
                         <ImageTagWrapper
                             file={this.props.file.file}
+                            tagged={tagged}
                             className={"image-wrapper"}
+                            api={({keyword}) => utilityApi.searchFriends(keyword)}
+                            isTagged={user => tagged.find(item => item.related._id === user._id)}
+                            onSelect={(user, ratioX, ratioY) => {
+                                this.setState({tagged: tagged.concat({related: user, ratioX, ratioY})})
+                            }}
                         >
                             {() => {
                                 return !loading && (
