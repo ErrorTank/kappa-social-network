@@ -28,7 +28,7 @@ export class ListingInfo extends Component {
       },
     };
   }
-  const;
+  // display function
   handleInputDisplay = () => {
     const { state, updateValue } = this.props;
     let {
@@ -62,6 +62,8 @@ export class ListingInfo extends Component {
       }
     }
   };
+
+  //check display change
   componentDidUpdate(prevProps) {
     if (prevProps.state.type !== this.props.state.type) {
       this.handleInputDisplay();
@@ -82,6 +84,8 @@ export class ListingInfo extends Component {
       this.handleSetDependent(fieldByHomeFor, this.props.state.homeFor);
     }
   }
+
+  // check error, only check needed input now
   handleCheckError = (name, message, value) => {
     const { state, updateValue } = this.props;
     if (!value) {
@@ -100,6 +104,8 @@ export class ListingInfo extends Component {
       }));
     }
   };
+
+  // change number->money display
   handlePriceDisplay = (name, value) => {
     const re = /^[0-9\b]+$/;
     value = value.replace(' ₫', '');
@@ -116,6 +122,7 @@ export class ListingInfo extends Component {
       this.props.updateValue([name], '');
     }
   };
+  // hover function
   mouse = (name) => {
     switch (name) {
       case 'title':
@@ -153,6 +160,7 @@ export class ListingInfo extends Component {
     this.props.updateValue('hoverArr', '');
   };
 
+  //file( image in this case ) function
   addFiles = (files) => {
     let newFiles = Array.from(files).map((file) => {
       return { fileID: uuidv4(), file, type: 'image' };
@@ -160,9 +168,18 @@ export class ListingInfo extends Component {
     this.props.updateValue('files', this.props.state.files.concat(newFiles));
     // this.setState({ files: this.state.files.concat(newFiles) });
   };
+  removeFile = (fileID) => {
+    this.props.updateValue(
+      'files',
+      this.props.state.files.filter((file) => file.fileID !== fileID)
+    );
+    // this.setState({
+    //   files: this.state.files.filter((file) => file.fileID !== fileID),
+    // });
+  };
   render() {
     const { state, updateValue } = this.props;
-    let { pictureLimit, type, category, ...other } = state;
+    let { pictureLimit, type, category, files, ...other } = state;
     const { inputField, error, dependedInput } = this.state;
     // console.log(this.state);
     console.log(state.files);
@@ -179,40 +196,55 @@ export class ListingInfo extends Component {
               - Bạn có thể thêm tối đa {pictureLimit} ảnh
             </span>
           </div>
-          {/* <FilesDisplay
-            files={this.state.files}
-            onChangeFiles={(files) => this.setState({ files })}
-            onSelect={(file) => this.setState({ selected: file, stepIndex: 2 })}
-            onRemove={(file) => {
-              let newFiles = this.state.files.filter(
-                (each) => each.fileID !== file.fileID
-              );
-              this.setState({
-                files: newFiles,
-                stepIndex: newFiles.length ? 1 : 0,
-              });
-            }}
-          /> */}
-          <InputFileWrapper
-            multiple={true}
-            accept={'image/*,image/heif,image/heic'}
-            onUploaded={this.addFiles}
-            limitSize={10 * 1024 * 1024}
-          >
-            {({ onClick }) => (
-              <div
-                className='add-picture-section'
-                onClick={onClick}
-                onMouseEnter={() => this.mouse('image')}
-                onMouseLeave={() => this.mouseOut()}
-              >
-                <div className='add-picture-button'>
-                  <i className='fas fa-file-plus'></i>
-                  <span>Thêm ảnh</span>
-                </div>
+          {!!files.length ? (
+            <div className='files-display'>
+              <div className='files-container'>
+                {files.map((file) => (
+                  <FileDisplay
+                    key={file.fileID}
+                    file={file}
+                    onClose={() => this.removeFile(file.fileID)}
+                  />
+                ))}
+                {!!files.length && (
+                  <InputFileWrapper
+                    multiple={true}
+                    accept={'image/*,image/heif,image/heic'}
+                    onUploaded={this.addFiles}
+                    limitSize={10 * 1024 * 1024}
+                  >
+                    {({ onClick }) => (
+                      <div className='add-file' onClick={onClick}>
+                        <i className='fas fa-file-plus'></i>
+                        <span>Thêm ảnh</span>
+                      </div>
+                    )}
+                  </InputFileWrapper>
+                )}
               </div>
-            )}
-          </InputFileWrapper>
+            </div>
+          ) : (
+            <InputFileWrapper
+              multiple={true}
+              accept={'image/*,image/heif,image/heic'}
+              onUploaded={this.addFiles}
+              limitSize={10 * 1024 * 1024}
+            >
+              {({ onClick }) => (
+                <div
+                  className='add-picture-section'
+                  onClick={onClick}
+                  onMouseEnter={() => this.mouse('image')}
+                  onMouseLeave={() => this.mouseOut()}
+                >
+                  <div className='add-picture-button'>
+                    <i className='fas fa-file-plus'></i>
+                    <span>Thêm ảnh</span>
+                  </div>
+                </div>
+              )}
+            </InputFileWrapper>
+          )}
         </div>
 
         {inputField &&
