@@ -10,7 +10,15 @@ export class ImageTagWrapper extends Component {
             height: 0,
             clickPoint: null
         }
-        getImageDimensions(props.file).then(dimensions => this.setState({...dimensions}))
+        getImageDimensions(props.file).then(({width, height}) => {
+            let {maxWidth = 600, maxHeight = 400, className, children, } = props;
+            let ratio = width / height;
+            let baseWidth = (width <= maxWidth ? width : maxWidth);
+            let baseHeight = (height <= maxHeight ? height : maxHeight);
+            let realWidth = width >= height ? baseWidth : baseHeight * ratio;
+            let realHeight = width >= height ? baseWidth / ratio : baseHeight;
+            this.setState({width: realWidth, height: realHeight})
+        })
     }
 
     handleClickOverlay = (e) => {
@@ -33,17 +41,12 @@ export class ImageTagWrapper extends Component {
 
     render() {
         let {width, height,} = this.state;
-        let {maxWidth = 600, maxHeight = 400, className, children, } = this.props;
-        let ratio = width / height;
-        let baseWidth = (width <= maxWidth ? width : maxWidth);
-        let baseHeight = (height <= maxHeight ? height : maxHeight);
-        let realWidth = width >= height ? baseWidth : baseHeight * ratio;
-        let realHeight = width >= height ? baseWidth / ratio : baseHeight;
+
 
         return (
             <div className={classnames("image-tag-wrapper", className)} style={{
-                width: realWidth,
-                height: realHeight
+                width,
+                height
             }}>
                 {children({})}
                 <div className="tag-overlay">

@@ -11,7 +11,7 @@ export class FileConfig extends Component {
         this.state = {
             caption: props.file.caption || "",
             tagged: props.file.tagged || [],
-            base64Image: null,
+            base64Image: nul,
             loading: true,
         }
         getBase64Image(props.file.file).then((base64Image) => {
