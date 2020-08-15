@@ -9,9 +9,9 @@ export const TaggedBox = (props) => {
             </div>
             <div className={"tag-list"}>
                 {list.map(each =>(
-                    <div className={"tag"} key={getKey(each)} onClick={() => onRemove(list.filter(item => deleteCondition(item, each)))}>
+                    <div className={"tag"} key={getKey(each)} >
                          {displayAs(each)}
-                        <i className="fal fa-times"></i>
+                        <i className="fal fa-times" onClick={() => onRemove(list.filter(item => deleteCondition(item, each)))}></i>
                     </div>
                 ))}
             </div>

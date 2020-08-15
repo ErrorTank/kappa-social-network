@@ -65,6 +65,7 @@ export class FileConfig extends Component {
                             onSelect={(user, ratioX, ratioY) => {
                                 this.setState({tagged: tagged.concat({related: user, ratioX, ratioY})})
                             }}
+                            onRemove={tag => this.setState({tagged: tagged.filter(each => each.related._id !== tag.related._id)})}
                         >
                             {() => {
                                 return !loading && (

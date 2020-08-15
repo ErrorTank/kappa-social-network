@@ -44,7 +44,7 @@ export class ImageTagWrapper extends Component {
 
     render() {
         let {width, height, centerPoint, ratio} = this.state;
-        let {children, className, threshHold = 68, api, isTagged, onSelect, tagged} = this.props;
+        let {children, className, threshHold = 68, api, isTagged, onSelect, tagged, onRemove} = this.props;
         let focusBoxLength = threshHold * ratio;
 
         return (
@@ -69,6 +69,23 @@ export class ImageTagWrapper extends Component {
                                     }}
                                 />
                             )}
+                            {tagged.map((each, index) => {
+                                return (
+                                    <div className="tag-label" key={each.related._id}
+                                         style={{"zIndex": index + 1, left: width / each.ratioX, top: height / each.ratioY}}
+                                         onClick={e => e.stopPropagation()}
+                                    >
+                                        <div className="label-container">
+                                            <div className="arrow" style={{top: focusBoxLength/2 + "px"}}/>
+                                            <div className="label" style={{top: focusBoxLength/2 + 2 +  "px"}}>
+                                                {each.related.basic_info.username}
+                                                <i className="fal fa-times" onClick={() => onRemove(each)}></i>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                )
+                            })}
 
                         </div>
                     </div>
