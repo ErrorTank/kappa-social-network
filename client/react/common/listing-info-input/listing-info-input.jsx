@@ -89,6 +89,7 @@ export class ListingInfoInput extends Component {
                     onBlur={() => this.setState({ focus: false })}
                     id={id}
                     value={value}
+                    onChange={others.onChange}
                     ref={(input) => (this.input = input)}
                   />
                 )}

@@ -24,6 +24,7 @@ class CreateListingDetail extends KComponent {
       model: '',
       make: '',
       hoverArr: '',
+      files: [],
     };
   }
   updateValue = (key, val) => {

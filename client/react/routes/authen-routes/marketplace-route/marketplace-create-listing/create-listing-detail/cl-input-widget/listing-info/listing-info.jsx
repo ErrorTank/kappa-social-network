@@ -26,7 +26,6 @@ export class ListingInfo extends Component {
         title: '',
         price: '',
       },
-      files: [],
     };
   }
   const;
@@ -158,15 +157,15 @@ export class ListingInfo extends Component {
     let newFiles = Array.from(files).map((file) => {
       return { fileID: uuidv4(), file, type: 'image' };
     });
-
-    this.setState({ files: this.state.files.concat(newFiles) });
+    this.props.updateValue('files', this.props.state.files.concat(newFiles));
+    // this.setState({ files: this.state.files.concat(newFiles) });
   };
   render() {
     const { state, updateValue } = this.props;
     let { pictureLimit, type, category, ...other } = state;
     const { inputField, error, dependedInput } = this.state;
-    console.log(this.state);
-    // console.log(state);
+    // console.log(this.state);
+    console.log(state.files);
 
     return (
       <div className='listing-info'>
@@ -180,6 +179,20 @@ export class ListingInfo extends Component {
               - Bạn có thể thêm tối đa {pictureLimit} ảnh
             </span>
           </div>
+          {/* <FilesDisplay
+            files={this.state.files}
+            onChangeFiles={(files) => this.setState({ files })}
+            onSelect={(file) => this.setState({ selected: file, stepIndex: 2 })}
+            onRemove={(file) => {
+              let newFiles = this.state.files.filter(
+                (each) => each.fileID !== file.fileID
+              );
+              this.setState({
+                files: newFiles,
+                stepIndex: newFiles.length ? 1 : 0,
+              });
+            }}
+          /> */}
           <InputFileWrapper
             multiple={true}
             accept={'image/*,image/heif,image/heic'}
@@ -194,7 +207,7 @@ export class ListingInfo extends Component {
                 onMouseLeave={() => this.mouseOut()}
               >
                 <div className='add-picture-button'>
-                  <i class='fas fa-file-plus'></i>
+                  <i className='fas fa-file-plus'></i>
                   <span>Thêm ảnh</span>
                 </div>
               </div>
