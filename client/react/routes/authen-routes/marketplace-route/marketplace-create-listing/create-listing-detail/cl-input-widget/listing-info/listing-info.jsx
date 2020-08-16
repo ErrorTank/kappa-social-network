@@ -14,7 +14,7 @@ import { v4 as uuidv4 } from 'uuid';
 import { omit, toArray, indexOf } from 'lodash';
 import * as yup from 'yup';
 import { InputFileWrapper } from './../../../../../../../common/file-input/file-input';
-
+import { FileDisplay } from './../../../../../../../layout/authen-layout/create-message-widget/chat-box/message-utilities/file-display/file-display';
 export class ListingInfo extends Component {
   constructor(props) {
     super(props);
@@ -166,16 +166,12 @@ export class ListingInfo extends Component {
       return { fileID: uuidv4(), file, type: 'image' };
     });
     this.props.updateValue('files', this.props.state.files.concat(newFiles));
-    // this.setState({ files: this.state.files.concat(newFiles) });
   };
   removeFile = (fileID) => {
     this.props.updateValue(
       'files',
       this.props.state.files.filter((file) => file.fileID !== fileID)
     );
-    // this.setState({
-    //   files: this.state.files.filter((file) => file.fileID !== fileID),
-    // });
   };
   render() {
     const { state, updateValue } = this.props;
@@ -197,8 +193,8 @@ export class ListingInfo extends Component {
             </span>
           </div>
           {!!files.length ? (
-            <div className='files-display'>
-              <div className='files-container'>
+            <div className='images-display'>
+              <div className='images-container'>
                 {files.map((file) => (
                   <FileDisplay
                     key={file.fileID}
