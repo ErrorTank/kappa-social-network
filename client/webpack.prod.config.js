@@ -16,7 +16,9 @@ const envKeys = Object.keys(env).reduce((prev, next) => {
 
 module.exports = {
     mode: "production",
-
+    node: {
+        fs: "empty"
+    },
     watchOptions: {
         ignored: ['node_modules', 'scripts']
     },

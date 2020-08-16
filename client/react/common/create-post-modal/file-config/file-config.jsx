@@ -56,23 +56,23 @@ export class FileConfig extends Component {
                         <p className="tag-title">
                             Nhấn vào ảnh để tag bạn bè
                         </p>
-                        <ImageTagWrapper
-                            file={this.props.file.file}
-                            tagged={tagged}
-                            className={"image-wrapper"}
-                            api={({keyword}) => utilityApi.searchFriends(keyword)}
-                            isTagged={user => tagged.find(item => item.related._id === user._id)}
-                            onSelect={(user, ratioX, ratioY) => {
-                                this.setState({tagged: tagged.concat({related: user, ratioX, ratioY})})
-                            }}
-                            onRemove={tag => this.setState({tagged: tagged.filter(each => each.related._id !== tag.related._id)})}
-                        >
-                            {() => {
-                                return !loading && (
-                                    <img src={base64Image}/>
-                                )
-                            }}
-                        </ImageTagWrapper>
+                        {base64Image && (
+                            <ImageTagWrapper
+                                file={this.props.file}
+                                imgSrc={base64Image}
+                                tagged={tagged}
+                                className={"image-wrapper"}
+                                api={({keyword}) => utilityApi.searchFriends(keyword)}
+                                isTagged={user => tagged.find(item => item.related._id === user._id)}
+                                onSelect={(data) => {
+                                    this.setState({tagged: tagged.concat(data)})
+                                }}
+                                onRemove={tag => this.setState({tagged: tagged.filter(each => each.related._id !== tag.related._id)})}
+                            />
+                        )}
+
+
+
 
                     </div>
                 </div>

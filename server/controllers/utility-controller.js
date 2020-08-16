@@ -3,8 +3,9 @@ const path = require('path');
 const router = express.Router();
 const {authorizationUserMiddleware, authorizationDownloadMiddleware} = require("../common/middlewares/common");
 const {globalSearch, preSearch, getLoginSessionsBrief, searchRelated, searchFriends} = require("../db/db-controllers/utility");
-
+const {fileUpload, tempImageUploader} = require('../common/upload-services/file-upload');
 const urlMetadata = require('url-metadata')
+const {detectFaces} = require("../config/face-detections")
 
 module.exports = () => {
 
@@ -21,7 +22,24 @@ module.exports = () => {
         }).catch(err => next(err));
 
     });
+    router.post(
+        '/detect-faces',
+        authorizationUserMiddleware,
+        tempImageUploader.single('file'),
+        (req, res, next) => {
+            let file = req.file;
+            let origin_path =
+                `${file.filename}`;
+            let {width, height} = req.body;
 
+            return detectFaces(origin_path, {width, height})
+                .then((data) => {
+                    return res.status(200).json(data);
+                }).catch(err => next(err));
+
+
+        }
+    );
     router.get("/download/:path/original-name/:name", authorizationDownloadMiddleware, (req, res, next) => {
         let p = path.resolve(process.cwd() + req.params.path)
 

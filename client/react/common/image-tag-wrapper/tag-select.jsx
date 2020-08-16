@@ -28,12 +28,12 @@ export class TagSelect extends Component {
     }
 
     render() {
-        let {position, focusBoxLength, isTagged, onSelect} = this.props;
+        let {point, isTagged, onSelect} = this.props;
         let {keyword, list, loading} = this.state;
         return (
             <div className="tag-select" style={{
-                top: position.y + focusBoxLength / 2 + 5 +"px",
-                left: position.x
+                top: point.y + point.boxHeight + 5 + "px",
+                left: point.x + point.boxWidth / 2 + "px"
             }} onClick={e => e.stopPropagation()}>
                 <div className="select-wrapper">
                     <div className="select-container">

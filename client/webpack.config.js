@@ -16,6 +16,9 @@ module.exports = {
     entry: {
         loader: ["@babel/polyfill", "./react/loader.jsx"]
     },
+    node: {
+        fs: "empty"
+    },
     output: {
         filename: 'bundle.js',
         chunkFilename: '[name].bundle.js',

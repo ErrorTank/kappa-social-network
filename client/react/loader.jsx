@@ -8,8 +8,11 @@ import 'draft-js-emoji-plugin/lib/plugin.css';
 import 'draft-js/dist/Draft.css';
 import 'emoji-mart/css/emoji-mart.css'
 
+
+
 registerServiceWorker()
     .then(() => authenLoader.init())
-    .then(() => {
+    .then(async () => {
+
         ReactDOM.render(<App/>, document.getElementById("app"));
     });
