@@ -4,6 +4,7 @@ import classnames from "classnames"
 import {TagBox} from "./tag-box";
 import {TagSelect} from "./tag-select";
 import {ClickOutside} from "../click-outside/click-outside";
+import * as faceapi from 'face-api.js';
 
 export class ImageTagWrapper extends Component {
     constructor(props) {
@@ -12,7 +13,8 @@ export class ImageTagWrapper extends Component {
             width: 0,
             height: 0,
             centerPoint: null,
-            ratio: null
+            ratio: null,
+            detections: []
         }
         getImageDimensions(props.file).then(({width, height}) => {
             let {maxWidth = 600, maxHeight = 400} = props;
@@ -25,10 +27,22 @@ export class ImageTagWrapper extends Component {
         })
     }
 
+    // async componentDidMount() {
+    //
+    //     const detections = await faceapi.detectAllFaces(this.img).withFaceLandmarks()
+    //
+    //     this.setState({
+    //         detections: faceapi.resizeResults(detections, { width: this.img.width, height: this.img.height }).map(detect => {
+    //             return detect.detection.box
+    //         })
+    //     })
+    //
+    // }
+
     handleClickOverlay = (e) => {
-        let {threshHold = 68} = this.props;
-        let {width, height, ratio} = this.state;
-        let focusBoxHalfLength = (threshHold * ratio) / 2;
+        let {defaultBoxLength = 70} = this.props;
+        let {width, height} = this.state;
+        let focusBoxHalfLength = defaultBoxLength / 2;
         let bounds = e.target.getBoundingClientRect();
         let x = e.clientX - bounds.left;
         let y = e.clientY - bounds.top;
@@ -43,24 +57,24 @@ export class ImageTagWrapper extends Component {
 
 
     render() {
-        let {width, height, centerPoint, ratio} = this.state;
-        let {children, className, threshHold = 68, api, isTagged, onSelect, tagged, onRemove} = this.props;
-        let focusBoxLength = threshHold * ratio;
+        let {width, height, centerPoint, ratio, detections} = this.state;
+        let { className, defaultBoxLength = 70, api, isTagged, onSelect, tagged, onRemove, imgSrc} = this.props;
 
+        console.log(detections)
         return (
             <ClickOutside onClickOut={() => this.setState({centerPoint: null})}>
                 <div className={classnames("image-tag-wrapper", className)} style={{
                     width,
                     height
                 }}>
-                    {children({})}
 
+                    <img ref={img => this.img = img} src={imgSrc}/>
                     <div className="tag-overlay">
                         <div className="tags-container" onClick={this.handleClickOverlay}>
                             {centerPoint && (
                                 <TagSelect
                                     position={centerPoint}
-                                    focusBoxLength={focusBoxLength}
+                                    focusBoxLength={defaultBoxLength}
                                     api={api}
                                     isTagged={isTagged}
                                     onSelect={user => {
@@ -76,8 +90,8 @@ export class ImageTagWrapper extends Component {
                                          onClick={e => e.stopPropagation()}
                                     >
                                         <div className="label-container">
-                                            <div className="arrow" style={{top: focusBoxLength/2 + "px"}}/>
-                                            <div className="label" style={{top: focusBoxLength/2 + 2 +  "px"}}>
+                                            <div className="arrow" style={{top: defaultBoxLength/2 + "px"}}/>
+                                            <div className="label" style={{top: defaultBoxLength/2 + 2 +  "px"}}>
                                                 {each.related.basic_info.username}
                                                 <i className="fal fa-times" onClick={() => onRemove(each)}></i>
                                             </div>
@@ -91,9 +105,14 @@ export class ImageTagWrapper extends Component {
                     </div>
                     <div className="tag-box-overlay">
                         <div className="tag-box-container">
+                            {detections.map((each, i) => (
+                                <div className="detection" key={i} style={{width: each.width, height: each.height, left : each.left, top: each.top}}>
+
+                                </div>
+                            ))}
                             {centerPoint && (
                                 <TagBox
-                                    focusBoxLength={focusBoxLength}
+                                    focusBoxLength={defaultBoxLength}
                                     position={centerPoint}
                                 />
                             )}
