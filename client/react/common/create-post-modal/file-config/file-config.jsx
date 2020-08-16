@@ -59,6 +59,7 @@ export class FileConfig extends Component {
                         {base64Image && (
                             <ImageTagWrapper
                                 file={this.props.file.file}
+                                imgSrc={base64Image}
                                 tagged={tagged}
                                 className={"image-wrapper"}
                                 api={({keyword}) => utilityApi.searchFriends(keyword)}
@@ -67,9 +68,9 @@ export class FileConfig extends Component {
                                     this.setState({tagged: tagged.concat({related: user, ratioX, ratioY})})
                                 }}
                                 onRemove={tag => this.setState({tagged: tagged.filter(each => each.related._id !== tag.related._id)})}
-                                imgSrc={base64Image}
                             />
                         )}
+
 
 
 

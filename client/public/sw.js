@@ -130,12 +130,16 @@ var exceptionRequestsDev = [
     method: 'GET',
   },
   {
-    endpoint: /https:\/\/localhost:4000\/api\/utilites\/download\/\w+\/original-name\/\w+/,
+    endpoint: /https:\/\/localhost:4000\/api\/utility\/download\/\w+\/original-name\/\w+/,
     method: 'GET',
   },
   {
-    endpoint: /https:\/\/localhost:4000\/api\/utilites\/friends/,
+    endpoint: /https:\/\/localhost:4000\/api\/utility\/friends/,
     method: 'GET',
+  },
+  {
+    endpoint: /https:\/\/localhost:4000\/api\/utility\/detect-faces/,
+    method: 'POST',
   },
   {
     endpoint: /https:\/\/localhost:4000\/api\/chat\/\w+\/user\/\w+\/nickname/,
@@ -168,8 +172,8 @@ var notGetRequests = [
   },
 ];
 
-var CACHE_STATIC_NAME = 'static-v1597568028999';
-var CACHE_DYNAMIC_NAME = 'dynamic-v1597568028999';
+var CACHE_STATIC_NAME = 'static-v1597573224625';
+var CACHE_DYNAMIC_NAME = 'dynamic-v1597573224625';
 
 var STATIC_FILES = [
   '/',

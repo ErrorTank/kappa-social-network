@@ -2,6 +2,7 @@ require('dotenv').config({
   path:
     process.env.NODE_ENV === 'production' ? './env/prod.env' : './env/dev.env',
 });
+require('@tensorflow/tfjs-node');
 const https = require('https');
 const fs = require('fs');
 const path = require('path');
@@ -11,6 +12,7 @@ const dbManager = require('./config/db');
 const createRoutes = require('./config/routes');
 const createErrorHandlersMiddleware = require('./utils/error/error-handlers');
 const { createSocketNamespaces } = require('./config/socket/socket');
+const {loadFaceDetecsModels } = require("./config/face-detections");
 
 dbManager
   .init()
@@ -20,6 +22,8 @@ dbManager
   })
   .then((appDb) => {
     // require('./scripts/feedMarketplace');
+
+    loadFaceDetecsModels();
     let environment = process.env.NODE_ENV;
     let server = https.createServer( {
       key: fs.readFileSync(
