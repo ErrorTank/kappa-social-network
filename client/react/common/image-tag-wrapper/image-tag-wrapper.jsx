@@ -6,7 +6,26 @@ import {TagSelect} from "./tag-select";
 import {ClickOutside} from "../click-outside/click-outside";
 import {utilityApi} from "../../../api/common/utilities-api";
 import {LoadingInline} from "../loading-inline/loading-inline";
+import {Tooltip} from "../tooltip/tooltip";
 
+const createDetectionsCache = () => {
+    let detectionsMap = {};
+    return {
+        setDetections: (file, detections) => detectionsMap[file.fileID] = detections,
+        getDetections: async (file, displaySize) => {
+            if(detectionsMap[file.fileID]){
+                return detectionsMap[file.fileID]
+            }
+            return utilityApi.detectImageFaces(file.file, displaySize)
+                .then(data => {
+                    detectionsMap[file.fileID] = [...data];
+                    return data;
+                })
+        }
+    }
+}
+
+export const detectionsCache = createDetectionsCache();
 
 export class ImageTagWrapper extends Component {
     constructor(props) {
@@ -20,15 +39,15 @@ export class ImageTagWrapper extends Component {
             loadDetections: true
         }
 
-        getImageDimensions(props.file).then(({width, height}) => {
+        getImageDimensions(props.file.file).then(({width, height}) => {
             let {maxWidth = 600, maxHeight = 400} = props;
             let ratio = width / height;
             let baseWidth = (width <= maxWidth ? width : maxWidth);
             let baseHeight = (height <= maxHeight ? height : maxHeight);
             let realWidth = width >= height ? baseWidth : baseHeight * ratio;
             let realHeight = width >= height ? baseWidth / ratio : baseHeight;
-            utilityApi.detectImageFaces(props.file, {width: realWidth, height: realHeight}).then(data => {
-                console.log(data)
+            detectionsCache.getDetections(props.file, {width: realWidth, height: realHeight}).then(data => {
+                // console.log(data)
                 this.setState({
                     detections: data.map(each => {
                         let {detection} = each;
@@ -79,12 +98,24 @@ export class ImageTagWrapper extends Component {
 
     }
 
+    onSelectDetection = detection => {
+        let {width, height} = this.state;
+        this.setState({
+            centerPoint: {
+                x: width / detection.ratioX,
+                y: height / detection.ratioY,
+                boxWidth: width / detection.boxWidthRatio,
+                boxHeight: height / detection.boxHeightRatio
+            }
+        })
+    }
+
 
     render() {
         let {width, height, centerPoint, ratio, detections, loadDetections} = this.state;
         let {className, defaultBoxLength = 70, api, isTagged, onSelect, tagged, onRemove, imgSrc} = this.props;
 
-        console.log(detections)
+        // console.log(detections)
         return (
             <ClickOutside onClickOut={() => this.setState({centerPoint: null})}>
                 <div className={classnames("image-tag-wrapper", className)} style={{
@@ -94,6 +125,33 @@ export class ImageTagWrapper extends Component {
                     <img ref={img => this.img = img} src={imgSrc}/>
                     <div className="tag-overlay">
                         <div className="tags-container" onClick={this.handleClickOverlay}>
+                            {detections.map((each, i) => (
+                                <div className="detection" key={i}
+                                     onClick={(e) => {
+                                         e.stopPropagation();
+                                         this.onSelectDetection(each);
+                                     }}
+                                     style={{
+                                         width: width / each.boxWidthRatio,
+                                         height: height / each.boxHeightRatio,
+                                         left: width / each.ratioX,
+                                         top: height / each.ratioY,
+
+                                     }}
+
+                                >
+                                    <Tooltip
+                                        text={() => "Bấm để gắn thẻ"}
+                                        position={"bottom"}
+                                    >
+                                        <div style={{
+                                            width: width / each.boxWidthRatio,
+                                            height: height / each.boxHeightRatio,
+                                        }}/>
+                                    </Tooltip>
+                                </div>
+
+                            ))}
                             {centerPoint && (
                                 <TagSelect
                                     point={centerPoint}
@@ -119,7 +177,6 @@ export class ImageTagWrapper extends Component {
                                 return (
                                     <div className="tag-label" key={each.related._id}
                                          style={{
-                                             "zIndex": index + 1,
                                              left: width / ratioX + boxWidth / 2,
                                              top: height / ratioY + boxHeight / 2
                                          }}
@@ -142,17 +199,7 @@ export class ImageTagWrapper extends Component {
                     </div>
                     <div className="tag-box-overlay">
                         <div className="tag-box-container">
-                            {detections.map((each, i) => (
-                                <div className="detection" key={i}
-                                     style={{
-                                         width: width / each.boxWidthRatio,
-                                         height: height / each.boxHeightRatio,
-                                         left: width / each.ratioX,
-                                         top: height / each.ratioY
-                                     }}>
 
-                                </div>
-                            ))}
                             {centerPoint && (
                                 <TagBox
                                     point={centerPoint}

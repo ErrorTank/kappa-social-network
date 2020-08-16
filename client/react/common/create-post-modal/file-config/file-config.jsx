@@ -58,7 +58,7 @@ export class FileConfig extends Component {
                         </p>
                         {base64Image && (
                             <ImageTagWrapper
-                                file={this.props.file.file}
+                                file={this.props.file}
                                 imgSrc={base64Image}
                                 tagged={tagged}
                                 className={"image-wrapper"}

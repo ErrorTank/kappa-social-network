@@ -41,10 +41,7 @@
       width 100%
       height 100%
       position relative
-      .detection{
-        position absolute
-        border 2px solid red
-      }
+
       .tag-box {
         position absolute
         cursor pointer
@@ -67,9 +64,28 @@
     .tags-container {
       width 100%
       height 100%
+      .detection{
+        position absolute
+        display none
+        cursor pointer
+        border 2px solid white
+        background-color transparent
+        z-index 120
+        box-shadow: 0px 0px 3px #1C1C1C
+        &:hover{
+          z-index 121
+        }
+      }
+      &:hover{
+        .detection{
+          display block
+        }
+      }
+
       position relative
       .tag-label{
         position absolute
+        z-index 20
         &:hover{
           z-index 50 !important
         }
