@@ -20,6 +20,7 @@
   },
   "dependencies": {
     "@babel/polyfill": "^7.4.3",
+    "@tensorflow/tfjs": "^2.3.0",
     "@tensorflow/tfjs-node": "^2.3.0",
     "@tensorflow/tfjs-node-gpu": "^2.3.0",
     "canvas": "^2.6.1",

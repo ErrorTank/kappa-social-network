@@ -1,8 +1,9 @@
+
+// require('@tensorflow/tfjs-node');
 require('dotenv').config({
   path:
     process.env.NODE_ENV === 'production' ? './env/prod.env' : './env/dev.env',
 });
-require('@tensorflow/tfjs-node');
 const https = require('https');
 const fs = require('fs');
 const path = require('path');

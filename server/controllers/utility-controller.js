@@ -30,7 +30,9 @@ module.exports = () => {
             let file = req.file;
             let origin_path =
                 `${file.filename}`;
-            return detectFaces(origin_path)
+            let {width, height} = req.body;
+
+            return detectFaces(origin_path, {width, height})
                 .then((data) => {
                     return res.status(200).json(data);
                 }).catch(err => next(err));

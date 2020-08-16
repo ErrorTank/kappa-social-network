@@ -19,13 +19,7 @@ export class ImageTagWrapper extends Component {
             detections: [],
             loadDetections: true
         }
-        utilityApi.detectImageFaces(props.file).then(data => {
-            console.log(data)
-            this.setState({
-                detections: data,
-                loadDetections: false
-            })
-        })
+
         getImageDimensions(props.file).then(({width, height}) => {
             let {maxWidth = 600, maxHeight = 400} = props;
             let ratio = width / height;
@@ -33,6 +27,24 @@ export class ImageTagWrapper extends Component {
             let baseHeight = (height <= maxHeight ? height : maxHeight);
             let realWidth = width >= height ? baseWidth : baseHeight * ratio;
             let realHeight = width >= height ? baseWidth / ratio : baseHeight;
+            utilityApi.detectImageFaces(props.file, {width: realWidth, height: realHeight}).then(data => {
+                console.log(data)
+                this.setState({
+                    detections: data.map(each => {
+                        let {detection} = each;
+                        let {_box, _imageDims} = detection;
+                        let {_height, _width, _x, _y} = _box;
+                        let {_height: imgHeight, _width: imgWidth} = _imageDims
+                        return {
+                            ratioX: imgWidth / _x,
+                            ratioY: imgHeight / _y,
+                            boxWidthRatio: imgWidth / _width,
+                            boxHeightRatio: imgHeight / _height
+                        }
+                    }),
+                    loadDetections: false
+                })
+            })
             this.setState({width: realWidth, height: realHeight, ratio})
         })
     }
@@ -58,8 +70,10 @@ export class ImageTagWrapper extends Component {
         let y = e.clientY - bounds.top;
         this.setState({
             centerPoint: {
-                x: x < focusBoxHalfLength ? focusBoxHalfLength : x > (width - focusBoxHalfLength) ? (width - focusBoxHalfLength) : x,
-                y: y < focusBoxHalfLength ? focusBoxHalfLength : y > (height - focusBoxHalfLength) ? (height - focusBoxHalfLength) : y
+                x: x < focusBoxHalfLength ? 0 : x > (width - focusBoxHalfLength) ? width - defaultBoxLength : x - focusBoxHalfLength,
+                y: y < focusBoxHalfLength ? 0 : y > (height - focusBoxHalfLength) ? height  - defaultBoxLength : y - focusBoxHalfLength,
+                boxWidth: defaultBoxLength,
+                boxHeight: defaultBoxLength
             }
         })
 
@@ -70,7 +84,7 @@ export class ImageTagWrapper extends Component {
         let {width, height, centerPoint, ratio, detections, loadDetections} = this.state;
         let {className, defaultBoxLength = 70, api, isTagged, onSelect, tagged, onRemove, imgSrc} = this.props;
 
-
+        console.log(detections)
         return (
             <ClickOutside onClickOut={() => this.setState({centerPoint: null})}>
                 <div className={classnames("image-tag-wrapper", className)} style={{
@@ -82,30 +96,39 @@ export class ImageTagWrapper extends Component {
                         <div className="tags-container" onClick={this.handleClickOverlay}>
                             {centerPoint && (
                                 <TagSelect
-                                    position={centerPoint}
-                                    focusBoxLength={defaultBoxLength}
+                                    point={centerPoint}
                                     api={api}
                                     isTagged={isTagged}
                                     onSelect={user => {
-                                        onSelect(user, width / centerPoint.x, height / centerPoint.y);
+                                        onSelect({
+                                            related: user,
+                                            ratioX: width / centerPoint.x,
+                                            ratioY: height / centerPoint.y,
+                                            boxWidthRatio: width / centerPoint.boxWidth,
+                                            boxHeightRatio: height / centerPoint.boxHeight
+
+                                        });
                                         this.setState({centerPoint: null})
                                     }}
                                 />
                             )}
                             {tagged.map((each, index) => {
+                                let {ratioX, ratioY, boxWidthRatio, boxHeightRatio} = each;
+                                let boxWidth = width / boxWidthRatio;
+                                let boxHeight = height / boxHeightRatio;
                                 return (
                                     <div className="tag-label" key={each.related._id}
                                          style={{
                                              "zIndex": index + 1,
-                                             left: width / each.ratioX,
-                                             top: height / each.ratioY
+                                             left: width / ratioX + boxWidth / 2,
+                                             top: height / ratioY + boxHeight / 2
                                          }}
                                          onClick={e => e.stopPropagation()}
                                     >
                                         <div className="label-container">
-                                            <div className="arrow" style={{top: defaultBoxLength / 2 + "px"}}/>
+                                            <div className="arrow" style={{top: boxHeight / 2 + "px"}}/>
                                             <div className="label"
-                                                 style={{top: defaultBoxLength / 2 + 2 + "px"}}>
+                                                 style={{top: boxHeight / 2 + 2 + "px"}}>
                                                 {each.related.basic_info.username}
                                                 <i className="fal fa-times" onClick={() => onRemove(each)}></i>
                                             </div>
@@ -122,18 +145,17 @@ export class ImageTagWrapper extends Component {
                             {detections.map((each, i) => (
                                 <div className="detection" key={i}
                                      style={{
-                                         width: each.width,
-                                         height: each.height,
-                                         left: each.left,
-                                         top: each.top
+                                         width: width / each.boxWidthRatio,
+                                         height: height / each.boxHeightRatio,
+                                         left: width / each.ratioX,
+                                         top: height / each.ratioY
                                      }}>
 
                                 </div>
                             ))}
                             {centerPoint && (
                                 <TagBox
-                                    focusBoxLength={defaultBoxLength}
-                                    position={centerPoint}
+                                    point={centerPoint}
                                 />
                             )}
                         </div>

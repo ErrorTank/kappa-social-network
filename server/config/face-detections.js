@@ -25,13 +25,14 @@ const loadFaceDetecsModels = () => {
     ])
 }
 
-const detectFaces = async (img_url) => {
+const detectFaces = async (img_url, displaySize) => {
     const imgAbsUrl = path.join(__dirname, '../' + process.env.TEMP_IMAGES_DIR + `/${img_url}`);
     const image = await canvas.loadImage(imgAbsUrl);
-    const displaySize = { width: image.width, height: image.height };
-    const detections = await faceapi.detectAllFaces(image);
+
+    const detections = await faceapi.detectAllFaces(image).withFaceLandmarks().withFaceDescriptors();
     fs.unlinkSync(imgAbsUrl);
     return faceapi.resizeResults(detections, displaySize);
+
 }
 
 

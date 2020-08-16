@@ -64,8 +64,8 @@ export class FileConfig extends Component {
                                 className={"image-wrapper"}
                                 api={({keyword}) => utilityApi.searchFriends(keyword)}
                                 isTagged={user => tagged.find(item => item.related._id === user._id)}
-                                onSelect={(user, ratioX, ratioY) => {
-                                    this.setState({tagged: tagged.concat({related: user, ratioX, ratioY})})
+                                onSelect={(data) => {
+                                    this.setState({tagged: tagged.concat(data)})
                                 }}
                                 onRemove={tag => this.setState({tagged: tagged.filter(each => each.related._id !== tag.related._id)})}
                             />

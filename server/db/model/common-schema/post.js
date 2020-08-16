@@ -82,6 +82,12 @@ const postSchema = {
                             },
                             ratioY: {
                                 type: Number
+                            },
+                            boxWidthRatio: {
+                                type: Number
+                            },
+                            boxHeightRatio: {
+                                type: Number
                             }
                         }
                     ]
