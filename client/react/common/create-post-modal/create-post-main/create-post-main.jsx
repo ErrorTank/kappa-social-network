@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import ReactDOM from "react-dom"
 import {Avatar} from "../../avatar/avatar";
 import {Select} from "../../select/select";
 import {ClickOutside} from "../../click-outside/click-outside";
@@ -48,11 +49,13 @@ export class CreatePostMain extends Component {
             loadSuggestion: true,
             showEmojiPicker: false,
             filteredSuggestions: [],
+
         }
+
         this.mentionPlugin = createMentionPlugin({
             entityMutability: 'IMMUTABLE',
             supportWhitespace: true,
-            positionSuggestions: () => ({}),
+            // positionSuggestions: () => ({}),
             mentionPrefix: "@",
             mentions: [],
             mentionComponent: (mentionProps) => {
@@ -64,6 +67,8 @@ export class CreatePostMain extends Component {
             },
         });
     }
+
+
 
     onChange = (editorState) => {
 
@@ -114,6 +119,8 @@ export class CreatePostMain extends Component {
 
         return data.map(each => ({...each, name: each.basic_info.username})) ;
     }
+
+
 
     render() {
         let plugins = [emojiPlugin];
@@ -185,7 +192,7 @@ export class CreatePostMain extends Component {
                         <div className="cpm-input-wrapper">
                             <ClickOutside onClickOut={() => this.setState({showEmojiPicker: false})}>
                                 <div>
-                                    <div className={classnames("cpm-input", {collapsed: this.props.files.length})} onClick={this.focus}>
+                                    <div ref={cpmInput => this.cpmInput = cpmInput} className={classnames("cpm-input", {collapsed: this.props.files.length})} onClick={this.focus}>
                                         <div>
                                             <Editor
                                                 editorState={this.props.editorState}
@@ -200,13 +207,14 @@ export class CreatePostMain extends Component {
                                             <MentionSuggestions
                                                 onSearchChange={this.onSearchChange}
                                                 suggestions={this.state.filteredSuggestions}
-                                                popoverComponent={<MentionPopover/>}
+                                                // popoverComponent={<MentionPopover top={ReactDOM.findDOMNode(this.cpmInput)?.offsetHeight || 0}/>}
                                                 entryComponent={MentionEntry}
                                             />
                                         </div>
 
 
                                     </div>
+
                                     <div className={"emoji-select"} onClick={(e) => {
                                         e.stopPropagation();
                                         this.setState({showEmojiPicker: !this.state.showEmojiPicker})
@@ -270,16 +278,16 @@ export class CreatePostMain extends Component {
         );
     }
 }
-class MentionPopover extends React.Component {
-    render() {
-
-        return (
-            <div className={classnames("cpm-mention-popover")} id={this.props.id} role={"list-box"}>
-                {this.props.children}
-            </div>
-        )
-    }
-}
+// class MentionPopover extends React.Component {
+//     render() {
+//
+//         return (
+//             <div className={classnames("cpm-mention-popover")} id={this.props.id} role={"list-box"} style={{top: this.props.top + "px"}}>
+//                 {this.props.children}
+//             </div>
+//         )
+//     }
+// }
 
 const MentionEntry = props => {
 

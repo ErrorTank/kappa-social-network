@@ -157,6 +157,14 @@ var exceptionRequestsDev = [
     endpoint: /https:\/\/localhost:4000\/api\/messenger\/user\/\w+\/chat-rooms/,
     method: 'GET',
   },
+  {
+    endpoint: /https:\/\/localhost:4000\/api\/post\/create-post/,
+    method: 'POST',
+  },
+  {
+    endpoint: /https:\/\/localhost:4000\/api\/post\/pre-upload-media/,
+    method: 'POST',
+  },
 ];
 
 var notGetRequests = [
@@ -172,8 +180,8 @@ var notGetRequests = [
   },
 ];
 
-var CACHE_STATIC_NAME = 'static-v1597636731283';
-var CACHE_DYNAMIC_NAME = 'dynamic-v1597636731283';
+var CACHE_STATIC_NAME = 'static-v1597661545839';
+var CACHE_DYNAMIC_NAME = 'dynamic-v1597661545839';
 
 var STATIC_FILES = [
   '/',

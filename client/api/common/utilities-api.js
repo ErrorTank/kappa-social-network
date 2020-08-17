@@ -30,7 +30,7 @@ export const utilityApi = {
     getUrlMetadata(url){
         return offlineApi.get(`/utility/url/${encodeURIComponent(url)}/metadata`)
     },
-    detectImageFaces(file, {width, height}){
-        return authenApi.postMultipart(`/utility/detect-faces`, {file, width, height}, {})
+    detectImageFaces(file, {width, height}, fileKey){
+        return authenApi.postMultipart(`/utility/detect-faces`, {file, width, height}, {fileKey})
     }
 };

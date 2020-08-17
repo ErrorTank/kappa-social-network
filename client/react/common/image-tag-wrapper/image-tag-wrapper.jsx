@@ -16,7 +16,7 @@ const createDetectionsCache = () => {
             if(detectionsMap[file.fileID]){
                 return detectionsMap[file.fileID]
             }
-            return utilityApi.detectImageFaces(file.file, displaySize)
+            return utilityApi.detectImageFaces(file.file, displaySize, "file")
                 .then(data => {
                     detectionsMap[file.fileID] = [...data];
                     return data;

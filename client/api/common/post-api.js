@@ -5,8 +5,10 @@ import {urlUtils} from "../../common/utils/url-utils";
 
 export const postApi = {
     createNewPost(data) {
-        return offlineApi.post("/register", data);
+        return authenApi.post("/post/create-post", data);
     },
-
+    preUploadMedia(data, fileKey) {
+        return authenApi.postMultipart("/post/pre-upload-media", data, {fileKey});
+    },
 
 };
