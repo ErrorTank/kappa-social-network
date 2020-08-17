@@ -67,8 +67,18 @@ class CreatePostModal extends Component {
     }
 
     submit = () => {
-
-    }
+        let {policy, editorState, files, tagged} =  this.state;
+        let submittedData = {
+            policy,
+            files: files.map(each => ({
+                file: each.file,
+                tagged: each.tagged,
+                caption: each.caption
+            })),
+            tagged,
+            ...transformEditorState(convertToRaw(editorState.getCurrentContent()))
+        }
+    };
     getInputRawContent = () => {
         return transformEditorState(convertToRaw(this.state.editorState.getCurrentContent())).content;
     }
