@@ -193,7 +193,11 @@ export class ListingInfo extends Component {
             </span>
           </div>
           {!!files.length ? (
-            <div className='images-display'>
+            <div
+              className='images-display'
+              onMouseEnter={() => this.mouse('image')}
+              onMouseLeave={() => this.mouseOut()}
+            >
               <div className='images-container'>
                 {files.map((file) => (
                   <FileDisplay

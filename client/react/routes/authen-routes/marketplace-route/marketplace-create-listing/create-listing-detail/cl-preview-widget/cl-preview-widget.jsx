@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import classnames from 'classnames';
 import { userInfo } from './../../../../../../../common/states/common';
+import { ImageSlider } from './image-slider/image-slider';
+
 export class CreateListingPreviewWidget extends Component {
   constructor(props) {
     super(props);
@@ -43,9 +45,10 @@ export class CreateListingPreviewWidget extends Component {
       condition,
       type,
       hoverArr,
+      files,
       ...other
     } = state;
-    // console.log(state);
+    console.log(state.files);
 
     return (
       <div className='create-listing-preview-widget'>
@@ -58,15 +61,19 @@ export class CreateListingPreviewWidget extends Component {
               'on-mouse-image': hoverArr === 'image',
             })}
           >
-            <div className='image-empty-placeholder'>
-              <div className='ie-placeholder-title'>
-                Xem trước bài niêm yết của bạn
+            {!!files.length ? (
+              <ImageSlider files={files} />
+            ) : (
+              <div className='image-empty-placeholder'>
+                <div className='ie-placeholder-title'>
+                  Xem trước bài niêm yết của bạn
+                </div>
+                <span className='ie-placeholder-content'>
+                  Trong khi tạo, bạn có thể xem trước để biết bài niêm yết sẽ
+                  hiển thị thế nào với mọi người trên Marketplace.
+                </span>
               </div>
-              <span className='ie-placeholder-content'>
-                Trong khi tạo, bạn có thể xem trước để biết bài niêm yết sẽ hiển
-                thị thế nào với mọi người trên Marketplace.
-              </span>
-            </div>
+            )}
           </div>
           <div className='listing-info-section'>
             <div className='info-display-wrapper'>
