@@ -11,6 +11,7 @@
   "author": "Kappa",
   "license": "ISC",
   "devDependencies": {
+    "@babel/compat-data": "^7.9.0",
     "@babel/cli": "^7.4.3",
     "@babel/core": "^7.4.3",
     "@babel/node": "^7.2.2",

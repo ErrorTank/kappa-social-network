@@ -6,7 +6,7 @@ const setupWorkerProcesses = () => {
 
     let numCores = require('os').cpus().length;
 
-    for(let i = 0; i < 2; i++) {
+    for(let i = 0; i <numCores; i++) {
 
         cluster.fork()
 
