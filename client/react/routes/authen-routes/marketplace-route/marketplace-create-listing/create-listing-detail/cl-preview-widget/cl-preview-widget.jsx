@@ -48,7 +48,7 @@ export class CreateListingPreviewWidget extends Component {
       files,
       ...other
     } = state;
-    console.log(state.files);
+    // console.log(state.files);
 
     return (
       <div className='create-listing-preview-widget'>
