@@ -178,7 +178,7 @@ export class ListingInfo extends Component {
     let { pictureLimit, type, category, files, ...other } = state;
     const { inputField, error, dependedInput } = this.state;
     // console.log(this.state);
-    console.log(state.files);
+    // console.log(state.files);
 
     return (
       <div className='listing-info'>
@@ -193,7 +193,11 @@ export class ListingInfo extends Component {
             </span>
           </div>
           {!!files.length ? (
-            <div className='images-display'>
+            <div
+              className='images-display'
+              onMouseEnter={() => this.mouse('image')}
+              onMouseLeave={() => this.mouseOut()}
+            >
               <div className='images-container'>
                 {files.map((file) => (
                   <FileDisplay
