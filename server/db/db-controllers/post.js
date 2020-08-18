@@ -19,9 +19,13 @@ const createNewPost = (value) => {
     })
 };
 
+const getAllPosts = ({userID}) => {
+    return
+}
+
 
 module.exports = {
-
+    getAllPosts,
     createNewPost,
 
 };
