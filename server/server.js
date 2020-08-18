@@ -17,7 +17,7 @@ const createErrorHandlersMiddleware = require('./utils/error/error-handlers');
 const { createSocketNamespaces } = require('./config/socket/socket');
 const {loadFaceDetecsModels } = require("./config/face-detections");
 
-if(cluster.isMaster){
+if(cluster.isMaster && process.env.CLUSTER_ENABLED === '1'){
   setupWorkerProcesses();
 }else{
   dbManager
