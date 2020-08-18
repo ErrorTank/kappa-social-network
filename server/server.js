@@ -51,10 +51,12 @@ if(cluster.isMaster && process.env.CLUSTER_ENABLED === '1'){
         app.use(createErrorHandlersMiddleware);
         const port = process.env.PORT || 4000;
         server.listen(port, () => {
+            console.log('worker:' + cluster.worker.id + " going to send response ");
           console.log(`Server running on port: ${port}`);
         });
       })
       .catch((err) => {
+
         console.error(err);
       });
 
