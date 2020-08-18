@@ -88,7 +88,7 @@ class CreatePostModal extends Component {
                     ...transformEditorState(convertToRaw(editorState.getCurrentContent()))
                 };
 
-                console.log(submittedData)
+                // console.log(submittedData)
                 postApi.createNewPost(submittedData)
                     .then(data => this.props.onClose(data))
             })
@@ -124,7 +124,8 @@ class CreatePostModal extends Component {
                     className: "btn-post btn-block",
                     onClick: this.submit,
                     content: "Đăng",
-                    disabled: !this.getInputRawContent() && !this.state.files.length
+                    disabled: !this.getInputRawContent() && !this.state.files.length,
+                    loading
                 }],
 
                 component: (

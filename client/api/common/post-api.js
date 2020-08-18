@@ -10,5 +10,7 @@ export const postApi = {
     preUploadMedia(data, fileKey) {
         return authenApi.postMultipart("/post/pre-upload-media", data, {fileKey});
     },
-
+    getPostsForFeed(){
+        return authenApi.get(`/post/get-all`)
+    }
 };
