@@ -4,8 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start-dev": "nodemon server.js -L --ext js --exec babel-node --ignore uploads",
-    "start-prod": "node server.js --ext js --exec babel-node"
+    "start-dev": "nodemon server.js -L --ext js --exec babel-node --ignore  uploads",
+    "start-prod": "node  server.js --ext js --exec babel-node"
   },
   "author": "",
   "license": "ISC",
