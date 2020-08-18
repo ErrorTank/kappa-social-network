@@ -6,7 +6,9 @@ import { ImageDisplay } from './image-display/image-display';
 export class ImageSlider extends Component {
   constructor(props) {
     super(props);
-    this.state = {};
+    this.state = {
+      currentSlide: 0,
+    };
   }
   getImageSrc = (file) => {
     getBase64Image(file.file).then((base64Image) => {
@@ -15,11 +17,23 @@ export class ImageSlider extends Component {
   };
   render() {
     const { files } = this.props;
-    console.log(this.state);
+    const { currentSlide } = this.state;
+    console.log(this.props.files);
     return (
       <div className='image-slider'>
-        {!!files.length &&
-          files.map((file) => <ImageDisplay key={file.fileID} file={file} />)}
+        <div className='slider-background'></div>
+        <div className='current-slide'>
+          <ImageDisplay
+            key={files[currentSlide].file.fileID}
+            file={files[currentSlide].filefile}
+          />
+        </div>
+        <div className='image-arr'>
+          {!!files.length &&
+            files.map((file) => <ImageDisplay key={file.fileID} file={file} />)}
+        </div>
+        <div className='next-button'></div>
+        <div className='previous-button'></div>
       </div>
     );
   }
