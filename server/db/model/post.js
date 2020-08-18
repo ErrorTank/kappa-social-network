@@ -1,9 +1,10 @@
-const mongoose = require("mongoose");
+const mongoose = require('mongoose');
+const Schema = mongoose.Schema;
 const ObjectId = mongoose.Schema.Types.ObjectId;
-const editorContentSchema = require("./editor-content");
-const {ReactionSchema} = require("./reactions");
+const editorContentSchema = require("./common-schema/editor-content");
+const {ReactionSchema} = require("./common-schema/reactions");
 
-const postSchema = {
+const postSchema = new Schema({
     policy: {
         type: String,
         enum: ["PERSONAL", "FRIENDS", "PUBLIC"],
@@ -52,15 +53,6 @@ const postSchema = {
         type: Date,
         default: Date.now
     },
-    mentioned_page: {
-        default: [],
-        type: [
-            {
-                type: ObjectId,
-                ref: "Page"
-            }
-        ]
-    },
     files: {
         default: [],
         type: [
@@ -95,28 +87,12 @@ const postSchema = {
             }
         ]
     },
-    mentioned_person: {
-        default: [],
-        type: [
-            {
-                type: ObjectId,
-                ref: "User"
-            }
-        ]
-    },
     ...editorContentSchema,
-    shared_page_post: {
+    shared_post: {
         type: ObjectId,
-        ref: "PagePost"
+        ref: "Post"
     },
-    shared_group_post: {
-        type: ObjectId,
-        ref: "GroupPost"
-    },
-    shared_person_post: {
-        type: ObjectId,
-        ref: "PersonPost"
-    },
+
     comment_disabled: {
         type: Boolean,
         default: false
@@ -134,6 +110,60 @@ const postSchema = {
             }
         ]
     }
-};
+});
+const autoPopulateParent = function(next){
+    this.populate([
+        {
+            path: "belonged_person",
+            model: "User",
+            select: "_id basic_info avatar last_active_at active"
+        }, {
+            path: "tagged",
+            model: "User",
+            select: "_id basic_info avatar last_active_at active"
 
-module.exports = postSchema;
+        }, {
+            path: "mentions.related",
+            model: "User",
+            select: "_id basic_info avatar last_active_at active"
+        },{
+            path: "shared_post",
+            model: "Post",
+        },{
+            path: "files.tagged.related",
+            model: "User",
+            select: "_id basic_info avatar last_active_at active"
+        }
+    ]);
+    next();
+};
+postSchema.pre("find", autoPopulateParent).pre("findOne", autoPopulateParent);
+postSchema.post('save', function(doc, next) {
+    doc.populate([
+        {
+            path: "belonged_person",
+            model: "User",
+            select: "_id basic_info avatar last_active_at active"
+        }, {
+            path: "tagged",
+            model: "User",
+            select: "_id basic_info avatar last_active_at active"
+
+        }, {
+            path: "mentions.related",
+            model: "User",
+            select: "_id basic_info avatar last_active_at active"
+        },{
+            path: "shared_post",
+            model: "Post",
+        },{
+            path: "files.tagged.related",
+            model: "User",
+            select: "_id basic_info avatar last_active_at active"
+        }
+    ]).execPopulate().then(function() {
+        next();
+    });
+} );
+
+module.exports = (db) => db.model("Post", postSchema);

@@ -48,16 +48,17 @@ export const apiFactory = {
       downloadStream(url) {
         window.open(hostURL + url);
       },
-      postMultipart: (url, data, {onLoad, onProgress, onError}) => {
+      postMultipart: (url, data, {onLoad, onProgress, onError, fileKey}) => {
         let formData = new FormData();
         forIn(data, (value, key)=>{
           if (value != null) {
+
             if(Array.isArray(value)){
               for(let i =0 ;i < value.length; i++){
-                formData.append(key, value[i]);
+                formData.append(key, key !== fileKey ? typeof value[i] === 'object' ? JSON.stringify(value[i]) : value[i] : value[i]);
               }
             }else{
-              formData.append(key, value);
+              formData.append(key,  key !== fileKey ? typeof value === 'object' ? JSON.stringify(value) : value : value);
             }
           }
         });

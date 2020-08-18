@@ -59,6 +59,7 @@ export class Message extends Component {
                 sentBy: props.message.sentBy._id,
                 file: props.message.file.file
             }, ["state", "temp", "needUploadFile"]), {
+                fileKey: "file",
                 onProgress: event => {
                     if (event.lengthComputable) {
                         this.setState({

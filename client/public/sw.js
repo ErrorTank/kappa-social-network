@@ -157,6 +157,18 @@ var exceptionRequestsDev = [
     endpoint: /https:\/\/localhost:4000\/api\/messenger\/user\/\w+\/chat-rooms/,
     method: 'GET',
   },
+  {
+    endpoint: /https:\/\/localhost:4000\/api\/post\/create-post/,
+    method: 'POST',
+  },
+  {
+    endpoint: /https:\/\/localhost:4000\/api\/post\/pre-upload-media/,
+    method: 'POST',
+  },
+  {
+    endpoint: /https:\/\/localhost:4000\/api\/post\/get-all/,
+    method: 'GET',
+  },
 ];
 
 var notGetRequests = [

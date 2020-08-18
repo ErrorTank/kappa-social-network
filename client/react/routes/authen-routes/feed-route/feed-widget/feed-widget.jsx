@@ -16,6 +16,11 @@ export class PostCreationBox extends Component {
 
     openCreatePostModal = () => {
         createPostModal.open()
+            .then(data => {
+                if(data){
+                    this.props.onCreatePost(data);
+                }
+            })
     };
 
     render() {
@@ -42,14 +47,20 @@ export class FeedWidget extends Component {
     constructor(props) {
         super(props);
         this.state = {
-
+            posts: []
         }
+    }
+
+    appendNewPost = (post) => {
+        this.setState({posts: [post].concat(this.state.posts)})
     }
 
     render() {
         return (
             <div className="feed-widget">
-                <PostCreationBox/>
+                <PostCreationBox
+                    onCreatePost={this.appendNewPost}
+                />
 
             </div>
         );

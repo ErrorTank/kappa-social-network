@@ -18,6 +18,7 @@ import {TagFriends} from "./tag-friends/tag-friends";
 import {transformEditorState} from "../../../common/utils/editor-utils";
 import {convertToRaw} from "draft-js";
 import {mergeArray} from "../../../common/utils/array-utils";
+import {postApi} from "../../../api/common/post-api";
 
 
 export const PostPolicies = [
@@ -54,7 +55,7 @@ class CreatePostModal extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            loading: true,
+            loading: false,
             content: "",
             policy: PostPolicies[0],
             editorState: createEditorStateWithText(""),
@@ -66,9 +67,33 @@ class CreatePostModal extends Component {
 
     }
 
-    submit = () => {
-
+    uploadSingleFile = (file) => {
+        return postApi.preUploadMedia({file: file.file}, "file")
+            .then(fileData => ({
+                caption: file.caption || "",
+                tagged: file.tagged ? file.tagged.map(each => ({...each, related: each.related._id})) : [],
+                ...fileData
+            }))
     }
+
+    submit = () => {
+        let {policy, editorState, files, tagged} =  this.state;
+        this.setState({loading: true});
+        Promise.all(files.map(each => this.uploadSingleFile(each)))
+            .then(newFiles => {
+                let submittedData = {
+                    policy: policy.value,
+                    files: newFiles,
+                    tagged: tagged.map(each => each._id),
+                    ...transformEditorState(convertToRaw(editorState.getCurrentContent()))
+                };
+
+                // console.log(submittedData)
+                postApi.createNewPost(submittedData)
+                    .then(data => this.props.onClose(data))
+            })
+
+    };
     getInputRawContent = () => {
         return transformEditorState(convertToRaw(this.state.editorState.getCurrentContent())).content;
     }
@@ -91,7 +116,7 @@ class CreatePostModal extends Component {
         let {onClose,} = this.props;
         let {loading} = this.state;
 
-        console.log(this.state.files)
+
         let steps = [
             {
                 title: "Tạo bài đăng",
@@ -99,7 +124,8 @@ class CreatePostModal extends Component {
                     className: "btn-post btn-block",
                     onClick: this.submit,
                     content: "Đăng",
-                    disabled: !this.getInputRawContent() && !this.state.files.length
+                    disabled: !this.getInputRawContent() && !this.state.files.length,
+                    loading
                 }],
 
                 component: (

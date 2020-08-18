@@ -1,5 +1,6 @@
 import React from 'react';
 import classnames from "classnames";
+import {Button} from "../button/button";
 
 export const CommonModalLayout = ({className, title, actions, onClose, children}) => {
     return (
@@ -17,16 +18,17 @@ export const CommonModalLayout = ({className, title, actions, onClose, children}
             </div>
             {actions && (
                 <div className="modal-footer">
-                    {actions.map(({className, onClick, disabled = false, condition = () => true, content}, i) => {
+                    {actions.map(({className, onClick, disabled = false, condition = () => true, content, loading = false}, i) => {
                         return condition() ? (
-                            <button className={classnames("btn modal-btn ml-3", className)}
+                            <Button className={classnames("btn modal-btn ml-3", className)}
                                     key={i}
                                     onClick={onClick}
                                     disabled={disabled}
+                                    loading={loading}
 
                             >
                                 {content}
-                            </button>
+                            </Button>
                         ) : null
                     })}
 

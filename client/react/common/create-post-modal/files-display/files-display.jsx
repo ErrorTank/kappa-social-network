@@ -4,7 +4,7 @@ import {FileDisplay} from "./file-display/file-display";
 
 export const FilesDisplay = ({files, onSelect, onRemove}) => {
     return (
-        <div className="files-display">
+        <div className="create-post-files-display">
             {files.map(each => {
                 return (
                     <FileDisplay

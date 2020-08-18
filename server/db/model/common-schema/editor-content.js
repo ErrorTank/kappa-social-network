@@ -4,7 +4,7 @@ const ObjectId = mongoose.Schema.Types.ObjectId;
 const editorContentSchema = {
     content: {
         type: String,
-        required: true
+
     },
 
     mentions: {
