@@ -2,6 +2,34 @@
   width: 100%
   height 100%
   position: relative
+
+  .slider-background{
+    position absolute
+    right 0
+    top 0
+    left: 0
+    bottom: 0
+    opacity .7
+    overflow-y: hidden
+    overflow-x hidden
+    z-index: -1
+    .img-display{
+      width: 100%
+      height 100%
+      .img-info{
+        width: 100%
+        height: 100%
+        display: flex
+        justify-content: center
+        align-items: center
+        .img-wrapper{
+          height 10%
+          width 10%
+          transform: scale(11)  
+        }
+      }
+    }
+  }
   .current-slide{
     width: 100%
     display: flex
@@ -9,12 +37,13 @@
     align-items: center
     max-height: 100%;
     height calc(100% - 52px)
+    z-index: 0
     .img-display{
       .img-wrapper{
-        max-height 250px
+        max-height 380px
         max-width 580px
         img{
-          max-height 250px
+          max-height 380px
           max-width 580px
         }
       }
@@ -28,10 +57,15 @@
     align-items: center
     justify-content: center
     margin: 8px 0
+    z-index: 0
     .img-display{
       height 36px
       width: 36px
       margin: 0 6px
+      opacity: 0.4
+      &.main{
+        opacity 1
+      }
       .img-wrapper{
         height 36px
         width: 36px

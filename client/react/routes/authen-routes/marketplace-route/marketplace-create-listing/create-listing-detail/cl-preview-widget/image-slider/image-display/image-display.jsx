@@ -15,11 +15,23 @@ export class ImageDisplay extends Component {
       this.setState({ loading: false, base64Image });
     });
   }
+  componentDidUpdate(prevProps) {
+    if (prevProps.file !== this.props.file) {
+      getBase64Image(this.props.file.file).then((base64Image) => {
+        this.setState({ loading: false, base64Image });
+      });
+    }
+  }
   render() {
-    let { file } = this.props;
+    let { file, currentID } = this.props;
     let { base64Image, loading } = this.state;
+    console.log(currentID);
     return (
-      <div className={classnames('img-display')}>
+      <div
+        className={classnames('img-display', {
+          main: currentID === file.fileID,
+        })}
+      >
         <div className='img-info'>
           {loading && <LoadingInline />}
           {base64Image && (

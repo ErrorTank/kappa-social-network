@@ -36,11 +36,6 @@ export class ImageSlider extends Component {
       this.setState({ currentSlide: currentSlide + 1 });
     }
   };
-  // componentUpdate = (prevState) => {
-  //   if (prevState.currentSlide !== this.state.currentSlide) {
-  //     this.forceUpdate();
-  //   }
-  // };
   render() {
     const { files } = this.props;
     const { currentSlide } = this.state;
@@ -48,11 +43,18 @@ export class ImageSlider extends Component {
     console.log(currentSlide);
     return (
       <div className='image-slider'>
-        <div className='slider-background'></div>
-        <div className='current-slide'>
+        <div className='slider-background'>
           {!!files.length && (
             <ImageDisplay
               key={files[currentSlide].file.fileID}
+              file={files[currentSlide]}
+            />
+          )}
+        </div>
+        <div className='current-slide'>
+          {!!files.length && (
+            <ImageDisplay
+              key={files[currentSlide].fileID}
               file={files[currentSlide]}
             />
           )}
@@ -62,7 +64,11 @@ export class ImageSlider extends Component {
             <div className='image-arr'>
               {!!files.length &&
                 files.map((file) => (
-                  <ImageDisplay key={file.fileID} file={file} />
+                  <ImageDisplay
+                    key={file.fileID}
+                    file={file}
+                    currentID={files[currentSlide].fileID}
+                  />
                 ))}
             </div>
             <div className='next-button' onClick={() => this.next()}>
