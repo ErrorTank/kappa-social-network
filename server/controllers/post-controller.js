@@ -24,7 +24,8 @@ module.exports = (db, namespacesIO) => {
 
     router.get("/get-all", authorizationUserMiddleware, (req, res, next) => {
         return getAllPosts({
-            userID: req.user._id
+            userID: req.user._id,
+            ...req.query
         }).then((data) => {
             return res.status(200).json(data);
         })
