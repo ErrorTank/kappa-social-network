@@ -8,7 +8,7 @@ export class ImageDisplay extends Component {
     super(props);
     this.state = {
       base64Image: null,
-      loading: props.file.type === 'image',
+      loading: true,
     };
 
     getBase64Image(props.file.file).then((base64Image) => {
