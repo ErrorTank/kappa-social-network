@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import {userInfo} from "../../../../../common/states/common";
 import {Avatar} from "../../../../common/avatar/avatar";
 import {createPostModal} from "../../../../common/create-post-modal/create-post-modal";
+import {postApi} from "../../../../../api/common/post-api";
 
 
 
@@ -49,6 +50,7 @@ export class FeedWidget extends Component {
         this.state = {
             posts: []
         }
+        postApi.getPostsForFeed({skip: 0, limit: 10})
     }
 
     appendNewPost = (post) => {

@@ -13,6 +13,7 @@ const initDbCollections = (appDb) => {
   const Listing = require('../db/model/marketplace/listing')(appDb);
   const Category = require('../db/model/marketplace/category')(appDb);
   // ChatRoom.deleteMany({}).then(() => console.log("cac"))
+  // User.updateMany({}, {$set: {group_blocked: []}}).then(() => console.log("cac"))
   console.log('Initialize Db collections successfully!');
   return feed({
     PageCategory,

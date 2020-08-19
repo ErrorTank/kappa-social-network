@@ -24,11 +24,16 @@ const getAllPosts = ({userID, skip, limit}) => {
         _id: ObjectId(userID)
     }).lean()
         .then(user => {
-            let {_friends, _page_blocked, _person_blocked, _followed_posts, _blocked_posts, _joined_groups, _group_blocked} = user;
-            let friends = _friends.map(each => ObjectId(each));
+            let {friends:_friends,
+                page_blocked:_page_blocked,
+                person_blocked:_person_blocked,
+                blocked_posts: _blocked_posts,
+                joined_groups: _joined_groups,
+                group_blocked: _group_blocked} = user;
+            // console.log(_friends)
+            let friends = _friends.map(each => ObjectId(each.info));
             let page_blocked = _page_blocked.map(each => ObjectId(each));
             let person_blocked = _person_blocked.map(each => ObjectId(each));
-            let followed_posts = _followed_posts.map(each => ObjectId(each));
             let blocked_posts = _blocked_posts.map(each => ObjectId(each));
             let joined_groups = _joined_groups.map(each => ObjectId(each));
             let group_blocked = _group_blocked.map(each => ObjectId(each));
@@ -61,6 +66,9 @@ const getAllPosts = ({userID, skip, limit}) => {
                             {
                                 $or: [
                                     {
+                                        belonged_person: ObjectId(userID)
+                                    },
+                                    {
                                         belonged_person: {
                                             $in: friends
                                         }
@@ -86,24 +94,13 @@ const getAllPosts = ({userID, skip, limit}) => {
                                                 belonged_person: ObjectId(userID)
                                             }
                                         ]
-                                    },{
-                                        $and: [
-                                            {
-                                                policy: "FRIENDS",
-                                            },{
-                                                belonged_person: {
-                                                    $in: friends
-                                                }
-                                            }
-                                        ]
-                                    }
+                                    },
                                 ]
                             }
                         ]
                     }
                 },{
                     $addFields: {
-                        "comments_size": { $size: "$comments" },
                         "love_size": {
                             $size: "$reactions.love"
                         },
@@ -128,12 +125,84 @@ const getAllPosts = ({userID, skip, limit}) => {
                     }
                 }, {
                     $addFields: {
-                        "comments_size": { $size: "$comments" },
-                        "reaction_size": {$add : [ '$love_size', '$laugh_size', "$wow_size", "$cry_size", "$cry_size", "$angry_size", "$thump_up_size", "$thump_down_size" ]}
+                        "comments_count": { $size: "$comments" },
+                        "reaction_count": {$add : [ '$love_size', '$laugh_size', "$wow_size", "$cry_size", "$cry_size", "$angry_size", "$thump_up_size", "$thump_down_size" ]}
+                    }
+                },{
+                    $sort: {
+                        updated_at: -1,
+
+                    }
+                },{
+                    $skip: skip
+                },{
+                    $limit: limit
+                }, {
+                    $lookup: {
+                        from: 'pages', localField: 'belonged_page', foreignField: '_id', as: "belonged_page"
+                    }
+                }, {
+                    $lookup: {
+                        from: 'groups', localField: 'belonged_group', foreignField: '_id', as: "belonged_group"
+                    }
+                },{
+                    $lookup: {
+                        from: 'users', localField: 'belonged_person', foreignField: '_id', as: "belonged_person"
+                    }
+                },{
+                    $lookup: {
+                        from: 'users', localField: 'tagged', foreignField: '_id', as: "tagged"
+                    }
+                },{
+                    $addFields: {
+                        "belonged_page": {
+                            $arrayElemAt: ["$belonged_page", 0]
+                        },
+                        "belonged_group": {
+                            $arrayElemAt: ["$belonged_group", 0]
+                        },
+                        "belonged_person": {
+                            $arrayElemAt: ["$belonged_person", 0]
+                        },
+                        "tagged": {
+                            $arrayElemAt: ["$tagged", 0]
+                        },
+
+
+                    }
+                }, {
+                    $project: {
+                        "love_size": 0,
+                        "laugh_size": 0,
+                        "wow_size": 0,
+                        "cry_size": 0,
+                        "angry_size": 0,
+                        "thump_up_size": 0,
+                        "thump_down_size": 0,
+                        "belonged_page._id": 1,
+                        "belonged_page.avatar": 1,
+                        "belonged_page.basic_info": 1,
+                        "belonged_person._id": 1,
+                        "belonged_person.avatar": 1,
+                        "belonged_person.basic_info": 1,
+                        "$belonged_group._id": 1,
+                        "$belonged_group.basic_info": 1,
+                        "$tagged._id": 1,
+                        "$tagged.avatar": 1,
+                        "$tagged.basic_info": 1,
+                        "$comments": 0
                     }
                 }
             ])
 
+        })
+        .then((data) => {
+            let sortedByComments = data.sort((a, b) => b.comments_count - a.comments_count);
+            let sortedByReactions = data.sort((a, b) => b.reaction_count - a.reaction_count);
+            return data.map((each, i) => ({
+                ...each,
+                score: (data.length - i) + (sortedByComments.findIndex(a => a._id.toString() === each._id.toString())) + (sortedByReactions.findIndex(a => a._id.toString() === each._id.toString()))
+            })).sort((a, b) => b.score - a.score).map(each => omit(each, "score"))
         })
 }
 

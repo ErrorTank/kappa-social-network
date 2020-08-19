@@ -216,7 +216,7 @@ const userSchema = new Schema({
         type: [
             {
                 type: ObjectId,
-                ref: "Groups"
+                ref: "Group"
             }
         ],
         default: []
