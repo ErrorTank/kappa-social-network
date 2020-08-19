@@ -134,9 +134,9 @@ const getAllPosts = ({userID, skip, limit}) => {
 
                     }
                 },{
-                    $skip: skip
+                    $skip: Number(skip)
                 },{
-                    $limit: limit
+                    $limit: Number(limit)
                 }, {
                     $lookup: {
                         from: 'pages', localField: 'belonged_page', foreignField: '_id', as: "belonged_page"
@@ -164,9 +164,9 @@ const getAllPosts = ({userID, skip, limit}) => {
                         "belonged_person": {
                             $arrayElemAt: ["$belonged_person", 0]
                         },
-                        "tagged": {
-                            $arrayElemAt: ["$tagged", 0]
-                        },
+                        // "tagged": {
+                        //     $arrayElemAt: ["$tagged", 0]
+                        // },
 
 
                     }
@@ -179,18 +179,7 @@ const getAllPosts = ({userID, skip, limit}) => {
                         "angry_size": 0,
                         "thump_up_size": 0,
                         "thump_down_size": 0,
-                        "belonged_page._id": 1,
-                        "belonged_page.avatar": 1,
-                        "belonged_page.basic_info": 1,
-                        "belonged_person._id": 1,
-                        "belonged_person.avatar": 1,
-                        "belonged_person.basic_info": 1,
-                        "$belonged_group._id": 1,
-                        "$belonged_group.basic_info": 1,
-                        "$tagged._id": 1,
-                        "$tagged.avatar": 1,
-                        "$tagged.basic_info": 1,
-                        "$comments": 0
+                        "comments": 0
                     }
                 }
             ])
@@ -201,6 +190,10 @@ const getAllPosts = ({userID, skip, limit}) => {
             let sortedByReactions = data.sort((a, b) => b.reaction_count - a.reaction_count);
             return data.map((each, i) => ({
                 ...each,
+                belonged_page: pick(each.belonged_page, ["_id", "avatar", "basic_info"]),
+                belonged_person: pick(each.belonged_person, ["_id", "avatar", "basic_info"]),
+                belonged_group: pick(each.belonged_person, ["_id", "basic_info"]),
+                tagged: each.tagged.map(tag => pick(tag, ["_id", "avatar", "basic_info"])),
                 score: (data.length - i) + (sortedByComments.findIndex(a => a._id.toString() === each._id.toString())) + (sortedByReactions.findIndex(a => a._id.toString() === each._id.toString()))
             })).sort((a, b) => b.score - a.score).map(each => omit(each, "score"))
         })
