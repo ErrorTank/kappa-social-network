@@ -5,7 +5,7 @@ const cluster = require("cluster");
 const setupWorkerProcesses = () => {
 
     let numCores = require('os').cpus().length;
-
+    cluster.schedulingPolicy = cluster.SCHED_RR
     for(let i = 0; i <numCores; i++) {
 
         cluster.fork()
