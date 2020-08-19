@@ -130,6 +130,9 @@ const autoPopulateParent = function(next){
             path: "shared_post",
             model: "Post",
         },{
+            path: "shared_page",
+            model: "Page",
+        },{
             path: "files.tagged.related",
             model: "User",
             select: "_id basic_info avatar last_active_at active"
@@ -160,7 +163,10 @@ postSchema.post('save', function(doc, next) {
             path: "files.tagged.related",
             model: "User",
             select: "_id basic_info avatar last_active_at active"
-        }
+        },{
+            path: "shared_page",
+            model: "Page",
+        },
     ]).execPopulate().then(function() {
         next();
     });

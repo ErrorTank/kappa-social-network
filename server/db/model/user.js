@@ -212,6 +212,15 @@ const userSchema = new Schema({
         ],
         default: []
     },
+    group_blocked: {
+        type: [
+            {
+                type: ObjectId,
+                ref: "Groups"
+            }
+        ],
+        default: []
+    },
     page_blocked: {
         type: [
             {
