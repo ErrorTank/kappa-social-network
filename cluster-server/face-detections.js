@@ -7,7 +7,7 @@ const canvas = require("canvas");
 
 const faceapi = require("face-api.js");
 
-const MODELS_URL = path.join(__dirname, '../' + process.env.MODELS_DIR);
+const MODELS_URL = path.join(__dirname, './' + process.env.MODELS_DIR);
 
 
 const monkeyPatchFaceApiEnv = () => {
@@ -29,7 +29,7 @@ const loadFaceDetecsModels = () => {
 
 
 const detectFaces = async (img_url, displaySize) =>  {
-    const imgAbsUrl = path.join(__dirname, '../' + process.env.TEMP_IMAGES_DIR + `/${img_url}`);
+    const imgAbsUrl = path.join(__dirname, './' + process.env.TEMP_IMAGES_DIR + `/${img_url}`);
     const image = await canvas.loadImage(imgAbsUrl);
 
     const detections = await faceapi.detectAllFaces(image).withFaceLandmarks().withFaceDescriptors();

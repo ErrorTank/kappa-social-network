@@ -1,5 +1,5 @@
 import {authenCache} from "../common/cache/authen-cache";
-import {authenApi} from "../api/api";
+import {authenApi, faceApi} from "../api/api";
 
 export const authenLoader = {
   init() {
@@ -7,7 +7,10 @@ export const authenLoader = {
       let token = authenCache.getAuthen();
       return token ? `Bearer ${token}` : null;
     });
-
+    faceApi.addHeader("Authorization", () => {
+      let token = authenCache.getAuthen();
+      return token ? `Bearer ${token}` : null;
+    });
     return authenCache.loadAuthen().then(result => {
 
       return Promise.resolve();

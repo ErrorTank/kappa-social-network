@@ -2,6 +2,9 @@ import React, {Component} from 'react';
 import {userInfo} from "../../../../../common/states/common";
 import {Avatar} from "../../../../common/avatar/avatar";
 import {createPostModal} from "../../../../common/create-post-modal/create-post-modal";
+import {postApi} from "../../../../../api/common/post-api";
+import {FeedList} from "./feed-list/feed-list";
+import {LoadingInline} from "../../../../common/loading-inline/loading-inline";
 
 
 
@@ -47,21 +50,36 @@ export class FeedWidget extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            posts: []
+
         }
+
+    }
+    appendNewPost = (post) => {
+        this.props.onChange({posts: [post].concat(this.props.posts)})
     }
 
-    appendNewPost = (post) => {
-        this.setState({posts: [post].concat(this.state.posts)})
-    }
 
     render() {
+        let {posts, loading, needReloaded, onReload} = this.props;
         return (
             <div className="feed-widget">
                 <PostCreationBox
                     onCreatePost={this.appendNewPost}
                 />
-
+                <FeedList
+                    posts={posts}
+                />
+                {loading && (
+                    <div className="loading-panel">
+                        <LoadingInline/>
+                    </div>
+                )}
+                {needReloaded && (
+                    <div className="need-reloaded white-box">
+                        <p className="til">Co vẻ như không còn bài đăng nào.</p>
+                        <button className="btn btn-common-primary btn-reloaded" onClick={onReload}>Tải lại</button>
+                    </div>
+                )}
             </div>
         );
     }
