@@ -103,6 +103,7 @@ export class NavigationWidget extends Component {
     ];
 
     render() {
+        console.log("dmmmm")
         return (
             <ThemeContext.Consumer>
                 {({darkMode}) => (

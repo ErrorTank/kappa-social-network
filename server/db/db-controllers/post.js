@@ -187,15 +187,20 @@ const getAllPosts = ({userID, skip, limit}) => {
         })
         .then((data) => {
             let sortedByComments = data.sort((a, b) => b.comments_count - a.comments_count);
+
             let sortedByReactions = data.sort((a, b) => b.reaction_count - a.reaction_count);
+
             return data.map((each, i) => ({
                 ...each,
                 belonged_page: pick(each.belonged_page, ["_id", "avatar", "basic_info"]),
                 belonged_person: pick(each.belonged_person, ["_id", "avatar", "basic_info"]),
                 belonged_group: pick(each.belonged_person, ["_id", "basic_info"]),
                 tagged: each.tagged.map(tag => pick(tag, ["_id", "avatar", "basic_info"])),
-                score: (data.length - i) + (sortedByComments.findIndex(a => a._id.toString() === each._id.toString())) + (sortedByReactions.findIndex(a => a._id.toString() === each._id.toString()))
-            })).sort((a, b) => b.score - a.score).map(each => omit(each, "score"))
+                score: (data.length - i)
+                    + (data.length - sortedByComments.findIndex(a => a._id.toString() === each._id.toString())) * 2 + (data.length - sortedByReactions.findIndex(a => a._id.toString() === each._id.toString())) * 2
+            }))
+                .sort((a, b) => b.score - a.score)
+                .map(each => omit(each, "score"))
         })
 }
 

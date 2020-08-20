@@ -3,6 +3,7 @@ import {userInfo} from "../../../../../common/states/common";
 import {Avatar} from "../../../../common/avatar/avatar";
 import {createPostModal} from "../../../../common/create-post-modal/create-post-modal";
 import {postApi} from "../../../../../api/common/post-api";
+import {FeedList} from "./feed-list/feed-list";
 
 
 
@@ -48,22 +49,25 @@ export class FeedWidget extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            posts: []
+
         }
-        postApi.getPostsForFeed({skip: 0, limit: 10})
+
+    }
+    appendNewPost = (post) => {
+        this.props.onChange({posts: [post].concat(this.props.posts)})
     }
 
-    appendNewPost = (post) => {
-        this.setState({posts: [post].concat(this.state.posts)})
-    }
 
     render() {
+        let {posts} = this.props;
         return (
             <div className="feed-widget">
                 <PostCreationBox
                     onCreatePost={this.appendNewPost}
                 />
-
+                <FeedList
+                    posts={posts}
+                />
             </div>
         );
     }
