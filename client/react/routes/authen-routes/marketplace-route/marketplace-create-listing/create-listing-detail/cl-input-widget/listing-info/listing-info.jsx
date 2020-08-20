@@ -15,8 +15,8 @@ import { omit, toArray, indexOf } from 'lodash';
 import * as yup from 'yup';
 import { InputFileWrapper } from './../../../../../../../common/file-input/file-input';
 import { FileDisplay } from './../../../../../../../layout/authen-layout/create-message-widget/chat-box/message-utilities/file-display/file-display';
-import GooglePlacesAutocomplete from 'react-google-places-autocomplete';
-import 'react-google-places-autocomplete/dist/index.min.css';
+// import GooglePlacesAutocomplete from 'react-google-places-autocomplete';
+// import 'react-google-places-autocomplete/dist/index.min.css';
 
 export class ListingInfo extends Component {
   constructor(props) {
@@ -257,38 +257,32 @@ export class ListingInfo extends Component {
               (!each.isDepended ||
                 (each.isDepended && dependedInput[each.englishName])) &&
               (!each.isSelected ? (
-                each.englishName === 'position' ? (
-                  <div className='position-input' key={each.englishName}>
-                    <GooglePlacesAutocomplete onSelect={console.log} />
-                  </div>
-                ) : (
-                  <ListingInfoInput
-                    label={each.name}
-                    key={each.englishName}
-                    textArea={each.isTextArea}
-                    id={each.englishName}
-                    value={state[each.englishName]}
-                    error={error[each.englishName]}
-                    onMouseEnter={() => this.mouse(each.englishName)}
-                    onMouseLeave={() => this.mouseOut()}
-                    contentEditable={each.contentEditable}
-                    onChange={(e) => {
-                      each.errorMessage &&
-                        this.handleCheckError(
-                          each.englishName,
-                          each.errorMessage,
-                          e.target.value
-                        );
+                <ListingInfoInput
+                  label={each.name}
+                  key={each.englishName}
+                  textArea={each.isTextArea}
+                  id={each.englishName}
+                  value={state[each.englishName]}
+                  error={error[each.englishName]}
+                  onMouseEnter={() => this.mouse(each.englishName)}
+                  onMouseLeave={() => this.mouseOut()}
+                  contentEditable={each.contentEditable}
+                  onChange={(e) => {
+                    each.errorMessage &&
+                      this.handleCheckError(
+                        each.englishName,
+                        each.errorMessage,
+                        e.target.value
+                      );
 
-                      each.englishName === 'price'
-                        ? this.handlePriceDisplay(
-                            each.englishName,
-                            e.target.value
-                          )
-                        : updateValue(`${each.englishName}`, e.target.value);
-                    }}
-                  />
-                )
+                    each.englishName === 'price'
+                      ? this.handlePriceDisplay(
+                          each.englishName,
+                          e.target.value
+                        )
+                      : updateValue(`${each.englishName}`, e.target.value);
+                  }}
+                />
               ) : (
                 <ListingInfoSelect
                   label={each.name}
