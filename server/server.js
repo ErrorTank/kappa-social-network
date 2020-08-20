@@ -15,7 +15,7 @@ const dbManager = require('./config/db');
 const createRoutes = require('./config/routes');
 const createErrorHandlersMiddleware = require('./utils/error/error-handlers');
 const {createSocketNamespaces} = require('./config/socket/socket');
-const {loadFaceDetecsModels} = require("./config/face-detections");
+
 
 
 
@@ -27,7 +27,6 @@ dbManager
         return require('./scripts/init-db-collections')(appDb);
     })
     .then((appDb) => {
-        loadFaceDetecsModels();
         // require('./scripts/feedMarketplace');
         let environment = process.env.NODE_ENV;
         const port = process.env.PORT || 4000;

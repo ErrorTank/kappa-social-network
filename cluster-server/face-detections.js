@@ -4,10 +4,10 @@ const fetch = require('node-fetch');
 
 
 const canvas = require("canvas");
-const Agenda = require("agenda")
+
 const faceapi = require("face-api.js");
-const agenda = new Agenda({db: {address: process.env.DB_HOST}});
-const MODELS_URL = path.join(__dirname, '../' + process.env.MODELS_DIR);
+
+const MODELS_URL = path.join(__dirname, './' + process.env.MODELS_DIR);
 
 
 const monkeyPatchFaceApiEnv = () => {
@@ -28,29 +28,17 @@ const loadFaceDetecsModels = () => {
 }
 
 
-const detectFaces = (img_url, displaySize) =>  new Promise(async (res, rej) => {
-
-    const imgAbsUrl = path.join(__dirname, '../' + process.env.TEMP_IMAGES_DIR + `/${img_url}`);
+const detectFaces = async (img_url, displaySize) =>  {
+    const imgAbsUrl = path.join(__dirname, './' + process.env.TEMP_IMAGES_DIR + `/${img_url}`);
     const image = await canvas.loadImage(imgAbsUrl);
+
+    const detections = await faceapi.detectAllFaces(image).withFaceLandmarks().withFaceDescriptors();
     fs.unlinkSync(imgAbsUrl);
-    agenda.define("detecface", async job => {
-        console.log("Dasdasdasd")
-        const detections = await faceapi.detectAllFaces(image).withFaceLandmarks().withFaceDescriptors();
-        res(faceapi.resizeResults(detections, displaySize))
-
-    })
-    await agenda.start();
-    agenda.now("detecface");
-    agenda.on('complete', job => {
-        console.log(`Job ${job.attrs.name} finished`);
-        job.remove();
-        // agenda.stop();
-    });
+    return faceapi.resizeResults(detections, displaySize);
 
 
 
-
-})
+}
 
 
 

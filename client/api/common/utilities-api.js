@@ -1,5 +1,5 @@
 
-import {authenApi, offlineApi} from "../api";
+import {authenApi, offlineApi, faceApi} from "../api";
 import {urlUtils} from "../../common/utils/url-utils";
 import {guestApi} from "./guest-api";
 import {authenCache} from "../../common/cache/authen-cache";
@@ -31,6 +31,6 @@ export const utilityApi = {
         return offlineApi.get(`/utility/url/${encodeURIComponent(url)}/metadata`)
     },
     detectImageFaces(file, {width, height}, fileKey){
-        return authenApi.postMultipart(`/utility/detect-faces`, {file, width, height}, {fileKey})
+        return faceApi.postMultipart(`/detect-faces`, {file, width, height}, {fileKey})
     }
 };
