@@ -1,93 +1,114 @@
 <!DOCTYPE html>
 <html itemscope itemtype="http://schema.org/Article">
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width" initial-scale=1/>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width" initial-scale="1" />
     <title>Đang tải trang...</title>
-    <link rel="icon" type="image/x-icon" href="/assets/images/icons/app-icon-32x32.png"/>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
-    <link rel="stylesheet" type="text/css" href="/assets/vendor/fonts/css/all.min.css"/>
-    <link rel="stylesheet" type="text/css" href="/main.css"/>
+    <link
+      rel="icon"
+      type="image/x-icon"
+      href="/assets/images/icons/app-icon-32x32.png"
+    />
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+      integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh"
+      crossorigin="anonymous"
+    />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="/assets/vendor/fonts/css/all.min.css"
+    />
+    <link rel="stylesheet" type="text/css" href="/main.css" />
 
     <style type="text/css">
-
-        @keyframes ldio-q99wu626rti {
-            0% {
-                top: 99.82px;
-                left: 99.82px;
-                width: 0;
-                height: 0;
-                opacity: 1;
-            }
-            100% {
-                top: 17.36px;
-                left: 17.36px;
-                width: 164.92px;
-                height: 164.92px;
-                opacity: 0;
-            }
+      @keyframes ldio-q99wu626rti {
+        0% {
+          top: 99.82px;
+          left: 99.82px;
+          width: 0;
+          height: 0;
+          opacity: 1;
         }
-
-        .ldio-q99wu626rti div {
-            position: absolute;
-            border-width: 8.68px;
-            border-style: solid;
-            opacity: 1;
-            border-radius: 50%;
-            animation: ldio-q99wu626rti 1.0416666666666665s cubic-bezier(0,0.2,0.8,1) infinite;
+        100% {
+          top: 17.36px;
+          left: 17.36px;
+          width: 164.92px;
+          height: 164.92px;
+          opacity: 0;
         }
+      }
 
-        .ldio-q99wu626rti div:nth-child(1) {
-            border-color: #1d3f72
-        }
+      .ldio-q99wu626rti div {
+        position: absolute;
+        border-width: 8.68px;
+        border-style: solid;
+        opacity: 1;
+        border-radius: 50%;
+        animation: ldio-q99wu626rti 1.0416666666666665s
+          cubic-bezier(0, 0.2, 0.8, 1) infinite;
+      }
 
-        .ldio-q99wu626rti div:nth-child(2) {
-            border-color: #5699d2;
-            animation-delay: -0.5208333333333333s;
-        }
+      .ldio-q99wu626rti div:nth-child(1) {
+        border-color: #1d3f72;
+      }
 
-        .loadingio-spinner-ripple-cqafjyzu1eh {
-            width: 217px;
-            height: 217px;
-            display: inline-block;
-            overflow: hidden;
-        }
-        .ldio-q99wu626rti {
-            width: 100%;
-            height: 100%;
-            position: relative;
-            transform: translateZ(0) scale(1);
-            backface-visibility: hidden;
-            transform-origin: 0 0;
-        }
-        .ldio-q99wu626rti div { box-sizing: content-box; }
+      .ldio-q99wu626rti div:nth-child(2) {
+        border-color: #5699d2;
+        animation-delay: -0.5208333333333333s;
+      }
 
+      .loadingio-spinner-ripple-cqafjyzu1eh {
+        width: 217px;
+        height: 217px;
+        display: inline-block;
+        overflow: hidden;
+      }
+      .ldio-q99wu626rti {
+        width: 100%;
+        height: 100%;
+        position: relative;
+        transform: translateZ(0) scale(1);
+        backface-visibility: hidden;
+        transform-origin: 0 0;
+      }
+      .ldio-q99wu626rti div {
+        box-sizing: content-box;
+      }
     </style>
-
-</head>
-<body>
-
-<section id="app" style="background-color: #f2f2f2!important; min-width: 100vw; min-height: 100vh; position: relative;">
-    <div id="initial-loading">
-
-
+  </head>
+  <body>
+    <section
+      id="app"
+      style="
+        background-color: #f2f2f2 !important;
+        min-width: 100vw;
+        min-height: 100vh;
+        position: relative;
+      "
+    >
+      <div id="initial-loading">
         <div class="lds-css ng-scope">
-            <div id="il-wrapper">
-                <div class="loadingio-spinner-ripple-cqafjyzu1eh"><div class="ldio-q99wu626rti">
-                    <div></div><div></div>
-                </div>
-                </div>
-                <p id="il-text">Đang tải trang...</p>
+          <div id="il-wrapper">
+            <div class="loadingio-spinner-ripple-cqafjyzu1eh">
+              <div class="ldio-q99wu626rti">
+                <div></div>
+                <div></div>
+              </div>
             </div>
-
+            <p id="il-text">Đang tải trang...</p>
+          </div>
         </div>
-    </div>
-</section>
+      </div>
+    </section>
 
-<script src="/assets/vendor/jquery.js"></script>
-<script src="/assets/vendor/idb.js"></script>
-<script src="/assets/vendor/sw-utilities.js"></script>
-
-</body>
-
+    <script src="/assets/vendor/jquery.js"></script>
+    <script src="/assets/vendor/idb.js"></script>
+    <script src="/assets/vendor/sw-utilities.js"></script>
+    <script
+      type="text/javascript"
+      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAN6zBxjBUQBN3IucBC8nMMZL9GfJP8GKc&libraries=places"
+    ></script>
+  </body>
 </html>
