@@ -1,0 +1,33 @@
+.post-box{
+  margin-top 20px
+  .post-header{
+    display flex
+    padding 12px 15px
+    align-items center
+    .avatar-wrapper{
+      flex 0 0 50px
+    }
+    .post-actions{
+      flex 0 0 40px
+      .post-actions-toggle{
+        position relative
+        width 30px
+        height 30px
+        border-radius 50%
+        cursor pointer
+        &:hover{
+          background-color darken(white, 5%)
+        }
+        i{
+          absoluteMiddle()
+          font-size 2rem !important
+          color commonTextLight
+        }
+      }
+    }
+    .post-meta-data{
+      flex  0 0 calc(100% - 80px)
+    }
+  }
+
+}

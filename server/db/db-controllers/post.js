@@ -29,7 +29,10 @@ const getAllPosts = ({userID, skip, limit}) => {
                 person_blocked:_person_blocked,
                 blocked_posts: _blocked_posts,
                 joined_groups: _joined_groups,
-                group_blocked: _group_blocked} = user;
+                group_blocked: _group_blocked,
+                liked_pages: _liked_pages,
+                followed_posts: _followed_posts
+            } = user;
             // console.log(_friends)
             let friends = _friends.map(each => ObjectId(each.info));
             let page_blocked = _page_blocked.map(each => ObjectId(each));
@@ -37,6 +40,8 @@ const getAllPosts = ({userID, skip, limit}) => {
             let blocked_posts = _blocked_posts.map(each => ObjectId(each));
             let joined_groups = _joined_groups.map(each => ObjectId(each));
             let group_blocked = _group_blocked.map(each => ObjectId(each));
+            let liked_pages = _liked_pages.map(each => ObjectId(each));
+            let followed_posts = _followed_posts.map(each => ObjectId(each));
             return Post.aggregate([
                 {
                     $match: {
@@ -74,8 +79,13 @@ const getAllPosts = ({userID, skip, limit}) => {
                                         }
                                     },
                                     {
-                                        belonged_person: {
-                                            $in: friends
+                                        belonged_page: {
+                                            $in: liked_pages
+                                        }
+                                    },
+                                    {
+                                        _id: {
+                                            $in: followed_posts
                                         }
                                     },
                                     {

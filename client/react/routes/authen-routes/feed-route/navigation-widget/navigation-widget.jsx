@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, {PureComponent} from 'react';
 import {userInfo} from "../../../../../common/states/common";
 import {Avatar} from "../../../../common/avatar/avatar";
 import {ThemeContext} from "../../../../context/theme-context";
@@ -6,7 +6,7 @@ import classnames from "classnames";
 import {ContentCollapse} from "./content-collapse";
 import {customHistory} from "../../../routes";
 
-export class NavigationWidget extends Component {
+export class NavigationWidget extends PureComponent {
     constructor(props) {
         super(props);
         this.state = {}
@@ -103,7 +103,7 @@ export class NavigationWidget extends Component {
     ];
 
     render() {
-        console.log("dmmmm")
+        // console.log("dmmmm")
         return (
             <ThemeContext.Consumer>
                 {({darkMode}) => (

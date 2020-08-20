@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, {PureComponent} from 'react';
 import {BirthdaySection} from "./birthday-section/birthday-section";
 import {ContactSection} from "./contact-section/contact-section";
 import {GroupSection} from "./group-section/group-section";
@@ -7,7 +7,7 @@ import {userChatSettings} from "../../../../../common/states/common";
 import {ThemeContext} from "../../../../context/theme-context";
 import classnames from "classnames"
 
-export class ChatWidget extends Component {
+export class ChatWidget extends PureComponent {
     constructor(props) {
         super(props);
 
@@ -15,6 +15,8 @@ export class ChatWidget extends Component {
             chatSettings: userChatSettings.getState() || {}
         }
     }
+
+
 
     chatSections = [
         {

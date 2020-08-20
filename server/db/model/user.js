@@ -230,24 +230,7 @@ const userSchema = new Schema({
         ],
         default: []
     },
-    person_follow_you: {
-        type: [
-            {
-                type: ObjectId,
-                ref: "User"
-            }
-        ],
-        default: []
-    },
-    person_you_follow: {
-        type: [
-            {
-                type: ObjectId,
-                ref: "User"
-            }
-        ],
-        default: []
-    },
+
     friends: {
         type: [
             {
