@@ -107,14 +107,7 @@
   &.disabled{
     pointer-events none
   }
-  .link-msg{
-    color unset
-    text-decoration unset
-    &:hover{
-      color unset
-    }
-    cursor pointer
-  }
+
   &.head {
     margin-top 10px
     .message-renderable-content{
@@ -359,8 +352,10 @@
     .message-renderable-content {
       background-color btnCancelLight
       margin-right 5px
+      position relative
       margin-left 0
-      display inline-block
+
+      //display inline-block
       &.emoji{
         border none
         background-color transparent !important
@@ -386,7 +381,7 @@
         pointer-events none
       }
 
-      position relative
+
 
       .upload-loading{
         position absolute

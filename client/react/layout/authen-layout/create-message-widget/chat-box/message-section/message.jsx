@@ -27,8 +27,8 @@ import {ReactionDisplay} from "./reaction-display/reaction-display";
 import {transformSecondsToTime} from "../../../../../../common/utils/time-utils";
 
 
-let Wrapper = (props) => props.links.length ? (
-    <a href={props.links.length ? props.links[0] : ""} target={"_blank"} className={classnames("link-msg")}>
+export const HyperlinkWrapper = (props) => props.links.length ? (
+    <a href={props.links.length ? props.links[0] : ""} target={"_blank"} className={classnames("hyperlink")}>
         {props.children}
     </a>
 ) : (
@@ -269,7 +269,7 @@ export class Message extends Component {
                                                     needUpload={message.needUploadFile}
                                                 />
                                             ) : (
-                                                <Wrapper links={message.hyperlinks}>
+                                                <HyperlinkWrapper links={message.hyperlinks}>
                                                     <Tooltip
                                                         className={"message-tooltip"}
                                                         position={"top"}
@@ -288,7 +288,7 @@ export class Message extends Component {
                                                             }}
                                                         />
                                                     )}
-                                                </Wrapper>
+                                                </HyperlinkWrapper>
                                             )}
                                         </>
                                     )}

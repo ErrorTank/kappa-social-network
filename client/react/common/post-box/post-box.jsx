@@ -5,6 +5,9 @@ import isNil from "lodash/isNil"
 import moment from "moment";
 import {PostPolicies, PostPoliciesMAP} from "../create-post-modal/create-post-modal";
 import {getRenderableContentFromMessage} from "../../../common/utils/editor-utils";
+import {PbFilesPreview} from "./files-preview";
+import {HyperLink} from "../../layout/authen-layout/create-message-widget/chat-box/message-section/hyper-link";
+import {HyperlinkWrapper} from "../../layout/authen-layout/create-message-widget/chat-box/message-section/message";
 moment.locale("vi");
 
 export class PostBox extends Component {
@@ -59,9 +62,9 @@ export class PostBox extends Component {
                         <div className="upper">
                             {post.belonged_person && (
                                 <>
-                                    <span className="link">{post.belonged_person.basic_info.username}</span>
+                                    <a className="link">{post.belonged_person.basic_info.username}</a>
                                     {!post.belonged_group && !!post.tagged.length && (
-                                        <span> đang ở cùng với {post.tagged.map((each, i) => <Fragment key={each._id}><span className="link">{each.basic_info.username}</span>{i === post.tagged.length - 2 && " và "}{i < post.tagged.length - 2 && ", "}</Fragment>)}</span>
+                                        <span> đang ở cùng với {post.tagged.map((each, i) => <Fragment key={each._id}><a className="link">{each.basic_info.username}</a>{i === post.tagged.length - 2 && " và "}{i < post.tagged.length - 2 && ", "}</Fragment>)}</span>
                                     )}
                                 </>
                             )}
@@ -100,7 +103,21 @@ export class PostBox extends Component {
                             {getRenderableContentFromMessage(post)}
                         </div>
                     )}
+                    {!!post.files.length && (
+                        <PbFilesPreview
+                            files={post.files}
+                        />
+                    )}
+                    {!!post.hyperlinks.length && (
+                        <HyperlinkWrapper links={post.hyperlinks}>
+                            <HyperLink
+                                link={post.hyperlinks[0]}
 
+                            />
+                        </HyperlinkWrapper>
+
+
+                    )}
                 </div>
                 <div className="post-footer">
 

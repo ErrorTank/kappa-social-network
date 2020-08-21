@@ -8,13 +8,15 @@ import {FeedWidget} from "./feed-widget/feed-widget";
 import {postApi} from "../../../../api/common/post-api";
 import {FeedList} from "./feed-widget/feed-list/feed-list";
 import {InfiniteScrollWrapper} from "../../../common/infinite-scroll-wrapper/infinite-scroll-wrapper";
+import debounce from "lodash/debounce"
 
 class FeedRoute extends Component {
     constructor(props) {
         super(props);
         this.state = {
             posts: [],
-            fetching: true
+            fetching: true,
+            needReloaded: false
         }
         this.fetchPostsForFeed()
     }
@@ -24,7 +26,8 @@ class FeedRoute extends Component {
             .then(posts => {
                 this.setState({
                     posts: this.state.posts.concat(posts),
-                    fetching: false
+                    fetching: false,
+                    needReloaded: posts.length < 5
                 })
             })
     }
@@ -33,26 +36,42 @@ class FeedRoute extends Component {
 
         this.setState({loading: true, posts: []}, () => {
             let routeWrapper = ReactDOM.findDOMNode(this.feedRoute);
-            routeWrapper.scrollTop = 0;
+            // console.log("Cac")
+            routeWrapper.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+
             this.fetchPostsForFeed();
         });
 
     }
 
+    debounceLoad = debounce(() => {
+        let {posts, needReloaded} = this.state;
+        if(!needReloaded === !this.state.fetching){
+            this.setState({fetching: true}, () => {
+
+                this.fetchPostsForFeed()
+            })
+
+        }
+    }, 500)
+
     render() {
-        let {posts, fetching} = this.state;
-        let needReloaded = !(posts.length % 5 === 0 && posts.length > 0);
+        let {posts, fetching, needReloaded} = this.state;
+
         return (
             <PageTitle
                 title={"Trang chủ"}
             >
                 <InfiniteScrollWrapper
                     onScrollBottom={() => {
-                        if(!needReloaded){
-                            this.setState({fetching: true})
-                            this.fetchPostsForFeed()
-                        }
+                        this.debounceLoad();
+
                     }}
+                    onScrollTop={() =>null}
+                    onScroll={() =>null}
                 >
                     {() => (
                         <div className="feed-route" ref={feedRoute => this.feedRoute = feedRoute}>

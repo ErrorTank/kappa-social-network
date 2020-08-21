@@ -13,7 +13,7 @@ export class HyperLink extends Component {
         utilityApi.getUrlMetadata(props.link)
             .then(data => {
                 this.setState({data: {...pick(data, ["image", "title", "url", "source"]), title: parseHtmlEnteties(data.title)}});
-                props.onLoaded();
+                props.onLoaded?.();
             })
 
 
