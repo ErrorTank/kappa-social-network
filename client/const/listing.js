@@ -14,6 +14,13 @@ addressApi.getAddress({}).then((city) => {
       return e;
     }
   });
+  vehicleField = vehicleField.map((e) => {
+    if (e.englishName === 'location') {
+      return (e.options = locationOption);
+    } else {
+      return e;
+    }
+  });
 });
 
 export let itemField = [
@@ -475,7 +482,7 @@ export const fieldByCategory = [
   },
 ];
 
-export const vehicleField = [
+export let vehicleField = [
   //Vehicle
   {
     name: 'Số khung(không bắt buộc)',
@@ -582,6 +589,11 @@ export const vehicleField = [
   },
 
   // vị trí ở đây
+  {
+    name: 'Vị trí',
+    englishName: 'location',
+    isSelected: true,
+  },
 
   {
     name: 'Giá',

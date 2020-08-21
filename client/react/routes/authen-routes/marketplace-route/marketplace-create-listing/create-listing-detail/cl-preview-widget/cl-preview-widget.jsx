@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import classnames from 'classnames';
 import { userInfo } from './../../../../../../../common/states/common';
 import { ImageSlider } from './image-slider/image-slider';
+import { Avatar } from './../../../../../../common/avatar/avatar';
 
 export class CreateListingPreviewWidget extends Component {
   constructor(props) {
@@ -103,7 +104,7 @@ export class CreateListingPreviewWidget extends Component {
                   {price ? price : 'Giá'}
                 </div>
                 <div className='info-time-position'>
-                  Đã niêm yết vài giây trước tại Hà Nội{' '}
+                  Đã niêm yết vài giây trước tại {state.location || '...'}{' '}
                 </div>
               </div>
 
@@ -182,7 +183,7 @@ export class CreateListingPreviewWidget extends Component {
                 <div className='seller-info-header'>Thông tin về người bán</div>
                 <div className='seller-info-body'>
                   <div className='seller-avatar-wrapper'>
-                    <img src={user.avatar} alt='seller avatar' />
+                    <Avatar user={user} />
                   </div>
                   <div className='seller-name-wrapper'>
                     <div className='user-name'>{user.basic_info.username}</div>

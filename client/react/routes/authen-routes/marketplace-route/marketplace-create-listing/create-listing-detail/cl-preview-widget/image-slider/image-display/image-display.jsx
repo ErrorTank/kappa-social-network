@@ -25,7 +25,7 @@ export class ImageDisplay extends Component {
   render() {
     let { file, currentID } = this.props;
     let { base64Image, loading } = this.state;
-    console.log(currentID);
+    // console.log(currentID);
     return (
       <div
         className={classnames('img-display', {

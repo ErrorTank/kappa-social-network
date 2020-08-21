@@ -29,7 +29,7 @@ export class ImageSlider extends Component {
     const { currentSlide } = this.state;
     const { files } = this.props;
 
-    console.log(currentSlide);
+    // console.log(currentSlide);
     if (currentSlide === files.length - 1) {
       this.setState({ currentSlide: 0 });
     } else {
@@ -39,8 +39,8 @@ export class ImageSlider extends Component {
   render() {
     const { files } = this.props;
     const { currentSlide } = this.state;
-    console.log(this.props.files);
-    console.log(currentSlide);
+    // console.log(this.props.files);
+    // console.log(currentSlide);
     return (
       <div className='image-slider'>
         <div className='slider-background'>
