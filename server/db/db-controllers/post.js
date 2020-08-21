@@ -202,9 +202,9 @@ const getAllPosts = ({userID, skip, limit}) => {
 
             return data.map((each, i) => ({
                 ...each,
-                belonged_page: pick(each.belonged_page, ["_id", "avatar", "basic_info"]),
-                belonged_person: pick(each.belonged_person, ["_id", "avatar", "basic_info"]),
-                belonged_group: pick(each.belonged_person, ["_id", "basic_info"]),
+                belonged_page: each.belonged_page ? pick(each.belonged_page, ["_id", "avatar", "basic_info"]) : null,
+                belonged_person: each.belonged_person ? pick(each.belonged_person, ["_id", "avatar", "basic_info"]) : null,
+                belonged_group: each.belonged_group ? pick(each.belonged_group, ["_id", "basic_info"]) : null,
                 tagged: each.tagged.map(tag => pick(tag, ["_id", "avatar", "basic_info"])),
                 score: (data.length - i)
                     + (data.length - sortedByComments.findIndex(a => a._id.toString() === each._id.toString())) * 2 + (data.length - sortedByReactions.findIndex(a => a._id.toString() === each._id.toString())) * 2

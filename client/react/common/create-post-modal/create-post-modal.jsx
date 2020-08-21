@@ -37,6 +37,13 @@ export const PostPolicies = [
     },
 ]
 
+export const PostPoliciesMAP = {
+    PUBLIC: "PUBLIC",
+    PERSONAL: "PERSONAL",
+    FRIENDS: "FRIENDS"
+
+}
+
 export const createPostModal = {
     open(config) {
         const modal = modals.openModal({

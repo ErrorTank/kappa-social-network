@@ -12,6 +12,7 @@ export const chatApi = {
                 }
                 return Promise.reject(err);
             });
+
     },
     seenMessages(chatRoomID, messages){
         return authenApi.put(`/chat/${chatRoomID}/messages/seen-messages`, {messages})
