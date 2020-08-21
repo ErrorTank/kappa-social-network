@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import { userInfo } from '../../../../../../../common/states/common';
 import { ListingInfo } from './listing-info/listing-info';
+import { Avatar } from './../../../../../../common/avatar/avatar';
+import { omit } from 'lodash';
 
 export class CreateListingInputWidget extends Component {
   constructor(props) {
@@ -25,6 +27,35 @@ export class CreateListingInputWidget extends Component {
       title: 'Nhà',
     },
   ];
+  requireField = [
+    {
+      name: 'item',
+      require: [
+        'files',
+        'title',
+        'price',
+        'category',
+        'location',
+        'availability',
+      ],
+    },
+    {
+      name: 'vehicle',
+      require: ['files', 'vehicleType', 'year', 'make', 'model', 'price'],
+    },
+    {
+      name: 'home',
+      require: [
+        'files',
+        'homeFor',
+        'homeType',
+        'numberOfBedrooms',
+        'numberOfBathrooms',
+        'address',
+        'decription',
+      ],
+    },
+  ];
   componentDidMount = () => {
     let { state, updateValue } = this.props;
 
@@ -35,6 +66,14 @@ export class CreateListingInputWidget extends Component {
         updateValue('pictureLimit', each.pictureLimit);
       }
     });
+  };
+  setNewListing = () => {
+    const { state } = this.props;
+    console.log(omit(state));
+  };
+  checkRequiredfield = () => {
+    // if (type === 'item') {
+    // }
   };
   render() {
     let user = userInfo.getState();
@@ -57,7 +96,7 @@ export class CreateListingInputWidget extends Component {
         <div className='cs-input-body'>
           <div className='user-info-display'>
             <div className='user-avatar-wrapper'>
-              <img src={user.avatar} alt='user avatar' />
+              <Avatar user={user} />
             </div>
             <div className='user-info-wrapper'>
               <div className='user-name'>{user.basic_info.username}</div>
@@ -76,7 +115,13 @@ export class CreateListingInputWidget extends Component {
         </div>
 
         <div className='cs-input-footer'>
-          <div className='cl-button'>Tiếp</div>
+          <div
+            className='cl-button'
+            onClick={() => this.setNewListing()}
+            disabled={this.checkRequiredfield()}
+          >
+            Tiếp
+          </div>
         </div>
       </div>
     );
