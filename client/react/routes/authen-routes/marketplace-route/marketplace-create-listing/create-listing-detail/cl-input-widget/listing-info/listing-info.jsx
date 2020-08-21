@@ -28,7 +28,7 @@ export class ListingInfo extends Component {
         price: '',
       },
     };
-    addressApi.getAddress({ city: 204 }).then((each) => console.log(each));
+    addressApi.getAddress({}).then((each) => console.log(each));
   }
   // display function
   handleInputDisplay = () => {
