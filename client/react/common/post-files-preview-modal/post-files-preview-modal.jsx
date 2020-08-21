@@ -32,9 +32,7 @@ class PostFilesPreviewModal extends Component {
             <div className="post-files-preview-modal">
                 <div className="file-panel">
                     <div className="file-container">
-                         <div className="file-wrapper">
 
-                         </div>
                     </div>
                 </div>
                 <div className="describe-panel">
