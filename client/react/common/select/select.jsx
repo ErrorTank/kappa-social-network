@@ -47,7 +47,7 @@ export class Select extends React.Component {
         <ClickOutside onClickOut={() => this.setState({ show: false })}>
           <div className='select-wrapper'>
             <div
-              className={classnames('select-toggle', { disabled })}
+              className={classnames('select-toggle', { disabled: disabled })}
               onClick={() => this.setState({ show: !this.state.show })}
             >
               {value ? displayAs(value) : placeholder ? placeholder : 'Chọn'}

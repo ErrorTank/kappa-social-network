@@ -55,7 +55,7 @@ export class FeedWidget extends Component {
 
     }
     appendNewPost = (post) => {
-        this.props.onChange({posts: [post].concat(this.props.posts)})
+        this.props.onChange([post].concat(this.props.posts))
     }
 
 
