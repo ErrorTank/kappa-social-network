@@ -169,6 +169,10 @@ var exceptionRequestsDev = [
     endpoint: /https:\/\/localhost:4000\/api\/post\/get-all/,
     method: 'GET',
   },
+  {
+    endpoint: /https:\/\/localhost:4000\/api\/address\/get-address/,
+    method: 'GET',
+  },
 ];
 
 var notGetRequests = [
@@ -184,8 +188,8 @@ var notGetRequests = [
   },
 ];
 
-var CACHE_STATIC_NAME = 'static-v1598007051681';
-var CACHE_DYNAMIC_NAME = 'dynamic-v1598007051681';
+var CACHE_STATIC_NAME = 'static-v1597995443785';
+var CACHE_DYNAMIC_NAME = 'dynamic-v1597995443785';
 
 var STATIC_FILES = [
   '/',

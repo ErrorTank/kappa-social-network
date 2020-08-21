@@ -1,5 +1,22 @@
 import React, { Component } from 'react';
-export const itemField = [
+import { addressApi } from './../api/common/address-api';
+import { pick } from 'lodash';
+
+//get option for location
+addressApi.getAddress({}).then((city) => {
+  let locationOption = city.map((e) => {
+    return pick(e, ['name']);
+  });
+  itemField = itemField.map((e) => {
+    if (e.englishName === 'location') {
+      return (e.options = locationOption);
+    } else {
+      return e;
+    }
+  });
+});
+
+export let itemField = [
   {
     name: 'Tiêu đề',
     englishName: 'title',
@@ -242,7 +259,8 @@ export const itemField = [
   //special, need to build later
   {
     name: 'Vị trí',
-    englishName: 'position',
+    englishName: 'location',
+    isSelected: true,
   },
 
   {
