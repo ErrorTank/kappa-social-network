@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import classnames from "classnames";
+import {postFilesPreviewModal} from "../post-files-preview-modal/post-files-preview-modal";
 
 
 
