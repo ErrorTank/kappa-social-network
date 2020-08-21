@@ -15,7 +15,6 @@ const dbManager = require('./config/db');
 const createRoutes = require('./config/routes');
 const createErrorHandlersMiddleware = require('./utils/error/error-handlers');
 const { createSocketNamespaces } = require('./config/socket/socket');
-const reverse = require('reverse-geocode');
 
 dbManager
   .init()
@@ -25,7 +24,6 @@ dbManager
   })
   .then((appDb) => {
     // require('./scripts/feedMarketplace');
-    console.log(reverse.lookup(37.8072792, -122.4780652, 'vi'));
     let environment = process.env.NODE_ENV;
     const port = process.env.PORT || 4000;
     const server = https.createServer(

@@ -15,13 +15,11 @@ import { omit, toArray, indexOf } from 'lodash';
 import * as yup from 'yup';
 import { InputFileWrapper } from './../../../../../../../common/file-input/file-input';
 import { FileDisplay } from './../../../../../../../layout/authen-layout/create-message-widget/chat-box/message-utilities/file-display/file-display';
-// import GooglePlacesAutocomplete from 'react-google-places-autocomplete';
-// import 'react-google-places-autocomplete/dist/index.min.css';
+import { addressApi } from './../../../../../../../../api/common/address-api';
 
 export class ListingInfo extends Component {
   constructor(props) {
     super(props);
-
     this.state = {
       dependedInput: '',
       inputField: '',
@@ -30,6 +28,7 @@ export class ListingInfo extends Component {
         price: '',
       },
     };
+    addressApi.getAddress({ city: 204 }).then((each) => console.log(each));
   }
   // display function
   handleInputDisplay = () => {

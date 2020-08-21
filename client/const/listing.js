@@ -242,7 +242,7 @@ export const itemField = [
   //special, need to build later
   {
     name: 'Vị trí',
-    englishName: 'position',
+    englishName: 'location',
   },
 
   {
