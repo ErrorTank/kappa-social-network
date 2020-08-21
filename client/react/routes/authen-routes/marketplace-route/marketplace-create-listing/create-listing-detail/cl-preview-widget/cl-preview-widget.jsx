@@ -103,7 +103,7 @@ export class CreateListingPreviewWidget extends Component {
                   {price ? price : 'Giá'}
                 </div>
                 <div className='info-time-position'>
-                  Đã niêm yết vài giây trước tại Hà Nội{' '}
+                  Đã niêm yết vài giây trước tại {state.location || '...'}{' '}
                 </div>
               </div>
 

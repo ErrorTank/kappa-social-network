@@ -16,6 +16,7 @@ import * as yup from 'yup';
 import { InputFileWrapper } from './../../../../../../../common/file-input/file-input';
 import { FileDisplay } from './../../../../../../../layout/authen-layout/create-message-widget/chat-box/message-utilities/file-display/file-display';
 import { addressApi } from './../../../../../../../../api/common/address-api';
+import classnames from 'classnames';
 
 export class ListingInfo extends Component {
   constructor(props) {
@@ -28,7 +29,7 @@ export class ListingInfo extends Component {
         price: '',
       },
     };
-    addressApi.getAddress({}).then((each) => console.log(each));
+    // addressApi.getAddress({}).then((each) => console.log(each));
   }
   // display function
   handleInputDisplay = () => {
@@ -186,9 +187,15 @@ export class ListingInfo extends Component {
       <div className='listing-info'>
         <div className='picture-input'>
           <div className='picture-input-header'>
-            Ảnh
-            <span className='dot'> · </span>0 /{' '}
-            {type && <span>{pictureLimit}</span>}
+            <span
+              className={classnames('picture-limit', {
+                error: files.length > pictureLimit,
+              })}
+            >
+              Ảnh
+              <span className='dot'> · </span>
+              {files.length || 0} / {type && <span>{pictureLimit}</span>}
+            </span>
             <span className='sub'>
               {' '}
               - Bạn có thể thêm tối đa {pictureLimit} ảnh
@@ -216,9 +223,13 @@ export class ListingInfo extends Component {
                     limitSize={10 * 1024 * 1024}
                   >
                     {({ onClick }) => (
-                      <div className='add-file' onClick={onClick}>
-                        <i className='fas fa-file-plus'></i>
-                        <span>Thêm ảnh</span>
+                      <div className='add-file-wrapper'>
+                        {files.length < pictureLimit && (
+                          <div className='add-file' onClick={onClick}>
+                            <i className='fas fa-file-plus'></i>
+                            <span>Thêm ảnh</span>
+                          </div>
+                        )}
                       </div>
                     )}
                   </InputFileWrapper>
@@ -248,6 +259,16 @@ export class ListingInfo extends Component {
             </InputFileWrapper>
           )}
         </div>
+
+        {files.length > pictureLimit && (
+          <div
+            className={classnames('error-alert', {
+              error: files.length > pictureLimit,
+            })}
+          >
+            Bạn chỉ có thể chọn tối đa {pictureLimit} ảnh
+          </div>
+        )}
 
         {inputField &&
           inputField.map((each, i) => {
