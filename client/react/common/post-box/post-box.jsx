@@ -4,6 +4,8 @@ import {Avatar} from "../avatar/avatar";
 import isNil from "lodash/isNil"
 import moment from "moment";
 import {PostPolicies, PostPoliciesMAP} from "../create-post-modal/create-post-modal";
+import {getRenderableContentFromMessage} from "../../../common/utils/editor-utils";
+moment.locale("vi");
 
 export class PostBox extends Component {
     constructor(props) {
@@ -91,7 +93,13 @@ export class PostBox extends Component {
                     />
 
                 </div>
+
                 <div className="post-body">
+                    {post.content && (
+                        <div className="content">
+                            {getRenderableContentFromMessage(post)}
+                        </div>
+                    )}
 
                 </div>
                 <div className="post-footer">
