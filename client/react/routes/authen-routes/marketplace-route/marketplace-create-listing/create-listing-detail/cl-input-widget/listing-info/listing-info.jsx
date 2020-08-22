@@ -17,7 +17,7 @@ import { InputFileWrapper } from './../../../../../../../common/file-input/file-
 import { FileDisplay } from './../../../../../../../layout/authen-layout/create-message-widget/chat-box/message-utilities/file-display/file-display';
 import { addressApi } from './../../../../../../../../api/common/address-api';
 import classnames from 'classnames';
-
+import { pick } from 'lodash';
 export class ListingInfo extends Component {
   constructor(props) {
     super(props);
@@ -30,6 +30,27 @@ export class ListingInfo extends Component {
       },
     };
     // addressApi.getAddress({}).then((each) => console.log(each));
+
+    //get option for location
+    addressApi.getAddress({}).then((city) => {
+      let locationOption = city.map((e) => {
+        return pick(e, ['name']);
+      });
+      itemField = itemField.map((e) => {
+        if (e.englishName === 'location') {
+          return (e.options = locationOption);
+        } else {
+          return e;
+        }
+      });
+      vehicleField = vehicleField.map((e) => {
+        if (e.englishName === 'location') {
+          return (e.options = locationOption);
+        } else {
+          return e;
+        }
+      });
+    });
   }
   // display function
   handleInputDisplay = () => {

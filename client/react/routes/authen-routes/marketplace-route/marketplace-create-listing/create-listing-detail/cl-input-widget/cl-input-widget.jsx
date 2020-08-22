@@ -7,7 +7,9 @@ import { omit } from 'lodash';
 export class CreateListingInputWidget extends Component {
   constructor(props) {
     super(props);
-    this.state = {};
+    this.state = {
+      canCreate: true,
+    };
   }
 
   createInfo = [
@@ -27,35 +29,19 @@ export class CreateListingInputWidget extends Component {
       title: 'Nhà',
     },
   ];
-  requireField = [
-    {
-      name: 'item',
-      require: [
-        'files',
-        'title',
-        'price',
-        'category',
-        'location',
-        'availability',
-      ],
-    },
-    {
-      name: 'vehicle',
-      require: ['files', 'vehicleType', 'year', 'make', 'model', 'price'],
-    },
-    {
-      name: 'home',
-      require: [
-        'files',
-        'homeFor',
-        'homeType',
-        'numberOfBedrooms',
-        'numberOfBathrooms',
-        'address',
-        'decription',
-      ],
-    },
-  ];
+  requireField = {
+    item: ['files', 'title', 'price', 'category', 'location', 'availability'],
+    vehicle: ['files', 'vehicleType', 'year', 'make', 'model', 'price'],
+    home: [
+      'files',
+      'homeFor',
+      'homeType',
+      'numberOfBedrooms',
+      'numberOfBathrooms',
+      'address',
+      'decription',
+    ],
+  };
   componentDidMount = () => {
     let { state, updateValue } = this.props;
 
@@ -72,8 +58,18 @@ export class CreateListingInputWidget extends Component {
     console.log(omit(state));
   };
   checkRequiredfield = () => {
-    // if (type === 'item') {
-    // }
+    const { state } = this.props;
+    const { canCreate } = this.state;
+    if (state.type === 'item') {
+      let requiredInput = this.requireField['item'];
+      requiredInput.forEach((e) => {
+        if (state[e] !== null) {
+          return false;
+          this.setState({ canCreate: false });
+        }
+      });
+      // return true;
+    }
   };
   render() {
     let user = userInfo.getState();

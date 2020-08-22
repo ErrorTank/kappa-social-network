@@ -1,27 +1,5 @@
 import React, { Component } from 'react';
 import { addressApi } from './../api/common/address-api';
-import { pick } from 'lodash';
-
-//get option for location
-addressApi.getAddress({}).then((city) => {
-  let locationOption = city.map((e) => {
-    return pick(e, ['name']);
-  });
-  itemField = itemField.map((e) => {
-    if (e.englishName === 'location') {
-      return (e.options = locationOption);
-    } else {
-      return e;
-    }
-  });
-  vehicleField = vehicleField.map((e) => {
-    if (e.englishName === 'location') {
-      return (e.options = locationOption);
-    } else {
-      return e;
-    }
-  });
-});
 
 export let itemField = [
   {
@@ -149,18 +127,18 @@ export let itemField = [
       {
         name: 'hỗn hợp',
       },
-      {
-        name: 'Phương tiện',
-        icon: 'fas fa-car',
-        isDisabled: true,
-        link: '/marketplace/create/vehicle',
-      },
-      {
-        name: 'Nhà đất',
-        icon: 'fas fa-home',
-        isDisabled: true,
-        link: '/marketplace/create/home',
-      },
+      // {
+      //   name: 'Phương tiện',
+      //   icon: 'fas fa-car',
+      //   isDisabled: true,
+      //   link: '/marketplace/create/vehicle',
+      // },
+      // {
+      //   name: 'Nhà đất',
+      //   icon: 'fas fa-home',
+      //   isDisabled: true,
+      //   link: '/marketplace/create/home',
+      // },
     ],
   },
 

@@ -81,13 +81,13 @@ export class ListingInfoSelect extends Component {
                     <div
                       key={getOptionKey(each, i)}
                       className={classnames('not-option', {
-                        linked: each.link,
+                        // linked: each.link,
                       })}
-                      onClick={() => {
-                        if (each.link) {
-                          customHistory.push(each.link);
-                        }
-                      }}
+                      // onClick={() => {
+                      //   if (each.link) {
+                      //     customHistory.push(each.link);
+                      //   }
+                      // }}
                     >
                       <div
                         className={classnames({
