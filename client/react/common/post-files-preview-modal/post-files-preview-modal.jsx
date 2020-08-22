@@ -51,10 +51,20 @@ class PostFilesPreviewModal extends Component {
         let {files} = post;
         let currentFile = files.find(each => each._id === focusFileID);
         // console.log(currentFile)
-
+        let currentFileIndex = files.findIndex(each => each._id === focusFileID)
         return (
             <div className="post-files-preview-modal">
                 <div className="file-panel">
+                    {files.length > 1 && (
+                        <>
+                            <div className="img-slider-action left" onClick={() => this.setState({focusFileID: currentFileIndex === 0 ? files[files.length - 1]._id : files[currentFileIndex - 1]._id})}>
+                                <i className="far fa-chevron-left"></i>
+                            </div>
+                            <div className="img-slider-action right" onClick={() => this.setState({focusFileID: currentFileIndex === files.length - 1 ? files[0]._id : files[currentFileIndex + 1]._id})}>
+                                <i className="far fa-chevron-right"></i>
+                            </div>
+                        </>
+                    )}
                     <BlurImgWrapper
                         imgSrc={currentFile.path}
                         className={"blur-container"}
@@ -128,6 +138,7 @@ class PostFilesPreviewModal extends Component {
                         </div>
 
                     </div>
+
                 </div>
             </div>
         );

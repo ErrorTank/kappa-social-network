@@ -3,6 +3,33 @@
   white-space nowrap
   display flex
   align-items flex-start
+  .img-slider-action{
+    position absolute
+    top 50%
+    transform translateY(-50%)
+    background-color white
+    border-radius 50%
+    z-index 4
+    width 40px
+    height 40px
+    cursor pointer
+    display flex
+    align-items center
+    justify-content center
+    i{
+      font-size 2rem
+
+    }
+    &:hover{
+      background-color darken(white, 3%)
+    }
+    &.left{
+      left 20px
+    }
+    &.right{
+      right 20px
+    }
+  }
   .file-panel{
     flex 0 0 calc(100% - 350px)
     height 700px
