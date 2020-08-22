@@ -24,9 +24,10 @@ const getAllPosts = ({userID, skip, limit}) => {
         _id: ObjectId(userID)
     }).lean()
         .then(user => {
-            let {friends:_friends,
-                page_blocked:_page_blocked,
-                person_blocked:_person_blocked,
+            let {
+                friends: _friends,
+                page_blocked: _page_blocked,
+                person_blocked: _person_blocked,
                 blocked_posts: _blocked_posts,
                 joined_groups: _joined_groups,
                 group_blocked: _group_blocked,
@@ -100,7 +101,7 @@ const getAllPosts = ({userID, skip, limit}) => {
                                         $and: [
                                             {
                                                 policy: "PERSONAL",
-                                            },{
+                                            }, {
                                                 belonged_person: ObjectId(userID)
                                             }
                                         ]
@@ -109,7 +110,7 @@ const getAllPosts = ({userID, skip, limit}) => {
                             }
                         ]
                     }
-                },{
+                }, {
                     $addFields: {
                         "love_size": {
                             $size: "$reactions.love"
@@ -135,19 +136,74 @@ const getAllPosts = ({userID, skip, limit}) => {
                     }
                 }, {
                     $addFields: {
-                        "comments_count": { $size: "$comments" },
-                        "reaction_count": {$add : [ '$love_size', '$laugh_size', "$wow_size", "$cry_size", "$cry_size", "$angry_size", "$thump_up_size", "$thump_down_size" ]}
+                        "comments_count": {$size: "$comments"},
+                        "reaction_count": {$add: ['$love_size', '$laugh_size', "$wow_size", "$cry_size", "$cry_size", "$angry_size", "$thump_up_size", "$thump_down_size"]}
                     }
-                },{
+                }, {
                     $sort: {
                         updated_at: -1,
 
                     }
-                },{
-                    $skip: Number(skip)
-                },{
-                    $limit: Number(limit)
                 }, {
+                    $skip: Number(skip)
+                }, {
+                    $limit: Number(limit)
+                },
+                {
+                    "$addFields": {
+                        "file_ids": {
+                            "$reduce": {
+                                "input": "$files",
+                                "initialValue": [],
+                                "in": {"$concatArrays": ["$$value", "$$this.tagged.related"]}
+                            }
+                        }
+                    }
+                },
+                {
+                    "$lookup": {
+                        "from": "users",
+                        "localField": "file_ids",
+                        "foreignField": "_id",
+                        "as": "file_tags"
+                    }
+                },
+                {
+                    "$addFields": {
+                        "files": {
+                            "$map": {
+                                "input": "$files",
+                                "in": {
+                                    "$mergeObjects": [
+                                        "$$this",
+                                        {
+                                            "tagged": {
+                                                "$map": {
+                                                    "input": "$$this.tagged",
+                                                    "in": {
+                                                        "$mergeObjects": [
+                                                            "$$this",
+                                                            {
+                                                                "related": {
+                                                                    "$arrayElemAt": [
+                                                                        "$file_tags",
+                                                                        {"$indexOfArray": ["$file_ids", "$$this.related"]}
+                                                                    ]
+                                                                }
+                                                            }
+                                                        ]
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    ]
+                                }
+                            }
+                        }
+                    }
+                },
+                {"$project": {"file_ids": 0, "file_tags": 0}},
+                {
                     $lookup: {
                         from: 'pages', localField: 'belonged_page', foreignField: '_id', as: "belonged_page"
                     }
@@ -155,15 +211,15 @@ const getAllPosts = ({userID, skip, limit}) => {
                     $lookup: {
                         from: 'groups', localField: 'belonged_group', foreignField: '_id', as: "belonged_group"
                     }
-                },{
+                }, {
                     $lookup: {
                         from: 'users', localField: 'belonged_person', foreignField: '_id', as: "belonged_person"
                     }
-                },{
+                }, {
                     $lookup: {
                         from: 'users', localField: 'tagged', foreignField: '_id', as: "tagged"
                     }
-                },{
+                }, {
                     $addFields: {
                         "belonged_page": {
                             $arrayElemAt: ["$belonged_page", 0]

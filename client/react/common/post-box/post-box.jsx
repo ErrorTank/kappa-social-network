@@ -105,7 +105,7 @@ export class PostBox extends Component {
                     )}
                     {!!post.files.length && (
                         <PbFilesPreview
-                            files={post.files}
+                            post={post}
                         />
                     )}
                     {!!post.hyperlinks.length && (

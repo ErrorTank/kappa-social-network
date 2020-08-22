@@ -8,15 +8,16 @@ import {postFilesPreviewModal} from "../post-files-preview-modal/post-files-prev
 export class PbFilesPreview extends Component {
 
     openPostFilesPreviewModal = (focus) => {
-        let {files} = this.props;
+        let {post} = this.props;
         postFilesPreviewModal.open({
             focusFileID: focus._id,
-            files
+            post
         })
     };
 
     render() {
-        let {files} = this.props;
+        let {post} = this.props;
+        let {files} = post;
         return (
             <div className="pb-files-preview">
                 <div className={classnames("pb-list", `list-${files.length < 6 ? files.length : 5 }`)}>

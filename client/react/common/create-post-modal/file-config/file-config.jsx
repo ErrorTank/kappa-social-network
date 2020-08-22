@@ -5,6 +5,7 @@ import {getBase64Image} from "../../../../common/utils/file-upload-utils";
 import pick from "lodash/pick";
 import {ImageTagWrapper} from "../../image-tag-wrapper/image-tag-wrapper";
 import {utilityApi} from "../../../../api/common/utilities-api";
+import {BlurImgWrapper} from "../../blur-img-wrapper/blur-img-wrapper";
 
 const createDetectionsCache = () => {
     let detectionsMap = {};
@@ -77,12 +78,10 @@ export class FileConfig extends Component {
                         <p className="tag-title">
                             Nhấn vào ảnh để tag bạn bè
                         </p>
-                        <div className="blur-panel">
-                            <div>
-                                <img src={base64Image}/>
-                            </div>
-
-                        </div>
+                        <BlurImgWrapper
+                            imgSrc={base64Image}
+                            className={"blur-panel"}
+                        />
                         {base64Image && (
                             <ImageTagWrapper
                                 file={this.props.file.file}
