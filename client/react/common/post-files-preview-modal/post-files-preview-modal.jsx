@@ -7,6 +7,10 @@ import {Avatar} from "../avatar/avatar";
 import {PostPolicies} from "../create-post-modal/create-post-modal";
 import moment from "moment";
 import {Button} from "../button/button";
+import {utilityApi} from "../../../api/common/utilities-api";
+import {ImageTagWrapper} from "../image-tag-wrapper/image-tag-wrapper";
+import {createDetectionsCache} from "../create-post-modal/file-config/file-config";
+const detectionsCache = createDetectionsCache(file => file._id);
 
 export const postFilesPreviewModal = {
     open(config) {
@@ -31,7 +35,9 @@ class PostFilesPreviewModal extends Component {
             focusFileID: props.focusFileID,
             editMode: false,
             highLightTag: null,
-            updating: false
+            updating: false,
+            updatedFile: null,
+            detections: []
         }
     }
 
@@ -46,7 +52,7 @@ class PostFilesPreviewModal extends Component {
     // }
 
     render() {
-        let {focusFileID, editMode, highLightTag, updating} = this.state;
+        let {focusFileID, editMode, highLightTag, updating, updatedFile, detections} = this.state;
         let {post} = this.props;
         let {files} = post;
         let currentFile = files.find(each => each._id === focusFileID);
@@ -55,6 +61,9 @@ class PostFilesPreviewModal extends Component {
         return (
             <div className="post-files-preview-modal">
                 <div className="file-panel">
+                    <div className="img-slider-action close-btn" onClick={() => this.props.onClose()}>
+                        <i className="fal fa-times"></i>
+                    </div>
                     {files.length > 1 && (
                         <>
                             <div className="img-slider-action left" onClick={() => this.setState({focusFileID: currentFileIndex === 0 ? files[files.length - 1]._id : files[currentFileIndex - 1]._id})}>
@@ -81,8 +90,40 @@ class PostFilesPreviewModal extends Component {
                                 renderTag={each => each.related.basic_info.username}
                             />
                         ) : (
-                            <>
-                            </>
+                            <ImageTagWrapper
+                                maxWidth={700}
+                                maxHeight={500}
+                                file={updatedFile.path}
+                                imgSrc={updatedFile.path}
+                                tagged={updatedFile.tagged}
+                                className={"image-wrapper"}
+                                api={({keyword}) => utilityApi.searchFriends(keyword)}
+                                isTagged={user => updatedFile.tagged.find(item => item.related._id === user._id)}
+                                onSelect={(data) => {
+                                    this.setState({updatedFile: {...updatedFile, tagged: updatedFile.tagged.concat(data)}})
+                                }}
+                                detections={detections}
+                                onRemove={tag => this.setState({updatedFile: {...updatedFile, tagged: updatedFile.tagged.filter(each => each.related._id !== tag.related._id)}})}
+                                neededLoadDetection={true}
+                                detectApi={({width, height}) => detectionsCache.getDetections(updatedFile, {width, height}, false).then(data => {
+                                    // console.log(data)
+                                    this.setState({
+                                        detections: data.map(each => {
+                                            let {detection} = each;
+                                            let {_box, _imageDims} = detection;
+                                            let {_height, _width, _x, _y} = _box;
+                                            let {_height: imgHeight, _width: imgWidth} = _imageDims
+                                            return {
+                                                ratioX: imgWidth / _x,
+                                                ratioY: imgHeight / _y,
+                                                boxWidthRatio: imgWidth / _width,
+                                                boxHeightRatio: imgHeight / _height
+                                            }
+                                        }),
+
+                                    })
+                                })}
+                            />
                         )}
                     </div>
                     {!editMode && (
@@ -129,10 +170,10 @@ class PostFilesPreviewModal extends Component {
                             {editMode ? (
                                 <>
                                     <Button className="btn btn-save btn-common-primary" loading={updating} onClick={this.submit}><i className="fas fa-save"></i> Lưu</Button>
-                                    <Button className="btn btn-cancel" onClick={() => this.setState({editMode: false})}>Hủy</Button>
+                                    <Button className="btn btn-cancel" onClick={() => this.setState({editMode: false, updatedFile: null, detections: []})}>Hủy</Button>
                                 </>
                             ) : (
-                                <Button className="btn btn-block btn-common-primary" onClick={() => this.setState({editMode: true})}><i className="far fa-edit"></i> Chỉnh sửa</Button>
+                                <Button className="btn btn-block btn-common-primary" onClick={() => this.setState({editMode: true, updatedFile: {...currentFile}})}><i className="far fa-edit"></i> Chỉnh sửa</Button>
                             )}
 
                         </div>

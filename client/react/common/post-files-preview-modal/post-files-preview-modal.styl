@@ -5,8 +5,7 @@
   align-items flex-start
   .img-slider-action{
     position absolute
-    top 50%
-    transform translateY(-50%)
+
     background-color white
     border-radius 50%
     z-index 4
@@ -25,9 +24,17 @@
     }
     &.left{
       left 20px
+      top 50%
+      transform translateY(-50%)
     }
     &.right{
       right 20px
+      top 50%
+      transform translateY(-50%)
+    }
+    &.close-btn{
+      left 15px
+      top 15px
     }
   }
   .file-panel{

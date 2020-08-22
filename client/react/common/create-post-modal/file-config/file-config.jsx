@@ -7,24 +7,24 @@ import {ImageTagWrapper} from "../../image-tag-wrapper/image-tag-wrapper";
 import {utilityApi} from "../../../../api/common/utilities-api";
 import {BlurImgWrapper} from "../../blur-img-wrapper/blur-img-wrapper";
 
-const createDetectionsCache = () => {
+export const createDetectionsCache = (getFileID) => {
     let detectionsMap = {};
     return {
-        setDetections: (file, detections) => detectionsMap[file.fileID] = detections,
-        getDetections: async (file, displaySize) => {
-            if (detectionsMap[file.fileID]) {
-                return detectionsMap[file.fileID]
+        setDetections: (file, detections) => detectionsMap[getFileID(file)] = detections,
+        getDetections: async (file, displaySize, isBase64 = true) => {
+            if (detectionsMap[getFileID(file)]) {
+                return detectionsMap[getFileID(file)]
             }
-            return utilityApi.detectImageFaces(file.file, displaySize, "file")
+            return isBase64 ? utilityApi.detectImageFaces(file.file, displaySize, "file") : Promise.resolve()
                 .then(data => {
-                    detectionsMap[file.fileID] = [...data];
+                    detectionsMap[getFileID(file)] = [...data];
                     return data;
                 })
         }
     }
 }
 
-export const detectionsCache = createDetectionsCache();
+const detectionsCache = createDetectionsCache(file => file.fileID);
 
 export class FileConfig extends Component {
     constructor(props) {
