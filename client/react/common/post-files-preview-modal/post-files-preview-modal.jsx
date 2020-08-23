@@ -13,6 +13,7 @@ import {createDetectionsCache} from "../create-post-modal/file-config/file-confi
 import {getBase64ImageFromUrl, getFileBlobFromUrl} from "../../../common/utils/file-upload-utils";
 import {postApi} from "../../../api/common/post-api";
 import {mergeArray} from "../../../common/utils/array-utils";
+import {CommonInput} from "../common-input/common-input";
 export const postFilesDetectionsCache = createDetectionsCache(file => file._id);
 
 export const postFilesPreviewModal = {
@@ -77,7 +78,7 @@ class PostFilesPreviewModal extends Component {
 
         let {files} = post;
         let currentFile = files.find(each => each._id === focusFileID);
-        // console.log(currentFile)
+        console.log(currentFile)
         let currentFileIndex = files.findIndex(each => each._id === focusFileID)
         return (
             <div className="post-files-preview-modal">
@@ -189,6 +190,17 @@ class PostFilesPreviewModal extends Component {
                                 <span>- Cùng với {currentFile.tagged.map((each, i) => <Fragment key={each._id}><a className="link" onMouseLeave={() => this.setState({highLightTag: null})} onMouseEnter={() => this.setState({highLightTag: each._id})}>{each.related.basic_info.username}</a>{i === currentFile.tagged.length - 2 && " và "}{i < currentFile.tagged.length - 2 && ", "}</Fragment>)}</span>
                             )}
                         </div>
+                        {editMode && (
+                            <CommonInput
+                                className={"dp-cation"}
+                                value={updatedFile.caption || ""}
+                                label={"Chú thích ảnh"}
+                                type={"text"}
+                                textArea={true}
+                                placeholder={"Nhập chú thích"}
+                                onChange={e => this.setState({updatedFile: {...updatedFile, caption: e.target.value}})}
+                            />
+                        )}
                     </div>
                     <div className="dp-footer">
                         <div className="edit-action">

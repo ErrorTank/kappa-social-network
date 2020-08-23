@@ -155,11 +155,20 @@ const getAllPosts = ({userID, skip, limit}) => {
                             "$reduce": {
                                 "input": "$files",
                                 "initialValue": [],
-                                "in": {"$concatArrays": ["$$value", "$$this.tagged.related"]}
+                                "in": {
+                                    "$setUnion": ["$$value", {
+                                        "$map": {
+                                            "input": "$$this.tagged",
+                                            "as": "el",
+                                            "in": "$$el.related"
+                                        }
+                                    }]
+                                }
                             }
                         }
                     }
                 },
+
                 {
                     "$lookup": {
                         "from": "users",
