@@ -11,13 +11,13 @@ import {
 import { customHistory } from '../../../../../../routes';
 import { ListingInfoSelect } from '../../../../../../../common/listing-info-select/listing-info-select';
 import { v4 as uuidv4 } from 'uuid';
-import { omit, toArray, indexOf } from 'lodash';
-import * as yup from 'yup';
+import { omit, pick } from 'lodash';
+// import * as yup from 'yup';
 import { InputFileWrapper } from './../../../../../../../common/file-input/file-input';
 import { FileDisplay } from './../../../../../../../layout/authen-layout/create-message-widget/chat-box/message-utilities/file-display/file-display';
 import { addressApi } from './../../../../../../../../api/common/address-api';
 import classnames from 'classnames';
-import { pick } from 'lodash';
+
 export class ListingInfo extends Component {
   constructor(props) {
     super(props);
@@ -29,21 +29,20 @@ export class ListingInfo extends Component {
         price: '',
       },
     };
-    // addressApi.getAddress({}).then((each) => console.log(each));
 
     //get option for location
     addressApi.getAddress({}).then((city) => {
       let locationOption = city.map((e) => {
         return pick(e, ['name']);
       });
-      itemField = itemField.map((e) => {
+      itemField.filter((e) => {
         if (e.englishName === 'location') {
           return (e.options = locationOption);
         } else {
           return e;
         }
       });
-      vehicleField = vehicleField.map((e) => {
+      vehicleField.filter((e) => {
         if (e.englishName === 'location') {
           return (e.options = locationOption);
         } else {
@@ -89,30 +88,33 @@ export class ListingInfo extends Component {
 
   //check display change
   componentDidUpdate(prevProps) {
-    if (prevProps.state.type !== this.props.state.type) {
-      this.handleInputDisplay();
-    }
+    let oldState = prevProps.state;
+    let newState = this.props.state;
     if (
       prevProps.match.params.categoryName !==
       this.props.match.params.categoryName
     ) {
       this.props.updateValue('type', this.props.match.params.categoryName);
     }
-    if (prevProps.state.category !== this.props.state.category) {
-      this.handleSetDependent(fieldByCategory, this.props.state.category);
+    if (oldState.type !== newState.type) {
+      this.handleInputDisplay();
     }
-    if (prevProps.state.vehicleType !== this.props.state.vehicleType) {
-      this.handleSetDependent(fieldByVehicleType, this.props.state.vehicleType);
+    if (oldState.category !== newState.category) {
+      this.handleSetDependent(fieldByCategory, newState.category);
     }
-    if (prevProps.state.homeFor !== this.props.state.homeFor) {
-      this.handleSetDependent(fieldByHomeFor, this.props.state.homeFor);
+    if (oldState.vehicleType !== newState.vehicleType) {
+      this.handleSetDependent(fieldByVehicleType, newState.vehicleType);
+    }
+    if (oldState.homeFor !== newState.homeFor) {
+      this.handleSetDependent(fieldByHomeFor, newState.homeFor);
     }
   }
 
   // check error, only check needed input now
   handleCheckError = (name, message, value) => {
     const { state, updateValue } = this.props;
-    if (!value) {
+    console.log(value);
+    if (!value || value.includes('&nbsp;')) {
       this.setState((prevState) => ({
         error: {
           ...prevState.error,
@@ -134,7 +136,7 @@ export class ListingInfo extends Component {
     const re = /^[0-9\b]+$/;
     value = value.replace(' ₫', '');
     let newValue = value.split('.').join('');
-    console.log(newValue);
+    // console.log(newValue);
     if (re.test(newValue)) {
       if (newValue.length > 10) {
         this.props.updateValue([name], '');

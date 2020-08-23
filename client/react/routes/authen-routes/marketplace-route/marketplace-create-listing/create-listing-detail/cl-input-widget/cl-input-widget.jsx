@@ -3,12 +3,13 @@ import { userInfo } from '../../../../../../../common/states/common';
 import { ListingInfo } from './listing-info/listing-info';
 import { Avatar } from './../../../../../../common/avatar/avatar';
 import { omit } from 'lodash';
+import classnames from 'classnames';
 
 export class CreateListingInputWidget extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      canCreate: true,
+      canCreate: false,
     };
   }
 
@@ -55,26 +56,35 @@ export class CreateListingInputWidget extends Component {
   };
   setNewListing = () => {
     const { state } = this.props;
-    console.log(omit(state));
+    if (this.state.canCreate) {
+      console.log(omit(state));
+    }
   };
+
   checkRequiredfield = () => {
     const { state } = this.props;
     const { canCreate } = this.state;
-    if (state.type === 'item') {
-      let requiredInput = this.requireField['item'];
-      requiredInput.forEach((e) => {
-        if (state[e] !== null) {
-          return false;
-          this.setState({ canCreate: false });
-        }
-      });
-      // return true;
-    }
+    let checkBool = true;
+
+    let requiredInput = this.requireField[state.type];
+    requiredInput.forEach((e) => {
+      if (state[e] !== '' && checkBool == true) {
+        checkBool = false;
+      }
+    });
+    this.setState({ canCreate: checkBool });
   };
+
+  componentDidUpdate(prevProps) {
+    if (prevProps.state !== this.props.state) {
+      this.checkRequiredfield();
+    }
+  }
+
   render() {
     let user = userInfo.getState();
-
-    // console.log(this.props);
+    console.log(this.props.state);
+    // console.log(this.state);
     return (
       <div className='create-listing-input-widget'>
         <div className='cs-input-header'>
@@ -112,9 +122,10 @@ export class CreateListingInputWidget extends Component {
 
         <div className='cs-input-footer'>
           <div
-            className='cl-button'
+            className={classnames('cl-button', {
+              disabled: !this.state.canCreate,
+            })}
             onClick={() => this.setNewListing()}
-            disabled={this.checkRequiredfield()}
           >
             Tiếp
           </div>

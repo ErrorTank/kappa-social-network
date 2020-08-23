@@ -127,18 +127,18 @@ export let itemField = [
       {
         name: 'hỗn hợp',
       },
-      // {
-      //   name: 'Phương tiện',
-      //   icon: 'fas fa-car',
-      //   isDisabled: true,
-      //   link: '/marketplace/create/vehicle',
-      // },
-      // {
-      //   name: 'Nhà đất',
-      //   icon: 'fas fa-home',
-      //   isDisabled: true,
-      //   link: '/marketplace/create/home',
-      // },
+      {
+        name: 'Phương tiện',
+        icon: 'fas fa-car',
+        isDisabled: true,
+        link: '/marketplace/create/vehicle',
+      },
+      {
+        name: 'Nhà đất',
+        icon: 'fas fa-home',
+        isDisabled: true,
+        link: '/marketplace/create/home',
+      },
     ],
   },
 

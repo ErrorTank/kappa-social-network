@@ -29,7 +29,7 @@ export class ListingInfoInput extends Component {
       contentEditable = false,
       ...others
     } = this.props;
-    // contentEditable && console.log(value);
+    contentEditable && console.log(error);
     return (
       <ThemeContext.Consumer>
         {(theme) => (
@@ -73,18 +73,12 @@ export class ListingInfoInput extends Component {
                     onChange={others.onChange} // handle innerHTML change
                     onFocus={() => this.setState({ focus: true })}
                     onBlur={() => this.setState({ focus: false })}
-                    className={classnames('form-control', {
-                      'is-invalid': error,
-                      'is-valid': success,
-                    })}
+                    className={classnames('form-control')}
                   />
                 ) : (
                   <input
                     type='text'
-                    className={classnames('form-control', {
-                      'is-invalid': error,
-                      'is-valid': success,
-                    })}
+                    className={classnames('form-control')}
                     onFocus={() => this.setState({ focus: true })}
                     onBlur={() => this.setState({ focus: false })}
                     id={id}
