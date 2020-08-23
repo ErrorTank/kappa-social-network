@@ -12,5 +12,11 @@ export const postApi = {
     },
     getPostsForFeed({skip, limit}){
         return authenApi.get(`/post/get-all?skip=${skip}&limit=${limit}`)
+    },
+    updatePostFiles({postID, fileID, file}){
+        return authenApi.put(`/post/update/post/${postID}/file/${fileID}`, {file})
+    },
+    updatePost(postID, post){
+        return authenApi.put(`/post/update/post/${postID}`, {post})
     }
 };

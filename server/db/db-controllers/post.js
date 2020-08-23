@@ -270,9 +270,27 @@ const getAllPosts = ({userID, skip, limit}) => {
         })
 }
 
+const updateFilesInPost = ({postID, fileID, file}) => {
+    return Post.findOneAndUpdate({
+        _id: ObjectId(postID)
+    }, {"$set": {"files.$[elem]": {...file}, "last_updated": Date.now()}}, {
+        "arrayFilters": [{"elem._id": ObjectId(fileID)}],
+        "multi": true,
+        new: true
+    }).then((data) => data)
+}
+
+const updatePost = ({postID, post}) => {
+    return Post.findOneAndUpdate({
+        _id: ObjectId(postID)
+    }, {$set: {...post, last_updated: Date.now()}}, {new: true})
+        .lean()
+
+}
 
 module.exports = {
     getAllPosts,
     createNewPost,
-
+    updateFilesInPost,
+    updatePost
 };

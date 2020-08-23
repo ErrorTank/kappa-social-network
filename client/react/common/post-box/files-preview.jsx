@@ -8,10 +8,11 @@ import {postFilesPreviewModal} from "../post-files-preview-modal/post-files-prev
 export class PbFilesPreview extends Component {
 
     openPostFilesPreviewModal = (focus) => {
-        let {post} = this.props;
+        let {post, onChangePost} = this.props;
         postFilesPreviewModal.open({
             focusFileID: focus._id,
-            post
+            post,
+            onChangePost
         })
     };
 

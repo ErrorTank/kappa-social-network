@@ -11,4 +11,3 @@ export const BlurImgWrapper = ({className, imgSrc}) => {
         </div>
     );
 };
-

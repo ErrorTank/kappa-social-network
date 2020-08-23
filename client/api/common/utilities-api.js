@@ -32,5 +32,8 @@ export const utilityApi = {
     },
     detectImageFaces(file, {width, height}, fileKey){
         return faceApi.postMultipart(`/detect-faces`, {file, width, height}, {fileKey})
+    },
+    detectImageFaces2(filePath, {width, height}){
+        return faceApi.post(`/detect-faces-2`, {filePath, width, height})
     }
 };

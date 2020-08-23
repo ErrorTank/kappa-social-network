@@ -17,9 +17,12 @@ const faceDetectApiConfig = {
 }
 
 
+
+
 export const authenApi = apiFactory.createApi(authenApiConfig);
 
 export const offlineApi = apiFactory.createApi(offlineApiConfig);
 
 export const faceApi = apiFactory.createApi(faceDetectApiConfig);
+// faceApi.addHeader("rejectUnauthorized", false)
 

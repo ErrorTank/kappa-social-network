@@ -137,7 +137,7 @@ const autoPopulateParent = function(next){
     ]);
     next();
 };
-postSchema.pre("find", autoPopulateParent).pre("findOne", autoPopulateParent);
+postSchema.pre("find", autoPopulateParent).pre("findOne", autoPopulateParent).pre("findOneAndUpdate", autoPopulateParent);
 postSchema.post('save', function(doc, next) {
     doc.populate([
         {

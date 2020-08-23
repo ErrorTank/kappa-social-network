@@ -17,7 +17,7 @@ export class PostBox extends Component {
     }
 
     render() {
-        let {post, isMyPost} = this.props;
+        let {post, isMyPost, onChangePost} = this.props;
         let postActions = [
             {
                 icon: <i className="fal fa-bookmark"></i>,
@@ -106,6 +106,7 @@ export class PostBox extends Component {
                     {!!post.files.length && (
                         <PbFilesPreview
                             post={post}
+                            onChangePost={onChangePost}
                         />
                     )}
                     {!!post.hyperlinks.length && (

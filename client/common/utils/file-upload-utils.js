@@ -27,6 +27,38 @@ const getBase64Image = (file)=>new Promise((resolve)=>{
 
 });
 
+const getBase64ImageFromUrl = url => new Promise(resolve => {
+    let img = new Image();
+
+    // onload fires when the image is fully loadded, and has width and height
+
+    img.onload = function(){
+
+        let canvas = document.createElement("canvas");
+        canvas.width = img.width;
+        canvas.height = img.height;
+        let ctx = canvas.getContext("2d");
+        ctx.drawImage(img, 0, 0);
+        let dataURL = canvas.toDataURL("image/png");
+            dataURL = dataURL.replace(/^data:image\/(png|jpg);base64,/, "");
+
+        resolve(dataURL); // the base64 string
+
+    };
+
+    // set attributes and src
+    img.setAttribute('crossOrigin', 'anonymous'); //
+    img.src = url;
+})
+
+const getFileBlobFromUrl = url => new Promise(resolve => {
+    return fetch(url)
+        .then(res => res.blob()) // Gets the response and returns it as a blob
+        .then(blob => {
+            resolve(blob)
+        });
+})
+
 const _getImage = (src) => {
     const img = new Image();
     // img.crossOrigin = "anonymous";
@@ -79,5 +111,7 @@ export {
     isImageFile,
     getBase64Image,
     getImageDimensions,
-    calculateNewDimensions
+    calculateNewDimensions,
+    getBase64ImageFromUrl,
+    getFileBlobFromUrl
 }

@@ -15,7 +15,7 @@ export class FeedList extends Component {
 
 
     render() {
-        let {posts} = this.props;
+        let {posts, onChangePost} = this.props;
         let user = userInfo.getState();
         return (
             <div className="feed-list">
@@ -25,6 +25,7 @@ export class FeedList extends Component {
                             key={each._id}
                             post={each}
                             isMyPost={user._id === each.belonged_person._id}
+                            onChangePost={(post) => onChangePost(each._id, post, i)}
                         />
                     ))}
                 </div>
