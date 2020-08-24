@@ -15,6 +15,8 @@ import {userInfo} from "../../../common/states/common";
 import classnames from "classnames"
 import {postApi} from "../../../api/common/post-api";
 import {getActiveReaction} from "../../../common/utils/messenger-utils";
+import {Tooltip} from "../tooltip/tooltip";
+import {ReactionTooltip} from "./reaction-tooltip";
 moment.locale("vi");
 
 export class PostBox extends PureComponent {
@@ -146,11 +148,24 @@ export class PostBox extends PureComponent {
                     <div className="statistic">
                         <div className="reactions">
                             {reactions.toEmojiMap().map(each => (
-                                <span key={each.key} className="reaction"> <Emoji
-                                    set={'facebook'}
-                                    emoji={each.icon_config}
-                                    size={20}
-                                /></span>
+                                <Tooltip
+                                    // delay={500}
+                                    key={each.key}
+                                    className={"reaction-detail"}
+                                    text={() => (
+                                        <ReactionTooltip
+                                            type={each.reverse_key}
+                                            api={() => postApi.getPostReactionList(post._id, each.reverse_key, 0, 10)}
+                                        />
+                                    )}
+                                >
+                                     <span className="reaction"> <Emoji
+                                         set={'facebook'}
+                                         emoji={each.icon_config}
+                                         size={20}
+                                     /></span>
+                                </Tooltip>
+
                             ))}
                             {reactionsLength > 1 && <span className="reaction-count"> {activeReaction &&  (
                                 <span>Bạn và </span>

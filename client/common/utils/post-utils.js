@@ -17,7 +17,7 @@ const sortReactions = (reactions, limit = 3) => {
         toEmojiMap: () =>
             results
                 .map(each => ({key: Object.keys(each)[0], reverse_key: REACTIONS[Object.keys(each)[0]]}))
-                .map(each => ({key: each.key, icon_config: REACTION_EMOJI_MAP[each.reverse_key]}))
+                .map(each => ({reverse_key: each.reverse_key, key: each.key, icon_config: REACTION_EMOJI_MAP[each.reverse_key]}))
     }
 };
 

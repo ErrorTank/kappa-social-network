@@ -8,7 +8,7 @@ const {ApplicationError} = require("../../utils/error/error-types");
 const omit = require("lodash/omit");
 const pick = require("lodash/pick");
 const {MessageState} = require("../../common/const/message-state")
-const { REVERSE_REACTIONS} = require("../../utils/messenger-utils");
+const {REVERSE_REACTIONS} = require("../../utils/messenger-utils");
 
 const createNewPost = (value) => {
 
@@ -303,21 +303,61 @@ const updatePostReaction = ({postID, reactionConfig, userID}) => {
     };
 
     let {on, off} = reactionConfig;
-    if(on){
+    if (on) {
         execCommand["$push"] = {
-            [`reactions.${REVERSE_REACTIONS[on]}`] : ObjectId(userID)
+            [`reactions.${REVERSE_REACTIONS[on]}`]: ObjectId(userID)
         };
 
     }
-    if(off){
+    if (off) {
         execCommand["$pull"] = {
-            [`reactions.${REVERSE_REACTIONS[off]}`] : ObjectId(userID)
+            [`reactions.${REVERSE_REACTIONS[off]}`]: ObjectId(userID)
         };
     }
     return Post.findOneAndUpdate({
         _id: ObjectId(postID)
-    } , execCommand, {new: true}).lean()
+    }, execCommand, {new: true}).lean()
 
+}
+
+const getPostReactionByReactionKey = ({postID, skip = 0, limit = 10, reactionKey}) => {
+    return Post.aggregate([
+        {
+            $match: {
+                _id: ObjectId(postID)
+            }
+        },{
+            $addFields: {
+                "reactions": `$reactions.${REVERSE_REACTIONS[reactionKey]}`
+            }
+        },
+        {
+            $lookup: {
+                "from": "users",
+                "localField": "reactions",
+                "foreignField": "_id",
+                "as": "reactions"
+            }
+        },
+        {
+            $unwind: "$reactions"
+        },
+        {
+            $project: {
+                _id: "$reactions._id",
+                basic_info: "$reactions.basic_info",
+                avatar: "$reactions.avatar",
+            }
+        }
+    ]).then(data => {
+        let left = data.length - (Number(skip) + Number(limit));
+        console.log(skip)
+        console.log(limit + skip)
+        return {
+            list: data.slice(Number(skip), Number(skip) + Number(limit)),
+            left: left < 0 ? 0 : left
+        }
+    })
 }
 
 module.exports = {
@@ -325,5 +365,6 @@ module.exports = {
     createNewPost,
     updateFilesInPost,
     updatePost,
-    updatePostReaction
+    updatePostReaction,
+    getPostReactionByReactionKey
 };

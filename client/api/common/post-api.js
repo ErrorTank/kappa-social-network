@@ -21,5 +21,8 @@ export const postApi = {
     },
     updatePostReaction(postID, reactionConfig, userID){
         return authenApi.put(`/post/update-reaction/post/${postID}`, {reactionConfig, userID})
+    },
+    getPostReactionList(postID, reactionKey, skip = 0, limit = 10){
+        return authenApi.get(`/post/reaction/post/${postID}/reaction_key/${reactionKey}?skip=${skip}&limit=${limit}`)
     }
 };

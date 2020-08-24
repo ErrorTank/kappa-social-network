@@ -2,6 +2,7 @@ import React from "react";
 import classnames from "classnames";
 import {CSSTransition} from "react-transition-group";
 import {ThemeContext} from "../../context/theme-context";
+import debounce from "lodash/debounce"
 
 export class Tooltip extends React.Component {
     constructor(props) {
@@ -11,16 +12,18 @@ export class Tooltip extends React.Component {
         };
     };
 
+    setShow = debounce(() => {
+        this.setState({show: true});
+        this.props.onShow?.();
+    }, this.props.delay || 0)
+
     render() {
         let {position = "bottom", className, text, onShow = () => null, onHide = () => null, disabled = false} = this.props;
         return (
             <ThemeContext.Consumer>
                 {({darkMode}) => (
                     <div className={classnames("tooltip-container", className, {darkMode})}
-                         onMouseEnter={() => {
-                             this.setState({show: true});
-                             onShow();
-                         }}
+                         onMouseEnter={this.setShow}
                          onMouseLeave={() => {
                              this.setState({show: false});
                              onHide();
