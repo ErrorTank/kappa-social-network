@@ -8,12 +8,20 @@ import {getRenderableContentFromMessage} from "../../../common/utils/editor-util
 import {PbFilesPreview} from "./files-preview";
 import {HyperLink} from "../../layout/authen-layout/create-message-widget/chat-box/message-section/hyper-link";
 import {HyperlinkWrapper} from "../../layout/authen-layout/create-message-widget/chat-box/message-section/message";
+import {sortReactions} from "../../../common/utils/post-utils";
+import {Emoji} from "emoji-mart";
+import {REACTION_EMOJI_MAP, ReactionsWidget} from "../reactions-widget/reactions-widget";
+import {userInfo} from "../../../common/states/common";
 moment.locale("vi");
 
 export class PostBox extends Component {
     constructor(props) {
         super(props);
         this.state = {}
+    }
+
+    react = () => {
+
     }
 
     render() {
@@ -50,6 +58,9 @@ export class PostBox extends Component {
 
             },
         ]
+        let reactions = sortReactions(post.reactions);
+        let user = userInfo.getState();
+        let youReact = Object.values(post.reactions).reduce((total, cur) => [...total, ...cur],[]).find(each => each === user._id);
         return (
             <div className="post-box white-box">
                 <div className="post-header">
@@ -121,7 +132,56 @@ export class PostBox extends Component {
                     )}
                 </div>
                 <div className="post-footer">
+                    <div className="statistic">
+                        <div className="reactions">
+                            {reactions.toEmojiMap().map(each => (
+                                <span key={each.key} className="reaction"> <Emoji
+                                    set={'facebook'}
+                                    emoji={each.icon_config}
+                                    size={32}
+                                /></span>
+                            ))}
+                            {post.reaction_count > 0 && <span className="reaction-count"> {youReact && (
+                                <span>Bạn và </span>
+                            )}
+                                {youReact ? post.reaction_count - 1 : post.reaction_count}
+                                {youReact && (
+                                    <span> người khác</span>
+                                )}</span>}
 
+                        </div>
+                        {post.comments_count > 0 && (
+                            <div className="comment-count">
+                                {post.comments_count}
+                            </div>
+                        )}
+
+                    </div>
+                    <div className="post-user-actions">
+                        <div className="action react">
+                            <div className="post-reactions">
+                                <ReactionsWidget
+                                    onSelect={this.react}
+                                    active={null}
+                                />
+                            </div>
+                            <i className="fal fa-thumbs-up"></i>
+                            <span>Thích</span>
+                        </div>
+                        {!post.comment_disabled && (
+                            <div className="action">
+                                <i className="fal fa-comment"></i>
+                                <span>Bình luận</span>
+                            </div>
+                        )}
+                        {!post.block_share && (
+                            <div className="action">
+                                <i className="fal fa-share"></i>
+                                <span>Chia sẻ</span>
+                            </div>
+                        )}
+
+                    </div>
                 </div>
             </div>
         );

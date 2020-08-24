@@ -1,5 +1,53 @@
 .post-box{
   margin-top 20px
+  .post-footer{
+    .post-user-actions{
+      display flex
+      padding 5px 0
+      margin auto
+      width calc(100% - 32px)
+      border 1px solid common-border
+      border-left 0 !important
+      border-right 0 !important
+      .action{
+        flex-grow 1
+        &.react{
+          position relative
+          .post-reactions{
+            position absolute
+            left 50%
+            transform translateX(-50%)
+            bottom 100%
+            display none
+          }
+          &:hover{
+            .post-reactions{
+              display block
+            }
+          }
+        }
+
+
+
+        justify-content center
+        padding 5px 0
+        font-size 1.5rem
+        color greyTextLight
+        display flex
+        align-items center
+        cursor: pointer;
+        border-radius 5px
+        font-weight 500
+        &:hover{
+          background-color darken(white, 5%)
+        }
+        i{
+          font-size 1.8rem
+          margin-right 5px
+        }
+      }
+    }
+  }
   .post-body{
     .hyperlink{
       .url-image{
