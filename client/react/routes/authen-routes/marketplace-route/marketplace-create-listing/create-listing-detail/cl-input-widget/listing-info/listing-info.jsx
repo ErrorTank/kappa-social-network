@@ -114,7 +114,7 @@ export class ListingInfo extends Component {
   handleCheckError = (name, message, value) => {
     const { state, updateValue } = this.props;
     console.log(value);
-    if (!value || value.includes('&nbsp;')) {
+    if (!value || (value.includes('&nbsp;') && value.length === 7)) {
       this.setState((prevState) => ({
         error: {
           ...prevState.error,
@@ -131,21 +131,30 @@ export class ListingInfo extends Component {
     }
   };
 
+  checkNumber = (value) => {
+    const re = /^[0-9\b]+$/;
+    return re.test(value);
+  };
+
   // change number->money display
   handlePriceDisplay = (name, value) => {
-    const re = /^[0-9\b]+$/;
     value = value.replace(' ₫', '');
     let newValue = value.split('.').join('');
-    // console.log(newValue);
-    if (re.test(newValue)) {
+
+    if (newValue.includes('&nbsp;')) {
+      newValue = newValue.slice(0, newValue.length - 7);
+      if (newValue === '') {
+        this.props.updateValue([name], '');
+      }
+    }
+
+    if (this.checkNumber(newValue)) {
       if (newValue.length > 10) {
         this.props.updateValue([name], '');
       } else {
         let money = newValue.replace(/\B(?=(\d{3})+(?!\d))/g, '.');
         this.props.updateValue([name], `${money} ₫`);
       }
-    } else {
-      this.props.updateValue([name], '');
     }
   };
   // hover function
@@ -318,11 +327,14 @@ export class ListingInfo extends Component {
                         e.target.value
                       );
 
-                    each.englishName === 'price'
+                    each.numberOnly && each.isMoney
                       ? this.handlePriceDisplay(
                           each.englishName,
                           e.target.value
                         )
+                      : each.numberOnly && !each.isMoney
+                      ? this.checkNumber(e.target.value) &&
+                        updateValue(`${each.englishName}`, e.target.value)
                       : updateValue(`${each.englishName}`, e.target.value);
                   }}
                 />

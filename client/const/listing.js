@@ -12,6 +12,8 @@ export let itemField = [
     englishName: 'price',
     errorMessage: 'Nhập giá cho mặt hàng của bạn.',
     contentEditable: true,
+    numberOnly: true,
+    isMoney: true,
   },
   {
     name: 'Hạng mục',
@@ -577,6 +579,9 @@ export let vehicleField = [
     name: 'Giá',
     englishName: 'price',
     errorMessage: 'Nhập giá cho mặt hàng của bạn.',
+    contentEditable: true,
+    numberOnly: true,
+    isMoney: true,
   },
   {
     name: 'Mô tả',
@@ -667,11 +672,13 @@ export const homeField = [
     name: 'Số phòng ngủ',
     englishName: 'numberOfBedrooms',
     errorMessage: 'Vui lòng nhập số phòng ngủ.',
+    numberOnly: true,
   },
   {
     name: 'Số phòng tắm',
     englishName: 'numberOfBathrooms',
     errorMessage: 'Vui lòng nhập số phòng tắm.',
+    numberOnly: true,
   },
   {
     name: 'Giá mỗi tháng',
@@ -679,6 +686,8 @@ export const homeField = [
     isDepended: true,
     errorMessage: 'Vui lòng nhập giá tài sản cho thuê.',
     contentEditable: true,
+    numberOnly: true,
+    isMoney: true,
   },
   {
     name: 'Giá',
@@ -686,6 +695,8 @@ export const homeField = [
     isDepended: true,
     errorMessage: 'Vui lòng nhập giá tài sản muốn bán.',
     contentEditable: true,
+    numberOnly: true,
+    isMoney: true,
   },
   //special, need to build later
   {
