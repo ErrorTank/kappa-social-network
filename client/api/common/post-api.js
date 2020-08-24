@@ -18,5 +18,8 @@ export const postApi = {
     },
     updatePost(postID, post){
         return authenApi.put(`/post/update/post/${postID}`, {post})
+    },
+    updatePostReaction(postID, reactionConfig, userID){
+        return authenApi.put(`/post/update-reaction/post/${postID}`, {reactionConfig, userID})
     }
 };

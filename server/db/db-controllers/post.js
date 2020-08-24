@@ -8,7 +8,7 @@ const {ApplicationError} = require("../../utils/error/error-types");
 const omit = require("lodash/omit");
 const pick = require("lodash/pick");
 const {MessageState} = require("../../common/const/message-state")
-
+const { REVERSE_REACTIONS} = require("../../utils/messenger-utils");
 
 const createNewPost = (value) => {
 
@@ -297,9 +297,33 @@ const updatePost = ({postID, post}) => {
 
 }
 
+const updatePostReaction = ({postID, reactionConfig, userID}) => {
+    let execCommand = {
+        $set: {"last_updated": Date.now()}
+    };
+
+    let {on, off} = reactionConfig;
+    if(on){
+        execCommand["$push"] = {
+            [`reactions.${REVERSE_REACTIONS[on]}`] : ObjectId(userID)
+        };
+
+    }
+    if(off){
+        execCommand["$pull"] = {
+            [`reactions.${REVERSE_REACTIONS[off]}`] : ObjectId(userID)
+        };
+    }
+    return Post.findOneAndUpdate({
+        _id: ObjectId(postID)
+    } , execCommand, {new: true}).lean()
+
+}
+
 module.exports = {
     getAllPosts,
     createNewPost,
     updateFilesInPost,
-    updatePost
+    updatePost,
+    updatePostReaction
 };

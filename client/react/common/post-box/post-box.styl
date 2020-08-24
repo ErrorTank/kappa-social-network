@@ -1,6 +1,33 @@
 .post-box{
   margin-top 20px
   .post-footer{
+    .statistic{
+      padding 10px 16px
+      display flex
+      align-items center
+      justify-content space-between
+      .count{
+        display flex
+        align-items center
+        .count-box{
+          margin-left 8px
+          font-size 1.4rem
+          color greyTextLight
+        }
+      }
+      .reactions{
+        display flex
+        align-items center
+        .reaction{
+          cursor pointer
+        }
+        .reaction-count{
+          margin-left 6px
+          font-size 1.4rem
+          color greyTextLight
+        }
+      }
+    }
     .post-user-actions{
       display flex
       padding 5px 0
@@ -13,6 +40,9 @@
         flex-grow 1
         &.react{
           position relative
+          &.active{
+            color primaryButton !important
+          }
           .post-reactions{
             position absolute
             left 50%

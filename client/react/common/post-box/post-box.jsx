@@ -1,4 +1,4 @@
-import React, {Component, Fragment} from 'react';
+import React, {PureComponent, Fragment} from 'react';
 import {Dropdownable} from "../dropdownable/dropdownable";
 import {Avatar} from "../avatar/avatar";
 import isNil from "lodash/isNil"
@@ -10,21 +10,30 @@ import {HyperLink} from "../../layout/authen-layout/create-message-widget/chat-b
 import {HyperlinkWrapper} from "../../layout/authen-layout/create-message-widget/chat-box/message-section/message";
 import {sortReactions} from "../../../common/utils/post-utils";
 import {Emoji} from "emoji-mart";
-import {REACTION_EMOJI_MAP, ReactionsWidget} from "../reactions-widget/reactions-widget";
+import {REACTION_EMOJI_MAP, REACTIONS, ReactionsWidget} from "../reactions-widget/reactions-widget";
 import {userInfo} from "../../../common/states/common";
+import classnames from "classnames"
+import {postApi} from "../../../api/common/post-api";
+import {getActiveReaction} from "../../../common/utils/messenger-utils";
 moment.locale("vi");
 
-export class PostBox extends Component {
+export class PostBox extends PureComponent {
     constructor(props) {
         super(props);
-        this.state = {}
+        this.state = {
+            comments: [1],
+            loadComment: true
+        }
     }
 
-    react = () => {
-
+    react = (config) => {
+        let {post, onChangePost} = this.props;
+        postApi.updatePostReaction(post._id, config, userInfo.getState()._id)
+            .then(newPost => onChangePost(newPost))
     }
 
     render() {
+        let {comments, loadComment} = this.state;
         let {post, isMyPost, onChangePost} = this.props;
         let postActions = [
             {
@@ -60,7 +69,9 @@ export class PostBox extends Component {
         ]
         let reactions = sortReactions(post.reactions);
         let user = userInfo.getState();
-        let youReact = Object.values(post.reactions).reduce((total, cur) => [...total, ...cur],[]).find(each => each === user._id);
+        let activeReaction = getActiveReaction(user._id, post.reactions);
+        let reactionsLength = reactions.countReactions();
+        // let activeReaction = reactions.reduce((total, cur) => [...total, ...Object.values(cur)[0].map(each => ({key: Object.keys(cur)[0], value: each}))],[]).find(each => each.value === user._id);
         return (
             <div className="post-box white-box">
                 <div className="post-header">
@@ -138,31 +149,38 @@ export class PostBox extends Component {
                                 <span key={each.key} className="reaction"> <Emoji
                                     set={'facebook'}
                                     emoji={each.icon_config}
-                                    size={32}
+                                    size={20}
                                 /></span>
                             ))}
-                            {post.reaction_count > 0 && <span className="reaction-count"> {youReact && (
+                            {reactionsLength > 1 && <span className="reaction-count"> {activeReaction &&  (
                                 <span>Bạn và </span>
                             )}
-                                {youReact ? post.reaction_count - 1 : post.reaction_count}
-                                {youReact && (
+                                {activeReaction ? reactionsLength - 1 : reactionsLength}
+                                {activeReaction && (
                                     <span> người khác</span>
                                 )}</span>}
 
                         </div>
-                        {post.comments_count > 0 && (
-                            <div className="comment-count">
-                                {post.comments_count}
-                            </div>
-                        )}
+                        <div className="count">
+                            {comments.length > 0 && (
+                                <div className="count-box">
+                                    {comments.length} bình luận
+                                </div>
+                            )}
+                            {post.share_count > 0 && (
+                                <div className="count-box">
+                                    {post.share_count} lượt chia sẻ
+                                </div>
+                            )}
+                        </div>
 
                     </div>
                     <div className="post-user-actions">
-                        <div className="action react">
+                        <div className={classnames("action react", {active: activeReaction})} onClick={() => this.react(activeReaction ? {off: activeReaction} : {on: REACTIONS.thump_up})}>
                             <div className="post-reactions">
                                 <ReactionsWidget
                                     onSelect={this.react}
-                                    active={null}
+                                    active={activeReaction}
                                 />
                             </div>
                             <i className="fal fa-thumbs-up"></i>
