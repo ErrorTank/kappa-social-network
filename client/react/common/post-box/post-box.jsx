@@ -23,7 +23,7 @@ export class PostBox extends PureComponent {
     constructor(props) {
         super(props);
         this.state = {
-            comments: [1],
+            comments: [],
             loadComment: true
         }
     }

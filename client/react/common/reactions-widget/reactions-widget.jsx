@@ -52,7 +52,8 @@ export const ReactionsWidget = ({onSelect, active = null}) => {
         <div className="reactions-widget">
             {Object.values(REACTIONS).map(each => {
                 return (
-                    <div key={each} className={classnames("reaction", {active: each === active})} onClick={() => {
+                    <div key={each} className={classnames("reaction", {active: each === active})} onClick={(e) => {
+                        e.stopPropagation();
                         if(each === active){
                             onSelect({off: each})
                         }else{
