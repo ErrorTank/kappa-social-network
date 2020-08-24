@@ -32,6 +32,7 @@ export class ListingInfo extends Component {
 
     //get option for location
     addressApi.getAddress({}).then((city) => {
+      // console.log(city);
       let locationOption = city.map((e) => {
         return pick(e, ['name']);
       });
@@ -51,6 +52,12 @@ export class ListingInfo extends Component {
       });
     });
   }
+  //ultils
+  checkNumber = (value) => {
+    const re = /^[0-9\b]+$/;
+    return re.test(value);
+  };
+
   // display function
   handleInputDisplay = () => {
     const { state, updateValue } = this.props;
@@ -113,7 +120,7 @@ export class ListingInfo extends Component {
   // check error, only check needed input now
   handleCheckError = (name, message, value) => {
     const { state, updateValue } = this.props;
-    console.log(value);
+    // console.log(value);s
     if (!value || (value.includes('&nbsp;') && value.length === 7)) {
       this.setState((prevState) => ({
         error: {
@@ -129,11 +136,6 @@ export class ListingInfo extends Component {
         },
       }));
     }
-  };
-
-  checkNumber = (value) => {
-    const re = /^[0-9\b]+$/;
-    return re.test(value);
   };
 
   // change number->money display

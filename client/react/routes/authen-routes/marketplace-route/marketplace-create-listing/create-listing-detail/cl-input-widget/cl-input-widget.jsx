@@ -31,10 +31,9 @@ export class CreateListingInputWidget extends Component {
     },
   ];
   requireField = {
-    item: ['files', 'title', 'price', 'category', 'location', 'availability'],
-    vehicle: ['files', 'vehicleType', 'year', 'make', 'model', 'price'],
+    item: ['title', 'price', 'category', 'location', 'availability'],
+    vehicle: ['vehicleType', 'year', 'make', 'model', 'price'],
     home: [
-      'files',
       'homeFor',
       'homeType',
       'numberOfBedrooms',
@@ -54,24 +53,46 @@ export class CreateListingInputWidget extends Component {
       }
     });
   };
+  //ultils
+  cleanBlankProp = (obj) => {
+    for (var propName in obj) {
+      if (
+        obj[propName] === null ||
+        obj[propName] === undefined ||
+        obj[propName] === ''
+      ) {
+        delete obj[propName];
+      }
+    }
+    return obj;
+  };
+
+  //
   setNewListing = () => {
     const { state } = this.props;
-    if (this.state.canCreate) {
-      console.log(omit(state));
-    }
+    console.log(state);
+    // if (this.state.canCreate) {
+    console.log(this.cleanBlankProp(state));
+    // }
   };
 
   checkRequiredfield = () => {
     const { state } = this.props;
     const { canCreate } = this.state;
-    let checkBool = true;
+    let checkBool = false;
 
     let requiredInput = this.requireField[state.type];
-    requiredInput.forEach((e) => {
-      if (state[e] !== '' && checkBool == true) {
-        checkBool = false;
+    if (!state.files && !checkBool && state.files.length < state.pictureLimit) {
+      checkBool = true;
+    }
+    for (let i = 0; i < requiredInput.length; i++) {
+      if (!state[requiredInput[i]] && !checkBool) {
+        checkBool = true;
+        break;
       }
-    });
+    }
+
+    // console.log(checkBool);
     this.setState({ canCreate: checkBool });
   };
 
@@ -83,7 +104,7 @@ export class CreateListingInputWidget extends Component {
 
   render() {
     let user = userInfo.getState();
-    console.log(this.props.state);
+    // console.log(this.props.state);
     // console.log(this.state);
     return (
       <div className='create-listing-input-widget'>
@@ -123,7 +144,7 @@ export class CreateListingInputWidget extends Component {
         <div className='cs-input-footer'>
           <div
             className={classnames('cl-button', {
-              disabled: !this.state.canCreate,
+              disabled: this.state.canCreate,
             })}
             onClick={() => this.setNewListing()}
           >
