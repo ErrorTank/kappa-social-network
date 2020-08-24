@@ -29,7 +29,7 @@ export class ListingInfoInput extends Component {
       contentEditable = false,
       ...others
     } = this.props;
-    contentEditable && console.log(error);
+    // contentEditable && console.log(error);
     return (
       <ThemeContext.Consumer>
         {(theme) => (
@@ -44,6 +44,9 @@ export class ListingInfoInput extends Component {
                 htmlFor={id}
                 className={classnames('listing-info-wrapper', {
                   textArea,
+                  'has-value': value,
+                  'is-invalid': error,
+                  'is-valid': success,
                 })}
               >
                 <textarea
