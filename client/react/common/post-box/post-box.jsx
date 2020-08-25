@@ -215,11 +215,13 @@ export class PostBox extends PureComponent {
                         )}
 
                     </div>
+
                     <CommentBox
                         api={({skip, limit}) => postApi.getCommentsForPost(post._id, skip, limit).then(data => {
                             this.setState({commentsTotal: data.total})
                             return data;
                         })}
+                        post={post}
                     />
                 </div>
             </div>

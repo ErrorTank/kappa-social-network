@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const {authorizationUserMiddleware} = require('../common/middlewares/common');
-const {createNewPost, getAllPosts, updateFilesInPost, updatePost, updatePostReaction, getPostReactionByReactionKey} = require("../db/db-controllers/post");
+const {createNewPost, getAllPosts, updateFilesInPost, updatePost, updatePostReaction, getPostReactionByReactionKey, getPostComments} = require("../db/db-controllers/post");
 const {getUserBasicInfo} = require('../db/db-controllers/user');
 const {MessageState} = require('../common/const/message-state');
 const {fileUploader} = require('../common/upload-services/file-upload');
@@ -64,6 +64,16 @@ module.exports = (db, namespacesIO) => {
     })
     router.get("/reaction/post/:postID/reaction_key/:reactionKey", authorizationUserMiddleware, (req, res, next) => {
         return getPostReactionByReactionKey({
+            ...req.params,
+            ...req.query
+        }).then((data) => {
+            return res.status(200).json(data);
+        })
+            .catch((err) => next(err));
+
+    })
+    router.get("/comments/post/:postID", authorizationUserMiddleware, (req, res, next) => {
+        return getPostComments({
             ...req.params,
             ...req.query
         }).then((data) => {
