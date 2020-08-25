@@ -17,6 +17,7 @@ import { InputFileWrapper } from './../../../../../../../common/file-input/file-
 import { FileDisplay } from './../../../../../../../layout/authen-layout/create-message-widget/chat-box/message-utilities/file-display/file-display';
 import { addressApi } from './../../../../../../../../api/common/address-api';
 import classnames from 'classnames';
+import { checkNumber } from '../../../../../../../../common/utils/listing-utils';
 
 export class ListingInfo extends Component {
   constructor(props) {
@@ -52,12 +53,6 @@ export class ListingInfo extends Component {
       });
     });
   }
-  //ultils
-  checkNumber = (value) => {
-    const re = /^[0-9\b]+$/;
-    return re.test(value);
-  };
-
   // display function
   handleInputDisplay = () => {
     const { state, updateValue } = this.props;
@@ -150,7 +145,7 @@ export class ListingInfo extends Component {
       }
     }
 
-    if (this.checkNumber(newValue)) {
+    if (checkNumber(newValue)) {
       if (newValue.length > 10) {
         this.props.updateValue([name], '');
       } else {
@@ -335,7 +330,7 @@ export class ListingInfo extends Component {
                           e.target.value
                         )
                       : each.numberOnly && !each.isMoney
-                      ? this.checkNumber(e.target.value) &&
+                      ? checkNumber(e.target.value) &&
                         updateValue(`${each.englishName}`, e.target.value)
                       : updateValue(`${each.englishName}`, e.target.value);
                   }}
@@ -347,11 +342,11 @@ export class ListingInfo extends Component {
                   displayAs={(item) => item}
                   key={each.englishName}
                   id={each.englishName}
-                  value={state[each.englishName]}
+                  value={state[each.englishName] || each.default}
                   onMouseEnter={() => this.mouse(each.englishName)}
                   onMouseLeave={() => this.mouseOut()}
                   isSelected={(option) =>
-                    option.name === state[each.englishName]
+                    option.name === (state[each.englishName] || each.default)
                   }
                   onChange={(value) => {
                     updateValue(`${each.englishName}`, value.name);

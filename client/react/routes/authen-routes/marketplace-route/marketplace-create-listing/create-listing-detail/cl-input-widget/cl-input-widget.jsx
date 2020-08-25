@@ -4,6 +4,7 @@ import { ListingInfo } from './listing-info/listing-info';
 import { Avatar } from './../../../../../../common/avatar/avatar';
 import { omit } from 'lodash';
 import classnames from 'classnames';
+import { cleanBlankProp } from '../../../../../../../common/utils/listing-utils';
 
 export class CreateListingInputWidget extends Component {
   constructor(props) {
@@ -53,27 +54,16 @@ export class CreateListingInputWidget extends Component {
       }
     });
   };
-  //ultils
-  cleanBlankProp = (obj) => {
-    for (var propName in obj) {
-      if (
-        obj[propName] === null ||
-        obj[propName] === undefined ||
-        obj[propName] === ''
-      ) {
-        delete obj[propName];
-      }
-    }
-    return obj;
-  };
 
   //
   setNewListing = () => {
     const { state } = this.props;
     console.log(state);
     // if (this.state.canCreate) {
-    console.log(this.cleanBlankProp(state));
+    console.log(cleanBlankProp(state));
     // }
+
+    // con can thoi gian khi tao niem yet va vi tri kinh vi do
   };
 
   checkRequiredfield = () => {
