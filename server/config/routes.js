@@ -21,5 +21,9 @@ module.exports = (db, namespacesIO) => {
     '/api/address',
     require('../controllers/address-controller')(db, namespacesIO)
   );
+  router.use(
+    '/api/listing',
+    require('../controllers/listing-controller')(db, namespacesIO)
+  );
   return router;
 };
