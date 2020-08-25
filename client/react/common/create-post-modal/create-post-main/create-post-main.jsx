@@ -21,7 +21,7 @@ import debounce from "lodash/debounce"
 import {SwitchBtn} from "../../switch/switch-btn";
 import {userApi} from "../../../../api/common/user-api";
 
-const CreatePostDropZone = props => {
+export const CreatePostDropZone = props => {
     const handleUploadFiles = (files) => {
         props.onAddFiles(files);
         return Promise.resolve();

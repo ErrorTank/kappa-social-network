@@ -30,6 +30,12 @@ export const utilityApi = {
     getUrlMetadata(url){
         return offlineApi.get(`/utility/url/${encodeURIComponent(url)}/metadata`)
     },
+    getGroupMentions(groupID, keyword){
+        return offlineApi.get(`/utility/group-mentions/group/${groupID}?keyword=${keyword}`)
+    },
+    getPageMentions(pageID, keyword){
+        return offlineApi.get(`/utility/page-mentions/page/${pageID}?keyword=${keyword}`)
+    },
     detectImageFaces(file, {width, height}, fileKey){
         return faceApi.postMultipart(`/detect-faces`, {file, width, height}, {fileKey})
     },
