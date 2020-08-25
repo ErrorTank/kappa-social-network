@@ -4,6 +4,7 @@ import { ListingInfo } from './listing-info/listing-info';
 import { Avatar } from './../../../../../../common/avatar/avatar';
 import { omit } from 'lodash';
 import classnames from 'classnames';
+import { cleanBlankProp } from '../../../../../../../common/utils/listing-utils';
 
 export class CreateListingInputWidget extends Component {
   constructor(props) {
@@ -31,10 +32,9 @@ export class CreateListingInputWidget extends Component {
     },
   ];
   requireField = {
-    item: ['files', 'title', 'price', 'category', 'location', 'availability'],
-    vehicle: ['files', 'vehicleType', 'year', 'make', 'model', 'price'],
+    item: ['title', 'price', 'category', 'location', 'availability'],
+    vehicle: ['vehicleType', 'year', 'make', 'model', 'price'],
     home: [
-      'files',
       'homeFor',
       'homeType',
       'numberOfBedrooms',
@@ -54,24 +54,35 @@ export class CreateListingInputWidget extends Component {
       }
     });
   };
+
+  //
   setNewListing = () => {
     const { state } = this.props;
-    if (this.state.canCreate) {
-      console.log(omit(state));
-    }
+    console.log(state);
+    // if (this.state.canCreate) {
+    console.log(cleanBlankProp(state));
+    // }
+
+    // con can thoi gian khi tao niem yet va vi tri kinh vi do
   };
 
   checkRequiredfield = () => {
     const { state } = this.props;
     const { canCreate } = this.state;
-    let checkBool = true;
+    let checkBool = false;
 
     let requiredInput = this.requireField[state.type];
-    requiredInput.forEach((e) => {
-      if (state[e] !== '' && checkBool == true) {
-        checkBool = false;
+    if (!state.files && !checkBool && state.files.length < state.pictureLimit) {
+      checkBool = true;
+    }
+    for (let i = 0; i < requiredInput.length; i++) {
+      if (!state[requiredInput[i]] && !checkBool) {
+        checkBool = true;
+        break;
       }
-    });
+    }
+
+    // console.log(checkBool);
     this.setState({ canCreate: checkBool });
   };
 
@@ -83,7 +94,7 @@ export class CreateListingInputWidget extends Component {
 
   render() {
     let user = userInfo.getState();
-    console.log(this.props.state);
+    // console.log(this.props.state);
     // console.log(this.state);
     return (
       <div className='create-listing-input-widget'>
@@ -123,7 +134,7 @@ export class CreateListingInputWidget extends Component {
         <div className='cs-input-footer'>
           <div
             className={classnames('cl-button', {
-              disabled: !this.state.canCreate,
+              disabled: this.state.canCreate,
             })}
             onClick={() => this.setNewListing()}
           >

@@ -248,6 +248,7 @@ export let itemField = [
     name: 'Vị trí',
     englishName: 'location',
     isSelected: true,
+    default: 'Hà Nội',
   },
 
   {
@@ -259,6 +260,7 @@ export let itemField = [
       { name: 'Niêm yết là còn hàng' },
       //  { name: 'Niêm yết là hết hàng' },
     ],
+    default: 'Niêm yết là chỉ còn 1 mặt hàng',
   },
 ];
 
@@ -573,6 +575,7 @@ export let vehicleField = [
     name: 'Vị trí',
     englishName: 'location',
     isSelected: true,
+    default: 'Hà Nội',
   },
 
   {

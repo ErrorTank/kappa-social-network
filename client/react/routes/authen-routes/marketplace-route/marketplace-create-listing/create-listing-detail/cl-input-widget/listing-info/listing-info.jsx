@@ -17,6 +17,7 @@ import { InputFileWrapper } from './../../../../../../../common/file-input/file-
 import { FileDisplay } from './../../../../../../../layout/authen-layout/create-message-widget/chat-box/message-utilities/file-display/file-display';
 import { addressApi } from './../../../../../../../../api/common/address-api';
 import classnames from 'classnames';
+import { checkNumber } from '../../../../../../../../common/utils/listing-utils';
 
 export class ListingInfo extends Component {
   constructor(props) {
@@ -32,6 +33,7 @@ export class ListingInfo extends Component {
 
     //get option for location
     addressApi.getAddress({}).then((city) => {
+      // console.log(city);
       let locationOption = city.map((e) => {
         return pick(e, ['name']);
       });
@@ -113,7 +115,7 @@ export class ListingInfo extends Component {
   // check error, only check needed input now
   handleCheckError = (name, message, value) => {
     const { state, updateValue } = this.props;
-    console.log(value);
+    // console.log(value);s
     if (!value || (value.includes('&nbsp;') && value.length === 7)) {
       this.setState((prevState) => ({
         error: {
@@ -131,11 +133,6 @@ export class ListingInfo extends Component {
     }
   };
 
-  checkNumber = (value) => {
-    const re = /^[0-9\b]+$/;
-    return re.test(value);
-  };
-
   // change number->money display
   handlePriceDisplay = (name, value) => {
     value = value.replace(' ₫', '');
@@ -148,7 +145,7 @@ export class ListingInfo extends Component {
       }
     }
 
-    if (this.checkNumber(newValue)) {
+    if (checkNumber(newValue)) {
       if (newValue.length > 10) {
         this.props.updateValue([name], '');
       } else {
@@ -333,7 +330,7 @@ export class ListingInfo extends Component {
                           e.target.value
                         )
                       : each.numberOnly && !each.isMoney
-                      ? this.checkNumber(e.target.value) &&
+                      ? checkNumber(e.target.value) &&
                         updateValue(`${each.englishName}`, e.target.value)
                       : updateValue(`${each.englishName}`, e.target.value);
                   }}
@@ -345,11 +342,11 @@ export class ListingInfo extends Component {
                   displayAs={(item) => item}
                   key={each.englishName}
                   id={each.englishName}
-                  value={state[each.englishName]}
+                  value={state[each.englishName] || each.default}
                   onMouseEnter={() => this.mouse(each.englishName)}
                   onMouseLeave={() => this.mouseOut()}
                   isSelected={(option) =>
-                    option.name === state[each.englishName]
+                    option.name === (state[each.englishName] || each.default)
                   }
                   onChange={(value) => {
                     updateValue(`${each.englishName}`, value.name);
