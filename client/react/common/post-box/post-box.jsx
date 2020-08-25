@@ -17,14 +17,14 @@ import {postApi} from "../../../api/common/post-api";
 import {getActiveReaction} from "../../../common/utils/messenger-utils";
 import {Tooltip} from "../tooltip/tooltip";
 import {ReactionTooltip} from "./reaction-tooltip";
+import {CommentBox} from "./comment-box/comment-box";
 moment.locale("vi");
 
 export class PostBox extends PureComponent {
     constructor(props) {
         super(props);
         this.state = {
-            comments: [],
-            loadComment: true
+            commentsTotal: 0,
         }
     }
 
@@ -35,7 +35,7 @@ export class PostBox extends PureComponent {
     }
 
     render() {
-        let {comments, loadComment} = this.state;
+        let {commentsTotal} = this.state;
         let {post, isMyPost, onChangePost} = this.props;
         let postActions = [
             {
@@ -46,7 +46,7 @@ export class PostBox extends PureComponent {
                 label: () => "Bỏ lưu bài viết",
             }, {
                 icon: <i className="fal fa-pen"></i>,
-                label: () => "Chỉnh sửa bìa viết",
+                label: () => "Chỉnh sửa bài viết",
                 condition: () => isMyPost
 
             }, {
@@ -177,9 +177,9 @@ export class PostBox extends PureComponent {
 
                         </div>
                         <div className="count">
-                            {comments.length > 0 && (
+                            {commentsTotal > 0 && (
                                 <div className="count-box">
-                                    {comments.length} bình luận
+                                    {commentsTotal} bình luận
                                 </div>
                             )}
                             {post.share_count > 0 && (
@@ -215,6 +215,12 @@ export class PostBox extends PureComponent {
                         )}
 
                     </div>
+                    <CommentBox
+                        api={({skip, limit}) => postApi.getCommentsForPost(post._id, skip, limit).then(data => {
+                            this.setState({commentsTotal: data.total})
+                            return data;
+                        })}
+                    />
                 </div>
             </div>
         );

@@ -24,5 +24,8 @@ export const postApi = {
     },
     getPostReactionList(postID, reactionKey, skip = 0, limit = 10){
         return authenApi.get(`/post/reaction/post/${postID}/reaction_key/${reactionKey}?skip=${skip}&limit=${limit}`)
+    },
+    getCommentsForPost(postID, skip = 0, limit = 2){
+        return authenApi.get(`/post/comments/post/${postID}?skip=${skip}&limit=${limit}`)
     }
 };
