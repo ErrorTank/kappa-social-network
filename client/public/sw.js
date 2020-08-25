@@ -197,6 +197,10 @@ var exceptionRequestsDev = [
     endpoint: /https:\/\/localhost:4000\/api\/post\/comments\/post\/\w+/,
     method: 'GET',
   },
+  {
+    endpoint: /https:\/\/localhost:4000\/api\/post\/create-listing/,
+    method: 'POST',
+  },
 ];
 
 var notGetRequests = [
