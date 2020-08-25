@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
-import {CommonInput} from "../../common-input/common-input";
 import {CommentInput} from "./comment-input";
+import {utilityApi} from "../../../../api/common/utilities-api";
 
 export class CommentBox extends Component {
     constructor(props) {
@@ -18,6 +18,17 @@ export class CommentBox extends Component {
             skip: 0,
             limit: 2
         });
+    }
+
+    getMentionApi = () => {
+        let {post} = this.props;
+        if(post.belonged_group){
+            return ({keyword}) => utilityApi.getGroupMentions(post.belonged_group._id, keyword)
+        }
+        if(post.belonged_page){
+            return ({keyword}) => utilityApi.getPageMentions(post.belonged_page._id, keyword)
+        }
+        return ({keyword}) => utilityApi.searchFriends(keyword)
     }
 
     fetchComments = (config) => {
@@ -39,9 +50,13 @@ export class CommentBox extends Component {
                         Tính năng bình luận đã bị tắt
                     </div>
                 ) : (
-                    <CommentInput
-                        onSubmit={this.props.onSubmit}
-                    />
+                    <div className={"comment-box-input"}>
+                        <CommentInput
+                            onSubmit={this.props.onSubmit}
+                            api={this.getMentionApi()}
+                        />
+                    </div>
+
                 )}
             </div>
         );
