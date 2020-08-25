@@ -74,6 +74,8 @@ const listingSchema = new Schema({
   //   ],
   // },
   productTag: String,
+  //
+
   // Home & Garden
   brand: {
     type: String,
@@ -102,7 +104,11 @@ const listingSchema = new Schema({
   },
   //Hobbies
   //Classifieds
+
   //Vehicle
+  vehicleIdentificationNumber: {
+    type: String,
+  },
   vehicleType: {
     type: String,
   },
@@ -115,20 +121,39 @@ const listingSchema = new Schema({
   model: {
     type: String,
   },
+  bodyType: {
+    type: String,
+  },
+  mileage: {
+    type: String,
+  },
+  tranmission: {
+    type: String,
+  },
+  fuelType: {
+    type: String,
+  },
+  vehicleCondition: {
+    type: String,
+  },
+
   //Home for Rent
-  rentalType: {
+  homeFor: {
+    type: String,
+  },
+  homeType: {
     type: String,
   },
   numberOfBedrooms: {
     type: String,
   },
+  numberOfBathrooms: {
+    type: String,
+  },
   pricePerMonth: {
-    type: String,
+    type: Number,
   },
-  rentalAddress: {
-    type: String,
-  },
-  rentalDescription: {
+  address: {
     type: String,
   },
 
