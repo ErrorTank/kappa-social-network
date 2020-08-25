@@ -182,7 +182,19 @@ var exceptionRequestsDev = [
     method: 'PUT',
   },
   {
+    endpoint: /https:\/\/localhost:4000\/api\/post\/update-reaction\/post\/\w+/,
+    method: 'PUT',
+  },
+  {
     endpoint: /https:\/\/localhost:4000\/api\/address\/get-address/,
+    method: 'GET',
+  },
+  {
+    endpoint: /https:\/\/localhost:4000\/api\/post\/reaction\/post\/\w+\/reaction_key\/\w+/,
+    method: 'GET',
+  },
+  {
+    endpoint: /https:\/\/localhost:4000\/api\/post\/comments\/post\/\w+/,
     method: 'GET',
   },
 ];

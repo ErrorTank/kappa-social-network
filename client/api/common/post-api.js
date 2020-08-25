@@ -18,5 +18,14 @@ export const postApi = {
     },
     updatePost(postID, post){
         return authenApi.put(`/post/update/post/${postID}`, {post})
+    },
+    updatePostReaction(postID, reactionConfig, userID){
+        return authenApi.put(`/post/update-reaction/post/${postID}`, {reactionConfig, userID})
+    },
+    getPostReactionList(postID, reactionKey, skip = 0, limit = 10){
+        return authenApi.get(`/post/reaction/post/${postID}/reaction_key/${reactionKey}?skip=${skip}&limit=${limit}`)
+    },
+    getCommentsForPost(postID, skip = 0, limit = 2){
+        return authenApi.get(`/post/comments/post/${postID}?skip=${skip}&limit=${limit}`)
     }
 };

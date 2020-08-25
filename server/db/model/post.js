@@ -44,7 +44,10 @@ const postSchema = new Schema({
         default: false
     },
     reactions: ReactionSchema,
-
+    share_count: {
+        type: Number,
+        default: 0
+    },
     created_at: {
         type: Date,
         default: Date.now
