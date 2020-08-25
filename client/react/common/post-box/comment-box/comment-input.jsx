@@ -10,6 +10,7 @@ import {userInfo} from "../../../../common/states/common";
 import {CreatePostDropZone} from "../../create-post-modal/create-post-main/create-post-main";
 import {Avatar} from "../../avatar/avatar";
 import {Tooltip} from "../../tooltip/tooltip";
+import {ClickOutside} from "../../click-outside/click-outside";
 
 export class CommentInput extends Component {
     constructor(props) {
@@ -108,42 +109,53 @@ export class CommentInput extends Component {
                             user={user}
                         />
                     </div>
+
                     <div className="input-wrapper">
-                        <Editor
-                            editorState={this.state.editorState}
-                            onChange={this.onChange}
-                            plugins={plugins}
-                            ref={(element) => {
-                                this.editor = element;
-                            }}
-                            placeholder={`Viết bình luận...`}
+                        <ClickOutside onClickOut={() => this.setState({showEmojiPicker: false})}>
+                            <div>
+                                <div ref={commentInput => this.commentInput = commentInput} className={classnames("comment-input")} onClick={this.focus}>
+                                    <div>
+                                        <Editor
+                                            editorState={this.state.editorState}
+                                            onChange={this.onChange}
+                                            plugins={plugins}
+                                            ref={(element) => {
+                                                this.editor = element;
+                                            }}
+                                            placeholder={`Viết bình luận...`}
 
-                        />
-                        <MentionSuggestions
-                            onSearchChange={this.onSearchChange}
-                            suggestions={this.state.filteredSuggestions}
-                            // popoverComponent={<MentionPopover top={ReactDOM.findDOMNode(this.cpmInput)?.offsetHeight || 0}/>}
-                            entryComponent={MentionEntry}
-                        />
-                        <div className="comment-input-actions">
-                            <Tooltip
-                                position={"top"}
-                                text={() => "Chèn biểu tượng cảm xúc"}
-                            >
-                                <div className="action">
+                                        />
+                                        <MentionSuggestions
+                                            onSearchChange={this.onSearchChange}
+                                            suggestions={this.state.filteredSuggestions}
+                                            // popoverComponent={<MentionPopover top={ReactDOM.findDOMNode(this.commentInput)?.offsetHeight || 0}/>}
+                                            entryComponent={MentionEntry}
+                                        />
+                                    </div>
+                                    {/*<div className="comment-input-actions">*/}
+                                    {/*    <Tooltip*/}
+                                    {/*        position={"top"}*/}
+                                    {/*        text={() => "Chèn biểu tượng cảm xúc"}*/}
+                                    {/*    >*/}
+                                    {/*        <div className="action">*/}
 
+                                    {/*        </div>*/}
+                                    {/*    </Tooltip>*/}
+
+                                    {/*    <Tooltip*/}
+                                    {/*        position={"top"}*/}
+                                    {/*        text={() => "Đính kèm ảnh hoặc video"}*/}
+                                    {/*    >*/}
+                                    {/*        <div className="action">*/}
+
+                                    {/*        </div>*/}
+                                    {/*    </Tooltip>*/}
+                                    {/*</div>*/}
                                 </div>
-                            </Tooltip>
+                            </div>
+                        </ClickOutside>
 
-                            <Tooltip
-                                position={"top"}
-                                text={() => "Đính kèm ảnh hoặc video"}
-                            >
-                                <div className="action">
 
-                                </div>
-                            </Tooltip>
-                        </div>
 
                     </div>
                 </div>
@@ -165,7 +177,7 @@ const MentionEntry = props => {
 
     return (
 
-        <div className={classnames("cpm-entry")} {...parentProps} >
+        <div className={classnames("comment-input-entry")} {...parentProps} >
             <div className="content-wrapper">
                 <Avatar user={mention}/>
                 <div className="user-info">

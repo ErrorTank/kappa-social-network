@@ -1,23 +1,104 @@
-.comment-input{
+.comment-input {
   position relative
-  .wrapper{
+
+  .wrapper {
     display flex
     align-items center
-    .avatar-wrapper{
+
+    .avatar-wrapper {
       flex 0 0 50px
-      .common-avatar{
+
+      .common-avatar {
         width 34px
         height 34px
-        .avatar-holder{
-          span{
+
+        .avatar-holder {
+          span {
             font-size 1.4rem
           }
         }
       }
     }
-    .input-wrapper{
-      flex 0 0 calc(100% - 40px)
 
+    .input-wrapper {
+      flex 0 0 calc(100% - 40px)
+      position relative
+      .comment-input{
+        .emoji-mart-emoji{
+          vertical-align middle
+        }
+        & > div{
+          position relative
+        }
+
+        margin-top 15px
+        width 100%
+        position relative
+        min-height 100px
+        max-height 300px
+        cursor text
+        overflow-y auto
+        .create-post-mention{
+          color lightMentionText
+          background-color lightMentionBg
+          padding 1px 0
+          &:hover{
+            color lightMentionText !important
+            background-color lightMentionBg !important
+          }
+          &:focus{
+            color lightMentionText !important
+            background-color lightMentionBg !important
+          }
+
+        }
+
+      }
+      .comment-input-entry {
+        cursor pointer
+        padding 8px
+
+        &:hover {
+          background-color darken(white, 3%)
+        }
+
+        .content-wrapper {
+          display flex
+          align-items center
+
+          .common-avatar {
+            width 34px
+            height 34px
+
+            .avatar-holder {
+              span {
+                font-size 1.4rem
+              }
+            }
+          }
+
+          .user-info {
+            flex-grow 1
+            padding-left 10px
+
+            .username {
+              font-weight 500
+              color commonTextLight
+              font-size 1.4rem
+              line-height 100%
+              textOverflowEllipsis()
+            }
+
+            .nickname {
+              line-height 100%
+              margin-top 3px
+              font-size 1.2rem
+              color commonTextLight
+              textOverflowEllipsis()
+            }
+          }
+        }
+      }
     }
   }
 }
