@@ -193,6 +193,10 @@ var exceptionRequestsDev = [
     endpoint: /https:\/\/localhost:4000\/api\/post\/reaction\/post\/\w+\/reaction_key\/\w+/,
     method: 'GET',
   },
+  {
+    endpoint: /https:\/\/localhost:4000\/api\/post\/comments\/post\/\w+/,
+    method: 'GET',
+  },
 ];
 
 var notGetRequests = [
