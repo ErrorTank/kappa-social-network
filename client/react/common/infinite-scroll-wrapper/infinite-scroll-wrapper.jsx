@@ -2,12 +2,14 @@ import React, {Component} from 'react';
 import {KComponent} from "../k-component";
 import ReactDOM from "react-dom";
 import {checkElemInContainerView} from "../../../common/utils/dom-utils";
+import classnames from "classnames";
 
 export class InfiniteScrollWrapper extends KComponent {
     constructor(props) {
         super(props);
         this.state = {
-            isBottom: true
+            isBottom: true,
+            isTop: true
         }
 
         this.onUnmount(() => {
@@ -38,14 +40,14 @@ export class InfiniteScrollWrapper extends KComponent {
 
                 // console.log(elemClone.clientHeight)
 
-                this.props.onScrollTop();
-                this.setState({isBottom: false});
+                this.props.onScrollTop?.();
+                this.setState({isBottom: false, isTop : true});
             } else if (elemClone.scrollTop + elem.clientHeight >= elem.scrollHeight) {
-                this.setState({isBottom: true});
-                this.props.onScrollBottom(e);
+                this.setState({isBottom: true, isTop: false});
+                this.props.onScrollBottom?.(e);
             } else {
-                this.props.onScroll(e)
-                this.setState({isBottom: false});
+                this.props.onScroll?.(e)
+                this.setState({isBottom: false, isTop : false});
             }
 
         };
@@ -60,6 +62,13 @@ export class InfiniteScrollWrapper extends KComponent {
 
 
     render() {
-        return this.props.children({isBottom: this.state.isBottom})
+        let {isBottom, isTop} = this.state;
+        return (
+            <div className={classnames("infinite-scroll-wrapper", this.props.className)}>
+
+                {this.props.children({isBottom, isTop})}
+
+            </div>
+        )
     }
 }

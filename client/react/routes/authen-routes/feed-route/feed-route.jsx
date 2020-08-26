@@ -66,12 +66,11 @@ class FeedRoute extends Component {
                 title={"Trang chủ"}
             >
                 <InfiniteScrollWrapper
+                    className={"feed-infinite"}
                     onScrollBottom={() => {
                         this.debounceLoad();
 
                     }}
-                    onScrollTop={() =>null}
-                    onScroll={() =>null}
                 >
                     {() => (
                         <div className="feed-route" ref={feedRoute => this.feedRoute = feedRoute}>
