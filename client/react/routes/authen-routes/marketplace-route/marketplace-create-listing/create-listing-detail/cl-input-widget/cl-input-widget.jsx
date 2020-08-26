@@ -9,10 +9,11 @@ import {
   homeField,
 } from './../../../../../../../const/listing';
 import classnames from 'classnames';
-import { cleanBlankProp } from '../../../../../../../common/utils/listing-utils';
+import {
+  cleanBlankProp,
+  moneyToNumber,
+} from '../../../../../../../common/utils/listing-utils';
 import { listingApi } from './../../../../../../../api/common/listing-api';
-
-listingApi;
 
 export class CreateListingInputWidget extends Component {
   constructor(props) {
@@ -79,19 +80,40 @@ export class CreateListingInputWidget extends Component {
         });
       }
     });
+    // if ('geolocation' in navigator) {
+    //   console.log('Available');
+    // } else {
+    //   console.log('Not Available');
+    // }
   };
 
   //
   setNewListing = () => {
     const { state } = this.props;
-    let newListing = cleanBlankProp(state);
-    newListing = { ...newListing, postTime: Date.now() };
-    // if (this.state.canCreate) {
-    // console.log(cleanBlankProp(state));
-    // }
 
-    // con can thoi gian khi tao niem yet va vi tri kinh vi do
-    console.log(newListing);
+    // if (this.state.canCreate) {
+    let newListing = cleanBlankProp(state);
+    for (let ele in newListing) {
+      if (
+        typeof newListing[ele] == 'string' &&
+        newListing[ele].indexOf('₫') > -1
+      ) {
+        newListing[ele] = moneyToNumber(newListing[ele]);
+      }
+    }
+    let moreInfo = { postTime: Date.now() };
+    navigator.geolocation.getCurrentPosition((position) => {
+      const { latitude, longitude } = position.coords;
+      moreInfo.position = {
+        lat: latitude,
+        lon: longitude,
+      };
+      newListing = { ...newListing, ...moreInfo };
+      listingApi.createListing(newListing).then((e) => {
+        console.log(e);
+      });
+    });
+    // }
   };
 
   checkRequiredfield = () => {
@@ -110,7 +132,6 @@ export class CreateListingInputWidget extends Component {
       }
     }
 
-    // console.log(checkBool);
     this.setState({ canCreate: checkBool });
   };
 

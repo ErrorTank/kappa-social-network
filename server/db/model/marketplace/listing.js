@@ -4,9 +4,12 @@ const Schema = mongoose.Schema;
 
 const listingSchema = new Schema({
   // must
-  photos: [String],
+  files: [String],
   postTime: Date,
-  // position: ?
+  position: {
+    lat: Number,
+    lon: Number,
+  },
 
   title: {
     type: String,

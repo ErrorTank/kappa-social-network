@@ -10,7 +10,14 @@ module.exports = (db, namespacesIO) => {
   router.get(
     '/create-listing',
     authorizationUserMiddleware,
-    (req, res, next) => {}
+    (req, res, next) => {
+      // return createListing(req.body)
+      //   .then((data) => {
+      //     return res.status(200).json(data);
+      //   })
+      //   .catch((err) => next(err));
+      console.log(req.body);
+    }
   );
   return router;
 };
