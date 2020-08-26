@@ -17,7 +17,10 @@ import { InputFileWrapper } from './../../../../../../../common/file-input/file-
 import { FileDisplay } from './../../../../../../../layout/authen-layout/create-message-widget/chat-box/message-utilities/file-display/file-display';
 import { addressApi } from './../../../../../../../../api/common/address-api';
 import classnames from 'classnames';
-import { checkNumber } from '../../../../../../../../common/utils/listing-utils';
+import {
+  checkNumber,
+  moneyToNumber,
+} from '../../../../../../../../common/utils/listing-utils';
 
 export class ListingInfo extends Component {
   constructor(props) {
@@ -115,7 +118,6 @@ export class ListingInfo extends Component {
   // check error, only check needed input now
   handleCheckError = (name, message, value) => {
     const { state, updateValue } = this.props;
-    // console.log(value);s
     if (!value || (value.includes('&nbsp;') && value.length === 7)) {
       this.setState((prevState) => ({
         error: {
@@ -135,8 +137,7 @@ export class ListingInfo extends Component {
 
   // change number->money display
   handlePriceDisplay = (name, value) => {
-    value = value.replace(' ₫', '');
-    let newValue = value.split('.').join('');
+    let newValue = moneyToNumber(value);
 
     if (newValue.includes('&nbsp;')) {
       newValue = newValue.slice(0, newValue.length - 7);
@@ -209,8 +210,6 @@ export class ListingInfo extends Component {
     const { state, updateValue } = this.props;
     let { pictureLimit, type, category, files, ...other } = state;
     const { inputField, error, dependedInput } = this.state;
-    // console.log(this.state);
-    // console.log(state.files);
 
     return (
       <div className='listing-info'>

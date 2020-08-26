@@ -73,7 +73,7 @@ const listingSchema = new Schema({
   //     },
   //   ],
   // },
-  productTag: String,
+  productTag: [String],
   //
 
   // Home & Garden

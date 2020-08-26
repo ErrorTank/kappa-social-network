@@ -15,4 +15,9 @@ const cleanBlankProp = (obj) => {
   }
   return obj;
 };
-export { checkNumber, cleanBlankProp };
+
+const moneyToNumber = (value) => {
+  value = value.replace(' ₫', '');
+  return value.split('.').join('');
+};
+export { checkNumber, cleanBlankProp, moneyToNumber };

@@ -3,8 +3,16 @@ import { userInfo } from '../../../../../../../common/states/common';
 import { ListingInfo } from './listing-info/listing-info';
 import { Avatar } from './../../../../../../common/avatar/avatar';
 import { omit } from 'lodash';
+import {
+  itemField,
+  vehicleField,
+  homeField,
+} from './../../../../../../../const/listing';
 import classnames from 'classnames';
 import { cleanBlankProp } from '../../../../../../../common/utils/listing-utils';
+import { listingApi } from './../../../../../../../api/common/listing-api';
+
+listingApi;
 
 export class CreateListingInputWidget extends Component {
   constructor(props) {
@@ -45,12 +53,30 @@ export class CreateListingInputWidget extends Component {
   };
   componentDidMount = () => {
     let { state, updateValue } = this.props;
-
     this.createInfo.forEach((each) => {
       if (each.name === this.props.match.params.categoryName) {
+        let inputField;
         this.setState({ title: each.title });
         updateValue('type', each.name);
         updateValue('pictureLimit', each.pictureLimit);
+        switch (each.name) {
+          case 'item':
+            inputField = itemField;
+            break;
+          case 'vehicle':
+            inputField = vehicleField;
+            break;
+          case 'home':
+            inputField = homeField;
+            break;
+        }
+        inputField.map((e) => {
+          if (e.default) {
+            updateValue(`${e.englishName}`, e.default);
+          } else {
+            updateValue(`${e.englishName}`, '');
+          }
+        });
       }
     });
   };
@@ -58,12 +84,14 @@ export class CreateListingInputWidget extends Component {
   //
   setNewListing = () => {
     const { state } = this.props;
-    console.log(state);
+    let newListing = cleanBlankProp(state);
+    newListing = { ...newListing, postTime: Date.now() };
     // if (this.state.canCreate) {
-    console.log(cleanBlankProp(state));
+    // console.log(cleanBlankProp(state));
     // }
 
     // con can thoi gian khi tao niem yet va vi tri kinh vi do
+    console.log(newListing);
   };
 
   checkRequiredfield = () => {
