@@ -1,65 +1,76 @@
 import React, {Component} from 'react';
 import {KComponent} from "../k-component";
 import ReactDOM from "react-dom";
-import {checkElemInContainerView} from "../../../common/utils/dom-utils";
+import classnames from "classnames";
 
-export class InfiniteScrollWrapper extends KComponent {
+export class InfiniteScrollWrapper extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            isBottom: true
+
         }
 
-        this.onUnmount(() => {
-            if (this.cancelAction) {
-                this.cancelAction();
-                this.cancelAction = null;
-            }
-
-        })
+        this.observer = null;
+        this.lastTopY = 0;
+        this.lastBottomY = 0;
     }
 
-    cancelAction = null;
 
     componentDidMount() {
-        this.cancelAction = this.bindActionToScroll();
+        this.refresh();
+        let root = ReactDOM.findDOMNode(this)
+        this.observer = new IntersectionObserver(this.handleObserver, {
+            root,
+            threshold: 1,
+            rootMargin: "0px"
+        });
+        this.observer.observe(this.top);
+        this.observer.observe(this.bottom);
     }
 
 
+    handleObserver = (entries, observer) => {
+        entries.forEach(entry => {
 
 
-    bindActionToScroll = () => {
-        let elem = ReactDOM.findDOMNode(this);
+            if(entry.target.id === 'top'){
 
-        this.scrollFunc = (e) => {
-            let elemClone = ReactDOM.findDOMNode(this);
+                if(this.lastTopY < entry.boundingClientRect.y){
+                    this.props.onScrollTop?.()
+                }
 
-            if (elemClone.scrollTop === 0) {
+                this.lastTopY = entry.boundingClientRect.y;
+            }
+            else if(entry.target.id === 'bottom'){
 
-                // console.log(elemClone.clientHeight)
+                if(this.lastBottomY > entry.boundingClientRect.y){
+                    this.props.onScrollBottom?.();
+                }
 
-                this.props.onScrollTop();
-                this.setState({isBottom: false});
-            } else if (elemClone.scrollTop + elem.clientHeight >= elem.scrollHeight) {
-                this.setState({isBottom: true});
-                this.props.onScrollBottom(e);
-            } else {
-                this.props.onScroll(e)
-                this.setState({isBottom: false});
+                this.lastBottomY = entry.boundingClientRect.y;
             }
 
-        };
-        elem.addEventListener('scroll', this.scrollFunc);
+        });
+    }
 
-
-        return () => {
-            elem.removeEventListener('scroll', this.scrollFunc);
-        };
-    };
+    refresh = () => {
+        this.lastTopY = ReactDOM.findDOMNode(this.top).getBoundingClientRect().y;
+        this.lastBottomY = ReactDOM.findDOMNode(this.bottom).getBoundingClientRect().y;
+    }
 
 
 
     render() {
-        return this.props.children({isBottom: this.state.isBottom})
+
+        return (
+            <div
+                className={classnames("infinite-scroll-wrapper", this.props.className)}
+            >
+                <div ref={top => this.top = top} id={"top"}/>
+                    {this.props.children({ refresh: this.refresh})}
+                <div ref={bottom => this.bottom = bottom} id={"bottom"}/>
+
+            </div>
+        )
     }
 }

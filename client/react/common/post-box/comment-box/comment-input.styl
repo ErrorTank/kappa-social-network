@@ -6,7 +6,7 @@
     align-items center
 
     .avatar-wrapper {
-      flex 0 0 50px
+      flex 0 0 40px
 
       .common-avatar {
         width 34px
@@ -23,6 +23,7 @@
     .input-wrapper {
       flex 0 0 calc(100% - 40px)
       position relative
+
       .comment-input{
         .emoji-mart-emoji{
           vertical-align middle
@@ -30,12 +31,13 @@
         & > div{
           position relative
         }
-
-        margin-top 15px
+        background-color bgLight
+        border-radius 20px
+        color commonTextLight
+        padding 8px 12px
+        font-size 1.4rem
         width 100%
         position relative
-        min-height 100px
-        max-height 300px
         cursor text
         overflow-y auto
         .create-post-mention{
