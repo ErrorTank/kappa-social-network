@@ -210,12 +210,11 @@ export class MessageSection extends Component {
                         }
                     }}
                     onScrollBottom={() => this.setState({unSeenCount: 0})}
-                    onScroll={() => {
-                    }}
+
                 >
-                    {({isBottom}) => (
+                    {() => (
                         <div className='message-section'>
-                            {!isBottom && this.state.unSeenCount !== 0 && (
+                            { this.state.unSeenCount !== 0 && (
                                 <div
                                     className='new-message-notify'
                                     onClick={() => {
