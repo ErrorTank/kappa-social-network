@@ -170,7 +170,7 @@ export class CreateListingPreviewWidget extends Component {
                     })}
                   >
                     <div className='location-info'>
-                      {state.position ? state.position : 'Vị trí...'}
+                      {state.location ? state.location : 'Vị trí...'}
                     </div>
                     <div className='addition-text'>
                       Đây là chỉ vị trí gần đúng

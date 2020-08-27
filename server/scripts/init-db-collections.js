@@ -5,6 +5,7 @@ const initDbCollections = (appDb) => {
   const PageCategory = require('../db/model/page-category')(appDb);
   const Page = require('../db/model/page')(appDb);
   const Group = require('../db/model/group')(appDb);
+  const Post = require('../db/model/post')(appDb);
   const Comment = require('../db/model/comment')(appDb);
   const ChatRoom = require('../db/model/chat-room')(appDb);
   const ConfirmToken = require('../db/model/confirm-token')(appDb);
@@ -14,6 +15,7 @@ const initDbCollections = (appDb) => {
   const Category = require('../db/model/marketplace/category')(appDb);
   // ChatRoom.deleteMany({}).then(() => console.log("cac"))
   // User.updateMany({}, {$set: {followed_posts: []}}).then(() => console.log("cac"))
+  // Post.updateMany({}, {$set: {share_count: 0}}).then(() => console.log("cac"))
   console.log('Initialize Db collections successfully!');
   return feed({
     PageCategory,

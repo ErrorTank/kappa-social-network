@@ -138,7 +138,11 @@ var exceptionRequestsDev = [
     method: 'GET',
   },
   {
-    endpoint: /https:\/\/localhost:4000\/api\/utility\/detect-faces/,
+    endpoint: /https:\/\/localhost:5000\/api\/utility\/detect-faces/,
+    method: 'POST',
+  },
+  {
+    endpoint: /https:\/\/localhost:5000\/api\/utility\/detect-faces-2/,
     method: 'POST',
   },
   {
@@ -170,8 +174,32 @@ var exceptionRequestsDev = [
     method: 'GET',
   },
   {
+    endpoint: /https:\/\/localhost:4000\/api\/post\/update\/post\/\w+\/file\/\w+/,
+    method: 'PUT',
+  },
+  {
+    endpoint: /https:\/\/localhost:4000\/api\/post\/update\/post\/\w+/,
+    method: 'PUT',
+  },
+  {
+    endpoint: /https:\/\/localhost:4000\/api\/post\/update-reaction\/post\/\w+/,
+    method: 'PUT',
+  },
+  {
     endpoint: /https:\/\/localhost:4000\/api\/address\/get-address/,
     method: 'GET',
+  },
+  {
+    endpoint: /https:\/\/localhost:4000\/api\/post\/reaction\/post\/\w+\/reaction_key\/\w+/,
+    method: 'GET',
+  },
+  {
+    endpoint: /https:\/\/localhost:4000\/api\/post\/comments\/post\/\w+/,
+    method: 'GET',
+  },
+  {
+    endpoint: /https:\/\/localhost:4000\/api\/listing\/create-listing/,
+    method: 'POST',
   },
 ];
 
@@ -188,8 +216,8 @@ var notGetRequests = [
   },
 ];
 
-var CACHE_STATIC_NAME = 'static-v1598501653885';
-var CACHE_DYNAMIC_NAME = 'dynamic-v1598501653885';
+var CACHE_STATIC_NAME = 'static-v1598452542413';
+var CACHE_DYNAMIC_NAME = 'dynamic-v1598452542413';
 
 var STATIC_FILES = [
   '/',

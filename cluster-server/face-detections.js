@@ -42,7 +42,17 @@ const detectFaces = async (img_url, displaySize) =>  {
 
 
 
+const detectFaces2 = async (img_url, displaySize) =>  {
+
+    const image = await canvas.loadImage(img_url);
+
+    const detections = await faceapi.detectAllFaces(image).withFaceLandmarks().withFaceDescriptors();
+
+    return faceapi.resizeResults(detections, displaySize);
 
 
 
-module.exports = {loadFaceDetecsModels, detectFaces}
+}
+
+
+module.exports = {loadFaceDetecsModels, detectFaces, detectFaces2}

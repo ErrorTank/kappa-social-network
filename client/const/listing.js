@@ -1,27 +1,5 @@
 import React, { Component } from 'react';
 import { addressApi } from './../api/common/address-api';
-import { pick } from 'lodash';
-
-//get option for location
-addressApi.getAddress({}).then((city) => {
-  let locationOption = city.map((e) => {
-    return pick(e, ['name']);
-  });
-  itemField = itemField.map((e) => {
-    if (e.englishName === 'location') {
-      return (e.options = locationOption);
-    } else {
-      return e;
-    }
-  });
-  vehicleField = vehicleField.map((e) => {
-    if (e.englishName === 'location') {
-      return (e.options = locationOption);
-    } else {
-      return e;
-    }
-  });
-});
 
 export let itemField = [
   {
@@ -34,6 +12,8 @@ export let itemField = [
     englishName: 'price',
     errorMessage: 'Nhập giá cho mặt hàng của bạn.',
     contentEditable: true,
+    numberOnly: true,
+    isMoney: true,
   },
   {
     name: 'Hạng mục',
@@ -268,6 +248,7 @@ export let itemField = [
     name: 'Vị trí',
     englishName: 'location',
     isSelected: true,
+    default: 'Hà Nội',
   },
 
   {
@@ -279,6 +260,7 @@ export let itemField = [
       { name: 'Niêm yết là còn hàng' },
       //  { name: 'Niêm yết là hết hàng' },
     ],
+    default: 'Niêm yết là chỉ còn 1 mặt hàng',
   },
 ];
 
@@ -593,12 +575,16 @@ export let vehicleField = [
     name: 'Vị trí',
     englishName: 'location',
     isSelected: true,
+    default: 'Hà Nội',
   },
 
   {
     name: 'Giá',
     englishName: 'price',
     errorMessage: 'Nhập giá cho mặt hàng của bạn.',
+    contentEditable: true,
+    numberOnly: true,
+    isMoney: true,
   },
   {
     name: 'Mô tả',
@@ -689,11 +675,13 @@ export const homeField = [
     name: 'Số phòng ngủ',
     englishName: 'numberOfBedrooms',
     errorMessage: 'Vui lòng nhập số phòng ngủ.',
+    numberOnly: true,
   },
   {
     name: 'Số phòng tắm',
     englishName: 'numberOfBathrooms',
     errorMessage: 'Vui lòng nhập số phòng tắm.',
+    numberOnly: true,
   },
   {
     name: 'Giá mỗi tháng',
@@ -701,6 +689,8 @@ export const homeField = [
     isDepended: true,
     errorMessage: 'Vui lòng nhập giá tài sản cho thuê.',
     contentEditable: true,
+    numberOnly: true,
+    isMoney: true,
   },
   {
     name: 'Giá',
@@ -708,6 +698,8 @@ export const homeField = [
     isDepended: true,
     errorMessage: 'Vui lòng nhập giá tài sản muốn bán.',
     contentEditable: true,
+    numberOnly: true,
+    isMoney: true,
   },
   //special, need to build later
   {

@@ -11,12 +11,16 @@ import {
 import { customHistory } from '../../../../../../routes';
 import { ListingInfoSelect } from '../../../../../../../common/listing-info-select/listing-info-select';
 import { v4 as uuidv4 } from 'uuid';
-import { omit, toArray, indexOf } from 'lodash';
-import * as yup from 'yup';
+import { omit, pick } from 'lodash';
+// import * as yup from 'yup';
 import { InputFileWrapper } from './../../../../../../../common/file-input/file-input';
 import { FileDisplay } from './../../../../../../../layout/authen-layout/create-message-widget/chat-box/message-utilities/file-display/file-display';
 import { addressApi } from './../../../../../../../../api/common/address-api';
 import classnames from 'classnames';
+import {
+  checkNumber,
+  moneyToNumber,
+} from '../../../../../../../../common/utils/listing-utils';
 
 export class ListingInfo extends Component {
   constructor(props) {
@@ -29,7 +33,28 @@ export class ListingInfo extends Component {
         price: '',
       },
     };
-    // addressApi.getAddress({}).then((each) => console.log(each));
+
+    //get option for location
+    addressApi.getAddress({}).then((city) => {
+      // console.log(city);
+      let locationOption = city.map((e) => {
+        return pick(e, ['name']);
+      });
+      itemField.filter((e) => {
+        if (e.englishName === 'location') {
+          return (e.options = locationOption);
+        } else {
+          return e;
+        }
+      });
+      vehicleField.filter((e) => {
+        if (e.englishName === 'location') {
+          return (e.options = locationOption);
+        } else {
+          return e;
+        }
+      });
+    });
   }
   // display function
   handleInputDisplay = () => {
@@ -68,30 +93,32 @@ export class ListingInfo extends Component {
 
   //check display change
   componentDidUpdate(prevProps) {
-    if (prevProps.state.type !== this.props.state.type) {
-      this.handleInputDisplay();
-    }
+    let oldState = prevProps.state;
+    let newState = this.props.state;
     if (
       prevProps.match.params.categoryName !==
       this.props.match.params.categoryName
     ) {
       this.props.updateValue('type', this.props.match.params.categoryName);
     }
-    if (prevProps.state.category !== this.props.state.category) {
-      this.handleSetDependent(fieldByCategory, this.props.state.category);
+    if (oldState.type !== newState.type) {
+      this.handleInputDisplay();
     }
-    if (prevProps.state.vehicleType !== this.props.state.vehicleType) {
-      this.handleSetDependent(fieldByVehicleType, this.props.state.vehicleType);
+    if (oldState.category !== newState.category) {
+      this.handleSetDependent(fieldByCategory, newState.category);
     }
-    if (prevProps.state.homeFor !== this.props.state.homeFor) {
-      this.handleSetDependent(fieldByHomeFor, this.props.state.homeFor);
+    if (oldState.vehicleType !== newState.vehicleType) {
+      this.handleSetDependent(fieldByVehicleType, newState.vehicleType);
+    }
+    if (oldState.homeFor !== newState.homeFor) {
+      this.handleSetDependent(fieldByHomeFor, newState.homeFor);
     }
   }
 
   // check error, only check needed input now
   handleCheckError = (name, message, value) => {
     const { state, updateValue } = this.props;
-    if (!value) {
+    if (!value || (value.includes('&nbsp;') && value.length === 7)) {
       this.setState((prevState) => ({
         error: {
           ...prevState.error,
@@ -110,19 +137,22 @@ export class ListingInfo extends Component {
 
   // change number->money display
   handlePriceDisplay = (name, value) => {
-    const re = /^[0-9\b]+$/;
-    value = value.replace(' ₫', '');
-    let newValue = value.split('.').join('');
-    console.log(newValue);
-    if (re.test(newValue)) {
+    let newValue = moneyToNumber(value);
+
+    if (newValue.includes('&nbsp;')) {
+      newValue = newValue.slice(0, newValue.length - 7);
+      if (newValue === '') {
+        this.props.updateValue([name], '');
+      }
+    }
+
+    if (checkNumber(newValue)) {
       if (newValue.length > 10) {
         this.props.updateValue([name], '');
       } else {
         let money = newValue.replace(/\B(?=(\d{3})+(?!\d))/g, '.');
         this.props.updateValue([name], `${money} ₫`);
       }
-    } else {
-      this.props.updateValue([name], '');
     }
   };
   // hover function
@@ -180,8 +210,6 @@ export class ListingInfo extends Component {
     const { state, updateValue } = this.props;
     let { pictureLimit, type, category, files, ...other } = state;
     const { inputField, error, dependedInput } = this.state;
-    // console.log(this.state);
-    // console.log(state.files);
 
     return (
       <div className='listing-info'>
@@ -295,11 +323,14 @@ export class ListingInfo extends Component {
                         e.target.value
                       );
 
-                    each.englishName === 'price'
+                    each.numberOnly && each.isMoney
                       ? this.handlePriceDisplay(
                           each.englishName,
                           e.target.value
                         )
+                      : each.numberOnly && !each.isMoney
+                      ? checkNumber(e.target.value) &&
+                        updateValue(`${each.englishName}`, e.target.value)
                       : updateValue(`${each.englishName}`, e.target.value);
                   }}
                 />
@@ -310,11 +341,11 @@ export class ListingInfo extends Component {
                   displayAs={(item) => item}
                   key={each.englishName}
                   id={each.englishName}
-                  value={state[each.englishName]}
+                  value={state[each.englishName] || each.default}
                   onMouseEnter={() => this.mouse(each.englishName)}
                   onMouseLeave={() => this.mouseOut()}
                   isSelected={(option) =>
-                    option.name === state[each.englishName]
+                    option.name === (state[each.englishName] || each.default)
                   }
                   onChange={(value) => {
                     updateValue(`${each.englishName}`, value.name);

@@ -58,6 +58,13 @@ export class FeedWidget extends Component {
         this.props.onChange([post].concat(this.props.posts))
     }
 
+    changePost = (postID, post, index) => {
+        let newPosts = [...this.props.posts];
+        // console.log(newPosts)
+        newPosts.splice(index, 1, post);
+        this.props.onChange(newPosts);
+    }
+
 
     render() {
         let {posts, loading, needReloaded, onReload} = this.props;
@@ -68,6 +75,7 @@ export class FeedWidget extends Component {
                 />
                 <FeedList
                     posts={posts}
+                    onChangePost={this.changePost}
                 />
                 {loading && (
                     <div className="loading-panel">

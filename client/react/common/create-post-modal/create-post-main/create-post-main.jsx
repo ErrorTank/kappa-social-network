@@ -18,8 +18,10 @@ import {v4 as uuidv4} from 'uuid';
 import {FilesPreview} from "../files-preview/files-preview";
 import {utilityApi} from "../../../../api/common/utilities-api";
 import debounce from "lodash/debounce"
+import {SwitchBtn} from "../../switch/switch-btn";
+import {userApi} from "../../../../api/common/user-api";
 
-const CreatePostDropZone = props => {
+export const CreatePostDropZone = props => {
     const handleUploadFiles = (files) => {
         props.onAddFiles(files);
         return Promise.resolve();
@@ -270,6 +272,34 @@ export class CreatePostMain extends Component {
                                         </div>
                                     </Tooltip>
                                 ))}
+                            </div>
+                        </div>
+                        <div className="post-config">
+                            <div className="pc-label">
+                                Tắt bình luận
+                            </div>
+                            <div className="pc-action">
+                                <SwitchBtn
+                                    className={"pc-toggle"}
+                                    value={this.props.comment_disabled}
+                                    onToggle={value => {
+                                        this.props.onChange({comment_disabled: value})
+                                    }}
+                                />
+                            </div>
+                        </div>
+                        <div className="post-config">
+                            <div className="pc-label">
+                                Tắt chia sẻ
+                            </div>
+                            <div className="pc-action">
+                                <SwitchBtn
+                                    className={"pc-toggle"}
+                                    value={this.props.block_share}
+                                    onToggle={value => {
+                                        this.props.onChange({block_share: value})
+                                    }}
+                                />
                             </div>
                         </div>
                     </div>

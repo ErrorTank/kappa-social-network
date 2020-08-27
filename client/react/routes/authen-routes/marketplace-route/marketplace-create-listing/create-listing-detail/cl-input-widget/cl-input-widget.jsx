@@ -3,11 +3,24 @@ import { userInfo } from '../../../../../../../common/states/common';
 import { ListingInfo } from './listing-info/listing-info';
 import { Avatar } from './../../../../../../common/avatar/avatar';
 import { omit } from 'lodash';
+import {
+  itemField,
+  vehicleField,
+  homeField,
+} from './../../../../../../../const/listing';
+import classnames from 'classnames';
+import {
+  cleanBlankProp,
+  moneyToNumber,
+} from '../../../../../../../common/utils/listing-utils';
+import { listingApi } from './../../../../../../../api/common/listing-api';
 
 export class CreateListingInputWidget extends Component {
   constructor(props) {
     super(props);
-    this.state = {};
+    this.state = {
+      canCreate: false,
+    };
   }
 
   createInfo = [
@@ -27,58 +40,111 @@ export class CreateListingInputWidget extends Component {
       title: 'Nhà',
     },
   ];
-  requireField = [
-    {
-      name: 'item',
-      require: [
-        'files',
-        'title',
-        'price',
-        'category',
-        'location',
-        'availability',
-      ],
-    },
-    {
-      name: 'vehicle',
-      require: ['files', 'vehicleType', 'year', 'make', 'model', 'price'],
-    },
-    {
-      name: 'home',
-      require: [
-        'files',
-        'homeFor',
-        'homeType',
-        'numberOfBedrooms',
-        'numberOfBathrooms',
-        'address',
-        'decription',
-      ],
-    },
-  ];
+  requireField = {
+    item: ['title', 'price', 'category', 'location', 'availability'],
+    vehicle: ['vehicleType', 'year', 'make', 'model', 'price'],
+    home: [
+      'homeFor',
+      'homeType',
+      'numberOfBedrooms',
+      'numberOfBathrooms',
+      'address',
+      'decription',
+    ],
+  };
   componentDidMount = () => {
     let { state, updateValue } = this.props;
-
     this.createInfo.forEach((each) => {
       if (each.name === this.props.match.params.categoryName) {
+        let inputField;
         this.setState({ title: each.title });
         updateValue('type', each.name);
         updateValue('pictureLimit', each.pictureLimit);
+        switch (each.name) {
+          case 'item':
+            inputField = itemField;
+            break;
+          case 'vehicle':
+            inputField = vehicleField;
+            break;
+          case 'home':
+            inputField = homeField;
+            break;
+        }
+        inputField.map((e) => {
+          if (e.default) {
+            updateValue(`${e.englishName}`, e.default);
+          } else {
+            updateValue(`${e.englishName}`, '');
+          }
+        });
       }
     });
-  };
-  setNewListing = () => {
-    const { state } = this.props;
-    console.log(omit(state));
-  };
-  checkRequiredfield = () => {
-    // if (type === 'item') {
+    // if ('geolocation' in navigator) {
+    //   console.log('Available');
+    // } else {
+    //   console.log('Not Available');
     // }
   };
+
+  //
+  setNewListing = () => {
+    const { state } = this.props;
+
+    // if (this.state.canCreate) {
+    let newListing = cleanBlankProp(state);
+    for (let ele in newListing) {
+      if (
+        typeof newListing[ele] == 'string' &&
+        newListing[ele].indexOf('₫') > -1
+      ) {
+        newListing[ele] = moneyToNumber(newListing[ele]);
+      }
+    }
+    let moreInfo = { postTime: Date.now() };
+    navigator.geolocation.getCurrentPosition((position) => {
+      const { latitude, longitude } = position.coords;
+      moreInfo.position = {
+        lat: latitude,
+        lon: longitude,
+      };
+      newListing = { ...newListing, ...moreInfo };
+      listingApi.createListing(newListing).then((e) => {
+        console.log(e);
+      });
+    });
+    // }
+  };
+
+  checkRequiredfield = () => {
+    const { state } = this.props;
+    const { canCreate } = this.state;
+    let checkBool = false;
+
+    let requiredInput = this.requireField[state.type];
+    if (!state.files && !checkBool && state.files.length < state.pictureLimit) {
+      checkBool = true;
+    }
+    for (let i = 0; i < requiredInput.length; i++) {
+      if (!state[requiredInput[i]] && !checkBool) {
+        checkBool = true;
+        break;
+      }
+    }
+
+    this.setState({ canCreate: checkBool });
+  };
+
+  componentDidUpdate(prevProps) {
+    if (prevProps.state !== this.props.state) {
+      this.checkRequiredfield();
+    }
+  }
+
   render() {
     let user = userInfo.getState();
-
-    // console.log(this.props);
+    // console.log(this.props.state);
+    // console.log(this.state);
     return (
       <div className='create-listing-input-widget'>
         <div className='cs-input-header'>
@@ -116,9 +182,10 @@ export class CreateListingInputWidget extends Component {
 
         <div className='cs-input-footer'>
           <div
-            className='cl-button'
+            className={classnames('cl-button', {
+              disabled: this.state.canCreate,
+            })}
             onClick={() => this.setNewListing()}
-            disabled={this.checkRequiredfield()}
           >
             Tiếp
           </div>

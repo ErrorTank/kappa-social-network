@@ -12,5 +12,20 @@ export const postApi = {
     },
     getPostsForFeed({skip, limit}){
         return authenApi.get(`/post/get-all?skip=${skip}&limit=${limit}`)
+    },
+    updatePostFiles({postID, fileID, file}){
+        return authenApi.put(`/post/update/post/${postID}/file/${fileID}`, {file})
+    },
+    updatePost(postID, post){
+        return authenApi.put(`/post/update/post/${postID}`, {post})
+    },
+    updatePostReaction(postID, reactionConfig, userID){
+        return authenApi.put(`/post/update-reaction/post/${postID}`, {reactionConfig, userID})
+    },
+    getPostReactionList(postID, reactionKey, skip = 0, limit = 10){
+        return authenApi.get(`/post/reaction/post/${postID}/reaction_key/${reactionKey}?skip=${skip}&limit=${limit}`)
+    },
+    getCommentsForPost(postID, skip = 0, limit = 2){
+        return authenApi.get(`/post/comments/post/${postID}?skip=${skip}&limit=${limit}`)
     }
 };

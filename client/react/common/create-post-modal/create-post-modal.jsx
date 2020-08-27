@@ -69,7 +69,9 @@ class CreatePostModal extends Component {
             files: [],
             tagged: [],
             selected: null,
-            stepIndex: 0
+            stepIndex: 0,
+            comment_disabled: false,
+            block_share: false
         }
 
     }
@@ -84,11 +86,13 @@ class CreatePostModal extends Component {
     }
 
     submit = () => {
-        let {policy, editorState, files, tagged} =  this.state;
+        let {policy, editorState, files, tagged, comment_disabled, block_share} =  this.state;
         this.setState({loading: true});
         Promise.all(files.map(each => this.uploadSingleFile(each)))
             .then(newFiles => {
                 let submittedData = {
+                    comment_disabled,
+                    block_share,
                     policy: policy.value,
                     files: newFiles,
                     tagged: tagged.map(each => each._id),

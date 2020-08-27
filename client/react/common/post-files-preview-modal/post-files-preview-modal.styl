@@ -3,15 +3,187 @@
   white-space nowrap
   display flex
   align-items flex-start
+  .img-slider-action{
+    position absolute
+
+    background-color white
+    border-radius 50%
+    z-index 4
+    width 40px
+    height 40px
+    cursor pointer
+    display flex
+    align-items center
+    justify-content center
+    i{
+      font-size 2rem
+
+    }
+    &:hover{
+      background-color darken(white, 3%)
+    }
+    &.left{
+      left 20px
+      top 50%
+      transform translateY(-50%)
+    }
+    &.right{
+      right 20px
+      top 50%
+      transform translateY(-50%)
+    }
+    &.close-btn{
+      left 15px
+      top 15px
+    }
+  }
   .file-panel{
     flex 0 0 calc(100% - 350px)
-    height 600px
+    height 700px
+    display flex
     position relative
+    justify-content center
+    align-items center
     .file-container{
       background-color black
+      position relative
+      z-index: 3;
+
+    }
+    .blur-container{
+
+      position absolute
+      top 0
+      left 0
+      z-index 1
+
+    }
+    .img-picker{
+      position absolute
+      left 50%
+      z-index 4
+      transform translateX(-50%)
+      bottom 20px
+      white-space nowrap
+      .img-wrapper{
+        width 50px
+        height 50px
+        margin 0 5px
+        display inline-block
+        position relative
+        overflow hidden
+        cursor pointer
+        opacity 0.5
+        border-radius 5px
+        &.active{
+          opacity 1
+        }
+      }
+      img{
+        absoluteMiddle()
+        width 100%
+        height 100%
+        object-fit cover
+
+      }
     }
   }
   .describe-panel{
     flex 0 0 350px
+    .dp-body{
+      padding 0 15px
+      .post-caption{
+        color commonTextLight
+        font-size 1.5rem
+        text-align left
+        white-space pre-wrap
+
+      }
+      .dp-cation{
+        margin-top 10px
+        label{
+          font-size 1.5rem
+          text-align left
+          width 100%
+        }
+        textarea{
+          height 100px !important
+          font-size 1.4rem
+        }
+      }
+      .dp-tagged{
+        color greyTextLight
+        white-space pre-wrap
+        font-size 1.5rem
+        margin-top 10px
+        text-align left
+        .link{
+          color commonTextLight
+          font-weight 500
+          cursor pointer
+          &:hover{
+            text-decoration underline !important
+          }
+        }
+      }
+    }
+    .dp-footer{
+      padding 12px
+      margin-top 20px
+      .edit-action{
+        display flex
+        justify-content space-between
+        .btn-save{
+          flex 0 0 50%
+        }
+        .btn-cancel{
+          flex 0 0 48%
+        }
+      }
+      button{
+        i{
+          margin-right 5px
+        }
+      }
+    }
+    .dp-header{
+      display flex
+      align-items center
+      padding 12px
+      .avatar-wrapper{
+        flex 0 0 50px
+      }
+      .post-meta-data{
+        flex  0 0 calc(100% - 50px)
+        padding-left 5px
+        .timer{
+          display flex
+          align-items center
+          .last-active{
+            color greyTextLight
+            font-size 1.3rem
+            font-weight 500
+            margin-left 0.5rem
+          }
+          .policy{
+            margin-right 0.5rem
+            i{
+              color greyTextLight
+              font-size 1.5rem
+            }
+          }
+        }
+        .upper{
+          color commonTextLight
+          text-align left
+          font-weight 500
+          font-size 1.5rem
+
+        }
+
+
+      }
+
+    }
   }
 }

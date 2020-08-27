@@ -5,6 +5,30 @@ import {getBase64Image} from "../../../../common/utils/file-upload-utils";
 import pick from "lodash/pick";
 import {ImageTagWrapper} from "../../image-tag-wrapper/image-tag-wrapper";
 import {utilityApi} from "../../../../api/common/utilities-api";
+import {BlurImgWrapper} from "../../blur-img-wrapper/blur-img-wrapper";
+
+export const createDetectionsCache = (getFileID) => {
+    let detectionsMap = {};
+    return {
+        setDetections: (file, detections) => detectionsMap[getFileID(file)] = detections,
+        getDetections: async (file, displaySize, isBase64 = true) => {
+
+            if (detectionsMap[getFileID(file)]) {
+                return detectionsMap[getFileID(file)]
+            }
+
+            return (isBase64 ? utilityApi.detectImageFaces(file.file, displaySize, "file") : utilityApi.detectImageFaces2(file.path, displaySize))
+                .then(data => {
+
+                    detectionsMap[getFileID(file)] = [...data];
+
+                    return data;
+                })
+        }
+    }
+}
+
+const detectionsCache = createDetectionsCache(file => file.fileID);
 
 export class FileConfig extends Component {
     constructor(props) {
@@ -14,7 +38,9 @@ export class FileConfig extends Component {
             tagged: props.file.tagged || [],
             base64Image: null,
             loading: true,
+            detections: [],
         }
+
         getBase64Image(props.file.file).then((base64Image) => {
 
             this.setState({loading: false, base64Image})
@@ -56,9 +82,13 @@ export class FileConfig extends Component {
                         <p className="tag-title">
                             Nhấn vào ảnh để tag bạn bè
                         </p>
+                        <BlurImgWrapper
+                            imgSrc={base64Image}
+                            className={"blur-panel"}
+                        />
                         {base64Image && (
                             <ImageTagWrapper
-                                file={this.props.file}
+                                file={this.props.file.file}
                                 imgSrc={base64Image}
                                 tagged={tagged}
                                 className={"image-wrapper"}
@@ -68,6 +98,26 @@ export class FileConfig extends Component {
                                     this.setState({tagged: tagged.concat(data)})
                                 }}
                                 onRemove={tag => this.setState({tagged: tagged.filter(each => each.related._id !== tag.related._id)})}
+                                neededLoadDetection={true}
+                                detections={this.state.detections}
+                                detectApi={({width, height}) => detectionsCache.getDetections(this.props.file, {width, height}).then(data => {
+                                    // console.log(data)
+                                    this.setState({
+                                        detections: data.map(each => {
+                                            let {detection} = each;
+                                            let {_box, _imageDims} = detection;
+                                            let {_height, _width, _x, _y} = _box;
+                                            let {_height: imgHeight, _width: imgWidth} = _imageDims
+                                            return {
+                                                ratioX: imgWidth / _x,
+                                                ratioY: imgHeight / _y,
+                                                boxWidthRatio: imgWidth / _width,
+                                                boxHeightRatio: imgHeight / _height
+                                            }
+                                        }),
+
+                                    })
+                                })}
                             />
                         )}
 

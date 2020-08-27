@@ -2,6 +2,8 @@ require('dotenv').config({
     path:
         process.env.NODE_ENV === 'production' ? './env/prod.env' : './env/dev.env',
 });
+// require('https').globalAgent.options.ca = require('ssl-root-cas/latest').create();
+// require('ssl-root-cas/latest').inject();
 const https = require('https');
 
 const fs = require('fs');

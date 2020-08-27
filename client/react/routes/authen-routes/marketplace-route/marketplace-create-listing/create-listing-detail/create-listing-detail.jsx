@@ -11,18 +11,6 @@ class CreateListingDetail extends KComponent {
     super(props);
     this.state = {
       type: '',
-      pictureLimit: '',
-      title: '',
-      price: '',
-      category: '',
-      platform: '',
-      brand: '',
-      size: '',
-      carrie: '',
-      deviceName: '',
-      year: '',
-      model: '',
-      make: '',
       hoverArr: '',
       files: [],
     };
