@@ -24,31 +24,63 @@
       flex 0 0 calc(100% - 40px)
       position relative
 
-      .comment-input{
-        .emoji-mart-emoji{
+
+      .comment-input-actions {
+        position absolute !important
+        top 50%
+        transform translateY(-50%)
+        right 8px
+        z-index 3
+        .actions-wrapper{
+          display flex
+          align-items center
+          position relative
+          .emoji-picker{
+            position absolute
+            top 100%
+            left 50%
+            transform translateX(-50%)
+
+          }
+          i{
+            font-size 1.8rem
+            cursor pointer
+            margin-left 7px
+          }
+
+        }
+      }
+
+      .comment-input {
+        .emoji-mart-emoji {
           vertical-align middle
         }
-        & > div{
+
+        & > div {
           position relative
         }
         background-color bgLight
         border-radius 20px
         color commonTextLight
         padding 8px 12px
+        padding-right 150px
         font-size 1.4rem
         width 100%
         position relative
         cursor text
-        overflow-y auto
-        .create-post-mention{
+        //overflow-y auto
+
+        .create-post-mention {
           color lightMentionText
           background-color lightMentionBg
           padding 1px 0
-          &:hover{
+
+          &:hover {
             color lightMentionText !important
             background-color lightMentionBg !important
           }
-          &:focus{
+
+          &:focus {
             color lightMentionText !important
             background-color lightMentionBg !important
           }
@@ -56,6 +88,7 @@
         }
 
       }
+
       .comment-input-entry {
         cursor pointer
         padding 8px

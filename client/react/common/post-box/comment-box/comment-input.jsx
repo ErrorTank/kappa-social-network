@@ -11,6 +11,7 @@ import {CreatePostDropZone} from "../../create-post-modal/create-post-main/creat
 import {Avatar} from "../../avatar/avatar";
 import {Tooltip} from "../../tooltip/tooltip";
 import {ClickOutside} from "../../click-outside/click-outside";
+const {Picker} = emojiPlugin;
 
 export class CommentInput extends Component {
     constructor(props) {
@@ -83,19 +84,7 @@ export class CommentInput extends Component {
     render() {
         let plugins = [emojiPlugin];
         plugins.push(this.mentionPlugin);
-        let actions = [
-            {
-                icon: <i className="far fa-photo-video"></i>,
-                label: "Ảnh/Video",
-                className: "media"
-            },  {
-                icon: <i className="fas fa-user-tag"></i>,
-                label: "Tag bạn bè",
-                onClick: this.tagFriends,
-                className: "tag"
 
-            }
-        ]
         let user = userInfo.getState();
         const {MentionSuggestions} = this.mentionPlugin;
         return (
@@ -132,25 +121,26 @@ export class CommentInput extends Component {
                                             entryComponent={MentionEntry}
                                         />
                                     </div>
-                                    {/*<div className="comment-input-actions">*/}
-                                    {/*    <Tooltip*/}
-                                    {/*        position={"top"}*/}
-                                    {/*        text={() => "Chèn biểu tượng cảm xúc"}*/}
-                                    {/*    >*/}
-                                    {/*        <div className="action">*/}
+                                    <div className="comment-input-actions">
+                                        <div className="actions-wrapper">
+                                            <i className="fal fa-smile"  onClick={(e) => {
+                                                e.stopPropagation();
+                                                this.setState({showEmojiPicker: !this.state.showEmojiPicker})
+                                            }}></i>
 
-                                    {/*        </div>*/}
-                                    {/*    </Tooltip>*/}
+                                            <i className="fal fa-camera"></i>
+                                            {this.state.showEmojiPicker && (
+                                                <div className={"emoji-picker"}>
+                                                    <Picker
+                                                        perLine={7}
+                                                        showPreview={false}
+                                                        autoFocus={true}
+                                                    />
+                                                </div>
 
-                                    {/*    <Tooltip*/}
-                                    {/*        position={"top"}*/}
-                                    {/*        text={() => "Đính kèm ảnh hoặc video"}*/}
-                                    {/*    >*/}
-                                    {/*        <div className="action">*/}
-
-                                    {/*        </div>*/}
-                                    {/*    </Tooltip>*/}
-                                    {/*</div>*/}
+                                            )}
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </ClickOutside>
