@@ -8,7 +8,7 @@ const createListing = (value) => {
   // return new Listing(value).save().then((newListing) => {
   //   return newListing;
   // });
-  console.log(value);
+  return value;
 };
 
 module.exports = {

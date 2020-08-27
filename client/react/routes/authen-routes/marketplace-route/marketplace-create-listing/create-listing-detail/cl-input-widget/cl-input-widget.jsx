@@ -93,6 +93,14 @@ export class CreateListingInputWidget extends Component {
 
     // if (this.state.canCreate) {
     let newListing = cleanBlankProp(state);
+
+    if (state.type === 'vehicle') {
+      newListing.category = 'Xe cộ';
+    }
+    if (state.type === 'home') {
+      newListing.category = newListing.homeFor;
+    }
+    newListing = omit(newListing, ['type', 'pictureLimit']);
     for (let ele in newListing) {
       if (
         typeof newListing[ele] == 'string' &&
