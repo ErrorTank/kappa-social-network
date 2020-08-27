@@ -1,17 +1,24 @@
 import React, {Component} from 'react';
 import createMentionPlugin from "draft-js-mention-plugin";
 import Editor, {createEditorStateWithText} from 'draft-js-plugins-editor';
+
 import classnames from "classnames";
 import debounce from "lodash/debounce";
 import {isImageFile} from "../../../../common/utils/file-upload-utils";
 import {v4 as uuidv4} from 'uuid';
-import {emojiPlugin} from "../../../layout/authen-layout/create-message-widget/chat-box/message-utilities/chat-input/chat-input";
+
 import {userInfo} from "../../../../common/states/common";
 import {CreatePostDropZone} from "../../create-post-modal/create-post-main/create-post-main";
 import {Avatar} from "../../avatar/avatar";
 import {Tooltip} from "../../tooltip/tooltip";
 import {ClickOutside} from "../../click-outside/click-outside";
-const {Picker} = emojiPlugin;
+import {InputFileWrapper} from "../../file-input/file-input";
+import {convertToRaw} from "draft-js";
+import data from 'emoji-mart/data/facebook.json';
+import createEmojiMartPlugin from "draft-js-emoji-mart-plugin";
+import {CommentMedia} from "./comment-media";
+
+
 
 export class CommentInput extends Component {
     constructor(props) {
@@ -36,6 +43,12 @@ export class CommentInput extends Component {
         </span>
                 )
             },
+        });
+
+        this.emojiPlugin = createEmojiMartPlugin({
+            data,
+            set: 'facebook',
+            emojiSize: 16
         });
     }
 
@@ -64,7 +77,7 @@ export class CommentInput extends Component {
         this.editor.focus();
     };
     addFiles = (files) => {
-        console.log(files)
+        // console.log(files)
         let newFiles = Array.from(files).map(file => {
             return isImageFile(file.name) ? {fileID: uuidv4(), file, type: "image"} : {
                 fileID: uuidv4(),
@@ -73,20 +86,27 @@ export class CommentInput extends Component {
             };
         });
 
-        this.setState({files: this.props.files.concat(newFiles)});
+        this.setState({files: this.state.files.concat(newFiles)});
     };
 
     filterSuggestions = (data,) => {
 
-        return data.map(each => ({...each, name: each.basic_info.username})) ;
+        return data.map(each => ({...each, name: each.basic_info.username}));
+    }
+
+    removeFile = item => {
+        let newFiles = this.state.files.filter(each => each.fileID !== item.fileID);
+        this.setState({files: newFiles})
     }
 
     render() {
-        let plugins = [emojiPlugin];
+
+        let plugins = [this.emojiPlugin];
         plugins.push(this.mentionPlugin);
 
         let user = userInfo.getState();
         const {MentionSuggestions} = this.mentionPlugin;
+        const {Picker} = this.emojiPlugin;
         return (
             <div className="comment-input">
                 <CreatePostDropZone
@@ -102,7 +122,8 @@ export class CommentInput extends Component {
                     <div className="input-wrapper">
                         <ClickOutside onClickOut={() => this.setState({showEmojiPicker: false})}>
                             <div>
-                                <div ref={commentInput => this.commentInput = commentInput} className={classnames("comment-input")} onClick={this.focus}>
+                                <div ref={commentInput => this.commentInput = commentInput}
+                                     className={classnames("comment-input")} onClick={this.focus}>
                                     <div>
                                         <Editor
                                             editorState={this.state.editorState}
@@ -121,34 +142,67 @@ export class CommentInput extends Component {
                                             entryComponent={MentionEntry}
                                         />
                                     </div>
-                                    <div className="comment-input-actions">
-                                        <div className="actions-wrapper">
-                                            <i className="fal fa-smile"  onClick={(e) => {
+
+                                </div>
+                                <div className="comment-input-actions">
+                                    <div className="actions-wrapper">
+                                        <Tooltip
+                                            position={"top"}
+                                            text={() => "Chèn biểu tượng cảm xúc"}
+                                        >
+                                            <i className="fal fa-smile" onClick={(e) => {
                                                 e.stopPropagation();
                                                 this.setState({showEmojiPicker: !this.state.showEmojiPicker})
                                             }}></i>
-
-                                            <i className="fal fa-camera"></i>
-                                            {this.state.showEmojiPicker && (
-                                                <div className={"emoji-picker"}>
-                                                    <Picker
-                                                        perLine={7}
-                                                        showPreview={false}
-                                                        autoFocus={true}
-                                                    />
-                                                </div>
-
+                                        </Tooltip>
+                                        <InputFileWrapper
+                                            multiple={true}
+                                            accept={"image/*,image/heif,image/heic,video/*"}
+                                            onUploaded={this.addFiles}
+                                            limitSize={10 * 1024 * 1024}
+                                        >
+                                            {({onClick}) => (
+                                                <Tooltip
+                                                    position={"top"}
+                                                    text={() => "Đính kèm ảnh hoặc video"}
+                                                >
+                                                    <i className="fal fa-camera" onClick={onClick}></i>
+                                                </Tooltip>
                                             )}
-                                        </div>
+                                        </InputFileWrapper>
+                                        {this.state.showEmojiPicker && (
+                                            <div className={"emoji-picker"}>
+                                                <Picker
+                                                    perLine={7}
+                                                    showPreview={false}
+                                                    autoFocus={true}
+                                                />
+                                            </div>
+
+                                        )}
                                     </div>
                                 </div>
                             </div>
                         </ClickOutside>
 
 
-
                     </div>
                 </div>
+
+                    {!!this.state.files.length && (
+                        <div className="comment-media-wrapper">
+                            {this.state.files.map(each => {
+                                return (
+                                    <CommentMedia
+                                        key={each.fileID}
+                                        file={each}
+                                        onRemove={() => this.removeFile(each)}
+                                    />
+                                )
+                            })}
+                        </div>
+                    )}
+
             </div>
         );
     }

@@ -3,7 +3,13 @@ import {getURLsFromText} from "./string-utils";
 import {v4 as uuidv4} from 'uuid';
 import {Link} from "react-router-dom";
 import {unicodeEmojiRegexp} from 'draft-js-emoji-mart-plugin/lib/constants';
-import {emojiPlugin} from "../../react/layout/authen-layout/create-message-widget/chat-box/message-utilities/chat-input/chat-input";
+import data from 'emoji-mart/data/facebook.json';
+import createEmojiMartPlugin from "draft-js-emoji-mart-plugin";
+const emojiPlugin = createEmojiMartPlugin({
+    data,
+    set: 'facebook',
+    emojiSize: 16
+});
 import { checkText } from 'smile2emoji'
 import {createPipelines} from "./pipelines";
 const {Emoji} = emojiPlugin;

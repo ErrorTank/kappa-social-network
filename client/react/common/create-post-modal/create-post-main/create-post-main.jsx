@@ -6,14 +6,17 @@ import {ClickOutside} from "../../click-outside/click-outside";
 import {InputFileWrapper} from "../../file-input/file-input";
 import {Tooltip} from "../../tooltip/tooltip";
 import {PostPolicies} from "../create-post-modal";
-import {emojiPlugin} from "../../../layout/authen-layout/create-message-widget/chat-box/message-utilities/chat-input/chat-input";
+import createEmojiMartPlugin from "draft-js-emoji-mart-plugin";
+import data from 'emoji-mart/data/facebook.json';
+
 import {userInfo} from "../../../../common/states/common";
 import {DropZone} from "../../file-input/dropzone";
 import createMentionPlugin from "draft-js-mention-plugin";
 import {isImageFile} from "../../../../common/utils/file-upload-utils";
 import classnames from "classnames";
 import Editor from 'draft-js-plugins-editor';
-const {Picker} = emojiPlugin;
+
+
 import {v4 as uuidv4} from 'uuid';
 import {FilesPreview} from "../files-preview/files-preview";
 import {utilityApi} from "../../../../api/common/utilities-api";
@@ -53,7 +56,11 @@ export class CreatePostMain extends Component {
             filteredSuggestions: [],
 
         }
-
+        this.emojiPlugin = createEmojiMartPlugin({
+            data,
+            set: 'facebook',
+            emojiSize: 16
+        });
         this.mentionPlugin = createMentionPlugin({
             entityMutability: 'IMMUTABLE',
             supportWhitespace: true,
@@ -125,7 +132,7 @@ export class CreatePostMain extends Component {
 
 
     render() {
-        let plugins = [emojiPlugin];
+        let plugins = [this.emojiPlugin];
         plugins.push(this.mentionPlugin);
         let actions = [
             {
@@ -140,6 +147,7 @@ export class CreatePostMain extends Component {
 
             }
         ]
+        const {Picker} = this.emojiPlugin;
         let {policy, tagged} = this.props;
         let user = userInfo.getState();
         const {MentionSuggestions} = this.mentionPlugin;

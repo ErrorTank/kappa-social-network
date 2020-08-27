@@ -19,14 +19,7 @@ import {Tooltip} from "../../../../../../common/tooltip/tooltip";
 import {Emoji} from "emoji-mart";
 import Skeleton, {SkeletonTheme} from "react-loading-skeleton";
 
-export const emojiPlugin = createEmojiMartPlugin({
-    data,
-    set: 'facebook',
-    emojiSize: 16
-});
 
-
-const {Picker} = emojiPlugin;
 
 
 export class ChatInput extends Component {
@@ -42,6 +35,13 @@ export class ChatInput extends Component {
         }
 
         this.io = messengerIO.getIOInstance();
+        this.emojiPlugin = createEmojiMartPlugin({
+            data,
+            set: 'facebook',
+            emojiSize: 16
+        });
+
+
 
         this.mentionPlugin = createMentionPlugin({
             entityMutability: 'IMMUTABLE',
@@ -177,11 +177,11 @@ export class ChatInput extends Component {
     render() {
         const {MentionSuggestions} = this.mentionPlugin;
 
-        let plugins = [emojiPlugin];
+        let plugins = [this.emojiPlugin];
         if (this.props.canMention) {
             plugins.push(this.mentionPlugin);
         }
-
+        const {Picker} = this.emojiPlugin;
 
         return (
             <>

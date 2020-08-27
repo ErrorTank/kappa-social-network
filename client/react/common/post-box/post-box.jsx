@@ -145,51 +145,54 @@ export class PostBox extends PureComponent {
                     )}
                 </div>
                 <div className="post-footer">
-                    <div className="statistic">
-                        <div className="reactions">
-                            {reactions.toEmojiMap().map(each => (
-                                <Tooltip
-                                    // delay={500}
-                                    key={each.key}
-                                    className={"reaction-detail"}
-                                    text={() => (
-                                        <ReactionTooltip
-                                            type={each.reverse_key}
-                                            api={() => postApi.getPostReactionList(post._id, each.reverse_key, 0, 10)}
-                                        />
-                                    )}
-                                >
+                    {(reactions.toEmojiMap().length > 0 || commentsTotal > 0 || post.share_count > 0) && (
+                        <div className="statistic">
+                            <div className="reactions">
+                                {reactions.toEmojiMap().map(each => (
+                                    <Tooltip
+                                        // delay={500}
+                                        key={each.key}
+                                        className={"reaction-detail"}
+                                        text={() => (
+                                            <ReactionTooltip
+                                                type={each.reverse_key}
+                                                api={() => postApi.getPostReactionList(post._id, each.reverse_key, 0, 10)}
+                                            />
+                                        )}
+                                    >
                                      <span className="reaction"> <Emoji
                                          set={'facebook'}
                                          emoji={each.icon_config}
                                          size={20}
                                      /></span>
-                                </Tooltip>
+                                    </Tooltip>
 
-                            ))}
-                            {reactionsLength > 1 && <span className="reaction-count"> {activeReaction &&  (
-                                <span>Bạn và </span>
-                            )}
-                                {activeReaction ? reactionsLength - 1 : reactionsLength}
-                                {activeReaction && (
-                                    <span> người khác</span>
-                                )}</span>}
+                                ))}
+                                {reactionsLength > 1 && <span className="reaction-count"> {activeReaction &&  (
+                                    <span>Bạn và </span>
+                                )}
+                                    {activeReaction ? reactionsLength - 1 : reactionsLength}
+                                    {activeReaction && (
+                                        <span> người khác</span>
+                                    )}</span>}
+
+                            </div>
+                            <div className="count">
+                                {commentsTotal > 0 && (
+                                    <div className="count-box">
+                                        {commentsTotal} bình luận
+                                    </div>
+                                )}
+                                {post.share_count > 0 && (
+                                    <div className="count-box">
+                                        {post.share_count} lượt chia sẻ
+                                    </div>
+                                )}
+                            </div>
 
                         </div>
-                        <div className="count">
-                            {commentsTotal > 0 && (
-                                <div className="count-box">
-                                    {commentsTotal} bình luận
-                                </div>
-                            )}
-                            {post.share_count > 0 && (
-                                <div className="count-box">
-                                    {post.share_count} lượt chia sẻ
-                                </div>
-                            )}
-                        </div>
+                    )}
 
-                    </div>
                     <div className="post-user-actions">
                         <div className={classnames("action react", {active: activeReaction})} onClick={() => this.react(activeReaction ? {off: activeReaction} : {on: REACTIONS.thump_up})}>
                             <div className="post-reactions">
