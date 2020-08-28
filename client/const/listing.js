@@ -658,7 +658,7 @@ export const homeField = [
     name: 'Nhà dùng để',
     englishName: 'homeFor',
     isSelected: true,
-    options: [{ name: 'Bán' }, { name: 'Thuê' }],
+    options: [{ name: 'Bán' }, { name: 'Cho thuê' }],
   },
   {
     name: 'Loại tài sản',

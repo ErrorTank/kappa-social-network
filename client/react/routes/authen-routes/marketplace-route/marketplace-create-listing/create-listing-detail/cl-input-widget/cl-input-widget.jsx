@@ -100,13 +100,16 @@ export class CreateListingInputWidget extends Component {
     if (state.type === 'home') {
       newListing.category = newListing.homeFor;
     }
-    newListing = omit(newListing, ['type', 'pictureLimit']);
+
     for (let ele in newListing) {
       if (
         typeof newListing[ele] == 'string' &&
         newListing[ele].indexOf('₫') > -1
       ) {
         newListing[ele] = moneyToNumber(newListing[ele]);
+      }
+      if (ele === 'type' || ele === 'pictureLimit') {
+        delete newListing[ele];
       }
     }
     let moreInfo = { postTime: Date.now() };
@@ -133,6 +136,18 @@ export class CreateListingInputWidget extends Component {
     if (!state.files && !checkBool && state.files.length < state.pictureLimit) {
       checkBool = true;
     }
+
+    if (state.type === 'vehicle') {
+      if (state.vehicleType === 'Xe hơi/Xe tải') {
+        let moreRequire = ['bodyType', 'milage'];
+        requiredInput = [...requiredInput, ...moreRequire];
+      }
+      if (state.vehicleType === 'Xe máy') {
+        let moreRequire = ['milage'];
+        requiredInput = [...requiredInput, ...moreRequire];
+      }
+    }
+
     for (let i = 0; i < requiredInput.length; i++) {
       if (!state[requiredInput[i]] && !checkBool) {
         checkBool = true;
