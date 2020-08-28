@@ -5,6 +5,8 @@ import {transformEditorState} from "../../../../common/utils/editor-utils";
 import {convertToRaw} from "draft-js";
 import {postApi} from "../../../../api/common/post-api";
 import {Comment} from "./comment/comment";
+import {LoadingInline} from "../../loading-inline/loading-inline";
+import classnames from "classnames";
 
 export class CommentBox extends Component {
     constructor(props) {
@@ -23,6 +25,7 @@ export class CommentBox extends Component {
             limit: 2
         });
     }
+
     uploadSingleFile = (file) => {
         return postApi.preUploadMedia({file: file.file}, "file")
             .then(fileData => ({
@@ -48,10 +51,10 @@ export class CommentBox extends Component {
 
     getMentionApi = () => {
         let {post} = this.props;
-        if(post.belonged_group){
+        if (post.belonged_group) {
             return ({keyword}) => utilityApi.getGroupMentions(post.belonged_group._id, keyword)
         }
-        if(post.belonged_page){
+        if (post.belonged_page) {
             return ({keyword}) => utilityApi.getPageMentions(post.belonged_page._id, keyword)
         }
         return ({keyword}) => utilityApi.searchFriends(keyword)
@@ -60,16 +63,33 @@ export class CommentBox extends Component {
     fetchComments = (config) => {
         this.setState({fetching: true})
         return this.props.api(config).then(({list}) => {
-            this.setState({list, fetching: false})
+            this.setState({list: list.concat(this.state.list), fetching: false})
+        })
+    }
+
+    loadMore = () => {
+
+        this.fetchComments({
+            skip: this.state.list.length,
+            limit: 5
         })
     }
 
     render() {
         let {list} = this.state;
-        let {post} = this.props;
+        let {post, commentsTotal} = this.props;
+        let left = commentsTotal - list.length;
         return (
             <div className="comment-box">
                 <div className="comments">
+                    {left > 0 && (
+                        <div className="load-more" onClick={this.loadMore}>
+                            Xem thêm {left > 5 ? 5 : left} bình luận
+                            {this.state.fetching && (
+                                <i className={classnames("far fa-spinner-third spin-icon spin load-icon")}/>
+                            )}
+                        </div>
+                    )}
                     {list.map(each => (
                         <Comment
                             comment={each}

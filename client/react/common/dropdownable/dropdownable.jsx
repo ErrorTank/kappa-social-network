@@ -12,13 +12,13 @@ export class Dropdownable extends Component {
     }
 
     render() {
-        let {className, toggle, content, showArrow = true} = this.props;
+        let {className, toggle, content, showArrow = true, position} = this.props;
 
         return (
             <ThemeContext.Consumer>
                 {({darkMode}) => (
                     <ClickOutside onClickOut={() => this.setState({show: false})}>
-                        <div className={classnames("dropdownable", className, {darkMode})}>
+                        <div className={classnames("dropdownable", className, {darkMode, center: position === "center"})}>
                             <div className={classnames("dropdownable-toggle", {active: this.state.show})}
                                  onClick={() => this.setState({show: !this.state.show})}>
 

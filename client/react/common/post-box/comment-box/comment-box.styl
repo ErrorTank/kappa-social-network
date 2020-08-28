@@ -1,4 +1,26 @@
 .comment-box{
+  .comments{
+    .load-more{
+      padding 5px 16px
+      font-size 1.4rem
+      color greyTextLight
+      cursor pointer
+      font-weight 500
+      position relative
+      display inline-block
+      padding-right 30px
+      .load-icon{
+        position absolute
+        right 8px
+        animation spinner 0.5s cubic-bezier(.69,.2,.26,.72) forwards infinite
+        top 8px
+
+      }
+      &:hover{
+        color darken(greyTextLight, 15%)
+      }
+    }
+  }
   .comment-box-input{
     padding 8px 16px
   }
