@@ -445,7 +445,7 @@ const getPostComments = ({postID, skip, limit}) => {
         }
     ]).then(data => {
         let total = data.length;
-        console.log(data)
+        // console.log(data)
         return {
             list: data
                 .slice(Number(skip), Number(skip) + Number(limit))
