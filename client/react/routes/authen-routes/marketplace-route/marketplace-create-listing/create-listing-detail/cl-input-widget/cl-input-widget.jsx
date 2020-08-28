@@ -94,10 +94,10 @@ export class CreateListingInputWidget extends Component {
     // if (this.state.canCreate) {
     let newListing = cleanBlankProp(state);
 
-    if (state.type === 'vehicle') {
-      newListing.category = 'Xe cộ';
+    if (state.type === 'vehicle' && state.vehicleType) {
+      newListing.category = newListing.vehicleType;
     }
-    if (state.type === 'home') {
+    if (state.type === 'home' && state.homeFor) {
       newListing.category = newListing.homeFor;
     }
 
