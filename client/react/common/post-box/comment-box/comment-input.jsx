@@ -13,11 +13,12 @@ import {Avatar} from "../../avatar/avatar";
 import {Tooltip} from "../../tooltip/tooltip";
 import {ClickOutside} from "../../click-outside/click-outside";
 import {InputFileWrapper} from "../../file-input/file-input";
-import {convertToRaw} from "draft-js";
+import Draft, {ContentState, convertToRaw, EditorState} from "draft-js";
 import data from 'emoji-mart/data/facebook.json';
 import createEmojiMartPlugin from "draft-js-emoji-mart-plugin";
 import {CommentMedia} from "./comment-media";
-
+import {transformEditorState} from "../../../../common/utils/editor-utils";
+import {postApi} from "../../../../api/common/post-api";
 
 
 export class CommentInput extends Component {
@@ -28,7 +29,8 @@ export class CommentInput extends Component {
             showEmojiPicker: false,
             filteredSuggestions: [],
             editorState: createEditorStateWithText(""),
-            files: []
+            files: [],
+            loading: false
         }
         this.mentionPlugin = createMentionPlugin({
             entityMutability: 'IMMUTABLE',
@@ -49,6 +51,23 @@ export class CommentInput extends Component {
             data,
             set: 'facebook',
             emojiSize: 16
+        });
+    }
+
+
+
+    getInitialState = () => {
+        const newEditorState = EditorState.push(this.state.editorState, ContentState.createFromText(''), 'remove-range');
+        return EditorState.moveFocusToEnd(newEditorState);
+    }
+    submit = () => {
+        let {editorState, files} =  this.state;
+        this.setState({loading: true, editorState: this.getInitialState(), files:[]})
+        this.props.onSubmit({
+            editorState,
+            files
+        }).then(() => {
+            this.setState({loading: false})
         });
     }
 
@@ -76,17 +95,24 @@ export class CommentInput extends Component {
     focus = () => {
         this.editor.focus();
     };
-    addFiles = (files) => {
-        // console.log(files)
-        let newFiles = Array.from(files).map(file => {
-            return isImageFile(file.name) ? {fileID: uuidv4(), file, type: "image"} : {
+
+    handleKeyCommand = (command) => {
+        if (command === 'chat-input-enter') {
+            this.submit();
+            return 'handled'
+        }
+
+
+        return 'not-handled'
+    }
+    addFiles = (file) => {
+
+
+        this.setState({files: this.state.files.concat(isImageFile(file.name) ? {fileID: uuidv4(), file, type: "image"} : {
                 fileID: uuidv4(),
                 file,
                 caption: ""
-            };
-        });
-
-        this.setState({files: this.state.files.concat(newFiles)});
+            })});
     };
 
     filterSuggestions = (data,) => {
@@ -97,6 +123,14 @@ export class CommentInput extends Component {
     removeFile = item => {
         let newFiles = this.state.files.filter(each => each.fileID !== item.fileID);
         this.setState({files: newFiles})
+    }
+    keyBindingFn = (e) => {
+        if (!e.shiftKey && e.key === 'Enter') {
+            return 'chat-input-enter'
+        }
+
+
+        return Draft.getDefaultKeyBinding(e)
     }
 
     render() {
@@ -133,6 +167,9 @@ export class CommentInput extends Component {
                                                 this.editor = element;
                                             }}
                                             placeholder={`Viết bình luận...`}
+                                            keyBindingFn={this.keyBindingFn}
+
+                                            handleKeyCommand={this.handleKeyCommand}
 
                                         />
                                         <MentionSuggestions
@@ -146,6 +183,14 @@ export class CommentInput extends Component {
                                 </div>
                                 <div className="comment-input-actions">
                                     <div className="actions-wrapper">
+                                        {transformEditorState(convertToRaw(this.state.editorState.getCurrentContent())).content && (
+                                            <Tooltip
+                                                text={() => "Gửi"}
+                                                position={"top"}
+                                            >
+                                                <i className="fas fa-paper-plane send-btn" onClick={this.submit}></i>
+                                            </Tooltip>
+                                        )}
                                         <Tooltip
                                             position={"top"}
                                             text={() => "Chèn biểu tượng cảm xúc"}
@@ -156,7 +201,7 @@ export class CommentInput extends Component {
                                             }}></i>
                                         </Tooltip>
                                         <InputFileWrapper
-                                            multiple={true}
+                                            multiple={false}
                                             accept={"image/*,image/heif,image/heic,video/*"}
                                             onUploaded={this.addFiles}
                                             limitSize={10 * 1024 * 1024}
@@ -189,19 +234,19 @@ export class CommentInput extends Component {
                     </div>
                 </div>
 
-                    {!!this.state.files.length && (
-                        <div className="comment-media-wrapper">
-                            {this.state.files.map(each => {
-                                return (
-                                    <CommentMedia
-                                        key={each.fileID}
-                                        file={each}
-                                        onRemove={() => this.removeFile(each)}
-                                    />
-                                )
-                            })}
-                        </div>
-                    )}
+                {!!this.state.files.length && (
+                    <div className="comment-media-wrapper">
+                        {this.state.files.map(each => {
+                            return (
+                                <CommentMedia
+                                    key={each.fileID}
+                                    file={each}
+                                    onRemove={() => this.removeFile(each)}
+                                />
+                            )
+                        })}
+                    </div>
+                )}
 
             </div>
         );

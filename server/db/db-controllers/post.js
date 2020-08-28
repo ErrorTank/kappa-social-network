@@ -382,14 +382,7 @@ const getPostComments = ({postID, skip, limit}) => {
                 "as": "comments.from_person"
             }
         },
-        {
-            "$lookup": {
-                "from": "users",
-                "localField": "comments.mentions.related",
-                "foreignField": "_id",
-                "as": "comments.mentions.related"
-            }
-        },
+
         {
             "$lookup": {
                 "from": "pages",
@@ -452,6 +445,7 @@ const getPostComments = ({postID, skip, limit}) => {
         }
     ]).then(data => {
         let total = data.length;
+        console.log(data)
         return {
             list: data
                 .slice(Number(skip), Number(skip) + Number(limit))
@@ -461,12 +455,49 @@ const getPostComments = ({postID, skip, limit}) => {
                     from_person: pick(each.from_person, ["_id", "basic_info", "avatar", "last_active_at", "active"]),
                     from_page: pick(each.from_page, ["_id", "basic_info", "avatar"]),
                     mentioned_page: each.mentioned_page.map(item => pick(item, ["_id", "basic_info", "avatar"])),
-                    mentions: each.mentions.map(item => ({...item, related: pick(item.related, ["_id", "basic_info", "avatar"])})),
                 })),
             total
         }
 
     })
+}
+
+const createNewCommentForPost = ({postID, comment, userID}) => {
+    let newComment = {...comment, _id: new ObjectId()}
+    return Post.findOneAndUpdate({
+        _id: ObjectId(postID)
+    },{
+        $set: {
+            last_updated: Date.now()
+        },
+        $push: {
+            comments: {...newComment, from_person: ObjectId(userID)}
+        }
+    }, {
+        new: true,
+        fields: "comments",
+    })
+        .populate([
+            {
+                path: "comments.from_person",
+                model: "User",
+                select: "_id basic_info avatar last_active_at active"
+            }, {
+                path: "comments.mentions.related",
+                model: "User",
+                select: "_id basic_info avatar last_active_at active"
+
+            }, {
+                path: "comments.from_page",
+                model: "Page",
+                select: "_id basic_info avatar"
+            },{
+                path: "comments.mentioned_page",
+                model: "User",
+                select: "_id basic_info avatar"
+            },
+        ])
+        .then(data => data.comments.find(each => each._id.toString() === newComment._id.toString()))
 }
 
 module.exports = {
@@ -476,5 +507,6 @@ module.exports = {
     updatePost,
     updatePostReaction,
     getPostReactionByReactionKey,
-    getPostComments
+    getPostComments,
+    createNewCommentForPost
 };

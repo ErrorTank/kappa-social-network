@@ -108,8 +108,43 @@ const postSchema = new Schema({
         default: [],
         type: [
             {
-                type: ObjectId,
-                ref: "Comment"
+                ...editorContentSchema,
+                reactions: ReactionSchema,
+                mentioned_page: {
+                    default: [],
+                    type: [
+                        {
+                            type: ObjectId,
+                            ref: "Page"
+                        }
+                    ]
+                },
+                files: {
+                    default: [],
+                    type: [
+                        {
+                            path: String,
+                            name: String,
+                            origin_path: String,
+                        }
+                    ]
+                },
+                created_at: {
+                    type: Date,
+                    default: Date.now
+                },
+                updated_at: {
+                    type: Date,
+                    default: Date.now
+                },
+                from_page: {
+                    type: ObjectId,
+                    ref: "Page"
+                },
+                from_person: {
+                    type: ObjectId,
+                    ref: "User"
+                }
             }
         ]
     }

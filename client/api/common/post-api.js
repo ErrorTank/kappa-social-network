@@ -27,5 +27,8 @@ export const postApi = {
     },
     getCommentsForPost(postID, skip = 0, limit = 2){
         return authenApi.get(`/post/comments/post/${postID}?skip=${skip}&limit=${limit}`)
+    },
+    createComment(postID, comment){
+        return authenApi.post(`/post/create-comment/post/${postID}`, {comment})
     }
 };

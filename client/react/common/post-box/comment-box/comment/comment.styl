@@ -1,0 +1,59 @@
+.comment{
+  padding 5px 16px
+  .comment-actions{
+    margin-top 3px
+    padding-left 40px
+    .action{
+      font-size 1.2rem
+      font-weight bold
+      color greyTextLight
+      cursor pointer
+      &:hover{
+        color darken(greyTextLight, 15%)
+      }
+
+    }
+    .created_at{
+      font-size 1.2rem
+
+      color greyTextLight
+    }
+  }
+  .comment-main{
+    display flex
+    align-items flex-start
+    .avatar-wrapper{
+      flex 0 0 40px
+      .common-avatar{
+        width 35px
+        height 35px
+        .avatar-holder {
+          span {
+            font-size 1.4rem
+          }
+        }
+      }
+    }
+    .comment-content{
+      flex 0 0 calc(100% - 40px)
+      padding 8px 12px
+      background-color bgLight
+      border-radius 18px
+      font-size 13px
+      &.no-content{
+        padding 0 12px
+        background-color white
+        align-self center
+      }
+      .username{
+        color commonTextLight
+        font-weight 500
+
+      }
+      .content{
+        color commonTextLight
+
+      }
+    }
+  }
+}

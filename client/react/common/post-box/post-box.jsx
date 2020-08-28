@@ -225,6 +225,7 @@ export class PostBox extends PureComponent {
                             return data;
                         })}
                         post={post}
+                        onAddComment={() => this.setState({commentsTotal: commentsTotal + 1})}
                     />
                 </div>
             </div>

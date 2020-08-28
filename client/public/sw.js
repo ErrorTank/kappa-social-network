@@ -198,6 +198,10 @@ var exceptionRequestsDev = [
     method: 'GET',
   },
   {
+    endpoint: /https:\/\/localhost:4000\/api\/post\/create-comment\/post\/\w+/,
+    method: 'POST',
+  },
+  {
     endpoint: /https:\/\/localhost:4000\/api\/listing\/create-listing/,
     method: 'POST',
   },
@@ -216,8 +220,8 @@ var notGetRequests = [
   },
 ];
 
-var CACHE_STATIC_NAME = 'static-v1598555375905';
-var CACHE_DYNAMIC_NAME = 'dynamic-v1598555375905';
+var CACHE_STATIC_NAME = 'static-v1598605962236';
+var CACHE_DYNAMIC_NAME = 'dynamic-v1598605962236';
 
 var STATIC_FILES = [
   '/',
