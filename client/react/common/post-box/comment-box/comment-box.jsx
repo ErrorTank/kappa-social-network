@@ -66,6 +66,7 @@ export class CommentBox extends Component {
             this.setState({list: list.concat(this.state.list), fetching: false})
         })
     }
+    //TODO COMMENT content display and comments sort
 
     loadMore = () => {
 

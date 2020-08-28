@@ -440,7 +440,7 @@ const getPostComments = ({postID, skip, limit}) => {
             }
         }, {
             $sort: {
-                created_at: -1,
+                "comments.created_at": -1,
             }
         }
     ]).then(data => {
