@@ -13,7 +13,7 @@ const cleanBlankProp = (obj) => {
       delete obj[propName];
     }
   }
-  return obj;
+  // return obj;
 };
 
 const moneyToNumber = (value) => {
