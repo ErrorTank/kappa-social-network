@@ -142,7 +142,7 @@ export class CommentInput extends Component {
         const {MentionSuggestions} = this.mentionPlugin;
         const {Picker} = this.emojiPlugin;
         return (
-            <div className="comment-input">
+            <div className={classnames("comment-input", {isReply: this.props.isReply})}>
                 <CreatePostDropZone
                     onAddFiles={this.addFiles}
                 />

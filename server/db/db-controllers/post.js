@@ -501,6 +501,123 @@ const updatePostCommentReaction =  ({postID, userID, commentID, reactionConfig})
         })
 }
 
+const createCommentReply = ({commentID, reply, userID}) => {
+    let newReply = {...reply, _id: new ObjectId(), from_person: ObjectId(userID)}
+    return Promise.all([Comment.findOneAndUpdate({
+        _id: ObjectId(commentID)
+    },{
+        $set: {
+            last_updated: Date.now()
+        },
+        $push: {
+            replies: newReply._id
+        }
+    }, {
+        new: true,
+    }), new Comment(newReply).save()])
+        .then(([_post ,data]) => data)
+}
+
+const getCommentReplies = ({commentID, skip, limit}) => {
+    return Comment.findOne({
+        _id: ObjectId(commentID)
+    }).lean()
+        .then((cmt) =>
+            Comment.aggregate([
+                {
+                    $match: {
+                        _id: {
+                            $in: cmt.replies.map(each => ObjectId(each))
+                        }
+                    }
+                },
+                {
+                    "$lookup": {
+                        "from": "users",
+                        "localField": "from_person",
+                        "foreignField": "_id",
+                        "as": "from_person"
+                    }
+                },
+
+                {
+                    "$lookup": {
+                        "from": "pages",
+                        "localField": "from_page",
+                        "foreignField": "_id",
+                        "as": "from_page"
+                    }
+                },
+                {
+                    "$lookup": {
+                        "from": "pages",
+                        "localField": "mentioned_page",
+                        "foreignField": "_id",
+                        "as": "mentioned_page"
+                    }
+                },
+                {
+                    $addFields: {
+                        "from_person": {
+                            $arrayElemAt: ["$from_person", 0]
+                        },
+                        "from_page": {
+                            $arrayElemAt: ["$from_page", 0]
+                        },
+                    }
+                },
+                {
+                    $addFields: {
+                        "love_size": {
+                            $size: "$reactions.love"
+                        },
+                        "laugh_size": {
+                            $size: "$reactions.laugh"
+                        },
+                        "wow_size": {
+                            $size: "$reactions.wow"
+                        },
+                        "cry_size": {
+                            $size: "$reactions.cry"
+                        },
+                        "angry_size": {
+                            $size: "$reactions.angry"
+                        },
+                        "thump_up_size": {
+                            $size: "$reactions.thump_up"
+                        },
+                        "thump_down_size": {
+                            $size: "$reactions.thump_down"
+                        },
+                    }
+                },
+                {
+                    $addFields: {
+                        "reaction_count": {$add: ['$love_size', '$laugh_size', "$wow_size", "$cry_size", "$cry_size", "$angry_size", "$thump_up_size", "$thump_down_size"]}
+                    }
+                }, {
+                    $sort: {
+                        "created_at": -1,
+                    }
+                }
+            ]).then(data => {
+                let total = data.length;
+                // console.log(data)
+                return {
+                    list: data
+                        .slice(Number(skip), Number(skip) + Number(limit))
+                        .map(each => ({
+                            ...each,
+                            from_person: pick(each.from_person, ["_id", "basic_info", "avatar", "last_active_at", "active"]),
+                            from_page: pick(each.from_page, ["_id", "basic_info", "avatar"]),
+                            mentioned_page: each.mentioned_page.map(item => pick(item, ["_id", "basic_info", "avatar"])),
+                        })),
+                    total
+                }
+
+            }))
+}
+
 module.exports = {
     getAllPosts,
     createNewPost,
@@ -510,5 +627,7 @@ module.exports = {
     getPostReactionByReactionKey,
     getPostComments,
     createNewCommentForPost,
-    updatePostCommentReaction
+    updatePostCommentReaction,
+    createCommentReply,
+    getCommentReplies
 };

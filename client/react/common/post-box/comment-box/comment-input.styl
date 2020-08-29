@@ -1,5 +1,29 @@
 .comment-input {
   position relative
+  &.isReply{
+    .wrapper {
+      display flex
+      align-items center
+
+
+
+
+      .avatar-wrapper {
+        flex 0 0 35px
+
+        .common-avatar {
+          width 30px !important
+          height 30px !important
+
+          .avatar-holder {
+            span {
+              font-size 1.2rem
+            }
+          }
+        }
+      }
+    }
+  }
   .comment-media-wrapper{
     display flex
     align-items center

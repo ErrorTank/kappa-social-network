@@ -34,4 +34,10 @@ export const postApi = {
     updateCommentReaction(postID, commentID, reactionConfig, userID){
         return authenApi.put(`/post/update-reaction/post/${postID}/comment/${commentID}`, {reactionConfig, userID})
     },
+    createCommentReply(commentID, reply){
+        return authenApi.post(`/post/create-reply/comment/${commentID}`, {reply})
+    },
+    getReplyForComment(commentID, {skip = 0, limit = 5}){
+        return authenApi.get(`/post/replies/comment/${commentID}?skip=${skip}&limit=${limit}`)
+    }
 };

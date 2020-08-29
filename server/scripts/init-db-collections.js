@@ -13,7 +13,7 @@ const initDbCollections = (appDb) => {
   const Listing = require('../db/model/marketplace/listing')(appDb);
   const Category = require('../db/model/marketplace/category')(appDb);
   const Comment = require('../db/model/comment')(appDb);
-  // Comment.insertMany({}, {$set: {replies: []}}).then(() => console.log("cac"))
+  // Comment.updateMany({}, {$set: {replies: []}}).then(() => console.log("cac"))
   // ChatRoom.deleteMany({}).then(() => console.log("cac"))
   // User.updateMany({}, {$set: {followed_posts: []}}).then(() => console.log("cac"))
   // Post.updateMany({}, {$set: {share_count: 0}}).then(() => console.log("cac"))
