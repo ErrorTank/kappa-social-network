@@ -6,6 +6,12 @@ import {getRenderableContentFromMessage} from "../../../../../common/utils/edito
 import {SmartImgWrapper} from "../../../smart-img-wrapper/smart-img-wrapper";
 import isNil from "lodash/isNil";
 import {Dropdownable} from "../../../dropdownable/dropdownable";
+import {REACTIONS, ReactionsWidget} from "../../../reactions-widget/reactions-widget";
+import {sortReactions} from "../../../../../common/utils/post-utils";
+import {userInfo} from "../../../../../common/states/common";
+import {getActiveReaction} from "../../../../../common/utils/messenger-utils";
+import {postApi} from "../../../../../api/common/post-api";
+import {ReactionDisplay} from "../../../../layout/authen-layout/create-message-widget/chat-box/message-section/reaction-display/reaction-display";
 
 export class Comment extends Component {
     constructor(props) {
@@ -15,8 +21,17 @@ export class Comment extends Component {
         }
     }
 
+    react = (config) => {
+        let {comment, onChangeComment, post} = this.props;
+        postApi.updateCommentReaction(post._id, comment._id, config, userInfo.getState()._id)
+            .then(newComment => onChangeComment(newComment))
+    }
+
     render() {
         let {comment} = this.props;
+        let user = userInfo.getState();
+        let activeReaction = getActiveReaction(user._id, comment.reactions);
+        console.log(activeReaction)
         return (
             <div className={"comment"}>
                 <div className="comment-main">
@@ -30,25 +45,34 @@ export class Comment extends Component {
                         {comment.content && (
                             <div className="content">{getRenderableContentFromMessage(comment)}</div>
                         )}
-                    </div>
-                    <Dropdownable
-                        className={"comment-config"}
-                        toggle={() => (
-                            <i className="fal fa-ellipsis-h"></i>
-                        )}
-                        position={"center"}
-                        content={() => (
-                            <div className={"comment-config-dropdown"}>
-                                <div className="dropdown-item">
-                                    Chỉnh sửa
-                                </div>
-                                <div className="dropdown-item">
-                                    Xóa
-                                </div>
+                        {!comment.files.length && (
+                            <div className="comment-reaction">
+                                <ReactionDisplay
+                                    reactions={comment.reactions}
+                                />
                             </div>
-
                         )}
-                    />
+                    </div>
+                    {comment.from_person._id === user._id && (
+                        <Dropdownable
+                            className={"comment-config"}
+                            toggle={() => (
+                                <i className="fal fa-ellipsis-h"></i>
+                            )}
+                            position={"center"}
+                            content={() => (
+                                <div className={"comment-config-dropdown"}>
+                                    <div className="dropdown-item">
+                                        Chỉnh sửa
+                                    </div>
+                                    <div className="dropdown-item">
+                                        Xóa
+                                    </div>
+                                </div>
+
+                            )}
+                        />
+                    )}
 
 
                 </div>
@@ -60,13 +84,30 @@ export class Comment extends Component {
                             maxWidth={300}
                             maxHeight={300}
                         />
+                        {comment.files.length > 0 && (
+                            <div className="comment-reaction">
+                                <ReactionDisplay
+                                    reactions={comment.reactions}
+                                />
+                            </div>
+                        )}
                     </div>
                 )}
 
                 <div className="comment-actions">
-                    <span className="action">Thích</span>
+                    <div className={classnames("action react", {active: activeReaction})} onClick={() => this.react(activeReaction ? {off: activeReaction} : {on: REACTIONS.thump_up})}>
+                        <div className="post-reactions">
+                            <ReactionsWidget
+                                onSelect={this.react}
+                                active={activeReaction}
+                            />
+                        </div>
+                        <span>Thích</span>
+                    </div>
                     <span style={{margin: "0 3px"}}>-</span>
-                    <span className="action">Trả lời</span>
+                    <div className="action">
+                        <span>Trả lời</span>
+                    </div>
                     <span style={{margin: "0 3px"}}>-</span>
                     <span className="created_at">{moment(comment.created_at).fromNow()}</span>
                 </div>

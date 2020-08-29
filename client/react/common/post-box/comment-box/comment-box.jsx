@@ -66,7 +66,6 @@ export class CommentBox extends Component {
             this.setState({list: list.concat(this.state.list), fetching: false})
         })
     }
-    //TODO COMMENT content display and comments sort
 
     loadMore = () => {
 
@@ -74,6 +73,13 @@ export class CommentBox extends Component {
             skip: this.state.list.length,
             limit: 5
         })
+    }
+
+    changeComment = (comment, i) => {
+        let {list} = this.state;
+        let newList = [...list];
+        newList.splice(i, 1, comment);
+        this.setState({list: newList})
     }
 
     render() {
@@ -91,10 +97,12 @@ export class CommentBox extends Component {
                             )}
                         </div>
                     )}
-                    {list.map(each => (
+                    {list.map((each, i) => (
                         <Comment
                             comment={each}
+                            post={post}
                             key={each._id}
+                            onChangeComment={comment => this.changeComment(comment, i)}
                         />
                     ))}
                 </div>
@@ -107,6 +115,7 @@ export class CommentBox extends Component {
                         <CommentInput
                             onSubmit={this.submitComment}
                             api={this.getMentionApi()}
+
                         />
                     </div>
 

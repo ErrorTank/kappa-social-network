@@ -1,40 +1,75 @@
-.comment{
+.comment {
   padding 5px 16px
-  .comment-media-info{
+
+  .comment-media-info {
     padding-left 40px
     margin-top 3px
-    .comment-media-wrapper{
+
+    .comment-media-wrapper {
       border 1px solid greyTextLight
       border-radius 18px
     }
   }
-  .comment-actions{
-    margin-top 3px
+
+  .comment-actions {
+    margin-top 12px
     padding-left 40px
-    .action{
+    display flex
+    align-self center
+
+    .action {
       font-size 1.2rem
       font-weight bold
       color greyTextLight
       cursor pointer
-      &:hover{
+
+      &:hover {
         color darken(greyTextLight, 15%)
       }
 
+      &.react {
+        position relative
+
+        &.active {
+          color primaryButton !important
+        }
+
+        .post-reactions {
+          position absolute
+          left 50%
+          transform translateX(-50%)
+          bottom 100%
+          display none
+        }
+
+        &:hover {
+          .post-reactions {
+            display block
+          }
+        }
+      }
+
     }
-    .created_at{
+
+    .created_at {
       font-size 1.2rem
 
       color greyTextLight
     }
   }
-  .comment-main{
+
+  .comment-main {
     display flex
     align-items flex-start
-    .avatar-wrapper{
+
+
+    .avatar-wrapper {
       flex 0 0 40px
-      .common-avatar{
+
+      .common-avatar {
         width 35px
         height 35px
+
         .avatar-holder {
           span {
             font-size 1.4rem
@@ -42,18 +77,22 @@
         }
       }
     }
-    .comment-config{
+
+    .comment-config {
       flex 0 0 15px
       align-self center
       cursor pointer
       padding-left 5px
-      i{
+
+      i {
         font-size 2rem
 
       }
-      .comment-config-dropdown{
+
+      .comment-config-dropdown {
         padding 8px
-        .dropdown-item{
+
+        .dropdown-item {
           padding 8px
           cursor pointer
           font-size 1.5rem
@@ -61,25 +100,44 @@
         }
       }
     }
-    .comment-content{
-      flex 0 0 calc(100% - 60px)
+    .comment-reaction {
+      left 92%
+      position absolute
+
+
+      bottom -8px
+
+
+    }
+    .comment-content {
+      //flex 0 0 calc(100% - 60px)
       padding 8px 12px
+      max-width calc(100% - 60px)
       background-color bgLight
       border-radius 18px
+
       font-size 13px
-      &.no-content{
+
+      &.no-content {
         padding 0 12px
         background-color white
         align-self center
       }
-      .username{
+      position relative
+
+
+
+
+      .username {
         color commonTextLight
         font-weight 500
 
       }
-      .content{
+
+      .content {
         color commonTextLight
-        & > span{
+
+        & > span {
           display inline-block
           vertical-align middle
         }

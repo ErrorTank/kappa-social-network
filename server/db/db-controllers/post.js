@@ -500,6 +500,55 @@ const createNewCommentForPost = ({postID, comment, userID}) => {
         .then(data => data.comments.find(each => each._id.toString() === newComment._id.toString()))
 }
 
+const updatePostCommentReaction =  ({postID, userID, commentID, reactionConfig}) => {
+    let execCommand = {
+        $set: {"last_updated": Date.now()}
+    };
+
+    let {on, off} = reactionConfig;
+    if(on){
+        execCommand["$push"] = {
+            [`comments.$[elem].reactions.${REVERSE_REACTIONS[on]}`] : ObjectId(userID)
+        };
+
+    }
+    if(off){
+        execCommand["$pull"] = {
+            [`comments.$[elem].reactions.${REVERSE_REACTIONS[off]}`] : ObjectId(userID)
+        };
+    }
+    return Post.findOneAndUpdate({
+        _id: ObjectId(postID)
+    } , execCommand, {
+        "arrayFilters": [{"elem._id": ObjectId(commentID)}],
+        new: true
+    }).populate([
+        {
+            path: "comments.from_person",
+            model: "User",
+            select: "_id basic_info avatar last_active_at active"
+        }, {
+            path: "comments.mentions.related",
+            model: "User",
+            select: "_id basic_info avatar last_active_at active"
+
+        }, {
+            path: "comments.from_page",
+            model: "Page",
+            select: "_id basic_info avatar"
+        },{
+            path: "comments.mentioned_page",
+            model: "User",
+            select: "_id basic_info avatar"
+        },
+    ])
+        .then(cr => {
+            // console.log(cr.context)
+            // console.log(messageID)
+            return cr.comments.find(each => each._id.toString() === commentID)
+        })
+}
+
 module.exports = {
     getAllPosts,
     createNewPost,
@@ -508,5 +557,6 @@ module.exports = {
     updatePostReaction,
     getPostReactionByReactionKey,
     getPostComments,
-    createNewCommentForPost
+    createNewCommentForPost,
+    updatePostCommentReaction
 };

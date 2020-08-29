@@ -30,5 +30,8 @@ export const postApi = {
     },
     createComment(postID, comment){
         return authenApi.post(`/post/create-comment/post/${postID}`, {comment})
-    }
+    },
+    updateCommentReaction(postID, commentID, reactionConfig, userID){
+        return authenApi.put(`/post/update-reaction/post/${postID}/comment/${commentID}`, {reactionConfig, userID})
+    },
 };
