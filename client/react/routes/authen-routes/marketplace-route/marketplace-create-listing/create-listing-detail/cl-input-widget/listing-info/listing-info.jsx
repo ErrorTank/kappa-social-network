@@ -211,6 +211,7 @@ export class ListingInfo extends Component {
     let { pictureLimit, type, category, files, ...other } = state;
     const { inputField, error, dependedInput } = this.state;
 
+    // console.log(state);
     return (
       <div className='listing-info'>
         <div className='picture-input'>

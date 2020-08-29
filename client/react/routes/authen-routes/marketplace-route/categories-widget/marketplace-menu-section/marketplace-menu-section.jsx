@@ -28,6 +28,7 @@ export class MarketplaceMenuSection extends Component {
       <div className='marketplace-menu-section'>
         {this.menuNavigation.map((each) => (
           <MenuNavigationWithIcon
+            key={each.title}
             icon={each.icon}
             title={each.title}
             type={each.type}

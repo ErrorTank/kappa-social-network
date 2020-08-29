@@ -93,6 +93,7 @@ export class CreateListingInputWidget extends Component {
 
     // if (this.state.canCreate) {
     let newListing = cleanBlankProp(state);
+    console.log(state);
 
     if (state.type === 'vehicle' && state.vehicleType) {
       newListing.category = newListing.vehicleType;
@@ -166,7 +167,7 @@ export class CreateListingInputWidget extends Component {
 
   render() {
     let user = userInfo.getState();
-    // console.log(this.props.state);
+    console.log(this.props.state);
     // console.log(this.state);
     return (
       <div className='create-listing-input-widget'>

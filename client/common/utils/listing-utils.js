@@ -3,17 +3,18 @@ const checkNumber = (value) => {
   return re.test(value);
 };
 
-const cleanBlankProp = (obj) => {
-  for (var propName in obj) {
+const cleanBlankProp = (Obj) => {
+  let newObj = { ...Obj };
+  for (var propName in newObj) {
     if (
-      obj[propName] === null ||
-      obj[propName] === undefined ||
-      obj[propName] === ''
+      newObj[propName] === null ||
+      newObj[propName] === undefined ||
+      newObj[propName] === ''
     ) {
-      delete obj[propName];
+      delete newObj[propName];
     }
   }
-  return obj;
+  return newObj;
 };
 
 const moneyToNumber = (value) => {
