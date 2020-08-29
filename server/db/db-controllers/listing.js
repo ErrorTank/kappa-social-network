@@ -11,11 +11,12 @@ const createListing = (value) => {
   // });
   // console.log(value.category);
   Category.find({ name: value.category }).then((category) => {
+    console.log(this.category._id.valueOf());
     let newListing = {
       ...value,
       category: category._id,
     };
-    console.log(newListing);
+    // console.log(newListing);
   });
   // return value;
 };
