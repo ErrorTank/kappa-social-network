@@ -80,22 +80,22 @@ export class CreateListingInputWidget extends Component {
         });
       }
     });
-    // if ('geolocation' in navigator) {
-    //   console.log('Available');
-    // } else {
-    //   console.log('Not Available');
-    // }
   };
 
-  //
+  uploadSingleFile = (file) => {
+    return postApi
+      .preUploadMedia({ file: file.file }, 'file')
+      .then((fileData) => ({
+        ...fileData,
+      }));
+  };
+
   setNewListing = () => {
     const { state } = this.props;
-
+    // console.log(state);
     // if (this.state.canCreate) {
 
-    let newListing = { ...state };
-    cleanBlankProp(newListing);
-    console.log(state);
+    let newListing = cleanBlankProp(state);
 
     if (state.type === 'vehicle' && state.vehicleType) {
       newListing.category = newListing.vehicleType;
@@ -111,10 +111,18 @@ export class CreateListingInputWidget extends Component {
       ) {
         newListing[ele] = moneyToNumber(newListing[ele]);
       }
-      if (ele === 'type' || ele === 'pictureLimit') {
-        delete newListing[ele];
+
+      switch (ele) {
+        case 'type':
+        case 'pictureLimit':
+        case 'vehicleType':
+        case 'homeFor':
+          delete newListing[ele];
+          break;
       }
     }
+    // Promise.all(files.map(each => this.uploadSingleFile(each)))
+    //         .then(newFiles => {})
     let moreInfo = { postTime: Date.now() };
     navigator.geolocation.getCurrentPosition((position) => {
       const { latitude, longitude } = position.coords;

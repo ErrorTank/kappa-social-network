@@ -4,7 +4,16 @@ const Schema = mongoose.Schema;
 
 const listingSchema = new Schema({
   // must
-  files: [String],
+  files: {
+    default: [],
+    type: [
+      {
+        path: String,
+        name: String,
+        origin_path: String,
+      },
+    ],
+  },
   postTime: Date,
   position: {
     lat: Number,
