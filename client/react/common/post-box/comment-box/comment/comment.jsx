@@ -93,9 +93,21 @@ export class Comment extends Component {
         })
     }
 
+    deleteComment = () => {
+        let {onDeleteComment, comment, isReply, onDeleteReply, post, father} = this.props;
+        !isReply ?
+            postApi.deleteComment(post._id, comment._id)
+                .then(() => onDeleteComment()):
+            postApi.deleteReply(father._id, comment._id)
+                .then(() => {
+
+                    onDeleteReply(comment);
+                })
+    }
+
     render() {
         let {replies, loadReplies, showReplyInput} = this.state;
-        let {comment} = this.props;
+        let {comment, onDeleteReply} = this.props;
         let user = userInfo.getState();
         let activeReaction = getActiveReaction(user._id, comment.reactions);
         // console.log(activeReaction)
@@ -132,7 +144,7 @@ export class Comment extends Component {
                                     <div className="dropdown-item">
                                         Chỉnh sửa
                                     </div>
-                                    <div className="dropdown-item">
+                                    <div className="dropdown-item" onClick={this.deleteComment}>
                                         Xóa
                                     </div>
                                 </div>
@@ -210,8 +222,13 @@ export class Comment extends Component {
                                 comment={each}
                                 post={this.props.post}
                                 isReply={true}
+                                father={comment}
                                 key={each._id}
                                 onChangeComment={reply => this.changeReply(reply, i)}
+                                onDeleteReply={() => {
+                                    this.setState({replies: this.state.replies.filter(item => item._id !== each._id)})
+                                    onDeleteReply(each)
+                                }}
                             />
                         ))}
                         {showReplyInput && (

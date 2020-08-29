@@ -39,5 +39,14 @@ export const postApi = {
     },
     getReplyForComment(commentID, {skip = 0, limit = 5}){
         return authenApi.get(`/post/replies/comment/${commentID}?skip=${skip}&limit=${limit}`)
+    },
+    deletePost(postID){
+        return authenApi.delete(`/post/${postID}`)
+    },
+    deleteComment(postID, commentID){
+        return authenApi.delete(`/post/${postID}/comment/${commentID}`)
+    },
+    deleteReply(commentID, replyID){
+        return authenApi.delete(`/post/comment/${commentID}/reply/${replyID}`)
     }
 };

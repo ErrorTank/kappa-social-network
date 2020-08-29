@@ -617,6 +617,27 @@ const getCommentReplies = ({commentID, skip, limit}) => {
 
             }))
 }
+const deleteReply = ({replyID, commentID}) => {
+    return Promise.all([
+        Comment.findOneAndUpdate(
+            {_id: ObjectId(commentID)},
+            {
+                $pull: {
+                    replies : ObjectId(replyID)
+                }
+            }
+        ),
+        Comment.findOneAndDelete(
+            {_id: ObjectId(replyID)}
+        )
+    ])
+}
+const deleteComment = ({commentID}) => {
+
+}
+const deletePost = ({postID}) => {
+
+}
 
 module.exports = {
     getAllPosts,
@@ -629,5 +650,8 @@ module.exports = {
     createNewCommentForPost,
     updatePostCommentReaction,
     createCommentReply,
-    getCommentReplies
+    getCommentReplies,
+    deleteReply,
+    deleteComment,
+    deletePost
 };
