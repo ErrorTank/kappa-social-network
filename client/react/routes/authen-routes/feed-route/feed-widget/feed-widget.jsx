@@ -65,6 +65,10 @@ export class FeedWidget extends Component {
         this.props.onChange(newPosts);
     }
 
+    deletePost = (post, i) => {
+        let {posts, onChange} = this.props;
+        onChange(posts.filter(each => each._id !== post._id));
+    }
 
     render() {
         let {posts, loading, needReloaded, onReload} = this.props;
@@ -76,6 +80,7 @@ export class FeedWidget extends Component {
                 <FeedList
                     posts={posts}
                     onChangePost={this.changePost}
+                    onDeletePost={this.deletePost}
                 />
                 {loading && (
                     <div className="loading-panel">

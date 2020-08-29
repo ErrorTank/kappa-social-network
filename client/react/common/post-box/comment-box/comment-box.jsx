@@ -60,11 +60,25 @@ export class CommentBox extends Component {
         return ({keyword}) => utilityApi.searchFriends(keyword)
     }
 
+    deleteReply = (comment, reply, i) => {
+        let {list} = this.state;
+        let newComment = {...comment, replies: comment.replies.filter(each => each !== reply._id)};
+        let newList = [...list];
+        newList.splice(i, 1, newComment);
+        this.setState({list: newList});
+
+    }
+
     fetchComments = (config) => {
         this.setState({fetching: true})
         return this.props.api(config).then(({list}) => {
             this.setState({list: list.concat(this.state.list), fetching: false})
         })
+    }
+
+    deleteComment = (cmt) => {
+        this.setState({list: this.state.list.filter(each => each._id !== cmt)})
+        this.props.onDeleteComment();
     }
 
     loadMore = () => {
@@ -103,6 +117,8 @@ export class CommentBox extends Component {
                             post={post}
                             key={each._id}
                             onChangeComment={comment => this.changeComment(comment, i)}
+                            onDeleteComment={() => this.deleteComment(each)}
+                            onDeleteReply={(reply) => this.deleteReply(each, reply, i)}
                         />
                     ))}
                 </div>
@@ -115,7 +131,7 @@ export class CommentBox extends Component {
                         <CommentInput
                             onSubmit={this.submitComment}
                             api={this.getMentionApi()}
-
+                            ref={mainInput => this.props.inputRef(mainInput)}
                         />
                     </div>
 

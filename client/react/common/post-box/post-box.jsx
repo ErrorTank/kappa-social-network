@@ -34,6 +34,12 @@ export class PostBox extends PureComponent {
             .then(newPost => onChangePost(newPost))
     }
 
+    deletePost = () => {
+        let {post, onDeletePost} = this.props;
+        postApi.deletePost(post._id)
+            .then(() => onDeletePost())
+    }
+
     render() {
         let {commentsTotal} = this.state;
         let {post, isMyPost, onChangePost} = this.props;
@@ -52,7 +58,8 @@ export class PostBox extends PureComponent {
             }, {
                 icon: <i className="fal fa-trash-alt"></i>,
                 label: () => "Xóa bài viết",
-                condition: () => isMyPost
+                condition: () => isMyPost,
+                onClick: this.deletePost
             }, {
                 icon: <i className="fal fa-map-marker-times"></i>,
                 label: (item) => `Chặn bài viết từ ${item.basic_info.name}`,
@@ -205,7 +212,7 @@ export class PostBox extends PureComponent {
                             <span>Thích</span>
                         </div>
                         {!post.comment_disabled && (
-                            <div className="action">
+                            <div className="action" onClick={() => this.mainInput.focus()}>
                                 <i className="fal fa-comment"></i>
                                 <span>Bình luận</span>
                             </div>
@@ -227,6 +234,8 @@ export class PostBox extends PureComponent {
                         post={post}
                         onAddComment={() => this.setState({commentsTotal: commentsTotal + 1})}
                         commentsTotal={commentsTotal}
+                        inputRef={mainInput => this.mainInput = mainInput}
+                        onDeleteComment={() => this.setState({commentsTotal: commentsTotal - 1})}
                     />
                 </div>
             </div>
