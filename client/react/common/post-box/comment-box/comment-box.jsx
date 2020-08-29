@@ -43,7 +43,7 @@ export class CommentBox extends Component {
 
                 postApi.createComment(this.props.post._id, submittedData)
                     .then(data => {
-                        this.setState({list: [data].concat(this.state.list)});
+                        this.setState({list: this.state.list.concat(data)});
                         this.props.onAddComment();
                     })
             })
@@ -77,7 +77,7 @@ export class CommentBox extends Component {
     }
 
     deleteComment = (cmt) => {
-        this.setState({list: this.state.list.filter(each => each._id !== cmt)})
+        this.setState({list: this.state.list.filter(each => each._id !== cmt._id)})
         this.props.onDeleteComment();
     }
 

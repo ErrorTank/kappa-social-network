@@ -632,10 +632,29 @@ const deleteReply = ({replyID, commentID}) => {
         )
     ])
 }
-const deleteComment = ({commentID}) => {
-
+const deleteComment = ({commentID, postID}) => {
+    return Promise.all([
+        Post.findOneAndUpdate(
+            {_id: ObjectId(postID)},
+            {
+                $pull: {
+                    comments : ObjectId(commentID)
+                }
+            }
+        ),
+        Comment.findOneAndDelete(
+            {_id: ObjectId(commentID)}
+        )
+    ])
 }
-const deletePost = ({postID}) => {
+const deletePost = ({postID ,}) => {
+    return Promise.all([Post.findOneAndDelete({
+        _id: ObjectId(postID)
+    }).lean(), Comment.find({post: ObjectId(postID)})])
+        .then(([_post, comments]) => {
+            let commentIds = comments.map(each => ObjectId(each));
+            return Promise.all()
+        })
 
 }
 

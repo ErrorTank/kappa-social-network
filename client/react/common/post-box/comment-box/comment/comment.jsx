@@ -50,10 +50,10 @@ export class Comment extends Component {
                 postApi.createCommentReply(comment._id, submittedData)
                     .then(data => {
 
-                        this.setState({replies: [data].concat(this.state.replies)});
+                        this.setState({replies: this.state.replies.concat(data)});
                         this.props.onChangeComment({
                             ...comment,
-                            replies: [data._id].concat(comment.replies)
+                            replies: comment.replies.concat(data._id)
                         });
                     })
             })
