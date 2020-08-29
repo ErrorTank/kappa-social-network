@@ -10,13 +10,13 @@ const createListing = (value) => {
   //   return newListing;
   // });
   // console.log(value.category);
-  Category.find({ name: value.category }).then((category) => {
-    console.log(this.category._id.valueOf());
+  return Category.findOne({ name: value.category }).then((category) => {
+    console.log(category);
     let newListing = {
       ...value,
       category: category._id,
     };
-    // console.log(newListing);
+    console.log(newListing);
   });
   // return value;
 };
