@@ -115,7 +115,7 @@ export class CommentBox extends Component {
                         <CommentInput
                             onSubmit={this.submitComment}
                             api={this.getMentionApi()}
-
+                            ref={mainInput => this.props.inputRef(mainInput)}
                         />
                     </div>
 

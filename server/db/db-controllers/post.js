@@ -2,6 +2,7 @@ const dbManager = require("../../config/db");
 const appDb = dbManager.getConnections()[0];
 const User = require("../model/user")(appDb);
 const Post = require("../model/post")(appDb);
+const Comment = require("../model/comment")(appDb);
 const mongoose = require("mongoose");
 const ObjectId = mongoose.Types.ObjectId;
 const {ApplicationError} = require("../../utils/error/error-types");
@@ -360,77 +361,69 @@ const getPostReactionByReactionKey = ({postID, skip = 0, limit = 10, reactionKey
 }
 
 const getPostComments = ({postID, skip, limit}) => {
-    return Post.aggregate([
+    return Comment.aggregate([
         {
             $match: {
-                _id: ObjectId(postID)
-            }
-        },
-        {
-            $unwind: "$comments"
-        },
-        {
-            $project: {
-                "comments": "$comments"
+                post: ObjectId(postID)
             }
         },
         {
             "$lookup": {
                 "from": "users",
-                "localField": "comments.from_person",
+                "localField": "from_person",
                 "foreignField": "_id",
-                "as": "comments.from_person"
+                "as": "from_person"
             }
         },
 
         {
             "$lookup": {
                 "from": "pages",
-                "localField": "comments.from_page",
+                "localField": "from_page",
                 "foreignField": "_id",
-                "as": "comments.from_page"
+                "as": "from_page"
             }
         },
         {
             "$lookup": {
                 "from": "pages",
-                "localField": "comments.mentioned_page",
+                "localField": "mentioned_page",
                 "foreignField": "_id",
-                "as": "comments.mentioned_page"
+                "as": "mentioned_page"
             }
         },
         {
             $addFields: {
-                "comments.from_person": {
-                    $arrayElemAt: ["$comments.from_person", 0]
+                "from_person": {
+                    $arrayElemAt: ["$from_person", 0]
                 },
-                "comments.from_page": {
-                    $arrayElemAt: ["$comments.from_page", 0]
+                "from_page": {
+                    $arrayElemAt: ["$from_page", 0]
                 },
             }
         },
         {
             $addFields: {
                 "love_size": {
-                    $size: "$comments.reactions.love"
+                    $size: "$reactions.love"
                 },
                 "laugh_size": {
-                    $size: "$comments.reactions.laugh"
+                    $size: "$reactions.laugh"
                 },
                 "wow_size": {
-                    $size: "$comments.reactions.wow"
+                    $size: "$reactions.wow"
                 },
                 "cry_size": {
-                    $size: "$comments.reactions.cry"
+                    $size: "$reactions.cry"
                 },
                 "angry_size": {
-                    $size: "$comments.reactions.angry"
+                    $size: "$reactions.angry"
                 },
                 "thump_up_size": {
-                    $size: "$comments.reactions.thump_up"
+                    $size: "$reactions.thump_up"
                 },
                 "thump_down_size": {
-                    $size: "$comments.reactions.thump_down"
+                    $size: "$reactions.thump_down"
                 },
             }
         },
@@ -440,7 +433,7 @@ const getPostComments = ({postID, skip, limit}) => {
             }
         }, {
             $sort: {
-                "comments.created_at": -1,
+                "created_at": -1,
             }
         }
     ]).then(data => {
@@ -449,7 +442,6 @@ const getPostComments = ({postID, skip, limit}) => {
         return {
             list: data
                 .slice(Number(skip), Number(skip) + Number(limit))
-                .map(each => ({...each, ...each.comments}))
                 .map(each => ({
                     ...each,
                     from_person: pick(each.from_person, ["_id", "basic_info", "avatar", "last_active_at", "active"]),
@@ -463,89 +455,49 @@ const getPostComments = ({postID, skip, limit}) => {
 }
 
 const createNewCommentForPost = ({postID, comment, userID}) => {
-    let newComment = {...comment, _id: new ObjectId()}
-    return Post.findOneAndUpdate({
+    let newComment = {...comment, _id: new ObjectId(), from_person: ObjectId(userID), post: ObjectId(postID)}
+    return Promise.all([Post.findOneAndUpdate({
         _id: ObjectId(postID)
     },{
         $set: {
             last_updated: Date.now()
         },
         $push: {
-            comments: {...newComment, from_person: ObjectId(userID)}
+            comments: newComment._id
         }
     }, {
         new: true,
         fields: "comments",
-    })
-        .populate([
-            {
-                path: "comments.from_person",
-                model: "User",
-                select: "_id basic_info avatar last_active_at active"
-            }, {
-                path: "comments.mentions.related",
-                model: "User",
-                select: "_id basic_info avatar last_active_at active"
-
-            }, {
-                path: "comments.from_page",
-                model: "Page",
-                select: "_id basic_info avatar"
-            },{
-                path: "comments.mentioned_page",
-                model: "User",
-                select: "_id basic_info avatar"
-            },
-        ])
-        .then(data => data.comments.find(each => each._id.toString() === newComment._id.toString()))
+    }), new Comment(newComment).save()])
+        .then(([_post ,data]) => data)
 }
 
 const updatePostCommentReaction =  ({postID, userID, commentID, reactionConfig}) => {
     let execCommand = {
-        $set: {"last_updated": Date.now()}
+
     };
 
     let {on, off} = reactionConfig;
     if(on){
         execCommand["$push"] = {
-            [`comments.$[elem].reactions.${REVERSE_REACTIONS[on]}`] : ObjectId(userID)
+            [`reactions.${REVERSE_REACTIONS[on]}`] : ObjectId(userID)
         };
 
     }
     if(off){
         execCommand["$pull"] = {
-            [`comments.$[elem].reactions.${REVERSE_REACTIONS[off]}`] : ObjectId(userID)
+            [`reactions.${REVERSE_REACTIONS[off]}`] : ObjectId(userID)
         };
     }
-    return Post.findOneAndUpdate({
-        _id: ObjectId(postID)
+    return Comment.findOneAndUpdate({
+        _id: ObjectId(commentID)
     } , execCommand, {
-        "arrayFilters": [{"elem._id": ObjectId(commentID)}],
         new: true
-    }).populate([
-        {
-            path: "comments.from_person",
-            model: "User",
-            select: "_id basic_info avatar last_active_at active"
-        }, {
-            path: "comments.mentions.related",
-            model: "User",
-            select: "_id basic_info avatar last_active_at active"
-
-        }, {
-            path: "comments.from_page",
-            model: "Page",
-            select: "_id basic_info avatar"
-        },{
-            path: "comments.mentioned_page",
-            model: "User",
-            select: "_id basic_info avatar"
-        },
-    ])
-        .then(cr => {
-            // console.log(cr.context)
+    }).lean()
+        .then(comment => {
+            // console.log(comment.context)
             // console.log(messageID)
-            return cr.comments.find(each => each._id.toString() === commentID)
+            return comment
         })
 }
 

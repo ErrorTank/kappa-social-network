@@ -205,7 +205,7 @@ export class PostBox extends PureComponent {
                             <span>Thích</span>
                         </div>
                         {!post.comment_disabled && (
-                            <div className="action">
+                            <div className="action" onClick={() => this.mainInput.focus()}>
                                 <i className="fal fa-comment"></i>
                                 <span>Bình luận</span>
                             </div>
@@ -227,6 +227,7 @@ export class PostBox extends PureComponent {
                         post={post}
                         onAddComment={() => this.setState({commentsTotal: commentsTotal + 1})}
                         commentsTotal={commentsTotal}
+                        inputRef={mainInput => this.mainInput = mainInput}
                     />
                 </div>
             </div>
