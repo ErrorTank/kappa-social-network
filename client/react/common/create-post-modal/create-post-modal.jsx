@@ -64,14 +64,14 @@ class CreatePostModal extends Component {
         this.state = {
             loading: false,
             content: "",
-            policy: PostPolicies[0],
-            editorState: createEditorStateWithText(""),
-            files: [],
-            tagged: [],
+            policy: props.data?.policy || PostPolicies[0],
+            editorState: createEditorStateWithText(props.data?.editorState || ""),
+            files: props.data?.files || [],
+            tagged: props.data?.tagged || [],
             selected: null,
             stepIndex: 0,
-            comment_disabled: false,
-            block_share: false
+            comment_disabled: props.data?.comment_disabled || false,
+            block_share: props.data?.block_share || false
         }
 
     }

@@ -327,7 +327,7 @@ const getPostReactionByReactionKey = ({postID, skip = 0, limit = 10, reactionKey
             $match: {
                 _id: ObjectId(postID)
             }
-        },{
+        }, {
             $addFields: {
                 "reactions": `$reactions.${REVERSE_REACTIONS[reactionKey]}`
             }
@@ -458,7 +458,7 @@ const createNewCommentForPost = ({postID, comment, userID}) => {
     let newComment = {...comment, _id: new ObjectId(), from_person: ObjectId(userID), post: ObjectId(postID)}
     return Promise.all([Post.findOneAndUpdate({
         _id: ObjectId(postID)
-    },{
+    }, {
         $set: {
             last_updated: Date.now()
         },
@@ -469,29 +469,27 @@ const createNewCommentForPost = ({postID, comment, userID}) => {
         new: true,
         fields: "comments",
     }), new Comment(newComment).save()])
-        .then(([_post ,data]) => data)
+        .then(([_post, data]) => data)
 }
 
-const updatePostCommentReaction =  ({postID, userID, commentID, reactionConfig}) => {
-    let execCommand = {
-
-    };
+const updatePostCommentReaction = ({postID, userID, commentID, reactionConfig}) => {
+    let execCommand = {};
 
     let {on, off} = reactionConfig;
-    if(on){
+    if (on) {
         execCommand["$push"] = {
-            [`reactions.${REVERSE_REACTIONS[on]}`] : ObjectId(userID)
+            [`reactions.${REVERSE_REACTIONS[on]}`]: ObjectId(userID)
         };
 
     }
-    if(off){
+    if (off) {
         execCommand["$pull"] = {
-            [`reactions.${REVERSE_REACTIONS[off]}`] : ObjectId(userID)
+            [`reactions.${REVERSE_REACTIONS[off]}`]: ObjectId(userID)
         };
     }
     return Comment.findOneAndUpdate({
         _id: ObjectId(commentID)
-    } , execCommand, {
+    }, execCommand, {
         new: true
     }).lean()
         .then(comment => {
@@ -505,7 +503,7 @@ const createCommentReply = ({commentID, reply, userID}) => {
     let newReply = {...reply, _id: new ObjectId(), from_person: ObjectId(userID)}
     return Promise.all([Comment.findOneAndUpdate({
         _id: ObjectId(commentID)
-    },{
+    }, {
         $set: {
             last_updated: Date.now()
         },
@@ -515,7 +513,7 @@ const createCommentReply = ({commentID, reply, userID}) => {
     }, {
         new: true,
     }), new Comment(newReply).save()])
-        .then(([_post ,data]) => data)
+        .then(([_post, data]) => data)
 }
 
 const getCommentReplies = ({commentID, skip, limit}) => {
@@ -623,7 +621,7 @@ const deleteReply = ({replyID, commentID}) => {
             {_id: ObjectId(commentID)},
             {
                 $pull: {
-                    replies : ObjectId(replyID)
+                    replies: ObjectId(replyID)
                 }
             }
         ),
@@ -638,7 +636,7 @@ const deleteComment = ({commentID, postID}) => {
             {_id: ObjectId(postID)},
             {
                 $pull: {
-                    comments : ObjectId(commentID)
+                    comments: ObjectId(commentID)
                 }
             }
         ),
@@ -647,13 +645,23 @@ const deleteComment = ({commentID, postID}) => {
         )
     ])
 }
-const deletePost = ({postID ,}) => {
+const deletePost = ({postID,}) => {
     return Promise.all([Post.findOneAndDelete({
         _id: ObjectId(postID)
     }).lean(), Comment.find({post: ObjectId(postID)})])
         .then(([_post, comments]) => {
-            let commentIds = comments.map(each => ObjectId(each));
-            return Promise.all()
+            let replyIds = comments.reduce((total, cur) => [...total, ...cur.replies.map(each => ObjectId(each))], [])
+            // console.log(replyIds)
+            return Comment.deleteMany({
+                $or: [
+                    {post: ObjectId(postID)},
+                    {
+                        _id: {
+                            $in: replyIds
+                        }
+                    }
+                ]
+            })
         })
 
 }

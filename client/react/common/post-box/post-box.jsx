@@ -3,7 +3,7 @@ import {Dropdownable} from "../dropdownable/dropdownable";
 import {Avatar} from "../avatar/avatar";
 import isNil from "lodash/isNil"
 import moment from "moment";
-import {PostPolicies, PostPoliciesMAP} from "../create-post-modal/create-post-modal";
+import {createPostModal, PostPolicies, PostPoliciesMAP} from "../create-post-modal/create-post-modal";
 import {getRenderableContentFromMessage} from "../../../common/utils/editor-utils";
 import {PbFilesPreview} from "./files-preview";
 import {HyperLink} from "../../layout/authen-layout/create-message-widget/chat-box/message-section/hyper-link";
@@ -18,6 +18,7 @@ import {getActiveReaction} from "../../../common/utils/messenger-utils";
 import {Tooltip} from "../tooltip/tooltip";
 import {ReactionTooltip} from "./reaction-tooltip";
 import {CommentBox} from "./comment-box/comment-box";
+import createMentionEntities from "../../../common/utils/mention-utils";
 moment.locale("vi");
 
 export class PostBox extends PureComponent {
@@ -40,6 +41,21 @@ export class PostBox extends PureComponent {
             .then(() => onDeletePost())
     }
 
+    editPost = () => {
+        let {post} = this.props;
+        createPostModal.open({
+            isEdit: true,
+            data: {
+                editorState: createMentionEntities(post.content),
+                files: post.files,
+                tagged: post.tagged,
+                policy: PostPolicies.find(each => each.value === post.policy),
+                comment_disabled: post.comment_disabled,
+                block_share: post.block_share
+            }
+        })
+    }
+
     render() {
         let {commentsTotal} = this.state;
         let {post, isMyPost, onChangePost} = this.props;
@@ -53,7 +69,8 @@ export class PostBox extends PureComponent {
             }, {
                 icon: <i className="fal fa-pen"></i>,
                 label: () => "Chỉnh sửa bài viết",
-                condition: () => isMyPost
+                condition: () => isMyPost,
+                onClick: this.editPost
 
             }, {
                 icon: <i className="fal fa-trash-alt"></i>,
@@ -80,6 +97,7 @@ export class PostBox extends PureComponent {
         let user = userInfo.getState();
         let activeReaction = getActiveReaction(user._id, post.reactions);
         let reactionsLength = reactions.countReactions();
+        // console.log(getRenderableContentFromMessage(post))
         // let activeReaction = reactions.reduce((total, cur) => [...total, ...Object.values(cur)[0].map(each => ({key: Object.keys(cur)[0], value: each}))],[]).find(each => each.value === user._id);
         return (
             <div className="post-box white-box">
@@ -114,7 +132,7 @@ export class PostBox extends PureComponent {
                         content={() => (
                             <div className={"post-actions-dropdown"}>
                                 {postActions.map((each, i) => (isNil(each.condition) ? true : each.condition?.(each)) ? (
-                                    <div className="setting-row" key={i}>
+                                    <div className="setting-row" key={i} onClick={each.onClick}>
                                         <div className="icon-wrapper">
                                             {each.icon}
                                         </div>
