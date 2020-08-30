@@ -6,19 +6,17 @@ const Listing = require('../model/marketplace/listing')(appDb);
 const Category = require('../model/marketplace/category')(appDb);
 
 const createListing = (value) => {
-  // return new Listing(value).save().then((newListing) => {
-  //   return newListing;
-  // });
-  // console.log(value.category);
   return Category.findOne({ name: value.category }).then((category) => {
-    console.log(category);
+    // console.log(category);
     let newListing = {
       ...value,
       category: category._id,
     };
-    console.log(newListing);
+    // console.log(newListing);
+    return new Listing(newListing).save().then((newListing) => {
+      return newListing;
+    });
   });
-  // return value;
 };
 
 module.exports = {

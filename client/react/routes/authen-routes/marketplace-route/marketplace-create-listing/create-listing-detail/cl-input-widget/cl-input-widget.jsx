@@ -14,6 +14,7 @@ import {
   moneyToNumber,
 } from '../../../../../../../common/utils/listing-utils';
 import { listingApi } from './../../../../../../../api/common/listing-api';
+import { postApi } from './../../../../../../../api/common/post-api';
 
 export class CreateListingInputWidget extends Component {
   constructor(props) {
@@ -92,15 +93,16 @@ export class CreateListingInputWidget extends Component {
 
   setNewListing = () => {
     const { state } = this.props;
+    const { files, type } = state;
     // console.log(state);
     // if (this.state.canCreate) {
 
     let newListing = cleanBlankProp(state);
 
-    if (state.type === 'vehicle' && state.vehicleType) {
+    if (type === 'vehicle' && state.vehicleType) {
       newListing.category = newListing.vehicleType;
     }
-    if (state.type === 'home' && state.homeFor) {
+    if (type === 'home' && state.homeFor) {
       newListing.category = newListing.homeFor;
     }
 
@@ -121,20 +123,22 @@ export class CreateListingInputWidget extends Component {
           break;
       }
     }
-    // Promise.all(files.map(each => this.uploadSingleFile(each)))
-    //         .then(newFiles => {})
-    let moreInfo = { postTime: Date.now() };
-    navigator.geolocation.getCurrentPosition((position) => {
-      const { latitude, longitude } = position.coords;
-      moreInfo.position = {
-        lat: latitude,
-        lon: longitude,
-      };
-      newListing = { ...newListing, ...moreInfo };
-      listingApi.createListing(newListing).then((e) => {
-        console.log(e);
-      });
-    });
+    Promise.all(files.map((each) => this.uploadSingleFile(each))).then(
+      (newFiles) => {
+        let moreInfo = { postTime: Date.now(), files: newFiles };
+        navigator.geolocation.getCurrentPosition((position) => {
+          const { latitude, longitude } = position.coords;
+          moreInfo.position = {
+            lat: latitude,
+            lon: longitude,
+          };
+          let submitListing = { ...newListing, ...moreInfo };
+          listingApi.createListing(submitListing).then((e) => {
+            console.log(e);
+          });
+        });
+      }
+    );
     // }
   };
 
