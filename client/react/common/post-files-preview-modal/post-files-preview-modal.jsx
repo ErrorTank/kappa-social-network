@@ -9,12 +9,12 @@ import moment from "moment";
 import {Button} from "../button/button";
 import {utilityApi} from "../../../api/common/utilities-api";
 import {ImageTagWrapper} from "../image-tag-wrapper/image-tag-wrapper";
-import {createDetectionsCache} from "../create-post-modal/file-config/file-config";
 import {getBase64ImageFromUrl, getFileBlobFromUrl} from "../../../common/utils/file-upload-utils";
 import {postApi} from "../../../api/common/post-api";
 import {mergeArray} from "../../../common/utils/array-utils";
 import {CommonInput} from "../common-input/common-input";
-export const postFilesDetectionsCache = createDetectionsCache(file => file._id);
+import {postFilesDetectionsCache} from "../../../common/cache/files-cache";
+
 
 export const postFilesPreviewModal = {
     open(config) {
