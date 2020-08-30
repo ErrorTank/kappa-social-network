@@ -15,6 +15,7 @@ import {createPipelines} from "./pipelines";
 const {Emoji} = emojiPlugin;
 
 const transformEditorState = (rawEditorState) => {
+    // console.log(Object.values(rawEditorState.entityMap))
     return {
         content: rawEditorState.blocks[0].text.trim(),
         mentions: Object.values(rawEditorState.entityMap).filter(each => each.type === "mention").map(each => ({
@@ -68,9 +69,7 @@ const transformMessageContentToPaths = ({content, mentions}) => {
         for (let mention of mentions) {
 
             let index = resultStr.indexOf(`@${mention.name}`);
-            console.log(resultStr)
-            console.log(mention)
-            console.log(index)
+
             if (index > 0) {
                 contentPaths = contentPaths.concat(formatUTF8EmojiText(resultStr.substring(0, index)));
             }

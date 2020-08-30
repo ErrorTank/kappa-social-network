@@ -65,7 +65,7 @@ class CreatePostModal extends Component {
             loading: false,
             content: "",
             policy: props.data?.policy || PostPolicies[0],
-            editorState: createEditorStateWithText(props.data?.editorState || ""),
+            editorState: props.data?.editorState || createEditorStateWithText(""),
             files: props.data?.files || [],
             tagged: props.data?.tagged || [],
             selected: null,
@@ -124,17 +124,16 @@ class CreatePostModal extends Component {
 
 
     render() {
-        let {onClose,} = this.props;
+        let {onClose, isEdit} = this.props;
         let {loading} = this.state;
-
 
         let steps = [
             {
-                title: "Tạo bài đăng",
+                title: isEdit ? "Cập nhật bài đăng" :"Tạo bài đăng",
                 actions: [{
                     className: "btn-post btn-block",
                     onClick: this.submit,
-                    content: "Đăng",
+                    content: isEdit ? "Cập nhật" :"Đăng",
                     disabled: !this.getInputRawContent() && !this.state.files.length,
                     loading
                 }],

@@ -40,7 +40,12 @@ const createMentionEntities = (text, tags) => {
     const rawState = tags.map(tag => ({
         type: 'mention',
         mutability: 'IMMUTABLE',
-        data: { id: tag.id, name: tag.name }
+        data: {
+            mention: {
+                _id: tag._id,
+                name: tag.name
+            }
+        }
     }));
 
     rawContent.entityMap = [...rawState];
