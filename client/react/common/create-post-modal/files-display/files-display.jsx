@@ -8,7 +8,7 @@ export const FilesDisplay = ({files, onSelect, onRemove}) => {
             {files.map(each => {
                 return (
                     <FileDisplay
-                        key={each.fileID}
+                        key={each.fileID || each.path}
                         file={each}
                         onSelect={() => onSelect(each)}
                         onRemove={() => onRemove(each)}

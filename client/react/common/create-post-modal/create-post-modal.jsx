@@ -167,7 +167,7 @@ class CreatePostModal extends Component {
                         onChangeFiles={files => this.setState({files})}
                         onSelect={(file) => this.setState({selected: file, stepIndex: 2})}
                         onRemove={file => {
-                            let newFiles = this.state.files.filter(each => each.fileID !== file.fileID);
+                            let newFiles = this.state.files.filter(each => file.path ? file.path !== each.path : each.fileID !== file.fileID);
                             this.setState({files: newFiles, stepIndex: newFiles.length ? 1 : 0})
                         }}
                     />
@@ -190,7 +190,7 @@ class CreatePostModal extends Component {
                         file={this.state.selected}
                         onChange={file => {
                             let newFiles = [...this.state.files];
-                            newFiles.splice(newFiles.findIndex(each => each.fileID === file.fileID), 1, file);
+                            newFiles.splice(newFiles.findIndex(each => file.path ? each.path === file.path :each.fileID === file.fileID), 1, file);
                             this.setState({files: newFiles, stepIndex: newFiles.length === 1 ? 0 : 1})
                             let newTagged = mergeArray(this.state.tagged, file.tagged.map(each => each.related), (item1, item2) => item1._id === item2._id);
                             this.setState({tagged: newTagged})

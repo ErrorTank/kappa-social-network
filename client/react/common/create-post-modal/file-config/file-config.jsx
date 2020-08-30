@@ -6,6 +6,7 @@ import pick from "lodash/pick";
 import {ImageTagWrapper} from "../../image-tag-wrapper/image-tag-wrapper";
 import {utilityApi} from "../../../../api/common/utilities-api";
 import {BlurImgWrapper} from "../../blur-img-wrapper/blur-img-wrapper";
+import {postFilesDetectionsCache} from "../../post-files-preview-modal/post-files-preview-modal";
 
 export const createDetectionsCache = (getFileID) => {
     let detectionsMap = {};
@@ -30,6 +31,8 @@ export const createDetectionsCache = (getFileID) => {
 
 const detectionsCache = createDetectionsCache(file => file.fileID);
 
+
+
 export class FileConfig extends Component {
     constructor(props) {
         super(props);
@@ -37,11 +40,11 @@ export class FileConfig extends Component {
             caption: props.file.caption || "",
             tagged: props.file.tagged || [],
             base64Image: null,
-            loading: true,
+            loading: !props.files.path,
             detections: [],
         }
 
-        getBase64Image(props.file.file).then((base64Image) => {
+        !props.files.path && getBase64Image(props.file.file).then((base64Image) => {
 
             this.setState({loading: false, base64Image})
         })
@@ -52,6 +55,7 @@ export class FileConfig extends Component {
     }
 
     render() {
+        let {file} = this.props;
         let {caption, tagged, loading, base64Image} = this.state;
 
         return (
@@ -83,13 +87,13 @@ export class FileConfig extends Component {
                             Nhấn vào ảnh để tag bạn bè
                         </p>
                         <BlurImgWrapper
-                            imgSrc={base64Image}
+                            imgSrc={file.path || base64Image}
                             className={"blur-panel"}
                         />
-                        {base64Image && (
+                        {(base64Image || file.path) && (
                             <ImageTagWrapper
-                                file={this.props.file.file}
-                                imgSrc={base64Image}
+                                file={file.path || this.props.file.file}
+                                imgSrc={file.path || base64Image}
                                 tagged={tagged}
                                 className={"image-wrapper"}
                                 api={({keyword}) => utilityApi.searchFriends(keyword)}

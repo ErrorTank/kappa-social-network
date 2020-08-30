@@ -8,16 +8,16 @@ class FilePreview extends React.Component {
         super(props);
         this.state = {
             base64Image: null,
-            loading: true,
+            loading: !props.file.path,
         }
-        getBase64Image(props.file.file).then((base64Image) => {
+        !props.file.path && getBase64Image(props.file.file).then((base64Image) => {
 
             this.setState({loading: false, base64Image})
         })
     }
 
     render() {
-        let {index, length} = this.props;
+        let {index, length, file} = this.props;
         let {loading, base64Image} = this.state;
         return (
             <div className={classnames("file-preview", `pic-${index + 1}`)}>
@@ -29,7 +29,7 @@ class FilePreview extends React.Component {
                 {loading ? (
                     <LoadingInline/>
                 ) : (
-                    <img src={base64Image}/>
+                    <img src={file.path || base64Image}/>
                 )}
             </div>
         );
@@ -51,7 +51,7 @@ export const FilesPreview = (props) => {
             <div className={classnames("fp-list", `list-${files.length < 6 ? files.length : 5 }`)}>
                 {files.slice(0, 5).map((each, i) => (
                     <FilePreview
-                        key={each.fileID}
+                        key={each?.fileID || each.path}
                         file={each}
                         index={i}
                         length={files.length}

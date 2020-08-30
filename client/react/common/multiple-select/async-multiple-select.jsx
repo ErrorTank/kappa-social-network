@@ -52,7 +52,7 @@ export class AsyncMultipleSelect extends Component {
             .then(() => (
                 this.setState({loading: false})
             ))
-    }, 700);
+    }, 300);
 
     render() {
         let {keyword, isFocus, loading} = this.state;
