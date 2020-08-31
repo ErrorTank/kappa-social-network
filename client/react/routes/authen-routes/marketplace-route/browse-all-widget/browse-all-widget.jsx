@@ -2,10 +2,10 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import classnames from 'classnames';
 import { ThemeContext } from '../../../../context/theme-context';
-import { MarketplaceSearchSection } from '../categories-widget/marketplace-search-section/marketplace-search-section';
-import { MarketplaceMenuSection } from '../categories-widget/marketplace-menu-section/marketplace-menu-section';
+import { MarketplaceSearchSection } from './marketplace-search-section/marketplace-search-section';
+import { MarketplaceMenuSection } from './marketplace-menu-section/marketplace-menu-section';
 
-export class CategoriesWidget extends Component {
+export class BrowseAllWidget extends Component {
   constructor(props) {
     super(props);
     this.state = {};
@@ -14,7 +14,7 @@ export class CategoriesWidget extends Component {
     return (
       <ThemeContext.Consumer>
         {({ darkMode }) => (
-          <div className={classnames('categories-widget', { darkMode })}>
+          <div className={classnames('browse-all-widget', { darkMode })}>
             <MarketplaceSearchSection darkMode={darkMode} />
             <MarketplaceMenuSection darkMode={darkMode} />
           </div>
