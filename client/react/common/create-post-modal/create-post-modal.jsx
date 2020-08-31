@@ -77,7 +77,7 @@ class CreatePostModal extends Component {
     }
 
     uploadSingleFile = (file) => {
-        return postApi.preUploadMedia({file: file.file}, "file")
+        return file.path ? Promise.resolve(file) : postApi.preUploadMedia({file: file.file}, "file")
             .then(fileData => ({
                 caption: file.caption || "",
                 tagged: file.tagged ? file.tagged.map(each => ({...each, related: each.related._id})) : [],
@@ -100,7 +100,7 @@ class CreatePostModal extends Component {
                 };
 
                 // console.log(submittedData)
-                postApi.createNewPost(submittedData)
+                this.props.isEdit ? postApi.updatePost(this.props.data._id, submittedData).then(data => this.props.onClose(data)) : postApi.createNewPost(submittedData)
                     .then(data => this.props.onClose(data))
             })
 

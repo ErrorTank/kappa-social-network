@@ -48,5 +48,6 @@ export const postApi = {
     },
     deleteReply(commentID, replyID){
         return authenApi.delete(`/post/comment/${commentID}/reply/${replyID}`)
-    }
+    },
+
 };

@@ -43,12 +43,13 @@ export class PostBox extends PureComponent {
     }
 
     editPost = () => {
-        let {post} = this.props;
+        let {post, onChangePost} = this.props;
         // console.log(post.mentions)
 
         createPostModal.open({
             isEdit: true,
             data: {
+                _id: post._id,
                 editorState: EditorState.createWithContent(createMentionEntities(post.content, post.mentions)),
                 files: post.files,
                 tagged: post.tagged,
@@ -56,7 +57,7 @@ export class PostBox extends PureComponent {
                 comment_disabled: post.comment_disabled,
                 block_share: post.block_share
             }
-        })
+        }).then(p => onChangePost(p))
     }
 
     render() {
