@@ -65,7 +65,7 @@ class CreatePostModal extends Component {
             loading: false,
             content: "",
             policy: props.data?.policy || PostPolicies[0],
-            editorState: createEditorStateWithText(props.data?.editorState || ""),
+            editorState: props.data?.editorState || createEditorStateWithText(""),
             files: props.data?.files || [],
             tagged: props.data?.tagged || [],
             selected: null,
@@ -77,7 +77,7 @@ class CreatePostModal extends Component {
     }
 
     uploadSingleFile = (file) => {
-        return postApi.preUploadMedia({file: file.file}, "file")
+        return file.path ? Promise.resolve(file) : postApi.preUploadMedia({file: file.file}, "file")
             .then(fileData => ({
                 caption: file.caption || "",
                 tagged: file.tagged ? file.tagged.map(each => ({...each, related: each.related._id})) : [],
@@ -100,7 +100,7 @@ class CreatePostModal extends Component {
                 };
 
                 // console.log(submittedData)
-                postApi.createNewPost(submittedData)
+                this.props.isEdit ? postApi.updatePost(this.props.data._id, submittedData).then(data => this.props.onClose(data)) : postApi.createNewPost(submittedData)
                     .then(data => this.props.onClose(data))
             })
 
@@ -124,17 +124,16 @@ class CreatePostModal extends Component {
 
 
     render() {
-        let {onClose,} = this.props;
+        let {onClose, isEdit} = this.props;
         let {loading} = this.state;
-
 
         let steps = [
             {
-                title: "Tạo bài đăng",
+                title: isEdit ? "Cập nhật bài đăng" :"Tạo bài đăng",
                 actions: [{
                     className: "btn-post btn-block",
                     onClick: this.submit,
-                    content: "Đăng",
+                    content: isEdit ? "Cập nhật" :"Đăng",
                     disabled: !this.getInputRawContent() && !this.state.files.length,
                     loading
                 }],
@@ -168,7 +167,7 @@ class CreatePostModal extends Component {
                         onChangeFiles={files => this.setState({files})}
                         onSelect={(file) => this.setState({selected: file, stepIndex: 2})}
                         onRemove={file => {
-                            let newFiles = this.state.files.filter(each => each.fileID !== file.fileID);
+                            let newFiles = this.state.files.filter(each => file.path ? file.path !== each.path : each.fileID !== file.fileID);
                             this.setState({files: newFiles, stepIndex: newFiles.length ? 1 : 0})
                         }}
                     />
@@ -191,7 +190,7 @@ class CreatePostModal extends Component {
                         file={this.state.selected}
                         onChange={file => {
                             let newFiles = [...this.state.files];
-                            newFiles.splice(newFiles.findIndex(each => each.fileID === file.fileID), 1, file);
+                            newFiles.splice(newFiles.findIndex(each => file.path ? each.path === file.path :each.fileID === file.fileID), 1, file);
                             this.setState({files: newFiles, stepIndex: newFiles.length === 1 ? 0 : 1})
                             let newTagged = mergeArray(this.state.tagged, file.tagged.map(each => each.related), (item1, item2) => item1._id === item2._id);
                             this.setState({tagged: newTagged})

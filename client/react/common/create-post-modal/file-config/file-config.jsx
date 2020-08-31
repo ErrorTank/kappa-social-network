@@ -1,34 +1,13 @@
 import React, {Component} from 'react';
 import {CommonInput} from "../../common-input/common-input";
 import {TaggedBox} from "../../tagged-box/tagged-box";
-import {getBase64Image} from "../../../../common/utils/file-upload-utils";
+import {getBase64Image, getFileBlobFromUrl} from "../../../../common/utils/file-upload-utils";
 import pick from "lodash/pick";
 import {ImageTagWrapper} from "../../image-tag-wrapper/image-tag-wrapper";
 import {utilityApi} from "../../../../api/common/utilities-api";
 import {BlurImgWrapper} from "../../blur-img-wrapper/blur-img-wrapper";
+import {detectionsCache, postFilesDetectionsCache} from "../../../../common/cache/files-cache";
 
-export const createDetectionsCache = (getFileID) => {
-    let detectionsMap = {};
-    return {
-        setDetections: (file, detections) => detectionsMap[getFileID(file)] = detections,
-        getDetections: async (file, displaySize, isBase64 = true) => {
-
-            if (detectionsMap[getFileID(file)]) {
-                return detectionsMap[getFileID(file)]
-            }
-
-            return (isBase64 ? utilityApi.detectImageFaces(file.file, displaySize, "file") : utilityApi.detectImageFaces2(file.path, displaySize))
-                .then(data => {
-
-                    detectionsMap[getFileID(file)] = [...data];
-
-                    return data;
-                })
-        }
-    }
-}
-
-const detectionsCache = createDetectionsCache(file => file.fileID);
 
 export class FileConfig extends Component {
     constructor(props) {
@@ -37,11 +16,11 @@ export class FileConfig extends Component {
             caption: props.file.caption || "",
             tagged: props.file.tagged || [],
             base64Image: null,
-            loading: true,
+            loading: !props.file.path,
             detections: [],
         }
 
-        getBase64Image(props.file.file).then((base64Image) => {
+        !props.file.path && getBase64Image(props.file.file).then((base64Image) => {
 
             this.setState({loading: false, base64Image})
         })
@@ -52,6 +31,7 @@ export class FileConfig extends Component {
     }
 
     render() {
+        let {file} = this.props;
         let {caption, tagged, loading, base64Image} = this.state;
 
         return (
@@ -83,13 +63,13 @@ export class FileConfig extends Component {
                             Nhấn vào ảnh để tag bạn bè
                         </p>
                         <BlurImgWrapper
-                            imgSrc={base64Image}
+                            imgSrc={file.path || base64Image}
                             className={"blur-panel"}
                         />
-                        {base64Image && (
+                        {(base64Image || file.path) && (
                             <ImageTagWrapper
-                                file={this.props.file.file}
-                                imgSrc={base64Image}
+                                file={file.path || this.props.file.file}
+                                imgSrc={file.path || base64Image}
                                 tagged={tagged}
                                 className={"image-wrapper"}
                                 api={({keyword}) => utilityApi.searchFriends(keyword)}
@@ -100,7 +80,10 @@ export class FileConfig extends Component {
                                 onRemove={tag => this.setState({tagged: tagged.filter(each => each.related._id !== tag.related._id)})}
                                 neededLoadDetection={true}
                                 detections={this.state.detections}
-                                detectApi={({width, height}) => detectionsCache.getDetections(this.props.file, {width, height}).then(data => {
+                                detectApi={({width, height}) => (!file.path ?
+                                    detectionsCache.getDetections(this.props.file, {width, height}) :
+                                    getFileBlobFromUrl(file.path).then(blob => postFilesDetectionsCache.getDetections({file: blob, _id: file._id}, {width, height}, true))
+                                ).then(data => {
                                     // console.log(data)
                                     this.setState({
                                         detections: data.map(each => {

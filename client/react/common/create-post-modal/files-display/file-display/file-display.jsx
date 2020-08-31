@@ -8,9 +8,9 @@ export class FileDisplay extends React.Component {
         super(props);
         this.state = {
             base64Image: null,
-            loading: true,
+            loading: !props.file.path,
         }
-        getBase64Image(props.file.file).then((base64Image) => {
+        !props.file.path && getBase64Image(props.file.file).then((base64Image) => {
 
             this.setState({loading: false, base64Image})
         })
@@ -25,7 +25,7 @@ export class FileDisplay extends React.Component {
                     {loading ? (
                         <LoadingInline/>
                     ) : (
-                        <img src={base64Image}/>
+                        <img src={file.path || base64Image}/>
                     )}
                     <div className="actions">
                         <div>

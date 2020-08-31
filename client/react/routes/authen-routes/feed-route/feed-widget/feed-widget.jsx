@@ -81,6 +81,7 @@ export class FeedWidget extends Component {
                     posts={posts}
                     onChangePost={this.changePost}
                     onDeletePost={this.deletePost}
+                    onUpdatePost={this.updatePost}
                 />
                 {loading && (
                     <div className="loading-panel">

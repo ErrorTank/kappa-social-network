@@ -19,6 +19,7 @@ import {Tooltip} from "../tooltip/tooltip";
 import {ReactionTooltip} from "./reaction-tooltip";
 import {CommentBox} from "./comment-box/comment-box";
 import createMentionEntities from "../../../common/utils/mention-utils";
+import { EditorState,} from 'draft-js';
 moment.locale("vi");
 
 export class PostBox extends PureComponent {
@@ -42,18 +43,21 @@ export class PostBox extends PureComponent {
     }
 
     editPost = () => {
-        let {post} = this.props;
+        let {post, onChangePost} = this.props;
+        // console.log(post.mentions)
+
         createPostModal.open({
             isEdit: true,
             data: {
-                editorState: createMentionEntities(post.content),
+                _id: post._id,
+                editorState: EditorState.createWithContent(createMentionEntities(post.content, post.mentions)),
                 files: post.files,
                 tagged: post.tagged,
                 policy: PostPolicies.find(each => each.value === post.policy),
                 comment_disabled: post.comment_disabled,
                 block_share: post.block_share
             }
-        })
+        }).then(p => onChangePost(p))
     }
 
     render() {
