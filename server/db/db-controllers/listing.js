@@ -7,12 +7,10 @@ const Category = require('../model/marketplace/category')(appDb);
 
 const createListing = (value) => {
   return Category.findOne({ name: value.category }).then((category) => {
-    // console.log(category);
     let newListing = {
       ...value,
       category: category._id,
     };
-    // console.log(newListing);
     return new Listing(newListing).save().then((newListing) => {
       return newListing;
     });
