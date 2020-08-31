@@ -7,21 +7,21 @@ export class CommentMedia extends Component {
         super(props);
         this.state = {
             base64Image: null,
-            loading: true,
+            loading: !props.file.path,
         }
-        getBase64Image(props.file.file).then((base64Image) => {
+        !props.file.path && getBase64Image(props.file.file).then((base64Image) => {
 
             this.setState({loading: false, base64Image})
         })
     }
     render() {
-        let {loading, base64Image} = this.state;
+        let {loading, base64Image,} = this.state;
         return (
             <div className="comment-media">
                 {loading ? (
                     <LoadingInline/>
                 ) : (
-                    <img src={base64Image}/>
+                    <img src={this.props.file.path || base64Image}/>
                 )}
                 <i className="far fa-times remove-icon" onClick={this.props.onRemove}></i>
             </div>

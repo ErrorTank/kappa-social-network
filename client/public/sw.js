@@ -182,6 +182,10 @@ var exceptionRequestsDev = [
     method: 'PUT',
   },
   {
+    endpoint: /https:\/\/localhost:4000\/api\/post\/update-comment\/comment\/\w+/,
+    method: 'PUT',
+  },
+  {
     endpoint: /https:\/\/localhost:4000\/api\/post\/update-reaction\/post\/\w+/,
     method: 'PUT',
   },
@@ -244,8 +248,8 @@ var notGetRequests = [
   },
 ];
 
-var CACHE_STATIC_NAME = 'static-v1598864900641';
-var CACHE_DYNAMIC_NAME = 'dynamic-v1598864900641';
+var CACHE_STATIC_NAME = 'static-v1598877500012';
+var CACHE_DYNAMIC_NAME = 'dynamic-v1598877500012';
 
 var STATIC_FILES = [
   '/',

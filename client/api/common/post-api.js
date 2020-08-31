@@ -49,5 +49,7 @@ export const postApi = {
     deleteReply(commentID, replyID){
         return authenApi.delete(`/post/comment/${commentID}/reply/${replyID}`)
     },
-
+    updateComment(commentID, comment){
+        return authenApi.put(`/post/update-comment/comment/${commentID}`, {comment})
+    }
 };

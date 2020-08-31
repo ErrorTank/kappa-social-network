@@ -666,6 +666,14 @@ const deletePost = ({postID,}) => {
 
 }
 
+const updateComment = ({commentID, comment}) => {
+    return Comment.findOneAndUpdate({
+        _id: ObjectId(commentID)
+    }, {$set: {...comment, last_updated: Date.now()}}, {new: true})
+        .lean()
+
+}
+
 module.exports = {
     getAllPosts,
     createNewPost,
@@ -680,5 +688,6 @@ module.exports = {
     getCommentReplies,
     deleteReply,
     deleteComment,
-    deletePost
+    deletePost,
+    updateComment
 };
