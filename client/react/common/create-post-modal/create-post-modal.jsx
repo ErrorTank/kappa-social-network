@@ -19,6 +19,7 @@ import {transformEditorState} from "../../../common/utils/editor-utils";
 import {convertToRaw} from "draft-js";
 import {mergeArray} from "../../../common/utils/array-utils";
 import {postApi} from "../../../api/common/post-api";
+import {userFollowedPosts} from "../../../common/states/common";
 
 
 export const PostPolicies = [
@@ -101,7 +102,10 @@ class CreatePostModal extends Component {
 
                 // console.log(submittedData)
                 this.props.isEdit ? postApi.updatePost(this.props.data._id, submittedData).then(data => this.props.onClose(data)) : postApi.createNewPost(submittedData)
-                    .then(data => this.props.onClose(data))
+                    .then(data => {
+                        return userFollowedPosts.setState(userFollowedPosts.getState().concat(data._id)).then(() => this.props.onClose(data))
+
+                    })
             })
 
     };
