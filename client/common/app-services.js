@@ -1,5 +1,12 @@
 import {authenCache} from "./cache/authen-cache";
-import {userChatSettings, userInfo, userSearchHistory} from "./states/common";
+import {
+    userBlockedPosts,
+    userChatSettings,
+    userFollowedPosts,
+    userInfo,
+    userSavedPosts,
+    userSearchHistory
+} from "./states/common";
 import omit from "lodash/omit";
 import {messengerIO} from "../socket/sockets";
 import {messengerApi} from "../api/common/messenger-api";
@@ -16,8 +23,12 @@ const initializeAuthenticateUser = ({userInfo: uInfo, authToken}) => {
         userInfo.setState(omit(uInfo, ["search_history", "chat_settings"])),
         userSearchHistory.setState(uInfo.search_history),
         userChatSettings.setState(uInfo.chat_settings),
+        userFollowedPosts.setState(uInfo.followed_posts),
+        userSavedPosts.setState(uInfo.saved_posts),
+        userBlockedPosts.setState(uInfo.blocked_posts),
         messengerIO.connect({token: authToken})
             .then((messengerIO) => {
+
                 messengerApi.sendActiveStatusToAllRelations(true);
                 messengerIO.emit("join-own-room", {userID: uInfo._id});
                 callServices.initClientID(uInfo._id);

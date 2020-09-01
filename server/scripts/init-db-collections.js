@@ -15,8 +15,8 @@ const initDbCollections = (appDb) => {
   const Comment = require('../db/model/comment')(appDb);
   // Comment.updateMany({}, {$set: {replies: []}}).then(() => console.log("cac"))
   // ChatRoom.deleteMany({}).then(() => console.log("cac"))
-  // User.updateMany({}, {$set: {followed_posts: []}}).then(() => console.log("cac"))
-  // Post.updateMany({}, {$set: {share_count: 0}}).then(() => console.log("cac"))
+  // User.updateMany({}, {$set: {saved_posts: []}}).then(() => console.log("cac"))
+  // Post.updateMany({}, {$set: {saved_posts: []}}).then(() => console.log("cac"))
   console.log('Initialize Db collections successfully!');
   return feed({
     PageCategory,

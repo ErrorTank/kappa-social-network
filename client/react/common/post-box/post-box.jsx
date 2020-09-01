@@ -11,7 +11,7 @@ import {HyperlinkWrapper} from "../../layout/authen-layout/create-message-widget
 import {sortReactions} from "../../../common/utils/post-utils";
 import {Emoji} from "emoji-mart";
 import {REACTION_EMOJI_MAP, REACTIONS, ReactionsWidget} from "../reactions-widget/reactions-widget";
-import {userInfo} from "../../../common/states/common";
+import {userBlockedPosts, userFollowedPosts, userInfo, userSavedPosts} from "../../../common/states/common";
 import classnames from "classnames"
 import {postApi} from "../../../api/common/post-api";
 import {getActiveReaction} from "../../../common/utils/messenger-utils";
@@ -63,13 +63,21 @@ export class PostBox extends PureComponent {
     render() {
         let {commentsTotal} = this.state;
         let {post, isMyPost, onChangePost} = this.props;
+        let blockedPosts = userBlockedPosts.getState();
+        let savedPosts = userSavedPosts.getState();
+        let followedPosts = userFollowedPosts.getState();
+        let isSaved = savedPosts.find(each => each === post._id);
+        let isFollowed = followedPosts.find(each => each === post._id);
+        let isBlocked = blockedPosts.find(each => each === post._id);
         let postActions = [
             {
                 icon: <i className="fal fa-bookmark"></i>,
                 label: () => "Lưu bài viết",
+                condition: () => !isSaved
             }, {
                 icon: (<><i className="fal fa-bookmark"></i><i className="fal fa-slash"></i></>),
                 label: () => "Bỏ lưu bài viết",
+                condition: () => isSaved
             }, {
                 icon: <i className="fal fa-pen"></i>,
                 label: () => "Chỉnh sửa bài viết",
@@ -88,12 +96,15 @@ export class PostBox extends PureComponent {
             }, {
                 icon: <i className="fal fa-bell"></i>,
                 label: () => `Bật thông báo cho bài viết`,
+                condition: () => !isFollowed
             }, {
                 icon: (<><i className="fal fa-bell"></i><i className="fal fa-slash"></i></>),
                 label: () => `Ẩn thông báo từ bài viết`,
+                condition: () => isFollowed
             }, {
                 icon: <i className="fal fa-times-square"></i>,
                 label: () => "Ẩn bài viết",
+                condition: () => !isBlocked
 
             },
         ]

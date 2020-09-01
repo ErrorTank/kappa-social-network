@@ -46,7 +46,7 @@ const sendResetPasswordToken = ({credentials, user}) => {
 };
 
 const getAuthenticateUserInitCredentials = (userID) => {
-    return User.findOne({_id: ObjectId(userID)}, "_id contact basic_info joined_at isVerify last_active_at dark_mode search_history avatar").lean()
+    return User.findOne({_id: ObjectId(userID)}, "_id contact basic_info joined_at isVerify last_active_at dark_mode search_history followed_posts saved_posts blocked_posts avatar").lean()
         .then(data => {
             if (!data) {
                 return Promise.reject(new ApplicationError("account_not_existed"))
@@ -65,7 +65,7 @@ const shortLogin = ({_id, password}) => {
     return User.findOne({
         _id: ObjectId(_id),
         "private_info.password": password.trim()
-    }, "_id contact basic_info joined_at chat_settings isVerify chat_settings last_active_at dark_mode private_info search_history avatar").lean()
+    }, "_id contact basic_info joined_at chat_settings isVerify chat_settings last_active_at dark_mode private_info search_history followed_posts saved_posts blocked_posts avatar").lean()
         .then((data) => {
             if (!data) {
                 return Promise.reject(new ApplicationError("wrong_password"));
@@ -95,7 +95,7 @@ const login = ({login_username, password}) => {
             {"contact.login_username.phone": login_username},
             {"contact.login_username.email": login_username},
         ]
-    }, "_id contact basic_info joined_at isVerify last_active_at chat_settings dark_mode private_info search_history avatar").lean()
+    }, "_id contact basic_info joined_at followed_posts saved_posts blocked_posts isVerify last_active_at chat_settings dark_mode private_info search_history avatar").lean()
         .then((data) => {
             if (!data || data.private_info.password !== password) {
                 return Promise.reject(new ApplicationError("account_not_existed"));
@@ -306,7 +306,7 @@ const updateSearchHistory = (userID, historyID, data) => {
 };
 
 const simpleUpdateUser = (userID, data) => {
-  return User.findOneAndUpdate({_id: ObjectId(userID)}, data, {new: true, select: "_id contact basic_info joined_at isVerify last_active_at dark_mode private_info search_history avatar"}).lean()
+  return User.findOneAndUpdate({_id: ObjectId(userID)}, data, {new: true, select: "followed_posts saved_posts blocked_posts _id contact basic_info joined_at isVerify last_active_at dark_mode private_info search_history avatar"}).lean()
 };
 
 const getUserBasicInfo = userID => {

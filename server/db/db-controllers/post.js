@@ -12,9 +12,14 @@ const {MessageState} = require("../../common/const/message-state")
 const {REVERSE_REACTIONS} = require("../../utils/messenger-utils");
 
 const createNewPost = (value) => {
-
-    return new Post(value)
-        .save()
+    let newPost = {...value, _id: new ObjectId()};
+    return Promise.all([new Post(newPost).save(), User.findOneAndUpdate({
+        _id: ObjectId(value.belonged_person),
+    }, {
+        $push: {
+            followed_posts: newPost._id
+        }
+    })])
         .then(newPost => {
             return newPost;
         })
