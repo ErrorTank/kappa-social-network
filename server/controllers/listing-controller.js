@@ -3,7 +3,7 @@ const router = express.Router();
 const { authorizationUserMiddleware } = require('../common/middlewares/common');
 const { asynchronized } = require('../utils/common-utils');
 const mongoose = require('mongoose');
-const { createListing } = require('../db/db-controllers/listing');
+const { createListing, getListing } = require('../db/db-controllers/listing');
 const ObjectId = mongoose.Types.ObjectId;
 
 module.exports = (db, namespacesIO) => {
@@ -19,5 +19,12 @@ module.exports = (db, namespacesIO) => {
         .catch((err) => next(err));
     }
   );
+  router.get('/get-listing', authorizationUserMiddleware, (req, res, next) => {
+    return getListing(req.query)
+      .then((data) => {
+        return res.status(200).json(data);
+      })
+      .catch((err) => next(err));
+  });
   return router;
 };

@@ -229,6 +229,10 @@ var exceptionRequestsDev = [
     endpoint: /https:\/\/localhost:4000\/api\/listing\/create-listing/,
     method: 'POST',
   },
+  {
+    endpoint: /https:\/\/localhost:4000\/api\/listing\/get-listing/,
+    method: 'GET',
+  },
 ];
 
 var notGetRequests = [

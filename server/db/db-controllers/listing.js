@@ -17,6 +17,12 @@ const createListing = (value) => {
   });
 };
 
+const getListing = (query) => {
+  return Category.find({}).then((listingArr) => {
+    return listingArr;
+  });
+};
 module.exports = {
   createListing,
+  getListing,
 };
