@@ -7,7 +7,7 @@ export class CategoriesSection extends Component {
   }
   render() {
     return (
-      <div className='marketplace-menu-section'>
+      <div className='categories-section'>
         <h1>Danh muc</h1>
       </div>
     );

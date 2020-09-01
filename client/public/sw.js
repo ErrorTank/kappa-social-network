@@ -253,8 +253,8 @@ var notGetRequests = [
 ];
 
 <<<<<<< HEAD
-var CACHE_STATIC_NAME = 'static-v1598937265668';
-var CACHE_DYNAMIC_NAME = 'dynamic-v1598937265668';
+var CACHE_STATIC_NAME = 'static-v1598975379303';
+var CACHE_DYNAMIC_NAME = 'dynamic-v1598975379303';
 =======
 var CACHE_STATIC_NAME = 'static-v1598942723065';
 var CACHE_DYNAMIC_NAME = 'dynamic-v1598942723065';

@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { MenuNavigationWithIcon } from '../../../../../common/menu-navigation-with-icon/menu-navigation-with-icon';
-import { CategoriesSection } from './categories-section/categories-section';
 import { customHistory } from '../../../../routes';
 
 export class MarketplaceMenuSection extends Component {
@@ -8,30 +7,16 @@ export class MarketplaceMenuSection extends Component {
     super(props);
     this.state = {};
   }
-  menuNavigation = [
-    {
-      icon: <i className='fas fa-store'></i>,
-      title: 'Lướt xem tất cả',
-      type: 'main',
-    },
-    {
-      icon: <i className='fas fa-tags'></i>,
-      title: 'Đang bán',
-    },
-    {
-      icon: <i className='fas fa-user'></i>,
-      title: 'Tài khoản của bạn',
-    },
-  ];
   render() {
     return (
       <div className='marketplace-menu-section'>
-        {this.menuNavigation.map((each) => (
+        {this.props.menuNavigation.map((each) => (
           <MenuNavigationWithIcon
             key={each.title}
             icon={each.icon}
             title={each.title}
             type={each.type}
+            onClick={() => customHistory.push(each.link)}
           />
         ))}
         <div
@@ -44,7 +29,6 @@ export class MarketplaceMenuSection extends Component {
           </div>
         </div>
         <div className='line-seperate'></div>
-        {/* <CategoriesSection darkMode={darkMode} /> */}
       </div>
     );
   }
