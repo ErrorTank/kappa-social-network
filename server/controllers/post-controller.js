@@ -60,7 +60,7 @@ module.exports = (db, namespacesIO) => {
             .catch((err) => next(err));
 
     })
-    router.post("/create-reply/comment/:commentID", authorizationUserMiddleware, (req, res, next) => {
+    router.post("/create-reply/post/:postID/comment/:commentID", authorizationUserMiddleware, (req, res, next) => {
         return createCommentReply({
             ...req.body,
             ...req.params,

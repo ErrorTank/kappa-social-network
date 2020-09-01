@@ -467,13 +467,19 @@ const createNewCommentForPost = ({postID, comment, userID}) => {
         $set: {
             last_updated: Date.now()
         },
-        $push: {
+        $addToSet: {
             comments: newComment._id
         }
     }, {
         new: true,
         fields: "comments",
-    }), new Comment(newComment).save()])
+    }), new Comment(newComment).save(), User.findOneAndUpdate({
+        _id: ObjectId(newComment.from_person),
+    }, {
+        $addToSet: {
+            followed_posts: newComment.post
+        }
+    })])
         .then(([_post, data]) => data)
 }
 
@@ -504,20 +510,26 @@ const updatePostCommentReaction = ({postID, userID, commentID, reactionConfig}) 
         })
 }
 
-const createCommentReply = ({commentID, reply, userID}) => {
-    let newReply = {...reply, _id: new ObjectId(), from_person: ObjectId(userID)}
+const createCommentReply = ({postID, commentID, reply, userID}) => {
+    let newReply = {...reply, _id: new ObjectId(), from_person: ObjectId(userID), post: ObjectId(postID)}
     return Promise.all([Comment.findOneAndUpdate({
         _id: ObjectId(commentID)
     }, {
         $set: {
             last_updated: Date.now()
         },
-        $push: {
+        $addToSet: {
             replies: newReply._id
         }
     }, {
         new: true,
-    }), new Comment(newReply).save()])
+    }), new Comment(newReply).save(), User.findOneAndUpdate({
+        _id: ObjectId(newReply.from_person),
+    }, {
+        $addToSet: {
+            followed_posts: newReply.post
+        }
+    })])
         .then(([_post, data]) => data)
 }
 
@@ -632,7 +644,14 @@ const deleteReply = ({replyID, commentID}) => {
         ),
         Comment.findOneAndDelete(
             {_id: ObjectId(replyID)}
-        )
+        ),
+        User.findOneAndUpdate({
+            _id: ObjectId(value.belonged_person),
+        }, {
+            $pull: {
+                followed_posts: newPost._id
+            }
+        })
     ])
 }
 const deleteComment = ({commentID, postID}) => {
@@ -647,22 +666,22 @@ const deleteComment = ({commentID, postID}) => {
         ),
         Comment.findOneAndDelete(
             {_id: ObjectId(commentID)}
-        )
+        ),
+
     ])
 }
 const deletePost = ({postID,}) => {
     return Promise.all([Post.findOneAndDelete({
         _id: ObjectId(postID)
-    }).lean(), Comment.find({post: ObjectId(postID)})])
+    }).lean(), Comment.find({post: ObjectId(postID)}).lean()])
         .then(([_post, comments]) => {
-            let replyIds = comments.reduce((total, cur) => [...total, ...cur.replies.map(each => ObjectId(each))], [])
+            // let replyIds = comments.reduce((total, cur) => [...total, ...cur.replies.map(each => ObjectId(each))], [])
             // console.log(replyIds)
             return Comment.deleteMany({
                 $or: [
-                    {post: ObjectId(postID)},
                     {
                         _id: {
-                            $in: replyIds
+                            $in: comments.map(each => ObjectId(each))
                         }
                     }
                 ]

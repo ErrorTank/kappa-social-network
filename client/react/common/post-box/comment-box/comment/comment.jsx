@@ -43,7 +43,7 @@ export class Comment extends Component {
     }
 
     submitReply = ({editorState, files}) => {
-        let {comment} = this.props;
+        let {comment, post} = this.props;
         return Promise.all(files.map(each => this.uploadSingleFile(each)))
             .then(newFiles => {
                 let submittedData = {
@@ -51,7 +51,7 @@ export class Comment extends Component {
                     ...transformEditorState(convertToRaw(editorState.getCurrentContent()))
                 };
 
-                postApi.createCommentReply(comment._id, submittedData)
+                postApi.createCommentReply(post._id, comment._id, submittedData)
                     .then(data => {
 
                         this.setState({replies: [data].concat(this.state.replies)});
