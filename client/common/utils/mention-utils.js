@@ -42,7 +42,7 @@ const createMentionEntities = (text, tags) => {
         mutability: 'IMMUTABLE',
         data: {
             mention: {
-                _id: tag._id,
+                _id: tag.related,
                 name: tag.name
             }
         }

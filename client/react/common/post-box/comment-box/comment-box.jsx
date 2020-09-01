@@ -7,6 +7,7 @@ import {postApi} from "../../../../api/common/post-api";
 import {Comment} from "./comment/comment";
 import {LoadingInline} from "../../loading-inline/loading-inline";
 import classnames from "classnames";
+import {userFollowedPosts} from "../../../../common/states/common";
 
 export class CommentBox extends Component {
     constructor(props) {
@@ -43,7 +44,12 @@ export class CommentBox extends Component {
 
                 postApi.createComment(this.props.post._id, submittedData)
                     .then(data => {
-                        this.setState({list: this.state.list.concat(data)});
+                        let followedPosts = userFollowedPosts.getState();
+                        if(!followedPosts.find(each => each === this.props.post._id)){
+                            userFollowedPosts.setState(followedPosts.concat(this.props.post._id))
+                        }
+
+                        this.setState({list: [data].concat(this.state.list)});
                         this.props.onAddComment();
                     })
             })
@@ -72,7 +78,7 @@ export class CommentBox extends Component {
     fetchComments = (config) => {
         this.setState({fetching: true})
         return this.props.api(config).then(({list}) => {
-            this.setState({list: list.concat(this.state.list), fetching: false})
+            this.setState({list: this.state.list.concat(list), fetching: false})
         })
     }
 
@@ -111,7 +117,7 @@ export class CommentBox extends Component {
                             )}
                         </div>
                     )}
-                    {list.map((each, i) => (
+                    {[...list].reverse().map((each, i) => (
                         <Comment
                             comment={each}
                             post={post}

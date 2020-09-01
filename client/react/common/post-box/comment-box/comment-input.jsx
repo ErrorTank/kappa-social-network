@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import createMentionPlugin from "draft-js-mention-plugin";
 import Editor, {createEditorStateWithText} from 'draft-js-plugins-editor';
-
+import isEqual from "lodash/isEqual"
 import classnames from "classnames";
 import debounce from "lodash/debounce";
 import {isImageFile} from "../../../../common/utils/file-upload-utils";
@@ -19,6 +19,7 @@ import createEmojiMartPlugin from "draft-js-emoji-mart-plugin";
 import {CommentMedia} from "./comment-media";
 import {transformEditorState} from "../../../../common/utils/editor-utils";
 import {postApi} from "../../../../api/common/post-api";
+import createMentionEntities from "../../../../common/utils/mention-utils";
 
 
 export class CommentInput extends Component {
@@ -28,8 +29,8 @@ export class CommentInput extends Component {
             loadSuggestion: true,
             showEmojiPicker: false,
             filteredSuggestions: [],
-            editorState: createEditorStateWithText(""),
-            files: [],
+            editorState: props.initData?.editorState || createEditorStateWithText(""),
+            files: props.initData?.files || [],
             loading: false
         }
         this.mentionPlugin = createMentionPlugin({
@@ -54,15 +55,26 @@ export class CommentInput extends Component {
         });
     }
 
-
+    setEditorState = state => {
+        this.setState({editorState: state})
+    }
 
     getInitialState = () => {
         const newEditorState = EditorState.push(this.state.editorState, ContentState.createFromText(''), 'remove-range');
         return EditorState.moveFocusToEnd(newEditorState);
     }
+
+    componentWillReceiveProps(nextProps, nextContext) {
+        if(!isEqual(nextProps.replyData, this.props.replyData)){
+            this.setState({
+                editorState: nextProps.initData.editorState
+            })
+        }
+    }
+
     submit = () => {
-        let {editorState, files} =  this.state;
-        this.setState({loading: true, editorState: this.getInitialState(), files:[]})
+        let {editorState, files} = this.state;
+        this.setState({loading: true, editorState: this.getInitialState(), files: []})
         this.props.onSubmit({
             editorState,
             files
@@ -96,23 +108,34 @@ export class CommentInput extends Component {
         this.editor.focus();
     };
 
+    quit = () => {
+        if (this.props.isEdit) {
+            this.props.onQuit()
+        }
+    }
+
     handleKeyCommand = (command) => {
         if (command === 'chat-input-enter') {
             this.submit();
             return 'handled'
         }
 
-
+        if (command === 'chat-input-quit') {
+            this.quit();
+            return 'handled'
+        }
         return 'not-handled'
     }
     addFiles = (file) => {
 
 
-        this.setState({files: this.state.files.concat(isImageFile(file.name) ? {fileID: uuidv4(), file, type: "image"} : {
+        this.setState({
+            files: [isImageFile(file.name) ? {fileID: uuidv4(), file, type: "image"} : {
                 fileID: uuidv4(),
                 file,
                 caption: ""
-            })});
+            }]
+        });
     };
 
     filterSuggestions = (data,) => {
@@ -121,15 +144,16 @@ export class CommentInput extends Component {
     }
 
     removeFile = item => {
-        let newFiles = this.state.files.filter(each => each.fileID !== item.fileID);
+        let newFiles = this.state.files.filter(each => item.path ? item.path !== each.path : each.fileID !== item.fileID);
         this.setState({files: newFiles})
     }
     keyBindingFn = (e) => {
         if (!e.shiftKey && e.key === 'Enter') {
             return 'chat-input-enter'
         }
-
-
+        if (e.keyCode === 27) {
+            return 'chat-input-quit'
+        }
         return Draft.getDefaultKeyBinding(e)
     }
 
@@ -168,7 +192,6 @@ export class CommentInput extends Component {
                                             }}
                                             placeholder={`Viết bình luận...`}
                                             keyBindingFn={this.keyBindingFn}
-
                                             handleKeyCommand={this.handleKeyCommand}
 
                                         />
@@ -185,10 +208,13 @@ export class CommentInput extends Component {
                                     <div className="actions-wrapper">
                                         {transformEditorState(convertToRaw(this.state.editorState.getCurrentContent())).content && (
                                             <Tooltip
-                                                text={() => "Gửi"}
+                                                text={() => !this.props.isEdit ? "Gửi" : "Lưu"}
                                                 position={"top"}
                                             >
-                                                <i className="fas fa-paper-plane send-btn" onClick={this.submit}></i>
+                                                <i className={classnames("send-btn fas", {
+                                                    "fa-paper-plane": !this.props.isEdit,
+                                                    "fa-save": this.props.isEdit
+                                                })} onClick={this.submit}></i>
                                             </Tooltip>
                                         )}
                                         <Tooltip
@@ -233,13 +259,15 @@ export class CommentInput extends Component {
 
                     </div>
                 </div>
-
+                {this.props.isEdit && (
+                    <div className="quit" onClick={this.quit}>Hủy</div>
+                )}
                 {!!this.state.files.length && (
                     <div className="comment-media-wrapper">
                         {this.state.files.map(each => {
                             return (
                                 <CommentMedia
-                                    key={each.fileID}
+                                    key={each.path || each.fileID}
                                     file={each}
                                     onRemove={() => this.removeFile(each)}
                                 />
