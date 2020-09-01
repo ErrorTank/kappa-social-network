@@ -39,7 +39,10 @@ export class PostBox extends PureComponent {
     deletePost = () => {
         let {post, onDeletePost} = this.props;
         postApi.deletePost(post._id)
-            .then(() => onDeletePost())
+            .then(() => {
+                userFollowedPosts.setState(userFollowedPosts.getState().filter(each => each !== post._id))
+                return onDeletePost()
+            })
     }
 
     editPost = () => {

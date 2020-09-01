@@ -20,7 +20,7 @@ const createNewPost = (value) => {
             followed_posts: newPost._id
         }
     })])
-        .then(newPost => {
+        .then(([newPost]) => {
             return newPost;
         })
 };
@@ -641,18 +641,28 @@ const deleteReply = ({replyID, commentID}) => {
                     replies: ObjectId(replyID)
                 }
             }
-        ),
+        ).lean(),
         Comment.findOneAndDelete(
             {_id: ObjectId(replyID)}
-        ),
-        User.findOneAndUpdate({
-            _id: ObjectId(value.belonged_person),
-        }, {
-            $pull: {
-                followed_posts: newPost._id
-            }
-        })
-    ])
+        ).lean(),
+
+    ]).then(([comment, reply]) => {
+        let userID = reply.from_person;
+        return Comment.find({post: ObjectId(comment.post), from_person: userID})
+            .then(data => {
+                if(!data.length){
+                    return User.findOneAndUpdate({
+                        _id: ObjectId(userID),
+                    }, {
+                        $pull: {
+                            followed_posts: ObjectId(comment.post)
+                        }
+                    }, {
+                        new: true
+                    }).lean().then((data) => data.followed_posts)
+                }
+            })
+    })
 }
 const deleteComment = ({commentID, postID}) => {
     return Promise.all([
@@ -663,17 +673,37 @@ const deleteComment = ({commentID, postID}) => {
                     comments: ObjectId(commentID)
                 }
             }
-        ),
+        ).lean(),
         Comment.findOneAndDelete(
             {_id: ObjectId(commentID)}
-        ),
+        ).lean(),
 
-    ])
+    ]).then(([post, comment]) => {
+        let userID = comment.from_person;
+        return Comment.find({post: ObjectId(postID), from_person: ObjectId(userID)})
+            .then(data => {
+                if(!data.length){
+                    return User.findOneAndUpdate({
+                        _id: ObjectId(userID),
+                    }, {
+                        $pull: {
+                            followed_posts: ObjectId(postID)
+                        }
+                    }, {new: true}).lean().then((data) => data.followed_posts)
+                }
+            })
+    })
 }
 const deletePost = ({postID,}) => {
     return Promise.all([Post.findOneAndDelete({
         _id: ObjectId(postID)
-    }).lean(), Comment.find({post: ObjectId(postID)}).lean()])
+    }).lean(), Comment.find({post: ObjectId(postID)}).lean(), User.updateMany({
+        followed_posts: ObjectId(postID),
+    }, {
+        $pull: {
+            followed_posts: ObjectId(postID)
+        }
+    })])
         .then(([_post, comments]) => {
             // let replyIds = comments.reduce((total, cur) => [...total, ...cur.replies.map(each => ObjectId(each))], [])
             // console.log(replyIds)

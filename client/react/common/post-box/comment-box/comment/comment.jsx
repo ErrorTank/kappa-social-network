@@ -8,7 +8,7 @@ import isNil from "lodash/isNil";
 import {Dropdownable} from "../../../dropdownable/dropdownable";
 import {REACTIONS, ReactionsWidget} from "../../../reactions-widget/reactions-widget";
 import {sortReactions} from "../../../../../common/utils/post-utils";
-import {userInfo} from "../../../../../common/states/common";
+import {userFollowedPosts, userInfo} from "../../../../../common/states/common";
 import {getActiveReaction} from "../../../../../common/utils/messenger-utils";
 import {postApi} from "../../../../../api/common/post-api";
 import {ReactionDisplay} from "../../../../layout/authen-layout/create-message-widget/chat-box/message-section/reaction-display/reaction-display";
@@ -53,7 +53,10 @@ export class Comment extends Component {
 
                 postApi.createCommentReply(post._id, comment._id, submittedData)
                     .then(data => {
-
+                        let followedPosts = userFollowedPosts.getState();
+                        if(!followedPosts.find(each => each === post._id)){
+                            userFollowedPosts.setState(followedPosts.concat(post._id))
+                        }
                         this.setState({replies: [data].concat(this.state.replies)});
                         this.props.onChangeComment({
                             ...comment,
@@ -99,12 +102,16 @@ export class Comment extends Component {
 
     deleteComment = () => {
         let {onDeleteComment, comment, isReply, onDeleteReply, post, father} = this.props;
+
         !isReply ?
             postApi.deleteComment(post._id, comment._id)
-                .then(() => onDeleteComment()):
+                .then((followed_posts) => {
+                    userFollowedPosts.setState(followed_posts)
+                    return onDeleteComment()
+                }):
             postApi.deleteReply(father._id, comment._id)
-                .then(() => {
-
+                .then((followed_posts) => {
+                    userFollowedPosts.setState(followed_posts)
                     onDeleteReply(comment);
                 })
     }
