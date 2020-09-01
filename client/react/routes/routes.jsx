@@ -17,6 +17,9 @@ import { WithRouterKappaLayout } from '../layout/kappa-layout';
 import { TopFloatNotificationRegistry } from '../common/float-top-notification/float-top-notification';
 import { ThemeContext, ThemeController } from '../context/theme-context';
 
+const DatingRoute = lazy(
+  delayLoad(() => import('./authen-routes/dating-route/dating-route'))
+);
 const FeedRoute = lazy(
   delayLoad(() => import('./authen-routes/feed-route/feed-route'))
 );
@@ -128,6 +131,12 @@ class MainRoute extends React.Component {
                     path={'/marketplace/create/:categoryName'}
                     exact
                     render={(props) => <CreateListingDetail {...props} />}
+                  />
+                  <AuthenRoute
+                    {...layoutProps}
+                    path={'/dating'}
+                    exact
+                    render={(props) => <DatingRoute {...props} />}
                   />
                 </CustomSwitch>
               )}
