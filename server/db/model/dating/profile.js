@@ -10,7 +10,7 @@ const profileSchema = new Schema({
     type: String,
     require : true
   },
-  avatar : [{url : String, order : avatar.length +1}],
+  avatar : [{url : String, order : avatar.length +1, require : true}],
   birthday : {
       type: Date,
       require :true
@@ -57,19 +57,70 @@ const profileSchema = new Schema({
   },
   educationLevel : {
     type : String,
-    enum :["A-LEVELS,HIGHERS OR EQUIVALENT", "BACHELORS DEGREE", "UNIVERSITY(POSTGRADUATE) DEGREE", 'PREFER NOT TO SAY']
+    enum :["A-LEVELS,HIGHERS OR EQUIVALENT", "BACHELORS DEGREE", "UNIVERSITY(POSTGRADUATE) DEGREE", 'PREFER NOT TO SAY'],
+    default : "PREFER NOT TO SAY"
   },
   yourChildren : {
     type: String,
-    enum : ["I DON'T HAVE KIDS",'I HAVE KIDS', "PREFER NOT TO SAY"]
+    enum : ["I DON'T HAVE KIDS",'I HAVE KIDS', "PREFER NOT TO SAY"],
+    default : "PREFER NOT TO SAY"
   },
   smoking : {
     type :String,
-    enum : ["NEVER", "OCCASIONALLY","OFTEN","FREFER NOT TO SAY"]
+    enum : ["NEVER", "OCCASIONALLY","OFTEN","FREFER NOT TO SAY"],
+    default : "PREFER NOT TO SAY"
   },
   drinking : {
     type : String,
-    enum : ["NEVER", "OCCASIONALLY","OFTEN","FREFER NOT TO SAY"]
+    enum : ["NEVER", "OCCASIONALLY","OFTEN","FREFER NOT TO SAY"],
+    default : "PREFER NOT TO SAY"
+  },
+  religion : {
+    type : String,
+    enum : ["PREFER NOT TO SAY", "AGNOSTIC", "ATHEIST", "BUDDHIST", "CATHOLIC", "CHRISTIAN", "HINDU", "JEWISH", "MUSLIM", "SIKH", "SPIRITUAL", "OTHER"],
+    default : "PREFER NOT TO SAY"
+  },
+  popularity : {
+    Type : Number
+  },
+  filtersetting : {
+    distance : Number,
+    gender : {
+      type : String,
+      enum : ["WOMEN", "MEN", "EVERYONE"]
+    },
+    ageRange : {
+      fromNumber : Number,
+      toNumber : Number
+    },
+    heightRange : {
+      fromNumber : Number,
+      toNumber : Number
+    },
+    ecucationLevel : {
+      type : String,
+      enum : [" NO PREFERENCE", "A-LEVELS,HIGHERS OR EQUIVALENT", "BACHELORS DEGREE", "UNIVERSITY(POSTGRADUATE) DEGREE"],
+      default : "NO PREFERENCE"
+    },
+    theirKids : {
+      type : String,
+      enum: ["NO PREFERENCE","THEY HAVE KIDS", "THEY DON'T HAVE KIDS"],
+      default : "NO PREFERENCE"
+    },
+    religion : {
+      type : String,
+      enum : ["NO PREFERENCE", "AGNOSTIC", "ATHEIST", "BUDDHIST", "CATHOLIC", "CHRISTIAN", "HINDU", "JEWISH", "MUSLIM", "SIKH", "SPIRITUAL", "OTHER"],
+      default : "NO PREFERENCE"
+    },
+    seen : [
+      { url :ObjectId, 
+        action : {
+          type : String,
+          enum : ["LIKE", "DISLIKE"]
+        },
+        time : Date
+    }
+    ]
   }
   
 
