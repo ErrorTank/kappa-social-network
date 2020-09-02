@@ -61,4 +61,7 @@ export const postApi = {
     toggleSavedPost(postID){
         return authenApi.put(`/post/toggle-save/post/${postID}`)
     },
+    getPostByID(postID){
+        return authenApi.get(`/post/detail/post/${postID}`)
+    }
 };

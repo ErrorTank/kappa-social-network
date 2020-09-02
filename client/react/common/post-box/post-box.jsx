@@ -37,6 +37,14 @@ export class PostBox extends PureComponent {
             .then(newPost => onChangePost(newPost))
     }
 
+    sharePost = () => {
+        let {post} = this.props;
+        createPostModal.open({
+            isShare: true,
+            postID: post.shared_post || post._id
+        });
+    }
+
     deletePost = () => {
         let {post, onDeletePost} = this.props;
         postApi.deletePost(post._id)
@@ -239,7 +247,7 @@ export class PostBox extends PureComponent {
                             </div>
                         )}
                         {!post.block_share && (
-                            <div className="action">
+                            <div className="action" onClick={this.sharePost}>
                                 <i className="fal fa-share"></i>
                                 <span>Chia sẻ</span>
                             </div>

@@ -136,7 +136,7 @@ const autoPopulateParent = function(next){
             path: "files.tagged.related",
             model: "User",
             select: "_id basic_info avatar last_active_at active"
-        }
+        },
     ]);
     next();
 };

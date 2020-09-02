@@ -23,6 +23,8 @@ import {utilityApi} from "../../../../api/common/utilities-api";
 import debounce from "lodash/debounce"
 import {SwitchBtn} from "../../switch/switch-btn";
 import {userApi} from "../../../../api/common/user-api";
+import {postApi} from "../../../../api/common/post-api";
+import {SharePostDisplay} from "../../share-post-display/share-post-display";
 
 export const CreatePostDropZone = props => {
     const handleUploadFiles = (files) => {
@@ -75,8 +77,8 @@ export class CreatePostMain extends Component {
                 )
             },
         });
-    }
 
+    }
 
 
     onChange = (editorState) => {
@@ -101,11 +103,9 @@ export class CreatePostMain extends Component {
     };
 
 
-
     focus = () => {
         this.editor.focus();
     };
-
 
 
     tagFriends = () => {
@@ -126,20 +126,17 @@ export class CreatePostMain extends Component {
 
     filterSuggestions = (data,) => {
 
-        return data.map(each => ({...each, name: each.basic_info.username})) ;
+        return data.map(each => ({...each, name: each.basic_info.username}));
     }
 
 
-
     render() {
+        let {policy, tagged, isShare, postID} = this.props;
         let plugins = [this.emojiPlugin];
         plugins.push(this.mentionPlugin);
+
         let actions = [
             {
-                icon: <i className="far fa-photo-video"></i>,
-                label: "Ảnh/Video",
-                className: "media"
-            },  {
                 icon: <i className="fas fa-user-tag"></i>,
                 label: "Tag bạn bè",
                 onClick: this.tagFriends,
@@ -147,15 +144,25 @@ export class CreatePostMain extends Component {
 
             }
         ]
+        if (!isShare) {
+            actions.push({
+                icon: <i className="far fa-photo-video"></i>,
+                label: "Ảnh/Video",
+                className: "media"
+            })
+        }
         const {Picker} = this.emojiPlugin;
-        let {policy, tagged} = this.props;
+
         let user = userInfo.getState();
         const {MentionSuggestions} = this.mentionPlugin;
         return (
             <div className="create-post-main">
-                <CreatePostDropZone
-                    onAddFiles={this.addFiles}
-                />
+                {!isShare && (
+                    <CreatePostDropZone
+                        onAddFiles={this.addFiles}
+                    />
+                )}
+
                 <div className="cpm-wrapper">
 
                     <div className="cpm-header">
@@ -169,7 +176,8 @@ export class CreatePostMain extends Component {
                                 <span>{user.basic_info.username}</span>
                                 {!!tagged.length && " đang ở cùng "}
                                 {!!tagged.length && tagged.map((each, i) => (
-                                    <span key={each._id}>{each.basic_info.username}{i === tagged.length - 2 && " và "}{i < tagged.length - 2 && ", "}</span>
+                                    <span
+                                        key={each._id}>{each.basic_info.username}{i === tagged.length - 2 && " và "}{i < tagged.length - 2 && ", "}</span>
                                 ))}
                             </div>
                             <div className="action">
@@ -199,10 +207,17 @@ export class CreatePostMain extends Component {
                                 toFilesTab={this.props.toFilesTab}
                             />
                         )}
+                        {isShare && (
+                            <SharePostDisplay
+                                postID={postID}
+                            />
+                        )}
                         <div className="cpm-input-wrapper">
                             <ClickOutside onClickOut={() => this.setState({showEmojiPicker: false})}>
                                 <div>
-                                    <div ref={cpmInput => this.cpmInput = cpmInput} className={classnames("cpm-input", {collapsed: this.props.files.length})} onClick={this.focus}>
+                                    <div ref={cpmInput => this.cpmInput = cpmInput}
+                                         className={classnames("cpm-input", {collapsed: this.props.files.length})}
+                                         onClick={this.focus}>
                                         <div>
                                             <Editor
                                                 editorState={this.props.editorState}
@@ -316,6 +331,7 @@ export class CreatePostMain extends Component {
         );
     }
 }
+
 // class MentionPopover extends React.Component {
 //     render() {
 //

@@ -128,7 +128,7 @@ class CreatePostModal extends Component {
 
 
     render() {
-        let {onClose, isEdit} = this.props;
+        let {onClose, isEdit, isShare, postID} = this.props;
         let {loading} = this.state;
 
         let steps = [
@@ -144,7 +144,9 @@ class CreatePostModal extends Component {
 
                 component: (
                     <CreatePostMain
+                        postID={postID}
                         {...this.state}
+                        isShare={isShare}
                         onChange={data => this.setState({...data})}
                         openTagFriendTab={() => this.setState({stepIndex: 3})}
                         toFilesTab={() => {
@@ -249,23 +251,26 @@ class CreatePostModal extends Component {
                         <>
 
                             {component}
-                            <InputFileWrapper
-                                multiple={true}
-                                accept={"image/*,image/heif,image/heic,video/*"}
-                                onUploaded={this.addFiles}
-                                limitSize={10 * 1024 * 1024}
-                            >
-                                {({onClick}) => (
-                                    <Tooltip
-                                        position={"top"}
-                                        text={() => ""}
-                                        className={"d-none"}
-                                    >
-                                        <div style={{display: "none"}} ref={upload => this.upload = upload} onClick={onClick}/>
+                            {!isShare && (
+                                <InputFileWrapper
+                                    multiple={true}
+                                    accept={"image/*,image/heif,image/heic,video/*"}
+                                    onUploaded={this.addFiles}
+                                    limitSize={10 * 1024 * 1024}
+                                >
+                                    {({onClick}) => (
+                                        <Tooltip
+                                            position={"top"}
+                                            text={() => ""}
+                                            className={"d-none"}
+                                        >
+                                            <div style={{display: "none"}} ref={upload => this.upload = upload} onClick={onClick}/>
 
-                                    </Tooltip>
-                                )}
-                            </InputFileWrapper>
+                                        </Tooltip>
+                                    )}
+                                </InputFileWrapper>
+                            )}
+
                         </>
                     </CommonModalLayout>
                 )}
