@@ -5,10 +5,12 @@ const Schema = mongoose.Schema;
 const chatBoxSchema = new Schema({
   user1 : ObjectId,
   user2 : ObjectId,
-  messages : [
+  messages : {
+    type : [
       {message : String, user : ObjectId}
-  ]
-
+    ],
+    default : []
+  }
 })
 
-module.exports = (db) => db.model('Chatbox', chatboxSchema);
+module.exports = (db) => db.model('ChatBox', chatBoxSchema);

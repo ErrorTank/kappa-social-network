@@ -10,7 +10,13 @@ const profileSchema = new Schema({
     type: String,
     require : true
   },
-  avatar : [{url : String, order : avatar.length +1, require : true}],
+  avatar : {
+     type : [
+      { url : String, 
+        order : Number
+      }],
+      require : true
+  },
   birthday : {
       type: Date,
       require :true
@@ -20,7 +26,7 @@ const profileSchema = new Schema({
       lng : Number,
       ward : {type:ObjectId, ref:"Ward"},
       district :{type:ObjectId, ref:"District"},
-      city : {type:ObjectId, ref="City"},
+      city : {type:ObjectId, ref :"City"},
 
   },
   gender :{
@@ -38,7 +44,7 @@ const profileSchema = new Schema({
   homeTown :{
     ward : {type:ObjectId, ref:"Ward"},
     district :{type:ObjectId, ref:"District"},
-    city : {type:ObjectId, ref="City"},
+    city : {type:ObjectId, ref: "City"},
   },
   job : {
     type : String
@@ -83,7 +89,7 @@ const profileSchema = new Schema({
   popularity : {
     Type : Number
   },
-  filtersetting : {
+  filterSetting : {
     distance : Number,
     gender : {
       type : String,
@@ -111,16 +117,19 @@ const profileSchema = new Schema({
       type : String,
       enum : ["NO PREFERENCE", "AGNOSTIC", "ATHEIST", "BUDDHIST", "CATHOLIC", "CHRISTIAN", "HINDU", "JEWISH", "MUSLIM", "SIKH", "SPIRITUAL", "OTHER"],
       default : "NO PREFERENCE"
+    }
     },
-    seen : [
-      { url :ObjectId, 
-        action : {
-          type : String,
-          enum : ["LIKE", "DISLIKE"]
+    seen : { 
+      type : [
+        { url :ObjectId, 
+          action : {
+            type : String,
+            enum : ["LIKE", "DISLIKE"]
         },
         time : Date
     }
-    ]
+    ],
+    default : []
   }
   
 
