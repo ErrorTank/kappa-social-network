@@ -12,7 +12,7 @@ export class SharePostDisplay extends Component {
         }
         if(props.postID){
             postApi.getPostByID(props.postID)
-                .then(post => this.setState({post}))
+                .then(post => this.setState({post, loading: false}))
         }
     }
 
@@ -24,7 +24,7 @@ export class SharePostDisplay extends Component {
                     <LoadingInline/>
                 ) : (
                     <PostBox
-                        isSharePost={true}
+                        isPreview={true}
                         post={post}
                     />
                 )}

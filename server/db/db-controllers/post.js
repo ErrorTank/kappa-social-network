@@ -728,6 +728,12 @@ const updateComment = ({commentID, comment}) => {
 
 }
 
+const getPostByID = ({postID}) => {
+    return Post.findOne({
+        _id: ObjectId(postID)
+    }).lean()
+}
+
 module.exports = {
     getAllPosts,
     createNewPost,
@@ -743,5 +749,6 @@ module.exports = {
     deleteReply,
     deleteComment,
     deletePost,
-    updateComment
+    updateComment,
+    getPostByID
 };

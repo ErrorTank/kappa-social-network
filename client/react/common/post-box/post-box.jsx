@@ -99,7 +99,7 @@ export class PostBox extends PureComponent {
 
     render() {
         let {commentsTotal} = this.state;
-        let {post, isMyPost, onChangePost} = this.props;
+        let {post, isMyPost, onChangePost, isPreview} = this.props;
 
 
 
@@ -132,28 +132,31 @@ export class PostBox extends PureComponent {
                             <span className="policy">{PostPolicies.find(each => each.value === post.policy).icon}</span> - <span className="last-active">{moment(post.created_at).fromNow()}</span>
                         </div>
                     </div>
-                    <Dropdownable
-                        className={"post-actions"}
-                        toggle={() => (
-                            <div className="post-actions-toggle">
-                                <i className="fal fa-ellipsis-h"></i>
-                            </div>
-                        )}
-                        content={(dropdownActions) => (
-                            <PostActions
-                                isMyPost={isMyPost}
-                                post={post}
-                                editPost={this.editPost}
-                                deletePost={this.deletePost}
-                                toggleFollow={this.toggleFollow}
-                                toggleSave={this.toggleSave}
-                                toggleBlock={this.toggleBlock}
+                    {!isPreview && (
+                        <Dropdownable
+                            className={"post-actions"}
+                            toggle={() => (
+                                <div className="post-actions-toggle">
+                                    <i className="fal fa-ellipsis-h"></i>
+                                </div>
+                            )}
+                            content={(dropdownActions) => (
+                                <PostActions
+                                    isMyPost={isMyPost}
+                                    post={post}
+                                    editPost={this.editPost}
+                                    deletePost={this.deletePost}
+                                    toggleFollow={this.toggleFollow}
+                                    toggleSave={this.toggleSave}
+                                    toggleBlock={this.toggleBlock}
 
-                                {...dropdownActions}
-                            />
+                                    {...dropdownActions}
+                                />
 
-                        )}
-                    />
+                            )}
+                        />
+
+                    )}
 
                 </div>
 
@@ -180,93 +183,95 @@ export class PostBox extends PureComponent {
 
                     )}
                 </div>
-                <div className="post-footer">
-                    {(reactions.toEmojiMap().length > 0 || commentsTotal > 0 || post.share_count > 0) && (
-                        <div className="statistic">
-                            <div className="reactions">
-                                {reactions.toEmojiMap().map(each => (
-                                    <Tooltip
-                                        // delay={500}
-                                        key={each.key}
-                                        className={"reaction-detail"}
-                                        text={() => (
-                                            <ReactionTooltip
-                                                type={each.reverse_key}
-                                                api={() => postApi.getPostReactionList(post._id, each.reverse_key, 0, 10)}
-                                            />
-                                        )}
-                                    >
+                {!isPreview && (
+                    <div className="post-footer">
+                        {(reactions.toEmojiMap().length > 0 || commentsTotal > 0 || post.share_count > 0) && (
+                            <div className="statistic">
+                                <div className="reactions">
+                                    {reactions.toEmojiMap().map(each => (
+                                        <Tooltip
+                                            // delay={500}
+                                            key={each.key}
+                                            className={"reaction-detail"}
+                                            text={() => (
+                                                <ReactionTooltip
+                                                    type={each.reverse_key}
+                                                    api={() => postApi.getPostReactionList(post._id, each.reverse_key, 0, 10)}
+                                                />
+                                            )}
+                                        >
                                      <span className="reaction"> <Emoji
                                          set={'facebook'}
                                          emoji={each.icon_config}
                                          size={20}
                                      /></span>
-                                    </Tooltip>
+                                        </Tooltip>
 
-                                ))}
-                                {reactionsLength > 1 && <span className="reaction-count"> {activeReaction &&  (
-                                    <span>Bạn và </span>
-                                )}
-                                    {activeReaction ? reactionsLength - 1 : reactionsLength}
-                                    {activeReaction && (
-                                        <span> người khác</span>
-                                    )}</span>}
+                                    ))}
+                                    {reactionsLength > 1 && <span className="reaction-count"> {activeReaction &&  (
+                                        <span>Bạn và </span>
+                                    )}
+                                        {activeReaction ? reactionsLength - 1 : reactionsLength}
+                                        {activeReaction && (
+                                            <span> người khác</span>
+                                        )}</span>}
 
-                            </div>
-                            <div className="count">
-                                {commentsTotal > 0 && (
-                                    <div className="count-box">
-                                        {commentsTotal} bình luận
-                                    </div>
-                                )}
-                                {post.share_count > 0 && (
-                                    <div className="count-box">
-                                        {post.share_count} lượt chia sẻ
-                                    </div>
-                                )}
-                            </div>
+                                </div>
+                                <div className="count">
+                                    {commentsTotal > 0 && (
+                                        <div className="count-box">
+                                            {commentsTotal} bình luận
+                                        </div>
+                                    )}
+                                    {post.share_count > 0 && (
+                                        <div className="count-box">
+                                            {post.share_count} lượt chia sẻ
+                                        </div>
+                                    )}
+                                </div>
 
-                        </div>
-                    )}
-
-                    <div className="post-user-actions">
-                        <div className={classnames("action react", {active: activeReaction})} onClick={() => this.react(activeReaction ? {off: activeReaction} : {on: REACTIONS.thump_up})}>
-                            <div className="post-reactions">
-                                <ReactionsWidget
-                                    onSelect={this.react}
-                                    active={activeReaction}
-                                />
-                            </div>
-                            <i className="fal fa-thumbs-up"></i>
-                            <span>Thích</span>
-                        </div>
-                        {!post.comment_disabled && (
-                            <div className="action" onClick={() => this.mainInput.focus()}>
-                                <i className="fal fa-comment"></i>
-                                <span>Bình luận</span>
-                            </div>
-                        )}
-                        {!post.block_share && (
-                            <div className="action" onClick={this.sharePost}>
-                                <i className="fal fa-share"></i>
-                                <span>Chia sẻ</span>
                             </div>
                         )}
 
+                        <div className="post-user-actions">
+                            <div className={classnames("action react", {active: activeReaction})} onClick={() => this.react(activeReaction ? {off: activeReaction} : {on: REACTIONS.thump_up})}>
+                                <div className="post-reactions">
+                                    <ReactionsWidget
+                                        onSelect={this.react}
+                                        active={activeReaction}
+                                    />
+                                </div>
+                                <i className="fal fa-thumbs-up"></i>
+                                <span>Thích</span>
+                            </div>
+                            {!post.comment_disabled && (
+                                <div className="action" onClick={() => this.mainInput.focus()}>
+                                    <i className="fal fa-comment"></i>
+                                    <span>Bình luận</span>
+                                </div>
+                            )}
+                            {!post.block_share && (
+                                <div className="action" onClick={this.sharePost}>
+                                    <i className="fal fa-share"></i>
+                                    <span>Chia sẻ</span>
+                                </div>
+                            )}
+
+                        </div>
+
+                        <CommentBox
+                            api={({skip, limit}) => postApi.getCommentsForPost(post._id, skip, limit).then(data => {
+                                this.setState({commentsTotal: data.total})
+                                return data;
+                            })}
+                            post={post}
+                            onAddComment={() => this.setState({commentsTotal: commentsTotal + 1})}
+                            commentsTotal={commentsTotal}
+                            inputRef={mainInput => this.mainInput = mainInput}
+                            onDeleteComment={() => this.setState({commentsTotal: commentsTotal - 1})}
+                        />
                     </div>
-
-                    <CommentBox
-                        api={({skip, limit}) => postApi.getCommentsForPost(post._id, skip, limit).then(data => {
-                            this.setState({commentsTotal: data.total})
-                            return data;
-                        })}
-                        post={post}
-                        onAddComment={() => this.setState({commentsTotal: commentsTotal + 1})}
-                        commentsTotal={commentsTotal}
-                        inputRef={mainInput => this.mainInput = mainInput}
-                        onDeleteComment={() => this.setState({commentsTotal: commentsTotal - 1})}
-                    />
-                </div>
+                )}
             </div>
         );
     }

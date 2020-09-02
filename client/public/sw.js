@@ -242,6 +242,10 @@ var exceptionRequestsDev = [
     method: 'DELETE',
   },
   {
+    endpoint: /https:\/\/localhost:4000\/api\/post\/detail\/post\/\w+/,
+    method: 'GET',
+  },
+  {
     endpoint: /https:\/\/localhost:4000\/api\/listing\/create-listing/,
     method: 'POST',
   },
@@ -264,8 +268,8 @@ var notGetRequests = [
   },
 ];
 
-var CACHE_STATIC_NAME = 'static-v1599043523311';
-var CACHE_DYNAMIC_NAME = 'dynamic-v1599043523311';
+var CACHE_STATIC_NAME = 'static-v1599048257101';
+var CACHE_DYNAMIC_NAME = 'dynamic-v1599048257101';
 
 var STATIC_FILES = [
   '/',
