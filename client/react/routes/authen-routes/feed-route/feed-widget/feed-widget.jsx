@@ -58,6 +58,7 @@ export class FeedWidget extends Component {
         this.props.onChange([post].concat(this.props.posts))
     }
 
+
     changePost = (postID, post, index) => {
         let newPosts = [...this.props.posts];
         // console.log(newPosts)
@@ -81,6 +82,7 @@ export class FeedWidget extends Component {
                     posts={posts}
                     onChangePost={this.changePost}
                     onDeletePost={this.deletePost}
+                    onAddPost={this.appendNewPost}
                     onUpdatePost={this.updatePost}
                 />
                 {loading && (

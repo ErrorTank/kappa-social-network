@@ -242,6 +242,10 @@ var exceptionRequestsDev = [
     method: 'DELETE',
   },
   {
+    endpoint: /https:\/\/localhost:4000\/api\/post\/detail\/post\/\w+/,
+    method: 'GET',
+  },
+  {
     endpoint: /https:\/\/localhost:4000\/api\/listing\/create-listing/,
     method: 'POST',
   },

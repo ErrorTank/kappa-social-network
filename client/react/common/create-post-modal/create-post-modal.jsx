@@ -72,7 +72,7 @@ class CreatePostModal extends Component {
             selected: null,
             stepIndex: 0,
             comment_disabled: props.data?.comment_disabled || false,
-            block_share: props.data?.block_share || false
+            block_share: props.data?.block_share || false,
         }
 
     }
@@ -97,6 +97,7 @@ class CreatePostModal extends Component {
                     policy: policy.value,
                     files: newFiles,
                     tagged: tagged.map(each => each._id),
+                    shared_post: this.props.postID,
                     ...transformEditorState(convertToRaw(editorState.getCurrentContent()))
                 };
 
