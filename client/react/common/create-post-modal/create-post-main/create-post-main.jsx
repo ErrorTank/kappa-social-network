@@ -202,6 +202,7 @@ export class CreatePostMain extends Component {
                     <div className="cpm-body">
                         {!!this.props.files.length && (
                             <FilesPreview
+
                                 files={this.props.files}
                                 removeAll={() => this.props.onChange({files: []})}
                                 toFilesTab={this.props.toFilesTab}
@@ -226,7 +227,7 @@ export class CreatePostMain extends Component {
                                                 ref={(element) => {
                                                     this.editor = element;
                                                 }}
-                                                placeholder={`${user.basic_info.username} ơi, bạn đang nghĩ gì thế?`}
+                                                placeholder={isShare ? `Bình luận về bài đăng này...` :`${user.basic_info.username} ơi, bạn đang nghĩ gì thế?`}
 
                                             />
                                             <MentionSuggestions

@@ -21,6 +21,7 @@ import {CommentBox} from "./comment-box/comment-box";
 import createMentionEntities from "../../../common/utils/mention-utils";
 import { EditorState,} from 'draft-js';
 import {PostActions} from "./post-actions";
+import {SharePostDisplay} from "../share-post-display/share-post-display";
 moment.locale("vi");
 
 export class PostBox extends PureComponent {
@@ -42,6 +43,10 @@ export class PostBox extends PureComponent {
         createPostModal.open({
             isShare: true,
             postID: post.shared_post || post._id
+        }).then((p) => {
+            if(p){
+                this.props.onSharePost(p)
+            }
         });
     }
 
@@ -69,7 +74,11 @@ export class PostBox extends PureComponent {
                 comment_disabled: post.comment_disabled,
                 block_share: post.block_share
             }
-        }).then(p => onChangePost(p))
+        }).then(p => {
+            if(p){
+                onChangePost(p)
+            }
+        })
     }
 
     toggleFollow = () => {
@@ -169,6 +178,7 @@ export class PostBox extends PureComponent {
                     {!!post.files.length && (
                         <PbFilesPreview
                             post={post}
+                            isPreview={isPreview}
                             onChangePost={onChangePost}
                         />
                     )}
@@ -182,7 +192,16 @@ export class PostBox extends PureComponent {
 
 
                     )}
+                    {!isPreview && post.shared_post && (
+                        <div className="post-share">
+                            <SharePostDisplay
+                                postID={post.shared_post}
+                            />
+                        </div>
+
+                    )}
                 </div>
+
                 {!isPreview && (
                     <div className="post-footer">
                         {(reactions.toEmojiMap().length > 0 || commentsTotal > 0 || post.share_count > 0) && (
