@@ -3,7 +3,7 @@ const router = express.Router();
 const {authorizationUserMiddleware} = require('../common/middlewares/common');
 const {createNewPost, getAllPosts, updateFilesInPost, updatePost, updatePostReaction, getPostReactionByReactionKey,
     getPostComments, createNewCommentForPost, updatePostCommentReaction, createCommentReply, getCommentReplies, deleteComment, deletePost, deleteReply, updateComment} = require("../db/db-controllers/post");
-const {getUserBasicInfo} = require('../db/db-controllers/user');
+const {toggleFollowPost, toggleSavePost, toggleBlockPost} = require('../db/db-controllers/user');
 const {MessageState} = require('../common/const/message-state');
 const {fileUploader} = require('../common/upload-services/file-upload');
 const mongoose = require('mongoose');
@@ -95,6 +95,36 @@ module.exports = (db, namespacesIO) => {
         return updatePost({
             ...req.params,
             ...req.body
+        }).then((data) => {
+            return res.status(200).json(data);
+        })
+            .catch((err) => next(err));
+
+    })
+    router.put("/toggle-follow/post/:postID", authorizationUserMiddleware, (req, res, next) => {
+        return toggleFollowPost({
+            ...req.params,
+            userID: req.user._id
+        }).then((data) => {
+            return res.status(200).json(data);
+        })
+            .catch((err) => next(err));
+
+    })
+    router.put("/toggle-save/post/:postID", authorizationUserMiddleware, (req, res, next) => {
+        return toggleSavePost({
+            ...req.params,
+            userID: req.user._id
+        }).then((data) => {
+            return res.status(200).json(data);
+        })
+            .catch((err) => next(err));
+
+    })
+    router.put("/toggle-block/post/:postID", authorizationUserMiddleware, (req, res, next) => {
+        return toggleBlockPost({
+            ...req.params,
+            userID: req.user._id
         }).then((data) => {
             return res.status(200).json(data);
         })

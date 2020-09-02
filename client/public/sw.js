@@ -214,6 +214,18 @@ var exceptionRequestsDev = [
     method: 'POST',
   },
   {
+    endpoint: /https:\/\/localhost:4000\/api\/post\/toggle-follow\/post\/\w+/,
+    method: 'PUT',
+  },
+  {
+    endpoint: /https:\/\/localhost:4000\/api\/post\/toggle-block\/post\/\w+/,
+    method: 'PUT',
+  },
+  {
+    endpoint: /https:\/\/localhost:4000\/api\/post\/toggle-save\/post\/\w+/,
+    method: 'PUT',
+  },
+  {
     endpoint: /https:\/\/localhost:4000\/api\/post\/create-reply\/comment\/\w+/,
     method: 'POST',
   },
@@ -233,6 +245,10 @@ var exceptionRequestsDev = [
     endpoint: /https:\/\/localhost:4000\/api\/listing\/create-listing/,
     method: 'POST',
   },
+  {
+    endpoint: /https:\/\/localhost:4000\/api\/listing\/get-listing/,
+    method: 'GET',
+  },
 ];
 
 var notGetRequests = [
@@ -248,8 +264,8 @@ var notGetRequests = [
   },
 ];
 
-var CACHE_STATIC_NAME = 'static-v1598935059692';
-var CACHE_DYNAMIC_NAME = 'dynamic-v1598935059692';
+var CACHE_STATIC_NAME = 'static-v1599021787547';
+var CACHE_DYNAMIC_NAME = 'dynamic-v1599021787547';
 
 var STATIC_FILES = [
   '/',

@@ -32,7 +32,9 @@ export class Dropdownable extends Component {
                                             <div className="arrow"/>
 
                                         )}
-                                        {content()}
+                                        {content({
+                                            close: () => this.setState({show: false})
+                                        })}
                                     </div>
 
                                 </div>

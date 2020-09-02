@@ -20,6 +20,7 @@ import {ReactionTooltip} from "./reaction-tooltip";
 import {CommentBox} from "./comment-box/comment-box";
 import createMentionEntities from "../../../common/utils/mention-utils";
 import { EditorState,} from 'draft-js';
+import {PostActions} from "./post-actions";
 moment.locale("vi");
 
 export class PostBox extends PureComponent {
@@ -63,54 +64,37 @@ export class PostBox extends PureComponent {
         }).then(p => onChangePost(p))
     }
 
+    toggleFollow = () => {
+        let {post} = this.props;
+        postApi.toggleFollowPost(post._id)
+            .then(({followed_posts}) => {
+                userFollowedPosts.setState(followed_posts);
+            })
+    }
+
+    toggleSave = () => {
+        let {post} = this.props;
+        postApi.toggleSavedPost(post._id)
+            .then(({saved_posts}) => {
+                userSavedPosts.setState(saved_posts);
+            })
+    }
+
+    toggleBlock = () => {
+        let {post, onDeletePost} = this.props;
+        postApi.toggleBlockPost(post._id)
+            .then(({blocked_posts}) => {
+                userBlockedPosts.setState(blocked_posts);
+                onDeletePost();
+            })
+    }
+
     render() {
         let {commentsTotal} = this.state;
         let {post, isMyPost, onChangePost} = this.props;
-        let blockedPosts = userBlockedPosts.getState();
-        let savedPosts = userSavedPosts.getState();
-        let followedPosts = userFollowedPosts.getState();
-        let isSaved = savedPosts.find(each => each === post._id);
-        let isFollowed = followedPosts.find(each => each === post._id);
-        let isBlocked = blockedPosts.find(each => each === post._id);
-        let postActions = [
-            {
-                icon: <i className="fal fa-bookmark"></i>,
-                label: () => "Lưu bài viết",
-                condition: () => !isSaved
-            }, {
-                icon: (<><i className="fal fa-bookmark"></i><i className="fal fa-slash"></i></>),
-                label: () => "Bỏ lưu bài viết",
-                condition: () => isSaved
-            }, {
-                icon: <i className="fal fa-pen"></i>,
-                label: () => "Chỉnh sửa bài viết",
-                condition: () => isMyPost,
-                onClick: this.editPost
 
-            }, {
-                icon: <i className="fal fa-trash-alt"></i>,
-                label: () => "Xóa bài viết",
-                condition: () => isMyPost,
-                onClick: this.deletePost
-            }, {
-                icon: <i className="fal fa-map-marker-times"></i>,
-                label: (item) => `Chặn bài viết từ ${item.basic_info.name}`,
-                condition: (item) => item.belonged_group || item.belonged_page
-            }, {
-                icon: <i className="fal fa-bell"></i>,
-                label: () => `Bật thông báo cho bài viết`,
-                condition: () => !isFollowed
-            }, {
-                icon: (<><i className="fal fa-bell"></i><i className="fal fa-slash"></i></>),
-                label: () => `Ẩn thông báo từ bài viết`,
-                condition: () => isFollowed
-            }, {
-                icon: <i className="fal fa-times-square"></i>,
-                label: () => "Ẩn bài viết",
-                condition: () => !isBlocked
 
-            },
-        ]
+
         let reactions = sortReactions(post.reactions);
         let user = userInfo.getState();
         let activeReaction = getActiveReaction(user._id, post.reactions);
@@ -147,17 +131,18 @@ export class PostBox extends PureComponent {
                                 <i className="fal fa-ellipsis-h"></i>
                             </div>
                         )}
-                        content={() => (
-                            <div className={"post-actions-dropdown"}>
-                                {postActions.map((each, i) => (isNil(each.condition) ? true : each.condition?.(each)) ? (
-                                    <div className="setting-row" key={i} onClick={each.onClick}>
-                                        <div className="icon-wrapper">
-                                            {each.icon}
-                                        </div>
-                                        <div className="label">{each.label(each)}</div>
-                                    </div>
-                                ) : null)}
-                            </div>
+                        content={(dropdownActions) => (
+                            <PostActions
+                                isMyPost={isMyPost}
+                                post={post}
+                                editPost={this.editPost}
+                                deletePost={this.deletePost}
+                                toggleFollow={this.toggleFollow}
+                                toggleSave={this.toggleSave}
+                                toggleBlock={this.toggleBlock}
+
+                                {...dropdownActions}
+                            />
 
                         )}
                     />

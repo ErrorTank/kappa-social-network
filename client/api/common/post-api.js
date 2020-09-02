@@ -51,5 +51,14 @@ export const postApi = {
     },
     updateComment(commentID, comment){
         return authenApi.put(`/post/update-comment/comment/${commentID}`, {comment})
-    }
+    },
+    toggleFollowPost(postID){
+        return authenApi.put(`/post/toggle-follow/post/${postID}`)
+    },
+    toggleBlockPost(postID){
+        return authenApi.put(`/post/toggle-block/post/${postID}`)
+    },
+    toggleSavedPost(postID){
+        return authenApi.put(`/post/toggle-save/post/${postID}`)
+    },
 };

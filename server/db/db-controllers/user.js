@@ -313,6 +313,84 @@ const getUserBasicInfo = userID => {
     return User.findOne({_id: ObjectId(userID)}, "_id basic_info avatar").lean()
 }
 
+const toggleFollowPost = ({postID, userID}) => {
+    return User.findOne({
+        _id: ObjectId(userID)
+    }).lean()
+        .then(user => {
+            let query = user.followed_posts.find(each => each._id.toString() === postID) ? {
+                $pull: {
+                    followed_posts: ObjectId(postID)
+                }
+            } : {
+                $addToSet: {
+                    followed_posts: ObjectId(postID)
+                }
+            };
+            return User.findOneAndUpdate({
+                _id: ObjectId(userID)
+            }, query, {
+                new: true
+            }).lean()
+
+        })
+        .then(u => ({
+            followed_posts: u.followed_posts
+        }))
+}
+
+const toggleSavePost = ({postID, userID}) => {
+    return User.findOne({
+        _id: ObjectId(userID)
+    }).lean()
+        .then(user => {
+            let query = user.saved_posts.find(each => each._id.toString() === postID) ? {
+                $pull: {
+                    saved_posts: ObjectId(postID)
+                }
+            } : {
+                $addToSet: {
+                    saved_posts: ObjectId(postID)
+                }
+            };
+            return User.findOneAndUpdate({
+                _id: ObjectId(userID)
+            }, query, {
+                new: true
+            }).lean()
+
+        })
+        .then(u => ({
+            saved_posts: u.saved_posts
+        }))
+}
+
+const toggleBlockPost = ({postID, userID}) => {
+    return User.findOne({
+        _id: ObjectId(userID)
+    }).lean()
+        .then(user => {
+            let query = user.blocked_posts.find(each => each._id.toString() === postID) ? {
+                $pull: {
+                    blocked_posts: ObjectId(postID)
+                }
+            } : {
+                $addToSet: {
+                    blocked_posts: ObjectId(postID)
+                }
+            };
+            return User.findOneAndUpdate({
+                _id: ObjectId(userID)
+            }, query, {
+                new: true
+            }).lean()
+
+        })
+        .then(u => ({
+            blocked_posts: u.blocked_posts
+        }))
+}
+
 module.exports = {
     getAuthenticateUserInitCredentials,
     login,
@@ -326,5 +404,8 @@ module.exports = {
     updateSearchHistory,
     shortLogin,
     simpleUpdateUser,
-    getUserBasicInfo
+    getUserBasicInfo,
+    toggleFollowPost,
+    toggleSavePost,
+    toggleBlockPost
 };
