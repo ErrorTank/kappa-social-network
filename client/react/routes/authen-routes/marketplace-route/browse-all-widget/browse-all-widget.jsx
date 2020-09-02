@@ -6,11 +6,15 @@ import { MarketplaceSearchSection } from './marketplace-search-section/marketpla
 import { MarketplaceMenuSection } from './marketplace-menu-section/marketplace-menu-section';
 import { CategoriesSection } from './categories-section/categories-section';
 import { MarketplaceFilterSection } from './marketplace-filter-section/marketplace-filter-section';
+import { categoryApi } from './../../../../../api/common/category-api';
 
 export class BrowseAllWidget extends Component {
   constructor(props) {
     super(props);
     this.state = {};
+    categoryApi.getCategory({}).then((e) => {
+      console.log(e);
+    });
   }
   browseAllMenu = [
     {
@@ -39,7 +43,6 @@ export class BrowseAllWidget extends Component {
               menuNavigation={this.browseAllMenu}
             />
             <MarketplaceFilterSection />
-            <div className='line-seperate'></div>
             <CategoriesSection darkMode={darkMode} />
           </div>
         )}
