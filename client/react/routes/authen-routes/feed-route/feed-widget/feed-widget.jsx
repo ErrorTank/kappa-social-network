@@ -72,13 +72,14 @@ export class FeedWidget extends Component {
     }
 
     render() {
-        let {posts, loading, needReloaded, onReload} = this.props;
+        let {posts, loading, needReloaded, onReload, observer} = this.props;
         return (
             <div className="feed-widget">
                 <PostCreationBox
                     onCreatePost={this.appendNewPost}
                 />
                 <FeedList
+                    observer={observer}
                     posts={posts}
                     onChangePost={this.changePost}
                     onDeletePost={this.deletePost}

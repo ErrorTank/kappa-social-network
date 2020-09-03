@@ -15,6 +15,7 @@ import {Tooltip} from "../../../../common/tooltip/tooltip";
 import moment from "moment";
 import {HyperLink} from "../../create-message-widget/chat-box/message-section/hyper-link";
 import {isImageFile} from "../../../../../common/utils/file-upload-utils";
+import ReactDOM from "react-dom";
 
 export class ChatBoxList extends Component {
     constructor(props) {
@@ -39,6 +40,7 @@ export class ChatBoxList extends Component {
 
     }
 
+
     render() {
         let {chat_rooms, fetching} = this.state;
         let {unseen} = this.props;
@@ -54,6 +56,7 @@ export class ChatBoxList extends Component {
                         this.fetchUserChatRooms();
 
                     }}
+
 
                 >
                     {() => (

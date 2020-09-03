@@ -57,6 +57,20 @@ class FeedRoute extends Component {
 
         }
     }, 500)
+    handleObserver = (entries) => {
+        entries.forEach(entry => {
+            console.log(entry.intersectionRatio)
+        })
+    }
+
+    componentDidMount() {
+        let root = ReactDOM.findDOMNode(this).getElementsByClassName("feed-infinite")[0];
+        this.observer = new IntersectionObserver(this.handleObserver, {
+            root,
+            threshold: [0.2, 0],
+            rootMargin: "0px"
+        });
+    }
 
     render() {
         let {posts, fetching, needReloaded} = this.state;
@@ -83,6 +97,7 @@ class FeedRoute extends Component {
                                 )}
                                 mainRender={() => (
                                     <FeedWidget
+                                        observer={this.observer}
                                         posts={posts}
                                         onChange={posts => this.setState({posts})}
                                         loading={fetching}
