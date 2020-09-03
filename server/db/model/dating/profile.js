@@ -15,7 +15,7 @@ const profileSchema = new Schema({
       { url : String, 
         order : Number
       }],
-      require : true
+      default: []
   },
   birthday : {
       type: Date,
@@ -103,7 +103,7 @@ const profileSchema = new Schema({
       fromNumber : Number,
       toNumber : Number
     },
-    ecucationLevel : {
+    educationLevel : {
       type : String,
       enum : [" NO PREFERENCE", "A-LEVELS,HIGHERS OR EQUIVALENT", "BACHELORS DEGREE", "UNIVERSITY(POSTGRADUATE) DEGREE"],
       default : "NO PREFERENCE"
@@ -131,8 +131,11 @@ const profileSchema = new Schema({
     ],
     default : []
   }
-  
-
+  ,
+  root_user: {
+    type: ObjectId,
+    ref:"User"
+  }
  
 });
 
