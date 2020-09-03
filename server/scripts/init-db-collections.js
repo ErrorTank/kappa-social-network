@@ -13,6 +13,10 @@ const initDbCollections = (appDb) => {
   const Listing = require('../db/model/marketplace/listing')(appDb);
   const Category = require('../db/model/marketplace/category')(appDb);
   const Comment = require('../db/model/comment')(appDb);
+  const Profile = require('../db/model/dating/profile')(appDb);
+  const Mapping = require('../db/model/dating/mapping')(appDb);
+  const ChatBox = require('../db/model/dating/chatbox')(appDb);
+  const Match = require('../db/model/dating/match')(appDb);
   // Comment.updateMany({}, {$set: {replies: []}}).then(() => console.log("cac"))
   // ChatRoom.deleteMany({}).then(() => console.log("cac"))
   // User.updateMany({}, {$set: {saved_posts: []}}).then(() => console.log("cac"))
@@ -23,6 +27,7 @@ const initDbCollections = (appDb) => {
     City,
     Ward,
     District,
+    Mapping
   });
 };
 

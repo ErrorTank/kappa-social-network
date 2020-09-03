@@ -4,25 +4,32 @@ const Schema = mongoose.Schema;
 
 const mappingSchema = new Schema({
     distance :{
-        type: Number
+        type: Number,
+        default: 2
     },
     gender :{
-        type : Number
+        type : Number,
+        default: 2
     },
     ageRange :{
-        type : Number
+        type : Number,
+        default: 2
     },
     heightRange :{
-        type : Number
+        type : Number,
+        default: 2
     },
-    ecucationLevel : {
-        type : Number
+    educationLevel : {
+        type : Number,
+        default: 2
     },
     theirKids :{
-        type : Number
+        type : Number,
+        default: 2
     },
     religion : {
-        type : Number
+        type : Number,
+        default: 2
     }
 
 

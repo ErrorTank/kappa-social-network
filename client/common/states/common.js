@@ -7,6 +7,7 @@ export const userChatSettings = createStateHolder();
 export const userFollowedPosts = createStateHolder([]);
 export const userSavedPosts = createStateHolder([]);
 export const userBlockedPosts = createStateHolder([]);
+export const datingProfile = createStateHolder({});
 
 userInfo.onChange((nextState) => {
     clearAllData("user-info");

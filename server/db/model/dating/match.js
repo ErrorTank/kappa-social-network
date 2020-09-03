@@ -3,8 +3,14 @@ const ObjectId = mongoose.Schema.Types.ObjectId;
 const Schema = mongoose.Schema;
 
 const matchSchema = new Schema({
-  user1 : ObjectId,
-  user2 : ObjectId
+  user1 : {
+    type: ObjectId,
+    ref:"Profile"
+  },
+  user2 : {
+    type: ObjectId,
+    ref:"Profile"
+  },
 
 })
 

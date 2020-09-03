@@ -20,6 +20,7 @@ import { ThemeContext, ThemeController } from '../context/theme-context';
 const DatingRoute = lazy(
   delayLoad(() => import('./authen-routes/dating-route/dating-route'))
 );
+
 const FeedRoute = lazy(
   delayLoad(() => import('./authen-routes/feed-route/feed-route'))
 );
@@ -61,7 +62,10 @@ const GlobalSearchResult = lazy(
   delayLoad(() =>
     import('./authen-routes/global-search-result/global-search-result')
   )
+
 );
+
+
 export const NotificationStateContext = React.createContext();
 
 class MainRoute extends React.Component {
@@ -136,8 +140,11 @@ class MainRoute extends React.Component {
                     {...layoutProps}
                     path={'/dating'}
                     exact
-                    render={(props) => <DatingRoute {...props} />}
+                    render={(props) =>
+                      <DatingRoute {...props} />
+                    }
                   />
+                 
                 </CustomSwitch>
               )}
             </WithRouterKappaLayout>

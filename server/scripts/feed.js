@@ -269,12 +269,19 @@ const feedPageCategory = (PageCategory) => {
 };
 
 
+const feedMapping = (Mapping) => {
+    new Mapping({
 
-module.exports = ({PageCategory, District, Ward, City}) => {
+    }).save().then(() => console.log("cac"))
+}
+
+
+module.exports = ({PageCategory, District, Ward, City, Mapping}) => {
     return Promise.all([
         // feedPageCategory(PageCategory),
         // feedDistrict(District),
         // feedWard(Ward),
-        // feedCity(City)
+        // feedCity(City),
+        // feedMapping(Mapping)
     ])
 };

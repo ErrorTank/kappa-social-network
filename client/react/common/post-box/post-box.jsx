@@ -2,7 +2,7 @@ import React, {PureComponent, Fragment} from 'react';
 import {Dropdownable} from "../dropdownable/dropdownable";
 import {Avatar} from "../avatar/avatar";
 import isNil from "lodash/isNil"
-import moment from "moment";
+
 import {createPostModal, PostPolicies, PostPoliciesMAP} from "../create-post-modal/create-post-modal";
 import {getRenderableContentFromMessage} from "../../../common/utils/editor-utils";
 import {PbFilesPreview} from "./files-preview";
@@ -22,13 +22,27 @@ import createMentionEntities from "../../../common/utils/mention-utils";
 import { EditorState,} from 'draft-js';
 import {PostActions} from "./post-actions";
 import {SharePostDisplay} from "../share-post-display/share-post-display";
-moment.locale("vi");
+import ReactDOM from "react-dom";
+import {LastActive, } from "../use-last-active";
+import {feedPostIO, } from "../../../socket/sockets";
+
+
+
 
 export class PostBox extends PureComponent {
     constructor(props) {
         super(props);
         this.state = {
             commentsTotal: 0,
+        }
+        this.isJoinRoom = false;
+        if(!props.isPreview){
+            this.io = feedPostIO.getIOInstance();
+            if(!props.isMyPost){
+                this.io.on("edit-post", newPost => {
+                    props.onChangePost(newPost)
+                })
+            }
         }
     }
 
@@ -106,6 +120,60 @@ export class PostBox extends PureComponent {
             })
     }
 
+    handleObserver = (entries) => {
+        let elem = entries[0];
+
+        let {post, isMyPost} = this.props;
+        if(elem.intersectionRatio >= 0.1 && !this.isJoinRoom){
+
+
+            this.isJoinRoom = true;
+            this.io.emit("join-post-room", {
+                userID: userInfo.getState()._id,
+                postID: post._id,
+            });
+
+
+        }
+
+
+
+    }
+
+    componentDidMount() {
+        let {isPreview} = this.props
+        if(!isPreview){
+            let root = document.getElementsByClassName("feed-infinite")[0];
+            this.observer = new IntersectionObserver(this.handleObserver, {
+                root,
+                threshold: 0.1,
+                rootMargin: "0px"
+            });
+            this.observer.observe(ReactDOM.findDOMNode(this))
+
+        }
+
+
+    }
+
+    unsubscribeIO = () => {
+        if(this.io){
+            this.io.emit("leave-post-room", {
+                userID: userInfo.getState()._id,
+                postID: this.props.post._id,
+            });
+            this.io.off("edit-post");
+        }
+    }
+
+    componentWillUnmount() {
+        if(this.observer){
+            this.observer.disconnect();
+        }
+        this.unsubscribeIO();
+    }
+
+
     render() {
         let {commentsTotal} = this.state;
         let {post, isMyPost, onChangePost, isPreview} = this.props;
@@ -138,7 +206,7 @@ export class PostBox extends PureComponent {
                             )}
                         </div>
                         <div className="timer">
-                            <span className="policy">{PostPolicies.find(each => each.value === post.policy).icon}</span> - <span className="last-active">{moment(post.created_at).fromNow()}</span>
+                            <span className="policy">{PostPolicies.find(each => each.value === post.policy).icon}</span> - <span className="last-active"><LastActive lastActive={post.created_at}/></span>
                         </div>
                     </div>
                     {!isPreview && (

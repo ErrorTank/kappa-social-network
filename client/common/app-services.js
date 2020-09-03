@@ -8,7 +8,7 @@ import {
     userSearchHistory
 } from "./states/common";
 import omit from "lodash/omit";
-import {messengerIO} from "../socket/sockets";
+import {feedPostIO, messengerIO} from "../socket/sockets";
 import {messengerApi} from "../api/common/messenger-api";
 import {messageWidgetController} from "../react/layout/authen-layout/create-message-widget/create-message-widget";
 import {CALL_TYPES, callServices} from "./call-services/call-services";
@@ -26,6 +26,7 @@ const initializeAuthenticateUser = ({userInfo: uInfo, authToken}) => {
         userFollowedPosts.setState(uInfo.followed_posts),
         userSavedPosts.setState(uInfo.saved_posts),
         userBlockedPosts.setState(uInfo.blocked_posts),
+        feedPostIO.connect({token: authToken}),
         messengerIO.connect({token: authToken})
             .then((messengerIO) => {
 
@@ -125,6 +126,7 @@ const clearAuthenticateUserSession = () => {
 
             authenCache.clearAuthen();
             messengerIO.disconnect();
+            feedPostIO.disconnect();
             return Promise.all([
                 userInfo.setState(null),
                 userSearchHistory.setState([]),
