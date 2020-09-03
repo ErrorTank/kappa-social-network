@@ -37,17 +37,16 @@ export default class DatingRoute extends Component {
         let {profile} = this.state;
         return (
             <div className="dating-route">
-                   
-            {profile ? (
-                 <PageTitle
-                 title={"Hẹn hò"}
-             >
+                {profile ? (
+                    <PageTitle
+                    title={"Hẹn hò"}
+            >
                 
-             </PageTitle>
-            ) : (
-                <DatingRegister/>
-            )}
-        </div>
+                    </PageTitle>
+                ) : (
+                    <DatingRegister/>
+                )}
+            </div>
             
         )
     }
