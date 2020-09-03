@@ -58,6 +58,7 @@ export class FeedWidget extends Component {
         this.props.onChange([post].concat(this.props.posts))
     }
 
+
     changePost = (postID, post, index) => {
         let newPosts = [...this.props.posts];
         // console.log(newPosts)
@@ -71,16 +72,18 @@ export class FeedWidget extends Component {
     }
 
     render() {
-        let {posts, loading, needReloaded, onReload} = this.props;
+        let {posts, loading, needReloaded, onReload, observer} = this.props;
         return (
             <div className="feed-widget">
                 <PostCreationBox
                     onCreatePost={this.appendNewPost}
                 />
                 <FeedList
+                    observer={observer}
                     posts={posts}
                     onChangePost={this.changePost}
                     onDeletePost={this.deletePost}
+                    onAddPost={this.appendNewPost}
                     onUpdatePost={this.updatePost}
                 />
                 {loading && (

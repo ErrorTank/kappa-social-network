@@ -58,6 +58,7 @@ class FeedRoute extends Component {
         }
     }, 500)
 
+
     render() {
         let {posts, fetching, needReloaded} = this.state;
 
@@ -83,6 +84,7 @@ class FeedRoute extends Component {
                                 )}
                                 mainRender={() => (
                                     <FeedWidget
+                                        observer={this.observer}
                                         posts={posts}
                                         onChange={posts => this.setState({posts})}
                                         loading={fetching}

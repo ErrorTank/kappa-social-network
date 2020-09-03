@@ -32,5 +32,6 @@ const createAppIO = (namespace) => {
 };
 
 export const messengerIO = createAppIO(process.env.API_URI + "/messenger");
+export const feedPostIO = createAppIO(process.env.API_URI + "/feed-post");
 
 

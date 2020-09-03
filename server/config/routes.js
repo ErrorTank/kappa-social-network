@@ -26,5 +26,9 @@ module.exports = (db, namespacesIO) => {
     '/api/listing',
     require('../controllers/listing-controller')(db, namespacesIO)
   );
+  router.use(
+    '/api/category',
+    require('../controllers/category-controller')(db, namespacesIO)
+  );
   return router;
 };

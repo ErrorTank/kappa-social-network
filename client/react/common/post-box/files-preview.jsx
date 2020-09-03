@@ -17,13 +17,13 @@ export class PbFilesPreview extends Component {
     };
 
     render() {
-        let {post} = this.props;
+        let {post, isPreview} = this.props;
         let {files} = post;
         return (
             <div className="pb-files-preview">
                 <div className={classnames("pb-list", `list-${files.length < 6 ? files.length : 5 }`)}>
                     {files.slice(0, 5).map((each, i) => (
-                        <div className={classnames("file-preview", `pic-${i + 1}`)} key={each._id} onClick={() => this.openPostFilesPreviewModal(each)}>
+                        <div className={classnames("file-preview", `pic-${i + 1}`)} key={each._id} onClick={() => !isPreview && this.openPostFilesPreviewModal(each)}>
                             {files.length > 5 && i === 4 && (
                                 <div className="count-overlay">
                                     <span>{files.length - 5} +</span>

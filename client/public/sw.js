@@ -242,11 +242,19 @@ var exceptionRequestsDev = [
     method: 'DELETE',
   },
   {
+    endpoint: /https:\/\/localhost:4000\/api\/post\/detail\/post\/\w+/,
+    method: 'GET',
+  },
+  {
     endpoint: /https:\/\/localhost:4000\/api\/listing\/create-listing/,
     method: 'POST',
   },
   {
     endpoint: /https:\/\/localhost:4000\/api\/listing\/get-listing/,
+    method: 'GET',
+  },
+  {
+    endpoint: /https:\/\/localhost:4000\/api\/category\/get-category/,
     method: 'GET',
   },
 ];
@@ -264,8 +272,13 @@ var notGetRequests = [
   },
 ];
 
-var CACHE_STATIC_NAME = 'static-v1599128322946';
-var CACHE_DYNAMIC_NAME = 'dynamic-v1599128322946';
+<<<<<<< HEAD
+var CACHE_STATIC_NAME = 'static-v1599128609941';
+var CACHE_DYNAMIC_NAME = 'dynamic-v1599128609941';
+=======
+var CACHE_STATIC_NAME = 'static-v1599120322199';
+var CACHE_DYNAMIC_NAME = 'dynamic-v1599120322199';
+>>>>>>> 3356e80dbce58360755bfd4039a1c29da92ee2e4
 
 var STATIC_FILES = [
   '/',
