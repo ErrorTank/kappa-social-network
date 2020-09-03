@@ -16,7 +16,7 @@ let categories = [
   // },
   // {
   //   _id: new ObjectId(),
-  //   name: 'Nhà & Vườn',
+  //   name: 'Nhà & vườn',
   //   parent: null,
   //   requiredField: [],
   // },

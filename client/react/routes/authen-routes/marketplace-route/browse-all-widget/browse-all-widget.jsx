@@ -7,13 +7,31 @@ import { MarketplaceMenuSection } from './marketplace-menu-section/marketplace-m
 import { CategoriesSection } from './categories-section/categories-section';
 import { MarketplaceFilterSection } from './marketplace-filter-section/marketplace-filter-section';
 import { categoryApi } from './../../../../../api/common/category-api';
+import { itemField } from './../../../../../const/listing';
 
 export class BrowseAllWidget extends Component {
   constructor(props) {
     super(props);
     this.state = {};
     categoryApi.getCategory({}).then((e) => {
-      console.log(e);
+      let itemInfo = itemField.find((e) => e.englishName === 'category');
+      let itemIcon = itemInfo.options.filter((e) => e.icon);
+      console.log(itemIcon);
+      let categoryDisplay = e.map((category) => {
+        let checkIcon = itemIcon.find((e) => e.name === category.name);
+        // console.log(checkIcon);
+        if (checkIcon && checkIcon.icon) {
+          return {
+            ...category,
+            icon: checkIcon.icon,
+          };
+        } else {
+          return category;
+        }
+      });
+      //should use reduce to map and filter to get icon only maybe
+      // console.log(categoryDisplay);
+      // console.log(e);
     });
   }
   browseAllMenu = [

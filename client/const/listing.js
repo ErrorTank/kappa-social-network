@@ -52,7 +52,7 @@ export let itemField = [
         name: 'Sách, phim & nhạc',
       },
       {
-        name: 'Quần áo và phụ kiện',
+        name: 'Quần áo & phụ kiện',
         icon: 'fas fa-backpack',
       },
       {
@@ -116,7 +116,7 @@ export let itemField = [
         name: 'Nhạc cụ',
       },
       {
-        name: 'Đồ cổ và bộ sưu tập',
+        name: 'Đồ cổ & bộ sưu tập',
       },
       {
         name: 'Rao vặt',
@@ -127,7 +127,7 @@ export let itemField = [
         name: 'Thanh lý đồ cũ',
       },
       {
-        name: 'hỗn hợp',
+        name: 'Hỗn hợp',
       },
       {
         name: 'Phương tiện',
@@ -380,7 +380,7 @@ export const fieldByCategory = [
   },
   {
     _id: 'Toy & Games',
-    name: 'Đồ chơi và trò chơi',
+    name: 'Đồ chơi & trò chơi',
     //must
     condition: true,
     brand: true,
@@ -442,7 +442,7 @@ export const fieldByCategory = [
   },
   {
     _id: 'Antiques & Collectibles',
-    name: 'Đồ cổ và bộ sưu tập',
+    name: 'Đồ cổ & bộ sưu tập',
     //must
     condition: true,
     brand: true,
