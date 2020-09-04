@@ -9,6 +9,7 @@ import { MarketplaceFilterSection } from './marketplace-filter-section/marketpla
 import { categoryApi } from './../../../../../api/common/category-api';
 import { itemField } from './../../../../../const/listing';
 import category from '../../../../../../server/db/model/marketplace/category';
+import { MenuNavigationWithIcon } from './../../../../common/menu-navigation-with-icon/menu-navigation-with-icon';
 
 export class BrowseAllWidget extends Component {
   constructor(props) {
@@ -19,6 +20,7 @@ export class BrowseAllWidget extends Component {
     categoryApi.getCategory({}).then((e) => {
       let itemInfo = itemField.find((e) => e.englishName === 'category');
       let itemIcon = itemInfo.options.filter((e) => e.icon);
+      console.log(itemIcon);
       let categoryWithIcon = e.map((category) => {
         let checkIcon = itemIcon.find((e) => e.name === category.name);
         if (checkIcon && checkIcon.icon) {
@@ -41,12 +43,20 @@ export class BrowseAllWidget extends Component {
         }
         return res;
       }, []);
+      let otherCategory = [
+        { icon: 'fas fa-home', title: 'Bán nhà' },
+        {
+          icon: 'fas fa-house',
+          title: 'Cho thuê',
+        },
+      ];
+      let final = [...categoryDisplay, ...otherCategory];
+      console.log(final);
       // console.log(categoryDisplay);
-      this.setState({ categoryDisplay });
+      this.setState({ categoryDisplay: final });
       // console.log(e);
     });
   }
-  // browseAllCategory = []
 
   browseAllMenu = [
     {
@@ -65,6 +75,7 @@ export class BrowseAllWidget extends Component {
     },
   ];
   render() {
+    const { categoryDisplay } = this.state;
     return (
       <ThemeContext.Consumer>
         {({ darkMode }) => (
@@ -75,10 +86,22 @@ export class BrowseAllWidget extends Component {
               menuNavigation={this.browseAllMenu}
             />
             <MarketplaceFilterSection />
-            <CategoriesSection
-              darkMode={darkMode}
-              categoryDisplay={this.state.categoryDisplay}
-            />
+            <CategoriesSection darkMode={darkMode}>
+              <>
+                {categoryDisplay &&
+                  categoryDisplay.map((each) => {
+                    return (
+                      <MenuNavigationWithIcon
+                        key={each.title}
+                        icon={each.icon}
+                        title={each.title}
+                        type={each.type}
+                        onClick={() => customHistory.push(each.link)}
+                      />
+                    );
+                  })}
+              </>
+            </CategoriesSection>
           </div>
         )}
       </ThemeContext.Consumer>

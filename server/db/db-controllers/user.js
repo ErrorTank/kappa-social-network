@@ -319,6 +319,8 @@ const toggleFollowPost = ({postID, userID}) => {
         _id: ObjectId(userID)
     }).lean()
         .then(user => {
+
+
             let query = user.followed_posts.find(each => each._id.toString() === postID) ? {
                 $pull: {
                     followed_posts: ObjectId(postID)
