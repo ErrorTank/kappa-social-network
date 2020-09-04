@@ -5,7 +5,6 @@ const Profile = require("../model/dating/profile")(appDb);
 const mongoose = require('mongoose');
 
 const ObjectId = mongoose.Types.ObjectId;
-const { City, District, Ward } = require('../model/location')(appDb)
 
 const checkDatingProfile = (arg) => {
     const { userID} = arg;
