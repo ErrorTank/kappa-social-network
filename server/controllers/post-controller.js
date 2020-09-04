@@ -1,8 +1,10 @@
 const express = require('express');
 const router = express.Router();
 const {authorizationUserMiddleware} = require('../common/middlewares/common');
-const {createNewPost, getAllPosts, updateFilesInPost, updatePost, updatePostReaction, getPostReactionByReactionKey,
-    getPostComments, createNewCommentForPost, updatePostCommentReaction, createCommentReply, getCommentReplies, deleteComment, deletePost, deleteReply, updateComment, getPostByID} = require("../db/db-controllers/post");
+const {
+    createNewPost, getAllPosts, updateFilesInPost, updatePost, updatePostReaction, getPostReactionByReactionKey,
+    getPostComments, createNewCommentForPost, updatePostCommentReaction, createCommentReply, getCommentReplies, deleteComment, deletePost, deleteReply, updateComment, getPostByID
+} = require("../db/db-controllers/post");
 const {toggleFollowPost, toggleSavePost, toggleBlockPost} = require('../db/db-controllers/user');
 const {MessageState} = require('../common/const/message-state');
 const {fileUploader} = require('../common/upload-services/file-upload');
