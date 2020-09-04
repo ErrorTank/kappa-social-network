@@ -60,6 +60,7 @@ export class FeedWidget extends Component {
 
 
     changePost = (postID, post, index) => {
+
         let newPosts = [...this.props.posts];
         // console.log(newPosts)
         newPosts.splice(index, 1, post);
