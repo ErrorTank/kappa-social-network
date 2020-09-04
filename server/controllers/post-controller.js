@@ -158,6 +158,11 @@ module.exports = (db, namespacesIO) => {
             ...req.params,
             ...req.body
         }).then((data) => {
+
+            namespacesIO.feedPost
+                .socketMap[req.user._id]
+                .to(`/post-room/${data._id}`)
+                .emit('edit-post', data);
             return res.status(200).json(data);
         })
             .catch((err) => next(err));

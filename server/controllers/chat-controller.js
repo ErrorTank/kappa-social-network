@@ -71,13 +71,13 @@ module.exports = (db, namespacesIO) => {
                             console.log(
                                 `/messenger-user-room/user/${user.related.toString()}`
                             );
-                            namespacesIO.messenger
+                            namespacesIO.messenger.io
                                 .to(`/messenger-user-room/user/${user.related.toString()}`)
                                 .emit('new-incoming-message', {senderID: result.sentBy._id});
                         }
                     });
 
-                    namespacesIO.messenger
+                    namespacesIO.messenger.io
                         .to(`/messenger-chat-room/chat-room/${req.params.chatRoomID}`)
                         .emit('new-message', {
                             message: result,
@@ -118,14 +118,14 @@ module.exports = (db, namespacesIO) => {
                             console.log(
                                 `/messenger-user-room/user/${user.related.toString()}`
                             );
-                            namespacesIO.messenger
+                            namespacesIO.messenger.io
                                 .to(`/messenger-user-room/user/${user.related.toString()}`)
                                 .emit('new-incoming-message', {
                                     senderID: result.sentBy._id,
                                 });
                         }
                     });
-                    namespacesIO.messenger
+                    namespacesIO.messenger.io
                         .to(`/messenger-chat-room/chat-room/${req.params.chatRoomID}`)
                         .emit('new-message', {
                             message: result,
@@ -145,7 +145,7 @@ module.exports = (db, namespacesIO) => {
                 req.body.messages.map((each) => ObjectId(each._id))
             )
                 .then((data) => {
-                    namespacesIO.messenger
+                    namespacesIO.messenger.io
                         .to(`/messenger-chat-room/chat-room/${req.params.chatRoomID}`)
                         .emit('change-message-state', {
                             messageIDs: req.body.messages.map((each) => each._id),
@@ -169,7 +169,7 @@ module.exports = (db, namespacesIO) => {
                 getUserBasicInfo(req.user._id),
             ])
                 .then(([data, info]) => {
-                    namespacesIO.messenger
+                    namespacesIO.messenger.io
                         .to(`/messenger-chat-room/chat-room/${req.params.chatRoomID}`)
                         .emit('push-to-seen-by', {
                             messageIDs: req.body.messages.map((each) => each._id),
@@ -217,14 +217,14 @@ module.exports = (db, namespacesIO) => {
                         },
                     }).then((newMsg) => {
                         let result = newMsg.toObject();
-                        namespacesIO.messenger
+                        namespacesIO.messenger.io
                             .to(`/messenger-chat-room/chat-room/${req.params.chatRoomID}`)
                             .emit('new-message', {
                                 message: result,
                                 senderID: result.sentBy._id,
                                 forceUpdate: true,
                             });
-                        namespacesIO.messenger
+                        namespacesIO.messenger.io
                             .to(`/messenger-chat-room/chat-room/${req.params.chatRoomID}`)
                             .emit('update-nicknames', {
                                 data: data
@@ -255,14 +255,14 @@ module.exports = (db, namespacesIO) => {
                         },
                     }).then((newMsg) => {
                         let result = newMsg.toObject();
-                        namespacesIO.messenger
+                        namespacesIO.messenger.io
                             .to(`/messenger-chat-room/chat-room/${req.params.chatRoomID}`)
                             .emit('new-message', {
                                 message: result,
                                 senderID: result.sentBy._id,
                                 forceUpdate: true,
                             });
-                        namespacesIO.messenger
+                        namespacesIO.messenger.io
                             .to(`/messenger-chat-room/chat-room/${req.params.chatRoomID}`)
                             .emit('update-default-emoji', {data: data});
                         return res.status(200).json(data);
