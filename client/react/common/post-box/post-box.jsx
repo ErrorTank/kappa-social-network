@@ -38,11 +38,15 @@ export class PostBox extends PureComponent {
         this.isJoinRoom = false;
         if(!props.isPreview){
             this.io = feedPostIO.getIOInstance();
-            if(!props.isMyPost){
-                this.io.on("edit-post", newPost => {
+            this.io.on("edit-post", newPost => {
+
+                if(newPost._id === props.post._id){
+
                     props.onChangePost(newPost)
-                })
-            }
+                }
+
+            })
+
         }
     }
 
@@ -125,7 +129,7 @@ export class PostBox extends PureComponent {
 
         let {post, isMyPost} = this.props;
         if(elem.intersectionRatio >= 0.1 && !this.isJoinRoom){
-
+            console.log("clgt")
 
             this.isJoinRoom = true;
             this.io.emit("join-post-room", {

@@ -25,15 +25,32 @@ const getCategories = (query) => {
   return Category.find({})
     .lean()
     .then((categories) => {
-      return categories.map((e) => {
-        let childrenArr = getRootCategories(categories, e._id);
-        //tim ten cac category con voi pipeline - aggruate?
-        return {
-          ...e,
-          children: childrenArr.length > 1 ? childrenArr : [],
-        };
-      });
-      // let id = '5f4934c330b2b231185a53a8';
+      return Promise.all(
+        categories.map((e) => {
+          let childrenArr = getRootCategories(categories, e._id);
+          if (childrenArr.length > 1) {
+            return Category.find({
+              _id: {
+                $in: childrenArr.map((e) => ObjectId(e)),
+              },
+            })
+              .lean()
+              .then((childrenCategory) => {
+                return { ...e, childrenCategory: childrenCategory };
+              });
+          } else {
+            return Promise.resolve({
+              ...e,
+              children: [],
+            });
+          }
+          //tim ten cac category con voi pipeline - aggruate?
+          // return {
+          //   ...e,
+          //   children: childrenArr.length > 1 ? childrenArr : [],
+          // };
+        })
+      );
     });
 };
 

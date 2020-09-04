@@ -11,7 +11,7 @@ module.exports = (db, namespacesIO) => {
             let relationIds = data.map(each => each._id);
             for(let roomName of relationIds){
                 console.log(`/messenger-user-room/user/${roomName}`)
-                namespacesIO.messenger.to(`/messenger-user-room/user/${roomName}`).emit('change-contact-status', {userID: req.user._id, active: req.params.status === "true"});
+                namespacesIO.messenger.io.to(`/messenger-user-room/user/${roomName}`).emit('change-contact-status', {userID: req.user._id, active: req.params.status === "true"});
             }
             return res.status(200).json(data);
         }).catch(err => next(err));

@@ -309,8 +309,9 @@ const simpleUpdateUser = (userID, data) => {
   return User.findOneAndUpdate({_id: ObjectId(userID)}, data, {new: true, select: "followed_posts saved_posts blocked_posts _id contact basic_info joined_at isVerify last_active_at dark_mode private_info search_history avatar"}).lean()
 };
 
-const getUserBasicInfo = userID => {
-    return User.findOne({_id: ObjectId(userID)}, "_id basic_info avatar").lean()
+const getUserBasicInfo = (userID, query = {}) => {
+
+    return User.findOne({_id: ObjectId(userID)}, query.full === 'true' ? "-password" :"_id basic_info avatar").lean()
 }
 
 const toggleFollowPost = ({postID, userID}) => {

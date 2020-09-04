@@ -20,7 +20,7 @@ module.exports = () => {
     });
     router.get("/:userID/basic-info", (req, res, next) => {
 
-        return getUserBasicInfo(req.params.userID).then((data) => {
+        return getUserBasicInfo(req.params.userID, req.query).then((data) => {
             return res.status(200).json(data);
         }).catch(err => next(err));
 

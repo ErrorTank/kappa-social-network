@@ -1,4 +1,6 @@
 import React, { Component } from 'react'
+import { userApi } from '../../../../../../api/common/user-api';
+import { userInfo } from '../../../../../../common/states/common';
 
 export default class Form extends Component {
     constructor(props) {
@@ -24,6 +26,11 @@ export default class Form extends Component {
             educationLevel : null,
             avatar : []
         }
+    }
+    componentDidMount(){
+        userApi.getUserBasicInfo(userInfo.getState()._id).then(data=>{
+            console.log(data)
+        })
     }
     render() {
         return (
