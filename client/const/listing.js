@@ -130,7 +130,7 @@ export let itemField = [
         name: 'Hỗn hợp',
       },
       {
-        name: 'Phương tiện',
+        name: 'Xe cộ',
         icon: 'fas fa-car',
         isDisabled: true,
         link: '/marketplace/create/vehicle',

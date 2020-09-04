@@ -23,7 +23,11 @@ export class MenuNavigationWithIcon extends Component {
         onClick={onClick}
       >
         <div className='menu-navigation-wrapper'>
-          {icon && <div className='mn-icon'>{icon}</div>}
+          {icon && (
+            <div className='mn-icon'>
+              <i className={icon}></i>
+            </div>
+          )}
           <div className='mn-title-wrapper'>
             <span className='mn-title'>{title}</span>
           </div>
