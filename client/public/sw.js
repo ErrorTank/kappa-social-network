@@ -274,8 +274,8 @@ var notGetRequests = [
 
 <<<<<<< HEAD
 <<<<<<< HEAD
-var CACHE_STATIC_NAME = 'static-v1599140802102';
-var CACHE_DYNAMIC_NAME = 'dynamic-v1599140802102';
+var CACHE_STATIC_NAME = 'static-v1599141138045';
+var CACHE_DYNAMIC_NAME = 'dynamic-v1599141138045';
 =======
 var CACHE_STATIC_NAME = 'static-v1599120322199';
 var CACHE_DYNAMIC_NAME = 'dynamic-v1599120322199';
