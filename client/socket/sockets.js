@@ -1,4 +1,5 @@
 import io from "socket.io-client";
+import {userInfo} from "../common/states/common";
 
 const createAppIO = (namespace) => {
 
@@ -21,7 +22,7 @@ const createAppIO = (namespace) => {
         },
         getIOInstance: () => appIO,
         disconnect: () => {
-            appIO.emit("manual-disconnect");
+            appIO.emit("manual-disconnect", {userID: userInfo.getState()._id});
             isConnected = false;
             appIO = null;
         },
