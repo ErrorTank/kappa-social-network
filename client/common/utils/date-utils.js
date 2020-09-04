@@ -8,6 +8,12 @@ const getDaysInMonth = (month, year) => {
     return days;
 };
 
+const getAge =(dob)=>{
+    var ageDifMs = Date.now() - new Date(dob).getTime();
+    var ageDate = new Date(ageDifMs); // miliseconds from epoch
+    return Math.abs(ageDate.getUTCFullYear() - 1970);
+}
 export {
-    getDaysInMonth
+    getDaysInMonth,
+    getAge
 }

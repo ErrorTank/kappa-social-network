@@ -7,7 +7,7 @@ export const datingApi = {
     return authenApi.get(`/dating/user/${userID}/check-dating-profile`);
   },
   getInheritUserInfor(userID) {
-    return authenApi.get(`/user/${userID}/basic-info`);
+    return authenApi.get(`/user/${userID}/basic-info?full=true`);
   }
   
 };

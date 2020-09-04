@@ -271,8 +271,8 @@ var notGetRequests = [
     dbCollectionName: 'contacts',
   },
 ];
-var CACHE_STATIC_NAME = 'static-v1599211322868';
-var CACHE_DYNAMIC_NAME = 'dynamic-v1599211322868';
+var CACHE_STATIC_NAME = 'static-v1599222348431';
+var CACHE_DYNAMIC_NAME = 'dynamic-v1599222348431';
 
 var STATIC_FILES = [
   '/',
