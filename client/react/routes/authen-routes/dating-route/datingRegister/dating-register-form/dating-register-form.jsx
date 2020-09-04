@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { userApi } from '../../../../../../api/common/user-api';
 import { userInfo } from '../../../../../../common/states/common';
 
-export default class Form extends Component {
+export class DatingRegisterForm extends Component {
     constructor(props) {
         super(props)
         this.state = {
