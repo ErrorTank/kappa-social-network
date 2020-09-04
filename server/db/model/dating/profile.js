@@ -93,7 +93,7 @@ const profileSchema = new Schema({
     distance : Number,
     gender : {
       type : String,
-      enum : ["WOMEN", "MEN", "EVERYONE"]
+      enum : ["MALE", "FEMALE", "OTHERS"]
     },
     ageRange : {
       fromNumber : Number,
