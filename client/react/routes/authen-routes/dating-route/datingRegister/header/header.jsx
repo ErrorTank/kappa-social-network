@@ -11,7 +11,7 @@ class Header extends Component {
     return (
       <div className="header">
         <h1>
-          Chào mừng <span>{user.basic_info.username}</span>
+          Chào mừng bạn, <span>{user.basic_info.username} !</span>
         </h1>
         <h2>Bắt đầu tạo hồ sơ hẹn hò cho mình thôi...</h2>
         <p>

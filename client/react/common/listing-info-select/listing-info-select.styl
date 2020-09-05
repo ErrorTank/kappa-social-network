@@ -1,6 +1,7 @@
 .listing-info-select{
   padding: 16px 16px 0px 16px;
   box-sizing: border-box;
+  
   &.focus {
     .listing-info-wrapper {
       border-color primaryButton !important
@@ -9,19 +10,24 @@
   .listing-info-wrapper{
     cursor pointer
     border-radius: 6px;
-    border: 1px solid lightgray;
+    
     width 100%;
     height 58px;
     margin: 0;
     position relative;
+   
     &:hover{
       border-color: gray
     }
     
     .listing-info-toggle{
       display: flex
+      overflow hidden
+      border: 1px solid lightgray;
       height: 56px;
+      background-color: white
       z-index: 1
+      border-radius: 5px
       .label-wrapper{
         position relative
         width 90%;
@@ -90,7 +96,7 @@
       border 1px solid common-border
       color #1a1a1a
       font-size 1.4rem
-      z-index 1
+      z-index 3
       padding: 0 8px;
       .linked{
         cursor pointer
