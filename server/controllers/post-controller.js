@@ -18,7 +18,13 @@ module.exports = (db, namespacesIO) => {
         return createNewPost({
             ...req.body,
             belonged_person: req.user._id
-        }).then((data) => {
+        }).then(([data, shared_post]) => {
+            if(req.body.shared_post){
+                namespacesIO.feedPost
+                    .socketMap[req.user._id]
+                    .to(`/post-room/${req.body.shared_post}`)
+                    .emit('edit-post', shared_post);
+            }
             return res.status(200).json(data);
         })
             .catch((err) => next(err));
@@ -28,6 +34,10 @@ module.exports = (db, namespacesIO) => {
         return deletePost({
             ...req.params,
         }).then((data) => {
+            namespacesIO.feedPost
+                .socketMap[req.user._id]
+                .to(`/post-room/${req.params.postID}`)
+                .emit('delete-post', {postID: req.params.postID});
             return res.status(200).json(data);
         })
             .catch((err) => next(err));
@@ -57,6 +67,10 @@ module.exports = (db, namespacesIO) => {
             ...req.params,
             userID: req.user._id
         }).then((data) => {
+            namespacesIO.feedPost
+                .socketMap[req.user._id]
+                .to(`/post-room/${req.params.postID}`)
+                .emit('new-comment', ({postID: req.params.postID, comment: data}));
             return res.status(200).json(data);
         })
             .catch((err) => next(err));
@@ -108,6 +122,7 @@ module.exports = (db, namespacesIO) => {
             ...req.body
         }).then((data) => {
             namespacesIO.feedPost
+                .socketMap[req.user._id]
                 .to(`/post-room/${data._id}`)
                 .emit('edit-post', data);
             return res.status(200).json(data);
@@ -150,6 +165,10 @@ module.exports = (db, namespacesIO) => {
             ...req.params,
             ...req.body
         }).then((data) => {
+            namespacesIO.feedPost
+                .socketMap[req.user._id]
+                .to(`/post-room/${data.post.toString()}`)
+                .emit('edit-post', data);
             return res.status(200).json(data);
         })
             .catch((err) => next(err));

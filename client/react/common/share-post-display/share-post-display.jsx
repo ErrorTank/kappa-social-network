@@ -22,11 +22,16 @@ export class SharePostDisplay extends Component {
             <div className="share-post-display">
                 {loading ? (
                     <LoadingInline/>
-                ) : (
+                ) : post ? (
                     <PostBox
                         isPreview={true}
                         post={post}
                     />
+                ) : (
+                    <div className="post-not-existed">
+                        <div className="pne-title">Không khả dụng</div>
+                        <div className="pne-content">Nội dung chia sẻ đã bị xóa hoặc không tồn tại!</div>
+                    </div>
                 )}
             </div>
         );

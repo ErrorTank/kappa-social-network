@@ -4,6 +4,7 @@ const {getPublicKey, getPrivateKey} = require("../../authorization/keys/keys");
 
 const createNamespaceHandler = (io, nsp, context) => {
     let ioNamespace = io.nsps[nsp.path];
+
     let socketMap = {};
     if(nsp.authenticated){
 
@@ -11,7 +12,8 @@ const createNamespaceHandler = (io, nsp, context) => {
 
             if (!socket.auth) {
                 console.log("Removing socket from", ioNamespace.name);
-                delete nsp.connected[socket.id];
+                if(nsp.connected)
+                    delete nsp.connected[socket.id];
             }
         });
     }
@@ -26,6 +28,8 @@ const createNamespaceHandler = (io, nsp, context) => {
         if(nsp.authenticated){
             socket.auth = false;
             socket.on('authenticate', function(data){
+
+
                 verifyToken(data.token, getPublicKey(), {algorithm: ["RS256"]})
                     .then((user) => {
 
@@ -45,7 +49,7 @@ const createNamespaceHandler = (io, nsp, context) => {
             }, 1000);
         }
 
-        require(nsp.handlers)(nsp.io, socket, context);
+        require(nsp.handlers)(nsp.io, socket, context, {onDisconnect: ({userID}) => delete socketMap[userID]});
     });
     return {
         io: nsp.io,
@@ -55,12 +59,14 @@ const createNamespaceHandler = (io, nsp, context) => {
 
 const createSocketNamespaces = (server, context) => {
     const io = require('socket.io')(server);
-    const namespaces = socketNamespaces.map(({path, onConnect, onDisconnect, handlers, key}) => ({
+    const namespaces = socketNamespaces.map(({path, onConnect, onDisconnect, handlers, key, authenticated}) => ({
         io: io.of(path),
         onConnect,
         onDisconnect,
         handlers,
-        key
+        key,
+        authenticated,
+        path
     }));
 
     return namespaces.reduce((result, nsp) => {

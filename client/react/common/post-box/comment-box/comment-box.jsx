@@ -7,7 +7,8 @@ import {postApi} from "../../../../api/common/post-api";
 import {Comment} from "./comment/comment";
 import {LoadingInline} from "../../loading-inline/loading-inline";
 import classnames from "classnames";
-import {userFollowedPosts} from "../../../../common/states/common";
+import {userFollowedPosts, userInfo} from "../../../../common/states/common";
+import {feedPostIO} from "../../../../socket/sockets";
 
 export class CommentBox extends Component {
     constructor(props) {
@@ -17,7 +18,41 @@ export class CommentBox extends Component {
             fetching: true,
 
         }
+        this.io = feedPostIO.getIOInstance();
+        this.io.on("new-comment", ({postID, comment}) => {
 
+            if(postID === props.post._id){
+                this.addNewComment(comment)
+            }
+
+        })
+        this.io.on("delete-comment", ({postID, comment}) => {
+
+            if(postID === props.post._id){
+
+               this.deleteComment(comment)
+            }
+
+        })
+        this.io.on("edit-comment", ({postID, comment}) => {
+
+            if(postID === props.post._id){
+                let i = this.state.list.findIndex(each => each._id === comment._id)
+                this.changeComment(comment, i)
+            }
+
+        })
+    }
+
+    unsubscribeIO = () => {
+        if(this.io){
+            this.io.off("edit-post");
+        }
+    }
+
+    componentWillUnmount() {
+
+        this.unsubscribeIO();
     }
 
     componentDidMount() {
@@ -34,6 +69,11 @@ export class CommentBox extends Component {
             }))
     }
 
+    addNewComment = cmt => {
+        this.setState({list: [cmt].concat(this.state.list)});
+        this.props.onAddComment();
+    }
+
     submitComment = ({editorState, files}) => {
         return Promise.all(files.map(each => this.uploadSingleFile(each)))
             .then(newFiles => {
@@ -48,9 +88,8 @@ export class CommentBox extends Component {
                         if(!followedPosts.find(each => each === this.props.post._id)){
                             userFollowedPosts.setState(followedPosts.concat(this.props.post._id))
                         }
+                        this.addNewComment(data)
 
-                        this.setState({list: [data].concat(this.state.list)});
-                        this.props.onAddComment();
                     })
             })
     }

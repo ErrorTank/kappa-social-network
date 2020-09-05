@@ -13,15 +13,28 @@ const {REVERSE_REACTIONS} = require("../../utils/messenger-utils");
 
 const createNewPost = (value) => {
     let newPost = {...value, _id: new ObjectId()};
-    return Promise.all([new Post(newPost).save(), User.findOneAndUpdate({
+    let promises = [new Post(newPost).save(), User.findOneAndUpdate({
         _id: ObjectId(value.belonged_person),
     }, {
         $push: {
             followed_posts: newPost._id
         }
-    })])
-        .then(([newPost]) => {
-            return newPost;
+    })];
+    if(value.shared_post){
+        console.log(value.shared_post)
+        promises.push(Post.findOneAndUpdate({
+            _id: ObjectId(value.shared_post)
+        }, {
+            $inc: {
+                share_count: 1
+            }
+        }, {
+            new: true
+        }))
+    }
+    return Promise.all(promises)
+        .then(([newPost, _, shared_post]) => {
+            return [newPost, shared_post];
         })
 };
 
@@ -271,14 +284,19 @@ const getAllPosts = ({userID, skip, limit}) => {
 
             let sortedByReactions = data.sort((a, b) => b.reaction_count - a.reaction_count);
 
+            let sortedByShareCount = data.sort((a, b) => b.share_count - a.share_count);
+
             return data.map((each, i) => ({
                 ...each,
                 belonged_page: each.belonged_page ? pick(each.belonged_page, ["_id", "avatar", "basic_info"]) : null,
                 belonged_person: each.belonged_person ? pick(each.belonged_person, ["_id", "avatar", "basic_info"]) : null,
                 belonged_group: each.belonged_group ? pick(each.belonged_group, ["_id", "basic_info"]) : null,
                 tagged: each.tagged.map(tag => pick(tag, ["_id", "avatar", "basic_info"])),
-                score: (data.length - i)
-                    + (data.length - sortedByComments.findIndex(a => a._id.toString() === each._id.toString())) * 2 + (data.length - sortedByReactions.findIndex(a => a._id.toString() === each._id.toString())) * 2
+                score: (data.length - i) +
+                    (data.length - sortedByComments.findIndex(a => a._id.toString() === each._id.toString())) * 2 +
+                    (data.length - sortedByReactions.findIndex(a => a._id.toString() === each._id.toString())) * 2 +
+                    (data.length - sortedByShareCount.findIndex(a => a._id.toString() === each._id.toString()))
+
             }))
                 .sort((a, b) => b.score - a.score)
                 .map(each => omit(each, "score"))

@@ -5,15 +5,17 @@ const mongoose = require("mongoose");
 const {MessageState} = require("../../../common/const/message-state")
 const ObjectId = mongoose.Types.ObjectId;
 
-module.exports = (io, socket, context) => {
+module.exports = (io, socket, context, {onDisconnect}) => {
     console.log(socket.id + " has connected to /messenger namespace");
     socket.on("disconnect", function () {
+        console.log(socket.userID)
         if (socket.userID) {
             Promise.all([simpleUpdateUser(socket.userID, {
                 active: false,
                 last_active_at: new Date().getTime()
             }), getAllUserActiveRelations(socket.userID)])
                 .then(([_, data]) => {
+                    onDisconnect({userID: socket.userID});
                     let relationIds = data.map(each => each._id);
                     for (let roomName of relationIds) {
 
