@@ -267,7 +267,7 @@ export class Comment extends Component {
                                         isReply={true}
                                         father={comment}
                                         key={each._id}
-                                        onChangeComment={reply => this.changeReply(reply, i)}
+                                        onChangeComment={reply => this.changeReply(reply, replies.findIndex(r => r._id === reply._id))}
                                         onDeleteReply={() => {
                                             this.setState({replies: this.state.replies.filter(item => item._id !== each._id)})
                                             onDeleteReply(each)

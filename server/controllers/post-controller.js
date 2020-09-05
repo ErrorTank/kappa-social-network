@@ -47,7 +47,12 @@ module.exports = (db, namespacesIO) => {
         return deleteComment({
             ...req.params,
         }).then((data) => {
-            return res.status(200).json(data);
+
+            namespacesIO.feedPost
+                .socketMap[req.user._id]
+                .to(`/post-room/${req.params.postID}`)
+                .emit('delete-comment', {postID: req.params.postID, comment: {_id: req.params.commentID}});
+            return res.status(200).json(data || []);
         })
             .catch((err) => next(err));
 
@@ -168,7 +173,7 @@ module.exports = (db, namespacesIO) => {
             namespacesIO.feedPost
                 .socketMap[req.user._id]
                 .to(`/post-room/${data.post.toString()}`)
-                .emit('edit-post', data);
+                .emit('edit-comment', {comment: data, postID: data.post.toString()});
             return res.status(200).json(data);
         })
             .catch((err) => next(err));
