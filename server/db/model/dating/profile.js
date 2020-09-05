@@ -10,8 +10,8 @@ const profileSchema = new Schema({
     type: String,
     require: true,
   },
-  avatar: {
-    type: [{ url: String, order: Number }],
+  avatars: {
+    type: [{ path: String, isAvatar: { type: Boolean, default: false } }],
     default: [],
   },
   birthday: {

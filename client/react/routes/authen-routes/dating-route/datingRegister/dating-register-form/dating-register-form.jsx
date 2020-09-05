@@ -10,7 +10,9 @@ import { ListingInfoSelect } from "./../../../../../common/listing-info-select/l
 import { heights } from "./../../../../../../const/height";
 import { yourKids } from "./../../../../../../const/yourKids";
 import { educationLevels } from "./../../../../../../const/educationLevels";
-
+import { InputFileWrapper } from "./../../../../../common/file-input/file-input";
+import { v4 as uuidv4 } from "uuid";
+import { ImageBox } from "./image-box/image-box";
 export class DatingRegisterForm extends Component {
   constructor(props) {
     super(props);
@@ -33,11 +35,17 @@ export class DatingRegisterForm extends Component {
       },
       yourChildren: null,
       educationLevel: null,
-      avatar: [],
+      avatars: [],
       dob: null,
     };
     addressApi.getAddress({}).then((allCity) => this.setState({ allCity }));
   }
+  addFiles = (files) => {
+    let newFiles = Array.from(files).map((file) => {
+      return { fileID: uuidv4(), file, type: "image" };
+    });
+    this.setState({ avatars: this.state.avatars.concat(newFiles) });
+  };
   componentDidMount() {
     datingApi.getInheritUserInfor(userInfo.getState()._id).then((data) => {
       let date = new Date(data.basic_info.dob);
@@ -53,9 +61,24 @@ export class DatingRegisterForm extends Component {
         dob: data.basic_info.dob,
         name: data.basic_info.username,
         gender: genders.find((item) => item.value === data.basic_info.gender),
+        avatars: data.basic_info.avatar
+          ? [
+              {
+                path: data.basic_info.avatar,
+                isAvatar: true,
+              },
+            ]
+          : [],
       });
     });
   }
+  onRemove = (item) => {
+    this.setState({
+      avatars: this.state.avatars.filter((each) =>
+        item.path ? item.path !== each.path : item.fileID !== each.fileID
+      ),
+    });
+  };
   render() {
     console.log(this.state);
     let {
@@ -247,6 +270,33 @@ export class DatingRegisterForm extends Component {
               />
             </div>
           </div>
+          <div className="text-center">
+            <div className="img-list">
+              {this.state.avatars.map((item) => {
+                return (
+                  <ImageBox
+                    key={item.path || item.fileID}
+                    file={item}
+                    onRemove={() => this.onRemove(item)}
+                  />
+                );
+              })}
+            </div>
+          </div>
+          <InputFileWrapper
+            multiple={true}
+            accept={"image/*,image/heif,image/heic"}
+            onUploaded={this.addFiles}
+            limitSize={10 * 1024 * 1024}
+          >
+            {({ onClick }) => (
+              <div className="button" onClick={onClick}>
+                Thêm ảnh
+              </div>
+            )}
+          </InputFileWrapper>
+
+          <div className="button">Tiếp tục</div>
         </div>
       </div>
     );

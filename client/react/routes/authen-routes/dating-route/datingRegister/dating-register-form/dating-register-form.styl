@@ -29,35 +29,65 @@
                 padding : 0
             }
             .age-layout {
-            flex 0 0 30%
-            height : 56px
-            border: 1px solid lightgray 
-            border-radius: 6px;
-            padding: 26px 16px 10px;
-            position relative
-            background-color: white
-            .label{
-                position absolute
-                transition-property: transform;
-                transition-duration: 200ms;
-                transform: scale(.75) translateY(-11px);
-                transform-origin: top left;  
-                color: gray;
-                font-weight: 400;
-                left: 16px;
-                font-size: 16px;
-                white-space: nowrap;
-                line-height: 20px;
-                top: 18px;
-                max-width 100%;
-                right: 8px;
+                flex 0 0 30%
+                height : 56px
+                border: 1px solid lightgray 
+                border-radius: 6px;
+                padding: 26px 16px 10px;
+                position relative
+                background-color: white
+                .label{
+                    position absolute
+                    transition-property: transform;
+                    transition-duration: 200ms;
+                    transform: scale(.75) translateY(-11px);
+                    transform-origin: top left;  
+                    color: gray;
+                    font-weight: 400;
+                    left: 16px;
+                    font-size: 16px;
+                    white-space: nowrap;
+                    line-height: 20px;
+                    top: 18px;
+                    max-width 100%;
+                    right: 8px;
+                }
+                .value{
+                    font-size: 16px;
+                    padding-left: 5px
+                }
             }
-            .value{
-                font-size: 16px;
-                padding-left: 5px
-            }
+        }  
+    }
+    .button{
+            
+            font-size : 16px
+            font-weight: 500
+            color:white
+            background-color: blueTextLight
+            height :40px
+            width : 100px;
+            text-align: center;
+            border-radius: 10px;
+            margin : 40px 400px;
+            cursor pointer
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif
+            display: flex;
+            justify-content: center
+            align-items: center
+            
+
+
         }
+    .text-center{
+        display: flex
+        width: 100%
+        justify-content: center
+        .img-list{
+            display : inline-flex
+            align-items: center
+            width : 195px
+            flex-wrap: wrap
         }
-        
     }
 }
