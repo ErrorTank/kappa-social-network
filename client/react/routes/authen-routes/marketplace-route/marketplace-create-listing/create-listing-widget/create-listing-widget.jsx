@@ -6,6 +6,7 @@ export class CreateListingWidget extends Component {
     super(props);
     this.state = {};
   }
+
   render() {
     return (
       <div className='create-listing-widget'>
@@ -15,7 +16,7 @@ export class CreateListingWidget extends Component {
         <div className='create-listing-body'>
           <div className='pick-listing-type'>
             <MenuNavigationWithIcon
-              icon={<i className='fas fa-tag'></i>}
+              icon={'fas fa-tag'}
               title={'Chọn loại bài niêm yết'}
               type={'main'}
             />
@@ -23,11 +24,11 @@ export class CreateListingWidget extends Component {
           <div className='line-seperate'></div>
           <div className='other-choice'>
             <MenuNavigationWithIcon
-              icon={<i className='fas fa-user'></i>}
+              icon={'fas fa-user'}
               title={'Bài niêm yết của bạn'}
             />
             <MenuNavigationWithIcon
-              icon={<i className='fas fa-question-circle'></i>}
+              icon={'fas fa-question-circle'}
               title={'Trợ giúp người bán'}
             />
           </div>
