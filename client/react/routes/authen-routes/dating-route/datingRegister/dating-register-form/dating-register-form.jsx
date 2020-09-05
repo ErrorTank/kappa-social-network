@@ -8,11 +8,12 @@ import { getAge } from "../../../../../../common/utils/date-utils";
 import { addressApi } from "./../../../../../../api/common/address-api";
 import { ListingInfoSelect } from "./../../../../../common/listing-info-select/listing-info-select";
 import { heights } from "./../../../../../../const/height";
-import { yourKids } from "./../../../../../../const/yourKids";
 import { educationLevels } from "./../../../../../../const/educationLevels";
 import { InputFileWrapper } from "./../../../../../common/file-input/file-input";
 import { v4 as uuidv4 } from "uuid";
 import { ImageBox } from "./image-box/image-box";
+import { postApi } from "./../../../../../../api/common/post-api";
+import { yourKids } from "./../../../../../../const/yourKids";
 export class DatingRegisterForm extends Component {
   constructor(props) {
     super(props);
@@ -33,7 +34,7 @@ export class DatingRegisterForm extends Component {
         district: null,
         city: null,
       },
-      yourChildren: null,
+      yourKids: null,
       educationLevel: null,
       avatars: [],
       dob: null,
@@ -45,6 +46,80 @@ export class DatingRegisterForm extends Component {
       return { fileID: uuidv4(), file, type: "image" };
     });
     this.setState({ avatars: this.state.avatars.concat(newFiles) });
+  };
+  uploadSingleFile = (file) => {
+    return file.path
+      ? Promise.resolve(file)
+      : postApi
+          .preUploadMedia({ file: file.file }, "file")
+          .then((fileData) => ({
+            ...fileData,
+          }));
+  };
+  submit = () => {
+    let {
+      name,
+      birthday,
+      gender,
+      homeTown,
+      secondarySchool,
+      university,
+      height,
+      location,
+      yourKid,
+      educationLevel,
+      avatars,
+      dob,
+    } = this.state;
+    // this.setState({ loading: true });
+    Promise.all(avatars.map((each) => this.uploadSingleFile(each))).then(
+      (newFiles) => {
+        let submittedData = {
+          name,
+          birthday: new Date(
+            `${birthday.month}/${birthday.day}/${birthday.year}`
+          ),
+          homeTown: {
+            ward: homeTown.ward._id,
+            city: homeTown.city._id,
+            district: homeTown.district._id,
+          },
+          gender: gender.value,
+          secondarySchool,
+          university,
+          height,
+          location: {
+            ward: location.ward._id,
+            city: location.city._id,
+            district: location.district._id,
+          },
+          yourKid: yourKid.value,
+          educationLevel: educationLevel.value,
+          avatars: newFiles,
+        };
+
+        console.log(submittedData);
+        navigator.geolocation.getCurrentPosition((position) => {
+          const { latitude, longitude } = position.coords;
+
+          datingApi
+            .createProfile(
+              {
+                ...submittedData,
+                location: {
+                  ...location,
+                  lat: latitude,
+                  lng: longitude,
+                },
+              },
+              userInfo.getState()._id
+            )
+            .then((e) => {
+              this.props.onCreateProfile(e);
+            });
+        });
+      }
+    );
   };
   componentDidMount() {
     datingApi.getInheritUserInfor(userInfo.getState()._id).then((data) => {
@@ -80,7 +155,6 @@ export class DatingRegisterForm extends Component {
     });
   };
   render() {
-    console.log(this.state);
     let {
       name,
       dob,
@@ -92,6 +166,7 @@ export class DatingRegisterForm extends Component {
       yourKid,
       educationLevel,
       gender,
+      location,
     } = this.state;
     return (
       <div className="container">
@@ -296,7 +371,9 @@ export class DatingRegisterForm extends Component {
             )}
           </InputFileWrapper>
 
-          <div className="button">Tiếp tục</div>
+          <div className="button" onClick={this.submit}>
+            Tiếp tục
+          </div>
         </div>
       </div>
     );

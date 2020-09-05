@@ -1,8 +1,8 @@
 export const educationLevels = [
   {
-    id: "NO PREFERENCE",
+    id: "PREFER NOT TO SAY",
     label: "Không muốn tiết lộ",
-    value: "NO PREFERENCE",
+    value: "PREFER NOT TO SAY",
   },
   {
     id: "A-LEVELS,HIGHERS OR EQUIVALENT",

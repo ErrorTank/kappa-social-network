@@ -28,7 +28,10 @@ export class ImageBox extends Component {
         ) : (
           <>
             <img src={this.props.file.path || base64}></img>
-            <i class="fas fa-times remove" onClick={this.props.onRemove}></i>
+            <i
+              className="fas fa-times remove"
+              onClick={this.props.onRemove}
+            ></i>
           </>
         )}
       </div>

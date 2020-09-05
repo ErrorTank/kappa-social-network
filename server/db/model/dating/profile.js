@@ -72,19 +72,19 @@ const profileSchema = new Schema({
     ],
     default: "PREFER NOT TO SAY",
   },
-  yourChildren: {
+  yourKids: {
     type: String,
     enum: ["I DON'T HAVE KIDS", "I HAVE KIDS", "PREFER NOT TO SAY"],
     default: "PREFER NOT TO SAY",
   },
   smoking: {
     type: String,
-    enum: ["NEVER", "OCCASIONALLY", "OFTEN", "FREFER NOT TO SAY"],
+    enum: ["NEVER", "OCCASIONALLY", "OFTEN", "PREFER NOT TO SAY"],
     default: "PREFER NOT TO SAY",
   },
   drinking: {
     type: String,
-    enum: ["NEVER", "OCCASIONALLY", "OFTEN", "FREFER NOT TO SAY"],
+    enum: ["NEVER", "OCCASIONALLY", "OFTEN", "PREFER NOT TO SAY"],
     default: "PREFER NOT TO SAY",
   },
   religion: {

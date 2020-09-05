@@ -1,6 +1,6 @@
-import { authenApi, offlineApi } from '../api';
-import { urlUtils } from '../../common/utils/url-utils';
-import user from '../../../server/db/model/user';
+import { authenApi, offlineApi } from "../api";
+import { urlUtils } from "../../common/utils/url-utils";
+import user from "../../../server/db/model/user";
 
 export const datingApi = {
   checkDatingProfile(userID) {
@@ -8,7 +8,8 @@ export const datingApi = {
   },
   getInheritUserInfor(userID) {
     return authenApi.get(`/user/${userID}/basic-info?full=true`);
-  }
-  
+  },
+  createProfile(data, userID) {
+    return authenApi.post(`/dating/user/${userID}/create-profile`, data);
+  },
 };
-
