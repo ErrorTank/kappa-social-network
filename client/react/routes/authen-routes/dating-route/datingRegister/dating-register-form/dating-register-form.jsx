@@ -73,135 +73,180 @@ export class DatingRegisterForm extends Component {
     return (
       <div className="container">
         <div className="register-dating-form">
-          <ListingInfoInput
-            label={"Tên"}
-            value={name}
-            onChange={(e) => {
-              this.setState({ name: e.target.value });
-            }}
-          />
-          <div className="age-layout">
-            <div className="label">Tuổi</div>{" "}
-            <div className="value"> {getAge(dob)}</div>
+          <div className="wrap">
+            <div className="title">
+              <div className="dash"></div>
+              <div className="text-title">Thông tin cơ bản</div>
+              <div className="dash"></div>
+            </div>
+            <div className="row-wrapper">
+              <ListingInfoInput
+                className="dr-input"
+                label={"Tên"}
+                value={name}
+                onChange={(e) => {
+                  this.setState({ name: e.target.value });
+                }}
+              />
+              <div className="age-layout">
+                <div className="label">Tuổi</div>{" "}
+                <div className="value"> {getAge(dob)}</div>
+              </div>
+              <ListingInfoSelect
+                className="dr-input"
+                label={"Giới tính"}
+                value={gender}
+                options={genders}
+                displayAs={(item) => item.label}
+                onChange={(item) => {
+                  this.setState({ gender: item });
+                }}
+              />
+            </div>
           </div>
-          <ListingInfoSelect
-            label={"Giới tính"}
-            value={gender}
-            options={genders}
-            displayAs={(item) => item.label}
-            onChange={(item) => {
-              this.setState({ gender: item });
-            }}
-          />
-          <ListingInfoSelect
-            label={"Tỉnh/Thành phố"}
-            value={homeTown.city}
-            options={allCity}
-            displayAs={(item) => item.name}
-            onChange={(item) => {
-              this.setState({
-                homeTown: { ward: null, district: null, city: item },
-              });
-              addressApi
-                .getAddress({ cityCode: item.code })
-                .then((allDistrict) => this.setState({ allDistrict }));
-            }}
-          />
+          <div className="wrap">
+            <div className="title">
+              <div className="dash"></div>
+              <div className="text-title">Quê quán</div>
+              <div className="dash"></div>
+            </div>
+            <div className="row-wrapper">
+              <ListingInfoSelect
+                className="dr-input"
+                label={"Tỉnh/Thành phố"}
+                value={homeTown.city}
+                options={allCity}
+                displayAs={(item) => item.name}
+                onChange={(item) => {
+                  this.setState({
+                    homeTown: { ward: null, district: null, city: item },
+                  });
+                  addressApi
+                    .getAddress({ cityCode: item.code })
+                    .then((allDistrict) => this.setState({ allDistrict }));
+                }}
+              />
+              <ListingInfoSelect
+                className="dr-input"
+                label={"Quận/Huyện"}
+                value={homeTown.district}
+                options={allDistrict}
+                displayAs={(item) => item.name}
+                disabled={!allDistrict}
+                onChange={(item) => {
+                  this.setState({
+                    homeTown: { ...homeTown, district: item, ward: null },
+                  });
+                  addressApi
+                    .getAddress({ districtCode: item.code })
+                    .then((allWard) => this.setState({ allWard }));
+                }}
+              />
 
-          <ListingInfoSelect
-            label={"Quận/Huyện"}
-            value={homeTown.district}
-            options={allDistrict}
-            displayAs={(item) => item.name}
-            disabled={!allDistrict}
-            onChange={(item) => {
-              this.setState({
-                homeTown: { ...homeTown, district: item, ward: null },
-              });
-              addressApi
-                .getAddress({ districtCode: item.code })
-                .then((allWard) => this.setState({ allWard }));
-            }}
-          />
+              <ListingInfoSelect
+                className="dr-input"
+                label={"Xã/Phường"}
+                value={homeTown.ward}
+                options={allWard}
+                disabled={!allWard}
+                displayAs={(item) => item.name}
+                onChange={(item) => {
+                  this.setState({ homeTown: { ...homeTown, ward: item } });
+                }}
+              />
+            </div>
+          </div>
+          <div className="wrap">
+            <div className="title">
+              <div className="dash"></div>
+              <div className="text-title">Vị trí hẹn hò</div>
+              <div className="dash"></div>
+            </div>
+            <div className="row-wrapper">
+              <ListingInfoSelect
+                className="dr-input"
+                label={"Tỉnh/Thành phố"}
+                value={location.city}
+                options={allCity}
+                displayAs={(item) => item.name}
+                onChange={(item) => {
+                  this.setState({
+                    location: { ward: null, district: null, city: item },
+                  });
+                  addressApi
+                    .getAddress({ cityCode: item.code })
+                    .then((allDistrict) => this.setState({ allDistrict }));
+                }}
+              />
 
-          <ListingInfoSelect
-            label={"Xã/Phường"}
-            value={homeTown.ward}
-            options={allWard}
-            disabled={!allWard}
-            displayAs={(item) => item.name}
-            onChange={(item) => {
-              this.setState({ homeTown: { ...homeTown, ward: item } });
-            }}
-          />
-
-          <ListingInfoSelect
-            label={"Chiều cao"}
-            value={height}
-            options={heights}
-            displayAs={(item) => item + " cm"}
-            onChange={(item) => {
-              this.setState({ height: item });
-            }}
-          />
-          <ListingInfoSelect
-            label={"Tỉnh/Thành phố"}
-            value={homeTown.city}
-            options={allCity}
-            displayAs={(item) => item.name}
-            onChange={(item) => {
-              this.setState({
-                homeTown: { ward: null, district: null, city: item },
-              });
-              addressApi
-                .getAddress({ cityCode: item.code })
-                .then((allDistrict) => this.setState({ allDistrict }));
-            }}
-          />
-
-          <ListingInfoSelect
-            label={"Quận/Huyện"}
-            value={homeTown.district}
-            options={allDistrict}
-            displayAs={(item) => item.name}
-            disabled={!allDistrict}
-            onChange={(item) => {
-              this.setState({
-                homeTown: { ...homeTown, district: item, ward: null },
-              });
-              addressApi
-                .getAddress({ districtCode: item.code })
-                .then((allWard) => this.setState({ allWard }));
-            }}
-          />
-          <ListingInfoSelect
-            label={"Xã/Phường"}
-            value={homeTown.ward}
-            options={allWard}
-            disabled={!allWard}
-            displayAs={(item) => item.name}
-            onChange={(item) => {
-              this.setState({ homeTown: { ...homeTown, ward: item } });
-            }}
-          />
-          <ListingInfoSelect
-            label={"Bạn có con chưa"}
-            value={yourKid}
-            options={yourKids}
-            displayAs={(item) => item.label}
-            onChange={(item) => {
-              this.setState({ yourKid: item });
-            }}
-          />
-          <ListingInfoSelect
-            label={"Trình độ học vấn của bạn"}
-            value={educationLevel}
-            options={educationLevels}
-            displayAs={(item) => item.label}
-            onChange={(item) => {
-              this.setState({ educationLevel: item });
-            }}
-          />
+              <ListingInfoSelect
+                className="dr-input"
+                label={"Quận/Huyện"}
+                value={location.district}
+                options={allDistrict}
+                displayAs={(item) => item.name}
+                disabled={!allDistrict}
+                onChange={(item) => {
+                  this.setState({
+                    location: { ...location, district: item, ward: null },
+                  });
+                  addressApi
+                    .getAddress({ districtCode: item.code })
+                    .then((allWard) => this.setState({ allWard }));
+                }}
+              />
+              <ListingInfoSelect
+                className="dr-input"
+                label={"Xã/Phường"}
+                value={location.ward}
+                options={allWard}
+                disabled={!allWard}
+                displayAs={(item) => item.name}
+                onChange={(item) => {
+                  this.setState({ location: { ...location, ward: item } });
+                }}
+              />
+            </div>
+          </div>
+          <div className="wrap">
+            <div className="title">
+              <div className="dash"></div>
+              <div className="text-title">Thông tin khác</div>
+              <div className="dash"></div>
+            </div>
+            <div className="row-wrapper">
+              <ListingInfoSelect
+                className="dr-input"
+                label={"Chiều cao"}
+                value={height}
+                options={heights}
+                displayAs={(item) => item + " cm"}
+                onChange={(item) => {
+                  this.setState({ height: item });
+                }}
+              />
+              <ListingInfoSelect
+                className="dr-input"
+                label={"Bạn có con chưa"}
+                value={yourKid}
+                options={yourKids}
+                displayAs={(item) => item.label}
+                onChange={(item) => {
+                  this.setState({ yourKid: item });
+                }}
+              />
+              <ListingInfoSelect
+                className="dr-input"
+                label={"Trình độ học vấn của bạn"}
+                value={educationLevel}
+                options={educationLevels}
+                displayAs={(item) => item.label}
+                onChange={(item) => {
+                  this.setState({ educationLevel: item });
+                }}
+              />
+            </div>
+          </div>
         </div>
       </div>
     );
