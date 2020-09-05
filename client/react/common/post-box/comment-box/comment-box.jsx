@@ -35,10 +35,12 @@ export class CommentBox extends Component {
 
         })
         this.io.on("edit-comment", ({postID, comment}) => {
-
             if(postID === props.post._id){
                 let i = this.state.list.findIndex(each => each._id === comment._id)
-                this.changeComment(comment, i)
+                if(i > -1){
+                    this.changeComment(comment, i)
+                }
+
             }
 
         })
@@ -161,9 +163,9 @@ export class CommentBox extends Component {
                             comment={each}
                             post={post}
                             key={each._id}
-                            onChangeComment={comment => this.changeComment(comment, i)}
+                            onChangeComment={comment => this.changeComment(comment, list.findIndex(c => c._id === comment._id))}
                             onDeleteComment={() => this.deleteComment(each)}
-                            onDeleteReply={(reply) => this.deleteReply(each, reply, i)}
+                            onDeleteReply={(reply) => this.deleteReply(each, reply, list.findIndex(c => c._id === each._id))}
                         />
                     ))}
                 </div>

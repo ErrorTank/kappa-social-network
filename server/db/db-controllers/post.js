@@ -698,7 +698,7 @@ const deleteComment = ({commentID, postID}) => {
 
     ]).then(([post, comment]) => {
         let userID = comment.from_person;
-        return Comment.find({post: ObjectId(postID), from_person: ObjectId(userID)})
+    return Comment.find({post: ObjectId(postID), from_person: ObjectId(userID)})
             .then(data => {
                 if(!data.length){
                     return User.findOneAndUpdate({

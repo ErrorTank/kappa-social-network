@@ -17,7 +17,7 @@ export class CategoriesSection extends Component {
     return (
       <div className='categories-section'>
         <div className='line-seperate'></div>
-        <h1>Danh muc</h1>
+        <h2 className='categories-section-title'>Danh muc</h2>
         {this.props.children}
       </div>
     );
