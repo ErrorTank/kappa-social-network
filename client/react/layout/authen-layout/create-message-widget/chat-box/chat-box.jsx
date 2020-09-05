@@ -311,7 +311,7 @@ export class ChatBox extends KComponent {
     let newMessages = currentMessages.concat(
       newMessage ? [newMessage, ...fileMessages] : fileMessages
     );
-    console.log(newMessages);
+    // console.log(newMessages);
 
     let scrollToLatest = messagesContainerUtilities.createScrollLatest(true);
     this.messageState.setState([...newMessages]).then(() => {

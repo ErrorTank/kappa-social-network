@@ -18,7 +18,6 @@ const initializeAuthenticateUser = ({userInfo: uInfo, authToken}) => {
     if (authToken) {
         authenCache.setAuthen(authToken, {expires: 7});
     }
-
     return Promise.all([
         userInfo.setState(omit(uInfo, ["search_history", "chat_settings"])),
         userSearchHistory.setState(uInfo.search_history),
@@ -26,8 +25,8 @@ const initializeAuthenticateUser = ({userInfo: uInfo, authToken}) => {
         userFollowedPosts.setState(uInfo.followed_posts),
         userSavedPosts.setState(uInfo.saved_posts),
         userBlockedPosts.setState(uInfo.blocked_posts),
-        feedPostIO.connect({token: authToken}),
-        messengerIO.connect({token: authToken})
+        feedPostIO.connect({token: authToken || authenCache.getAuthen()}),
+        messengerIO.connect({token: authToken || authenCache.getAuthen()})
             .then((messengerIO) => {
 
                 messengerApi.sendActiveStatusToAllRelations(true);

@@ -46,7 +46,15 @@ export class PostBox extends PureComponent {
                 }
 
             })
+            this.io.on("delete-post", ({postID}) => {
 
+                if(postID === props.post._id){
+
+                    userFollowedPosts.setState(userFollowedPosts.getState().filter(each => each !== postID))
+                    this.props.onDeletePost()
+                }
+
+            })
         }
     }
 
@@ -83,6 +91,8 @@ export class PostBox extends PureComponent {
 
         createPostModal.open({
             isEdit: true,
+            isShare: !!post.shared_post,
+            postID: post.shared_post || post._id,
             data: {
                 _id: post._id,
                 editorState: EditorState.createWithContent(createMentionEntities(post.content, post.mentions)),
@@ -129,7 +139,6 @@ export class PostBox extends PureComponent {
 
         let {post, isMyPost} = this.props;
         if(elem.intersectionRatio >= 0.1 && !this.isJoinRoom){
-            console.log("clgt")
 
             this.isJoinRoom = true;
             this.io.emit("join-post-room", {
@@ -167,6 +176,7 @@ export class PostBox extends PureComponent {
                 postID: this.props.post._id,
             });
             this.io.off("edit-post");
+            this.io.off("delete-post");
         }
     }
 
@@ -266,6 +276,7 @@ export class PostBox extends PureComponent {
                     )}
                     {!isPreview && post.shared_post && (
                         <div className="post-share">
+
                             <SharePostDisplay
                                 postID={post.shared_post}
                             />
