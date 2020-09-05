@@ -28,6 +28,7 @@ export const authenCache = (() => {
                         if (!user) {
                             reject();
                         } else {
+                            console.log("dit")
                             return initializeAuthenticateUser({userInfo: user}).then(() => resolve());
                         }
                     }).catch(err => {
