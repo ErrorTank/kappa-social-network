@@ -387,7 +387,8 @@ const getPostComments = ({postID, skip, limit}) => {
     return Comment.aggregate([
         {
             $match: {
-                post: ObjectId(postID)
+                post: ObjectId(postID),
+                is_reply: false
             }
         },
         {
@@ -529,7 +530,7 @@ const updatePostCommentReaction = ({postID, userID, commentID, reactionConfig}) 
 }
 
 const createCommentReply = ({postID, commentID, reply, userID}) => {
-    let newReply = {...reply, _id: new ObjectId(), from_person: ObjectId(userID), post: ObjectId(postID)}
+    let newReply = {...reply, _id: new ObjectId(), from_person: ObjectId(userID), post: ObjectId(postID), is_reply: true}
     return Promise.all([Comment.findOneAndUpdate({
         _id: ObjectId(commentID)
     }, {
@@ -677,7 +678,16 @@ const deleteReply = ({replyID, commentID}) => {
                         }
                     }, {
                         new: true
-                    }).lean().then((data) => data.followed_posts)
+                    }).lean().then((data) => (
+                        {
+                            postID: comment.post,
+                            list: data.followed_posts
+                        }
+                    ))
+                }
+                return {
+                    postID: comment.post,
+                    list: null
                 }
             })
     })
@@ -709,6 +719,7 @@ const deleteComment = ({commentID, postID}) => {
                         }
                     }, {new: true}).lean().then((data) => data.followed_posts)
                 }
+                return null;
             })
     })
 }

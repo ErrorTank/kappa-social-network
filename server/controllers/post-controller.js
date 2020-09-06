@@ -61,7 +61,11 @@ module.exports = (db, namespacesIO) => {
         return deleteReply({
             ...req.params,
         }).then((data) => {
-            return res.status(200).json(data);
+            namespacesIO.feedPost
+                .socketMap[req.user._id]
+                .to(`/post-room/${data.postID}`)
+                .emit('delete-reply', {postID: data.postID, reply: {_id: req.params.replyID}});
+            return res.status(200).json(data.list);
         })
             .catch((err) => next(err));
 
@@ -96,6 +100,10 @@ module.exports = (db, namespacesIO) => {
             ...req.params,
             userID: req.user._id
         }).then((data) => {
+            namespacesIO.feedPost
+                .socketMap[req.user._id]
+                .to(`/post-room/${req.params.postID}`)
+                .emit('new-reply', ({postID: req.params.postID, reply: data}));
             return res.status(200).json(data);
         })
             .catch((err) => next(err));
@@ -170,7 +178,10 @@ module.exports = (db, namespacesIO) => {
             ...req.params,
             ...req.body
         }).then((data) => {
-            namespacesIO.feedPost
+            data.is_reply ? namespacesIO.feedPost
+                .socketMap[req.user._id]
+                .to(`/post-room/${data.post.toString()}`)
+                .emit('edit-reply', {reply: data, postID: data.post.toString()}) :namespacesIO.feedPost
                 .socketMap[req.user._id]
                 .to(`/post-room/${data.post.toString()}`)
                 .emit('edit-comment', {comment: data, postID: data.post.toString()});

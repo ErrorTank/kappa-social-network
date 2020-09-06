@@ -97,7 +97,7 @@ class CreatePostModal extends Component {
                     policy: policy.value,
                     files: newFiles,
                     tagged: tagged.map(each => each._id),
-                    shared_post: this.props.postID,
+                    shared_post: this.props.isShare ? this.props.postID : null,
                     ...transformEditorState(convertToRaw(editorState.getCurrentContent()))
                 };
 

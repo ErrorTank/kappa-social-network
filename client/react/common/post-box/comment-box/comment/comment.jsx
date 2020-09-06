@@ -16,6 +16,7 @@ import {CommentInput} from "../comment-input";
 import {convertToRaw, EditorState} from "draft-js";
 import {utilityApi} from "../../../../../api/common/utilities-api";
 import createMentionEntities from "../../../../../common/utils/mention-utils";
+import {feedPostIO} from "../../../../../socket/sockets";
 
 
 export class Comment extends Component {
@@ -28,7 +29,45 @@ export class Comment extends Component {
             edit: false,
             replyData: null
         }
+        this.io = feedPostIO.getIOInstance();
+        if(!props.isReply){
+            this.io.on("new-reply", ({postID, reply}) => {
+
+                if(postID === props.post._id ){
+                    this.addNewReply(reply)
+                }
+
+            })
+            this.io.on("delete-reply", ({postID, reply}) => {
+
+                if(postID === props.post._id){
+
+                    this.deleteReply(reply)
+                }
+
+            })
+            this.io.on("edit-reply", ({postID, reply}) => {
+                if(postID === props.post._id){
+                    let i = this.state.replies.findIndex(each => each._id === reply._id)
+                    if(i > -1){
+                        this.changeReply(reply, i)
+                    }
+
+                }
+
+            })
+        }
+
+
+
     }
+
+    componentWillUnmount() {
+        if(this.io){
+            this.io.off("reply");
+        }
+    }
+
     uploadSingleFile = (file) => {
         return file.path ? Promise.resolve(file) : postApi.preUploadMedia({file: file.file}, "file")
             .then(fileData => ({
@@ -57,13 +96,18 @@ export class Comment extends Component {
                         if(!followedPosts.find(each => each === post._id)){
                             userFollowedPosts.setState(followedPosts.concat(post._id))
                         }
-                        this.setState({replies: [data].concat(this.state.replies)});
-                        this.props.onChangeComment({
-                            ...comment,
-                            replies: comment.replies.concat(data._id)
-                        });
+                       this.addNewReply(data);
                     })
             })
+    }
+
+    addNewReply = reply => {
+        let {comment} = this.props;
+        this.setState({replies: [reply].concat(this.state.replies)});
+        this.props.onChangeComment({
+            ...comment,
+            replies: comment.replies.concat(reply._id)
+        });
     }
 
     getMentionApi = () => {
@@ -106,14 +150,21 @@ export class Comment extends Component {
         !isReply ?
             postApi.deleteComment(post._id, comment._id)
                 .then((followed_posts) => {
-                    userFollowedPosts.setState(followed_posts)
+                    if(followed_posts)
+                        userFollowedPosts.setState(followed_posts)
                     return onDeleteComment()
                 }):
             postApi.deleteReply(father._id, comment._id)
                 .then((followed_posts) => {
-                    userFollowedPosts.setState(followed_posts)
+                    if(followed_posts)
+                        userFollowedPosts.setState(followed_posts)
                     onDeleteReply(comment);
                 })
+    }
+
+    deleteReply = (each) => {
+        this.setState({replies: this.state.replies.filter(item => item._id !== each._id)})
+        this.props.onDeleteReply(each)
     }
 
     updateComment = ({editorState, files}) => {
@@ -269,8 +320,7 @@ export class Comment extends Component {
                                         key={each._id}
                                         onChangeComment={reply => this.changeReply(reply, replies.findIndex(r => r._id === reply._id))}
                                         onDeleteReply={() => {
-                                            this.setState({replies: this.state.replies.filter(item => item._id !== each._id)})
-                                            onDeleteReply(each)
+                                            this.deleteReply(each);
                                         }}
                                         onReply={() => {
                                             this.setState({showReplyInput: true, replyData: {...each.from_person}})

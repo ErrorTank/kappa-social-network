@@ -5,13 +5,15 @@ import {Link} from "react-router-dom";
 import {unicodeEmojiRegexp} from 'draft-js-emoji-mart-plugin/lib/constants';
 import data from 'emoji-mart/data/facebook.json';
 import createEmojiMartPlugin from "draft-js-emoji-mart-plugin";
+
 const emojiPlugin = createEmojiMartPlugin({
     data,
     set: 'facebook',
     emojiSize: 16
 });
-import { checkText } from 'smile2emoji'
+import {checkText} from 'smile2emoji'
 import {createPipelines} from "./pipelines";
+
 const {Emoji} = emojiPlugin;
 
 const transformEditorState = (rawEditorState) => {
@@ -26,18 +28,30 @@ const transformEditorState = (rawEditorState) => {
     }
 };
 
-const removeBadCharacters = text => [...text].filter(v=>v.charCodeAt(0) <= 127).join("");
+const removeBadCharacters = text => [...text].filter(v => {
+
+    return v.charCodeAt(0) <= 127 || (v.charCodeAt(0) >= 160 && v.charCodeAt(0) <= 255);
+}).join("");
+
+const removeUFFDCharacters = text => [...text].filter(v => {
+    return v.charCodeAt(0) <= 50000 ;
+}).join("");
 
 const formatUTF8EmojiText = text => {
     let paths = [];
-    let result = removeBadCharacters(text);
+    // console.log(text)
+    // console.log(text.replace(/\uFFFD/g, ''))
+    let result = (text);
+
     let matches = text.matchAll(unicodeEmojiRegexp);
+
     let index = 0;
     for (let match of matches) {
 
-        if(match.index > index){
+        if (match.index > index) {
+
             paths = paths.concat({
-                path: result.substring(index, match.index)
+                path: removeUFFDCharacters(result.substring(index, match.index))
             })
         }
         paths = paths.concat({
@@ -47,9 +61,9 @@ const formatUTF8EmojiText = text => {
 
     }
 
-    if(index < result.length){
+    if (index < result.length) {
         paths.push({
-            path: result.substring(index)
+            path: removeUFFDCharacters(result.substring(index))
         })
     }
     return paths;
@@ -63,8 +77,7 @@ const transformMessageContentToPaths = ({content, mentions}) => {
 
     if (!mentions.length) {
         contentPaths = formatUTF8EmojiText(content)
-
-    }else{
+    } else {
 
         for (let mention of mentions) {
 
@@ -83,11 +96,12 @@ const transformMessageContentToPaths = ({content, mentions}) => {
 
             resultStr = resultStr.substring(index + mention.name.length + 1);
         }
-        if(resultStr){
+        if (resultStr) {
+
             contentPaths = contentPaths.concat(formatUTF8EmojiText(resultStr));
         }
     }
-
+    // console.log(contentPaths)
 
     return contentPaths.map((each => (
         <Fragment key={uuidv4()}>{each.link ? (

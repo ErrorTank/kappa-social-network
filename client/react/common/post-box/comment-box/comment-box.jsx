@@ -48,7 +48,10 @@ export class CommentBox extends Component {
 
     unsubscribeIO = () => {
         if(this.io){
-            this.io.off("edit-post");
+            this.io
+                .off("new-comment")
+                .off("delete-comment")
+                .off("edit-comment");
         }
     }
 

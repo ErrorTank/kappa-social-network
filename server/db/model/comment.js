@@ -52,6 +52,10 @@ const commentSchema =  new Schema({
     from_person: {
         type: ObjectId,
         ref: "User"
+    },
+    is_reply: {
+        type: Boolean,
+        default: false
     }
 });
 const autoPopulateParent = function(next){
