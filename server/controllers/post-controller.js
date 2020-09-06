@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
-const {authorizationUserMiddleware} = require('../common/middlewares/common');
+const {authorizationUserMiddleware, } = require('../common/middlewares/common');
+const {checkReplyExistedMiddleware, checkPostExistedMiddleware, checkCommentExistedMiddleware} = require("../common/middlewares/post");
 const {
     createNewPost, getAllPosts, updateFilesInPost, updatePost, updatePostReaction, getPostReactionByReactionKey,
     getPostComments, createNewCommentForPost, updatePostCommentReaction, createCommentReply, getCommentReplies, deleteComment, deletePost, deleteReply, updateComment, getPostByID
@@ -43,7 +44,7 @@ module.exports = (db, namespacesIO) => {
             .catch((err) => next(err));
 
     })
-    router.delete("/:postID/comment/:commentID", authorizationUserMiddleware, (req, res, next) => {
+    router.delete("/:postID/comment/:commentID", authorizationUserMiddleware, checkPostExistedMiddleware, (req, res, next) => {
         return deleteComment({
             ...req.params,
         }).then((data) => {
@@ -57,7 +58,7 @@ module.exports = (db, namespacesIO) => {
             .catch((err) => next(err));
 
     })
-    router.delete("/comment/:commentID/reply/:replyID", authorizationUserMiddleware, (req, res, next) => {
+    router.delete("/comment/:commentID/reply/:replyID", authorizationUserMiddleware, checkReplyExistedMiddleware, (req, res, next) => {
         return deleteReply({
             ...req.params,
         }).then((data) => {
@@ -70,7 +71,7 @@ module.exports = (db, namespacesIO) => {
             .catch((err) => next(err));
 
     })
-    router.post("/create-comment/post/:postID", authorizationUserMiddleware, (req, res, next) => {
+    router.post("/create-comment/post/:postID", authorizationUserMiddleware, checkPostExistedMiddleware, (req, res, next) => {
         return createNewCommentForPost({
             ...req.body,
             ...req.params,
@@ -94,7 +95,7 @@ module.exports = (db, namespacesIO) => {
             .catch((err) => next(err));
 
     })
-    router.post("/create-reply/post/:postID/comment/:commentID", authorizationUserMiddleware, (req, res, next) => {
+    router.post("/create-reply/post/:postID/comment/:commentID", authorizationUserMiddleware, checkCommentExistedMiddleware,(req, res, next) => {
         return createCommentReply({
             ...req.body,
             ...req.params,
@@ -119,7 +120,7 @@ module.exports = (db, namespacesIO) => {
             .catch((err) => next(err));
 
     })
-    router.put("/update/post/:postID/file/:fileID", authorizationUserMiddleware, (req, res, next) => {
+    router.put("/update/post/:postID/file/:fileID", authorizationUserMiddleware, checkPostExistedMiddleware,(req, res, next) => {
         return updateFilesInPost({
             ...req.params,
             ...req.body
@@ -129,7 +130,7 @@ module.exports = (db, namespacesIO) => {
             .catch((err) => next(err));
 
     })
-    router.put("/update/post/:postID", authorizationUserMiddleware, (req, res, next) => {
+    router.put("/update/post/:postID", authorizationUserMiddleware,checkPostExistedMiddleware, (req, res, next) => {
         return updatePost({
             ...req.params,
             ...req.body
@@ -143,7 +144,7 @@ module.exports = (db, namespacesIO) => {
             .catch((err) => next(err));
 
     })
-    router.put("/toggle-follow/post/:postID", authorizationUserMiddleware, (req, res, next) => {
+    router.put("/toggle-follow/post/:postID", authorizationUserMiddleware,checkPostExistedMiddleware, (req, res, next) => {
         return toggleFollowPost({
             ...req.params,
             userID: req.user._id
@@ -153,7 +154,7 @@ module.exports = (db, namespacesIO) => {
             .catch((err) => next(err));
 
     })
-    router.put("/toggle-save/post/:postID", authorizationUserMiddleware, (req, res, next) => {
+    router.put("/toggle-save/post/:postID", authorizationUserMiddleware, checkPostExistedMiddleware, (req, res, next) => {
         return toggleSavePost({
             ...req.params,
             userID: req.user._id
@@ -163,7 +164,7 @@ module.exports = (db, namespacesIO) => {
             .catch((err) => next(err));
 
     })
-    router.put("/toggle-block/post/:postID", authorizationUserMiddleware, (req, res, next) => {
+    router.put("/toggle-block/post/:postID", authorizationUserMiddleware,checkPostExistedMiddleware, (req, res, next) => {
         return toggleBlockPost({
             ...req.params,
             userID: req.user._id
@@ -173,7 +174,7 @@ module.exports = (db, namespacesIO) => {
             .catch((err) => next(err));
 
     })
-    router.put("/update-comment/comment/:commentID", authorizationUserMiddleware, (req, res, next) => {
+    router.put("/update-comment/comment/:commentID", authorizationUserMiddleware,checkCommentExistedMiddleware, (req, res, next) => {
         return updateComment({
             ...req.params,
             ...req.body
@@ -190,7 +191,7 @@ module.exports = (db, namespacesIO) => {
             .catch((err) => next(err));
 
     })
-    router.put("/update-reaction/post/:postID", authorizationUserMiddleware, (req, res, next) => {
+    router.put("/update-reaction/post/:postID", authorizationUserMiddleware, checkPostExistedMiddleware,(req, res, next) => {
         return updatePostReaction({
             ...req.params,
             ...req.body
@@ -205,7 +206,7 @@ module.exports = (db, namespacesIO) => {
             .catch((err) => next(err));
 
     })
-    router.put("/update-reaction/post/:postID/comment/:commentID", authorizationUserMiddleware, (req, res, next) => {
+    router.put("/update-reaction/post/:postID/comment/:commentID", authorizationUserMiddleware, checkCommentExistedMiddleware, (req, res, next) => {
         return updatePostCommentReaction({
             ...req.params,
             ...req.body

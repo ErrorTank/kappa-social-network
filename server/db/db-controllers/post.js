@@ -740,7 +740,7 @@ const deletePost = ({postID,}) => {
                 $or: [
                     {
                         _id: {
-                            $in: comments.map(each => ObjectId(each))
+                            $in: comments.map(each => ObjectId(each._id))
                         }
                     }
                 ]
