@@ -18,6 +18,14 @@ class CreateListingDetail extends KComponent {
   updateValue = (key, val) => {
     this.setState({ [key]: val });
   };
+
+  setValues = (newState) => {
+    this.setState((prevState) => ({
+      ...prevState,
+      ...newState,
+    }));
+  };
+
   render() {
     return (
       <div className='create-listing-detail'>

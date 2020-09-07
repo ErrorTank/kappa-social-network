@@ -20,6 +20,7 @@ import classnames from 'classnames';
 import {
   checkNumber,
   moneyToNumber,
+  handleCheckError,
 } from '../../../../../../../../common/utils/listing-utils';
 
 export class ListingInfo extends Component {
@@ -114,26 +115,6 @@ export class ListingInfo extends Component {
       this.handleSetDependent(fieldByHomeFor, newState.homeFor);
     }
   }
-
-  // check error, only check needed input now
-  handleCheckError = (name, message, value) => {
-    const { state, updateValue } = this.props;
-    if (!value || (value.includes('&nbsp;') && value.length === 7)) {
-      this.setState((prevState) => ({
-        error: {
-          ...prevState.error,
-          [name]: message,
-        },
-      }));
-    } else {
-      this.setState((prevState) => ({
-        error: {
-          ...prevState.error,
-          [name]: '',
-        },
-      }));
-    }
-  };
 
   // change number->money display
   handlePriceDisplay = (name, value) => {
@@ -318,7 +299,7 @@ export class ListingInfo extends Component {
                   contentEditable={each.contentEditable}
                   onChange={(e) => {
                     each.errorMessage &&
-                      this.handleCheckError(
+                      handleCheckError(
                         each.englishName,
                         each.errorMessage,
                         e.target.value

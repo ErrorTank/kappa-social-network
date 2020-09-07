@@ -41,6 +41,7 @@ export class CreateListingInputWidget extends Component {
       title: 'Nhà',
     },
   ];
+
   requireField = {
     item: ['title', 'price', 'category', 'location', 'availability'],
     vehicle: ['vehicleType', 'year', 'make', 'model', 'price'],
@@ -54,13 +55,14 @@ export class CreateListingInputWidget extends Component {
     ],
   };
   componentDidMount = () => {
-    let { state, updateValue } = this.props;
+    let { state, updateValue, setValues } = this.props;
     this.createInfo.forEach((each) => {
       if (each.name === this.props.match.params.categoryName) {
         let inputField;
         this.setState({ title: each.title });
-        updateValue('type', each.name);
-        updateValue('pictureLimit', each.pictureLimit);
+        setValues({ type: each.name, pictureLimit: each.pictureLimit });
+        // updateValue('type', each.name);
+        // updateValue('pictureLimit', each.pictureLimit);
         switch (each.name) {
           case 'item':
             inputField = itemField;
@@ -126,7 +128,6 @@ export class CreateListingInputWidget extends Component {
       Promise.all(files.map((each) => this.uploadSingleFile(each))).then(
         (newFiles) => {
           let user = userInfo.getState();
-          // console.log(user._id);
           let moreInfo = {
             postTime: Date.now(),
             files: newFiles,
