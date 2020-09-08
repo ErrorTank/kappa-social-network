@@ -22,23 +22,4 @@ const moneyToNumber = (value) => {
   return value.split('.').join('');
 };
 
-// check error, only check needed input now
-const handleCheckError = (name, message, value) => {
-  const { state, updateValue } = this.props;
-  if (!value || (value.includes('&nbsp;') && value.length === 7)) {
-    this.setState((prevState) => ({
-      error: {
-        ...prevState.error,
-        [name]: message,
-      },
-    }));
-  } else {
-    this.setState((prevState) => ({
-      error: {
-        ...prevState.error,
-        [name]: '',
-      },
-    }));
-  }
-};
-export { checkNumber, cleanBlankProp, moneyToNumber, handleCheckError };
+export { checkNumber, cleanBlankProp, moneyToNumber };

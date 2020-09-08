@@ -1,9 +1,10 @@
 .create-listing-input-widget{
   background-color white
-  height auto;
+  height 100%;
   border-top: 1px solid transparent;
   box-shadow: 0 0 15px 1px rgba(69,65,78,0.2)
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+  position relative
   .cs-input-header{
     margin: 20px 16px 5px 16px;
     box-sizing: border-box;
@@ -67,7 +68,8 @@
   margin-top: 8px; 
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   overflow: auto;
-  height: 71vh;
+  height: 76%;
+  margin-bottom: 8px
   .user-info-display{
     padding: 0 16px;
     min-height: 44px;
@@ -137,7 +139,11 @@
 .cs-input-footer{
   padding: 16px;
   border-top: 1px solid lightgray
-  
+  position: absolute
+  width: 100%
+  height: 73px
+  bottom: 0%
+  background-color: white
   .cl-button{
     box-sizing: border-box;
     height 40px;

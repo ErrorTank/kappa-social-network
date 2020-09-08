@@ -20,7 +20,7 @@ import classnames from 'classnames';
 import {
   checkNumber,
   moneyToNumber,
-  handleCheckError,
+  checkRequired,
 } from '../../../../../../../../common/utils/listing-utils';
 
 export class ListingInfo extends Component {
@@ -133,6 +133,26 @@ export class ListingInfo extends Component {
         let money = newValue.replace(/\B(?=(\d{3})+(?!\d))/g, '.');
         this.props.updateValue([name], `${money} ₫`);
       }
+    }
+  };
+  // check error, only check needed input now
+  handleCheckError = (name, error, value) => {
+    const { state, updateValue } = this.props;
+
+    if (!value || (value.includes('&nbsp;') && value.length === 7)) {
+      this.setState((prevState) => ({
+        error: {
+          ...prevState.error,
+          [name]: message,
+        },
+      }));
+    } else {
+      this.setState((prevState) => ({
+        error: {
+          ...prevState.error,
+          [name]: '',
+        },
+      }));
     }
   };
   // hover function
@@ -285,10 +305,10 @@ export class ListingInfo extends Component {
                   onMouseLeave={() => this.mouseOut()}
                   contentEditable={each.contentEditable}
                   onChange={(e) => {
-                    each.errorMessage &&
-                      handleCheckError(
+                    each.error &&
+                      this.handleCheckError(
                         each.englishName,
-                        each.errorMessage,
+                        each.error,
                         e.target.value
                       );
 

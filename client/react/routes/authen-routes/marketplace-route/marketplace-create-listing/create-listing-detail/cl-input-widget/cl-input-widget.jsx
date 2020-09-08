@@ -54,28 +54,26 @@ export class CreateListingInputWidget extends Component {
       'decription',
     ],
   };
+
   componentDidMount = () => {
     let { state, updateValue, setValues } = this.props;
     this.createInfo.forEach((each) => {
       if (each.name === this.props.match.params.categoryName) {
-        let inputField;
         this.setState({ title: each.title });
         setValues({ type: each.name, pictureLimit: each.pictureLimit });
-        console.log(state);
-        switch (each.name) {
-          case 'item':
-            inputField = itemField;
-            break;
-          case 'vehicle':
-            inputField = vehicleField;
-            break;
-          case 'home':
-            inputField = homeField;
-            break;
-        }
+
+        const setField = {
+          item: itemField,
+          vehicle: vehicleField,
+          home: homeField,
+        };
+        let inputField = setField[each.name];
+
         inputField.map((e) => {
           if (e.default) {
             updateValue(`${e.englishName}`, e.default);
+          } else if (each.options) {
+            updateValue(`${e.englishName}`, null);
           } else {
             updateValue(`${e.englishName}`, '');
           }
@@ -95,8 +93,6 @@ export class CreateListingInputWidget extends Component {
   setNewListing = () => {
     const { state } = this.props;
     const { files, type } = state;
-    // console.log(state);
-    console.log(this.state.canCreate);
     if (this.state.canCreate) {
       let newListing = cleanBlankProp(state);
 
@@ -127,6 +123,7 @@ export class CreateListingInputWidget extends Component {
       Promise.all(files.map((each) => this.uploadSingleFile(each))).then(
         (newFiles) => {
           let user = userInfo.getState();
+          console.log(user);
           let moreInfo = {
             postTime: Date.now(),
             files: newFiles,
@@ -157,12 +154,10 @@ export class CreateListingInputWidget extends Component {
 
     if (state.type === 'vehicle') {
       if (state.vehicleType === 'Xe hơi/Xe tải') {
-        let moreRequire = ['bodyType', 'milage'];
-        requiredInput = [...requiredInput, ...moreRequire];
+        requiredInput = [...requiredInput, 'bodyType', 'milage'];
       }
       if (state.vehicleType === 'Xe máy') {
-        let moreRequire = ['milage'];
-        requiredInput = [...requiredInput, ...moreRequire];
+        requiredInput = [...requiredInput, 'milage'];
       }
     }
 
@@ -187,7 +182,6 @@ export class CreateListingInputWidget extends Component {
   render() {
     let user = userInfo.getState();
     // console.log(this.props.state);
-    // console.log(this.state);
     return (
       <div className='create-listing-input-widget'>
         <div className='cs-input-header'>

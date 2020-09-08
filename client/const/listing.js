@@ -1,24 +1,34 @@
 import React, { Component } from 'react';
 import { addressApi } from './../api/common/address-api';
+import { userInfo } from './../common/states/common';
+let user = userInfo.getState();
+console.log(user);
 
 export let itemField = [
   {
     name: 'Tiêu đề',
     englishName: 'title',
-    errorMessage: 'Vui lòng nhập tiêu đề hợp lệ.',
+    error: {
+      required: 'Vui lòng nhập tiêu đề hợp lệ.',
+    },
   },
   {
     name: 'Giá',
     englishName: 'price',
-    errorMessage: 'Nhập giá cho mặt hàng của bạn.',
+    error: {
+      required: 'Nhập giá cho mặt hàng của bạn.',
+    },
     contentEditable: true,
     numberOnly: true,
     isMoney: true,
   },
-  { 
+  {
     name: 'Hạng mục',
     englishName: 'category',
     isSelected: true,
+    error: {
+      required: 'Vui lòng chọn giá trị hợp lệ.',
+    },
     options: [
       {
         name: 'Nhà & vườn',
@@ -248,7 +258,11 @@ export let itemField = [
     name: 'Vị trí',
     englishName: 'location',
     isSelected: true,
+    options: [],
     default: 'Hà Nội',
+    error: {
+      required: 'Vui lòng chọn giá trị hợp lệ.',
+    },
   },
 
   {
@@ -261,6 +275,9 @@ export let itemField = [
       //  { name: 'Niêm yết là hết hàng' },
     ],
     default: 'Niêm yết là chỉ còn 1 mặt hàng',
+    error: {
+      required: 'Vui lòng chọn giá trị hợp lệ.',
+    },
   },
 ];
 
@@ -510,12 +527,12 @@ export let vehicleField = [
   {
     name: 'Hãng',
     englishName: 'make',
-    errorMessage: 'Hãy thêm hãng phương tiện.',
+    error: 'Hãy thêm hãng phương tiện.',
   },
   {
     name: 'Mẫu xe',
     englishName: 'model',
-    errorMessage: 'Hãy thêm dòng phương tiện.',
+    error: 'Hãy thêm dòng phương tiện.',
   },
   {
     name: 'Kiểu thân xe',
@@ -534,7 +551,7 @@ export let vehicleField = [
     name: 'Số dặm đã đi',
     englishName: 'mileage',
     isDepended: true,
-    errorMessage: 'Hãy thêm số dặm mà phương tiện đã đi được.',
+    error: 'Hãy thêm số dặm mà phương tiện đã đi được.',
   },
   {
     name: 'Hộp số',
@@ -581,7 +598,7 @@ export let vehicleField = [
   {
     name: 'Giá',
     englishName: 'price',
-    errorMessage: 'Nhập giá cho mặt hàng của bạn.',
+    error: 'Nhập giá cho mặt hàng của bạn.',
     contentEditable: true,
     numberOnly: true,
     isMoney: true,
@@ -674,20 +691,20 @@ export const homeField = [
   {
     name: 'Số phòng ngủ',
     englishName: 'numberOfBedrooms',
-    errorMessage: 'Vui lòng nhập số phòng ngủ.',
+    error: 'Vui lòng nhập số phòng ngủ.',
     numberOnly: true,
   },
   {
     name: 'Số phòng tắm',
     englishName: 'numberOfBathrooms',
-    errorMessage: 'Vui lòng nhập số phòng tắm.',
+    error: 'Vui lòng nhập số phòng tắm.',
     numberOnly: true,
   },
   {
     name: 'Giá mỗi tháng',
     englishName: 'pricePerMonth',
     isDepended: true,
-    errorMessage: 'Vui lòng nhập giá tài sản cho thuê.',
+    error: 'Vui lòng nhập giá tài sản cho thuê.',
     contentEditable: true,
     numberOnly: true,
     isMoney: true,
@@ -696,7 +713,7 @@ export const homeField = [
     name: 'Giá',
     englishName: 'price',
     isDepended: true,
-    errorMessage: 'Vui lòng nhập giá tài sản muốn bán.',
+    error: 'Vui lòng nhập giá tài sản muốn bán.',
     contentEditable: true,
     numberOnly: true,
     isMoney: true,
