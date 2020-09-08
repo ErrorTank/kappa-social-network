@@ -14,7 +14,10 @@ import { authenCache } from '../../common/cache/authen-cache';
 import { GuestRoute } from './route-types/guest-route/guest-route';
 import { AuthenRoute } from './route-types/authen-route/authen-route';
 import { WithRouterKappaLayout } from '../layout/kappa-layout';
-import { TopFloatNotificationRegistry } from '../common/float-top-notification/float-top-notification';
+import { topFloatNotifications , } from '../common/float-top-notification/float-top-notification';
+import { bottomNotification , } from '../common/float-top-notification/bottom-notification';
+let TopFloatNotificationRegistry = topFloatNotifications.Registry;
+let BottomNotificationRegistry = bottomNotification.Registry;
 import { ThemeContext, ThemeController } from '../context/theme-context';
 
 const DatingRoute = lazy(
@@ -220,7 +223,8 @@ export class App extends React.Component {
                 }
               />
               <div id='main-route'>
-                <TopFloatNotificationRegistry timeout={5000} />
+                <TopFloatNotificationRegistry/>
+                <BottomNotificationRegistry/>
                 <Router history={customHistory}>
                   <NotificationStateContext.Provider
                     value={this.state.showNotificationPrompt}

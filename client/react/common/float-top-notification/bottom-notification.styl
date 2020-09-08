@@ -1,0 +1,28 @@
+.bottom-notification-registry{
+  bottom 20px
+  left 20px
+  .bottom-notification{
+    box-shadow:0 7px 25px #c2c2c2
+    .bn-content{
+      background-color white
+      border-radius 5px
+      cursor pointer
+
+      &:hover{
+        border-color primaryButton
+      }
+      position relative
+      .close-noti{
+        position absolute
+        top 15px
+        transform translateY(-50%)
+        right 10px
+        font-size 1.6rem
+        &:hover{
+          color danger
+        }
+      }
+    }
+
+  }
+}

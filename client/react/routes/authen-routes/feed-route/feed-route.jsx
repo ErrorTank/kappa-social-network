@@ -10,6 +10,7 @@ import {FeedList} from "./feed-widget/feed-list/feed-list";
 import {InfiniteScrollWrapper} from "../../../common/infinite-scroll-wrapper/infinite-scroll-wrapper";
 import debounce from "lodash/debounce"
 
+
 class FeedRoute extends Component {
     constructor(props) {
         super(props);
@@ -19,6 +20,7 @@ class FeedRoute extends Component {
             needReloaded: false
         }
         this.fetchPostsForFeed()
+
     }
 
     fetchPostsForFeed = () => {

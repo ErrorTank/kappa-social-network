@@ -76,6 +76,7 @@
     "react-router": "^5.1.2",
     "react-router-dom": "^5.1.2",
     "react-select": "^2.4.2",
+    "react-tinder-card": "^1.2.1",
     "react-to-print": "^2.5.1",
     "react-transition-group": "^2.3.1",
     "react-uid": "^2.2.0",

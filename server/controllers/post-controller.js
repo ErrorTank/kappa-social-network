@@ -77,6 +77,12 @@ module.exports = (db, namespacesIO) => {
             ...req.params,
             userID: req.user._id
         }).then((data) => {
+
+            getPostByID({postID: data.post})
+                .then(post => {
+                    namespacesIO.messenger.io.to(`/messenger-user-room/user/${post.belonged_person._id.toString()}`).emit("comment-on-your-post", {comment: data});
+                })
+
             namespacesIO.feedPost
                 .socketMap[req.user._id]
                 .to(`/post-room/${req.params.postID}`)
