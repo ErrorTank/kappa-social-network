@@ -41,4 +41,4 @@ const handleCheckError = (name, message, value) => {
     }));
   }
 };
-export { checkNumber, cleanBlankProp, moneyToNumber };
+export { checkNumber, cleanBlankProp, moneyToNumber, handleCheckError };

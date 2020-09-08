@@ -37,18 +37,17 @@ export class ListingInfo extends Component {
 
     //get option for location
     addressApi.getAddress({}).then((city) => {
-      // console.log(city);
       let locationOption = city.map((e) => {
         return pick(e, ['name']);
       });
-      itemField.filter((e) => {
+      itemField.map((e) => {
         if (e.englishName === 'location') {
           return (e.options = locationOption);
         } else {
           return e;
         }
       });
-      vehicleField.filter((e) => {
+      vehicleField.map((e) => {
         if (e.englishName === 'location') {
           return (e.options = locationOption);
         } else {
@@ -138,37 +137,26 @@ export class ListingInfo extends Component {
   };
   // hover function
   mouse = (name) => {
-    switch (name) {
-      case 'title':
-      case 'make':
-      case 'year':
-      case 'model':
-      case 'homeType':
-        this.props.updateValue('hoverArr', 'title');
-        break;
-      case 'price':
-      case 'pricePerMonth':
-        this.props.updateValue('hoverArr', 'price');
-        break;
-      case 'size':
-      case 'condition':
-      case 'brand':
-      case 'platform':
-      case 'carrie':
-      case 'deviceName':
-      case 'material':
-        this.props.updateValue('hoverArr', 'category');
-        break;
-      case 'decription':
-        this.props.updateValue('hoverArr', 'decription');
-        break;
-      case 'location':
-        this.props.updateValue('hoverArr', 'location');
-        break;
-      case 'image':
-        this.props.updateValue('hoverArr', 'image');
-        break;
-    }
+    const setHover = {
+      title: 'title',
+      make: 'title',
+      year: 'title',
+      model: 'title',
+      homeType: 'title',
+      price: 'price',
+      pricePerMonth: 'price',
+      size: 'category',
+      condition: 'category',
+      brand: 'category',
+      platform: 'category',
+      carrie: 'category',
+      deviceName: 'category',
+      material: 'category',
+      decription: 'decription',
+      location: 'location',
+      image: 'image',
+    };
+    setHover[name] && this.props.updateValue('hoverArr', setHover[name]);
   };
   mouseOut = () => {
     this.props.updateValue('hoverArr', '');
@@ -192,7 +180,6 @@ export class ListingInfo extends Component {
     let { pictureLimit, type, category, files, ...other } = state;
     const { inputField, error, dependedInput } = this.state;
 
-    // console.log(state);
     return (
       <div className='listing-info'>
         <div className='picture-input'>

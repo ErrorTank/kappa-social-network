@@ -15,7 +15,7 @@ export let itemField = [
     numberOnly: true,
     isMoney: true,
   },
-  {
+  { 
     name: 'Hạng mục',
     englishName: 'category',
     isSelected: true,

@@ -61,8 +61,7 @@ export class CreateListingInputWidget extends Component {
         let inputField;
         this.setState({ title: each.title });
         setValues({ type: each.name, pictureLimit: each.pictureLimit });
-        // updateValue('type', each.name);
-        // updateValue('pictureLimit', each.pictureLimit);
+        console.log(state);
         switch (each.name) {
           case 'item':
             inputField = itemField;

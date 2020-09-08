@@ -38,6 +38,7 @@ class CreateListingDetail extends KComponent {
               <CreateListingInputWidget
                 state={this.state}
                 updateValue={this.updateValue}
+                setValues={this.setValues}
                 {...this.props}
               />
             )}
