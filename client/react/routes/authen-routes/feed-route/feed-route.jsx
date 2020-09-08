@@ -9,6 +9,7 @@ import {postApi} from "../../../../api/common/post-api";
 import {FeedList} from "./feed-widget/feed-list/feed-list";
 import {InfiniteScrollWrapper} from "../../../common/infinite-scroll-wrapper/infinite-scroll-wrapper";
 import debounce from "lodash/debounce"
+import {bottomNotification} from "../../../common/float-top-notification/bottom-notification";
 
 class FeedRoute extends Component {
     constructor(props) {
@@ -19,6 +20,14 @@ class FeedRoute extends Component {
             needReloaded: false
         }
         this.fetchPostsForFeed()
+        bottomNotification.actions.push({
+            content: (
+                <p className="common-noti-layout danger">
+                    <i className="far fa-exclamation-circle"></i>
+                    <span>Có lỗi xảy ra</span>
+                </p>
+            )
+        });
     }
 
     fetchPostsForFeed = () => {

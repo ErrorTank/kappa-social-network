@@ -45,7 +45,7 @@ export default class ChangePasswordRoute extends KComponent {
         this.setState({creating: true});
         return userApi.changePassword(this.state.session._id, this.form.getPathData("newPassword").trim())
             .then(() => {
-                topFloatNotifications.push({
+                topFloatNotifications.actions.push({
                     content: (
                         <p className="common-noti-layout success">
                             <i className="fal fa-check"></i>
@@ -57,7 +57,7 @@ export default class ChangePasswordRoute extends KComponent {
             })
             .catch(() => {
                 this.setState({creating: false});
-                topFloatNotifications.push({
+                topFloatNotifications.actions.push({
                     content: (
                         <p className="common-noti-layout danger">
                             <i className="far fa-exclamation-circle"></i>
@@ -75,7 +75,7 @@ export default class ChangePasswordRoute extends KComponent {
         return userApi.getChangePasswordUserBrief(sessionID)
             .then(session => this.setState({loading: false, session}))
             .catch(() => {
-                    topFloatNotifications.push({
+                    topFloatNotifications.actions.push({
                         content: (
                             <p className="common-noti-layout danger">
                                 <i className="far fa-exclamation-circle"></i>

@@ -68,7 +68,7 @@ class AccountConfirmation extends Component {
                     _id: user._id,
                     login_at: new Date().getTime()
                 });
-                topFloatNotifications.push({
+                topFloatNotifications.actions.push({
                     content: (
                         <p className="common-noti-layout success">
                             <i className="fal fa-check"></i>
