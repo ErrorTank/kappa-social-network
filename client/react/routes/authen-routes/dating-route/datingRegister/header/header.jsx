@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { userInfo } from "./../../../../../../common/states/common";
+import { userInfo } from "../../../../../../common/states/common";
 
 class Header extends Component {
   constructor() {

@@ -5,6 +5,7 @@ import { userInfo, datingProfile } from "./../../../../common/states/common";
 import { customHistory } from "./../../routes";
 import { DatingRegister } from "./datingRegister/datingRegister";
 import { LoadingInline } from "./../../../common/loading-inline/loading-inline";
+import { CardContainer } from "./card-container/card-container";
 
 export default class DatingRoute extends Component {
   constructor(props) {
@@ -43,7 +44,12 @@ export default class DatingRoute extends Component {
           <LoadingInline />
         ) : profile ? (
           <PageTitle title={"Hẹn hò"}>
-            <h1>Trang chu hen ho</h1>
+            <div className="dating-home">
+              <div className="left-panel">leftpanel</div>
+              <div className="right-panel">
+                <CardContainer />
+              </div>
+            </div>
           </PageTitle>
         ) : (
           <DatingRegister onCreateProfile={this.onCreateProfile} />

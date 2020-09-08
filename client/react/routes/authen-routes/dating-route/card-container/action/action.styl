@@ -1,0 +1,37 @@
+.dating-card-actions{
+    display: flex
+    justify-content: center
+    align-items: center
+    padding : 16px
+    .action{
+        border-radius: 50%
+        cursor pointer
+        border : 1px solid common-border
+        width : 60px
+        height :60px
+        background-color: white
+        margin: 0 15px
+        position relative
+        &:hover{
+            background-color: darken(white,5%)
+        }
+        &.like{
+            i{
+                color:success
+            }
+            
+        }
+        &.skip{
+            i{
+                color:danger
+            }
+            
+        }
+        i{
+            absoluteMiddle()
+            font-size: 3rem
+          
+        }
+    }
+
+}
