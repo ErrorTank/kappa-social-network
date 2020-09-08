@@ -33,7 +33,7 @@ export class BottomNotification extends Component {
         )
     }
 }
-export const bottomNotification = createNotificationRegistry({timeout: 50000, component: BottomNotification, className: "bottom-notification-registry"});
+export const bottomNotification = createNotificationRegistry({timeout: 5000, component: BottomNotification, className: "bottom-notification-registry"});
 
 
 

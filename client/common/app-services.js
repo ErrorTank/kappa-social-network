@@ -13,6 +13,9 @@ import {messengerApi} from "../api/common/messenger-api";
 import {messageWidgetController} from "../react/layout/authen-layout/create-message-widget/create-message-widget";
 import {CALL_TYPES, callServices} from "./call-services/call-services";
 import {appModal} from "../react/common/modal/modals";
+import {bottomNotification} from "../react/common/float-top-notification/bottom-notification";
+import React from "react";
+import {PostNotification} from "../react/common/post-notification/post-notification";
 
 const initializeAuthenticateUser = ({userInfo: uInfo, authToken}) => {
     if (authToken) {
@@ -39,6 +42,17 @@ const initializeAuthenticateUser = ({userInfo: uInfo, authToken}) => {
                         })
                     }
                 })
+                messengerIO.on("comment-on-your-post", ({comment}) => {
+                    console.log(comment)
+                    bottomNotification.actions.push({
+                        content: (
+                            <PostNotification
+                                type={'comment_on_your_post'}
+                                data={comment}
+                            />
+                        )
+                    });
+                });
                 messengerIO.on("request", ({from, callType}) => {
                     messengerIO.emit("ack-call", {friendID: from});
 

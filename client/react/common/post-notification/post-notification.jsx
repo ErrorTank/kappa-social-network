@@ -15,11 +15,11 @@ export class PostNotification extends Component {
                 getReaction: () => null,
                 getContent: () => (
                     <span>
-                        {data.from_person.basic_info.username} đã bình luận về bài viết của bạn: <span>{getRenderableContentFromMessage(data)}</span>
+                        <span className="high-light">{data.from_person.basic_info.username}</span> đã bình luận về bài viết của bạn: <span>{getRenderableContentFromMessage(data)}</span>
                     </span>
                 )
             }
-        }
+        };
         return dataMatcher[type]
 
     }
