@@ -490,8 +490,12 @@ export let vehicleField = [
   },
   {
     name: 'Loại xe',
-    englishName: 'vehicleType',
+    // englishName: 'vehicleType',
+    englishName: 'category',
     isSelected: true,
+    error: {
+      required: 'Vui lòng chọn giá trị hợp lệ.',
+    },
     options: [
       { name: 'Xe hơi/Xe tải' },
       { name: 'Xe máy' },
@@ -508,6 +512,9 @@ export let vehicleField = [
     name: 'Năm',
     englishName: 'year',
     isSelected: true,
+    error: {
+      required: 'Vui lòng chọn giá trị hợp lệ.',
+    },
     options: [
       { name: '2021' },
       { name: '2020' },
@@ -527,18 +534,25 @@ export let vehicleField = [
   {
     name: 'Hãng',
     englishName: 'make',
-    error: 'Hãy thêm hãng phương tiện.',
+    error: {
+      required: 'Hãy thêm hãng phương tiện.',
+    },
   },
   {
     name: 'Mẫu xe',
     englishName: 'model',
-    error: 'Hãy thêm dòng phương tiện.',
+    error: {
+      required: 'Hãy thêm dòng phương tiện.',
+    },
   },
   {
     name: 'Kiểu thân xe',
     englishName: 'bodyType',
     isSelected: true,
     isDepended: true,
+    error: {
+      required: 'Vui lòng chọn giá trị hợp lệ.',
+    },
     options: [
       { name: 'Ô tô 2 cửa' },
       { name: 'Xe tải' },
@@ -551,7 +565,9 @@ export let vehicleField = [
     name: 'Số dặm đã đi',
     englishName: 'mileage',
     isDepended: true,
-    error: 'Hãy thêm số dặm mà phương tiện đã đi được.',
+    error: {
+      required: 'Hãy thêm số dặm mà phương tiện đã đi được.',
+    },
   },
   {
     name: 'Hộp số',
@@ -592,13 +608,18 @@ export let vehicleField = [
     name: 'Vị trí',
     englishName: 'location',
     isSelected: true,
+    error: {
+      required: 'Vui lòng chọn giá trị hợp lệ.',
+    },
     default: 'Hà Nội',
   },
 
   {
     name: 'Giá',
     englishName: 'price',
-    error: 'Nhập giá cho mặt hàng của bạn.',
+    error: {
+      required: 'Nhập giá cho mặt hàng của bạn.',
+    },
     contentEditable: true,
     numberOnly: true,
     isMoney: true,
@@ -676,11 +697,17 @@ export const homeField = [
     englishName: 'homeFor',
     isSelected: true,
     options: [{ name: 'Bán' }, { name: 'Cho thuê' }],
+    error: {
+      required: 'Vui lòng chọn giá trị hợp lệ.',
+    },
   },
   {
     name: 'Loại tài sản',
     englishName: 'homeType',
     isSelected: true,
+    error: {
+      required: 'Vui lòng chọn giá trị hợp lệ.',
+    },
     options: [
       { name: 'Nhà' },
       { name: 'Nhà liền kề' },
@@ -691,77 +718,59 @@ export const homeField = [
   {
     name: 'Số phòng ngủ',
     englishName: 'numberOfBedrooms',
-    error: 'Vui lòng nhập số phòng ngủ.',
     numberOnly: true,
+    error: {
+      required: 'Vui lòng nhập số phòng ngủ.',
+    },
   },
   {
     name: 'Số phòng tắm',
     englishName: 'numberOfBathrooms',
-    error: 'Vui lòng nhập số phòng tắm.',
     numberOnly: true,
+    error: {
+      required: 'Vui lòng nhập số phòng tắm.',
+    },
   },
   {
     name: 'Giá mỗi tháng',
     englishName: 'pricePerMonth',
     isDepended: true,
-    error: 'Vui lòng nhập giá tài sản cho thuê.',
     contentEditable: true,
     numberOnly: true,
     isMoney: true,
+    error: {
+      required: 'Vui lòng nhập giá tài sản cho thuê.',
+    },
   },
   {
     name: 'Giá',
     englishName: 'price',
     isDepended: true,
-    error: 'Vui lòng nhập giá tài sản muốn bán.',
     contentEditable: true,
     numberOnly: true,
     isMoney: true,
+    error: {
+      required: 'Vui lòng nhập giá tài sản muốn bán.',
+    },
   },
   //special, need to build later
   {
     name: 'Địa chỉ tài sản',
     englishName: 'address',
+    error: {
+      required: 'Vui lòng nhập địa chỉ hợp lệ.',
+    },
   },
 
   {
     name: 'Mô tả về tài sản',
     englishName: 'decription',
     isTextArea: true,
+    error: {
+      required: 'Vui lòng nhập mô tả hợp lệ.',
+    },
   },
   //Home for Rent/Sale
-  //  {
-  //    _id: 'Home for Rent',
-  //    name: 'Home for Rent',
-  //    //must
-  //    homeFor: true,
-  //    homeType: true,
-  //    numberOfBedrooms: true,
-  //    numberOfBathrooms: true,
-  //    pricePerMonth: true, //
-  //    address: true,
-  //    decription: true,
-  //    //option
-  //    squareFeet: true,
-  //    dateAvailable: true,
-  //    laundryType: true,
-  //    parkingType: true,
-  //    airConditioningType: true,
-  //    heatingType: true,
-  //    catFriendly: true,
-  //    dogFriendly: true,
-  //  },
-  //  {
-  //    _id: 'Home for Sale',
-  //    name: 'Home for Sale',
-  //    //must
-  //    homeFor: true,
-  //    homeType: true,
-  //    numberOfBedrooms: true,
-  //    numberOfBathrooms: true,
-  //    price: true, //
-  //    address: true,
-  //    decription: true,
   //    //option
   //    squareFeet: true,
   //    dateAvailable: true,

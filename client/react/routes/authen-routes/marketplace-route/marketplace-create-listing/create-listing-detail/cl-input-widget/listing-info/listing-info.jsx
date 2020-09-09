@@ -29,10 +29,6 @@ export class ListingInfo extends Component {
     this.state = {
       dependedInput: '',
       inputField: '',
-      error: {
-        title: '',
-        price: '',
-      },
     };
 
     //get option for location
@@ -137,24 +133,18 @@ export class ListingInfo extends Component {
   };
   // check error, only check needed input now
   handleCheckError = (name, error, value) => {
-    const { state, updateValue } = this.props;
-
-    if (!value || (value.includes('&nbsp;') && value.length === 7)) {
-      this.setState((prevState) => ({
-        error: {
-          ...prevState.error,
-          [name]: message,
-        },
-      }));
-    } else {
-      this.setState((prevState) => ({
-        error: {
-          ...prevState.error,
-          [name]: '',
-        },
-      }));
+    const { state, updateValue, setError } = this.props;
+    let check = true;
+    if (
+      error['required'] &&
+      (!value || (value.includes('&nbsp;') && value.length === 7))
+    ) {
+      check = false;
+      setError(name, { type: 'required', message: error['required'] });
     }
+    check && setError(name, '');
   };
+
   // hover function
   mouse = (name) => {
     const setHover = {
@@ -196,9 +186,9 @@ export class ListingInfo extends Component {
     );
   };
   render() {
-    const { state, updateValue } = this.props;
+    const { state, updateValue, error } = this.props;
     let { pictureLimit, type, category, files, ...other } = state;
-    const { inputField, error, dependedInput } = this.state;
+    const { inputField, dependedInput } = this.state;
 
     return (
       <div className='listing-info'>
