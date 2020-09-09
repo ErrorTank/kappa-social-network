@@ -133,16 +133,17 @@ export class ListingInfo extends Component {
   };
   // check error, only check needed input now
   handleCheckError = (name, error, value) => {
-    const { state, updateValue, setError } = this.props;
+    const { state, updateValue, setError, resetError } = this.props;
     let check = true;
     if (
       error['required'] &&
       (!value || (value.includes('&nbsp;') && value.length === 7))
     ) {
       check = false;
-      setError(name, { type: 'required', message: error['required'] });
+      let modifyError = { type: 'required', message: error['required'] };
+      setError(name, modifyError);
     }
-    check && setError(name, '');
+    check && resetError(name);
   };
 
   // hover function
@@ -189,7 +190,7 @@ export class ListingInfo extends Component {
     const { state, updateValue, error } = this.props;
     let { pictureLimit, type, category, files, ...other } = state;
     const { inputField, dependedInput } = this.state;
-
+    console.log(error);
     return (
       <div className='listing-info'>
         <div className='picture-input'>

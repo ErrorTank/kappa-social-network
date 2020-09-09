@@ -92,12 +92,19 @@ export class CreateListingInputWidget extends Component {
   };
 
   setError = (name, error) => {
+    console.log(error, 'sdf');
     this.setState((prevState) => ({
       error: {
         ...prevState.error,
         [name]: { type: error.type, message: error.message },
       },
     }));
+  };
+
+  resetErrorStorage = (name = null) => {
+    if (name) {
+      this.setState({ error: {} });
+    }
   };
 
   setNewListing = () => {
@@ -221,6 +228,7 @@ export class CreateListingInputWidget extends Component {
             {...this.props}
             setError={this.setError}
             error={this.state.error}
+            resetError={this.resetErrorStorage}
           />
         </div>
 
