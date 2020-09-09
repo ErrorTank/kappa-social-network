@@ -17,7 +17,9 @@ const createNewPost = (value) => {
         _id: ObjectId(value.belonged_person),
     }, {
         $push: {
-            followed_posts: newPost._id
+            followed_posts: {
+                post: ObjectId(newPost._id)
+            }
         }
     })];
     if(value.shared_post){
@@ -61,7 +63,7 @@ const getAllPosts = ({userID, skip, limit}) => {
             let joined_groups = _joined_groups.map(each => ObjectId(each));
             let group_blocked = _group_blocked.map(each => ObjectId(each));
             let liked_pages = _liked_pages.map(each => ObjectId(each));
-            let followed_posts = _followed_posts.map(each => ObjectId(each));
+            let followed_posts = _followed_posts.map(each => ObjectId(each.post));
             return Post.aggregate([
                 {
                     $match: {
@@ -496,7 +498,10 @@ const createNewCommentForPost = ({postID, comment, userID}) => {
         _id: ObjectId(newComment.from_person),
     }, {
         $addToSet: {
-            followed_posts: newComment.post
+            followed_posts: {
+                post: ObjectId(newComment.post),
+
+            }
         }
     })])
         .then(([_post, data]) => data)
@@ -546,7 +551,9 @@ const createCommentReply = ({postID, commentID, reply, userID}) => {
         _id: ObjectId(newReply.from_person),
     }, {
         $addToSet: {
-            followed_posts: newReply.post
+            followed_posts:{
+                post: ObjectId( newReply.post)
+            }
         }
     })])
         .then(([_post, data]) => data)
@@ -674,7 +681,9 @@ const deleteReply = ({replyID, commentID}) => {
                         _id: ObjectId(userID),
                     }, {
                         $pull: {
-                            followed_posts: ObjectId(comment.post)
+                            followed_posts: {
+                                post: ObjectId(comment.post)
+                            }
                         }
                     }, {
                         new: true
@@ -715,7 +724,9 @@ const deleteComment = ({commentID, postID}) => {
                         _id: ObjectId(userID),
                     }, {
                         $pull: {
-                            followed_posts: ObjectId(postID)
+                            followed_posts: {
+                                post: ObjectId(postID)
+                            }
                         }
                     }, {new: true}).lean().then((data) => data.followed_posts)
                 }
@@ -727,10 +738,12 @@ const deletePost = ({postID,}) => {
     return Promise.all([Post.findOneAndDelete({
         _id: ObjectId(postID)
     }).lean(), Comment.find({post: ObjectId(postID)}).lean(), User.updateMany({
-        followed_posts: ObjectId(postID),
+        "followed_posts.post": ObjectId(postID),
     }, {
         $pull: {
-            followed_posts: ObjectId(postID)
+            followed_posts: {
+                post: ObjectId(postID)
+            }
         }
     })])
         .then(([_post, comments]) => {

@@ -1,6 +1,8 @@
 
 const mongoose = require("mongoose");
-
+const dbManager = require("../../db");
+const appDb = dbManager.getConnections()[0];
+const User = require("../../../db/model/user")(appDb);
 const ObjectId = mongoose.Types.ObjectId;
 
 module.exports = (io, socket, context) => {
@@ -9,6 +11,28 @@ module.exports = (io, socket, context) => {
         socket.auth = false;
         console.log(socket.id + " has disconnected from /eed-post namespace");
 
+
+    });
+    socket.on("join-own-room", function (data) {
+        if (data.userID) {
+            console.log(`User ${data.userID} join own post room!`)
+            socket.join(`/feed-post-room/user/${data.userID}`);
+        }
+
+    });
+    socket.on("join-posts-notification-rooms", function (data) {
+        if (data.userID) {
+            console.log(`User ${data.userID} join posts notification rooms!`);
+            User.findOne({_id: ObjectId(data.userID)})
+                .lean()
+                .then(user => {
+                    let followedPosts = user.followed_posts;
+                    for(let p of followedPosts){
+                        socket.join(`/notification-post-room/post/${p.post}`);
+                    }
+                });
+
+        }
 
     });
     socket.on("join-post-room", function (data) {

@@ -80,8 +80,10 @@ module.exports = (db, namespacesIO) => {
 
             getPostByID({postID: data.post})
                 .then(post => {
-                    namespacesIO.messenger.io.to(`/messenger-user-room/user/${post.belonged_person._id.toString()}`).emit("comment-on-your-post", {comment: data});
-                })
+                    namespacesIO.feedPost.socketMap[req.user._id].to(`/feed-post-room/user/${post.belonged_person._id.toString()}`).emit("notify-user", {data, notifyID: "comment_on_your_post"});
+                    namespacesIO.feedPost.socketMap[req.user._id].to(`/notification-post-room/post/${data.post}`).emit("notify-user", {data, notifyID: "comment_on_followed_post"})
+
+                });
 
             namespacesIO.feedPost
                 .socketMap[req.user._id]

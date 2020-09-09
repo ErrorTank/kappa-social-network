@@ -18,6 +18,15 @@ export class PostNotification extends Component {
                         <span className="high-light">{data.from_person.basic_info.username}</span> đã bình luận về bài viết của bạn: <span>{getRenderableContentFromMessage(data)}</span>
                     </span>
                 )
+            },
+            "comment_on_followed_post": {
+                getAvatarUser: () => data.from_person,
+                getReaction: () => null,
+                getContent: () => (
+                    <span>
+                        <span className="high-light">{data.from_person.basic_info.username}</span> đã bình luận về bài viết của bạn: <span>{getRenderableContentFromMessage(data)}</span>
+                    </span>
+                )
             }
         };
         return dataMatcher[type]

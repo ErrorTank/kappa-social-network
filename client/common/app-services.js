@@ -8,6 +8,7 @@ import {
     userSearchHistory
 } from "./states/common";
 import omit from "lodash/omit";
+
 import {feedPostIO, messengerIO} from "../socket/sockets";
 import {messengerApi} from "../api/common/messenger-api";
 import {messageWidgetController} from "../react/layout/authen-layout/create-message-widget/create-message-widget";
@@ -28,7 +29,22 @@ const initializeAuthenticateUser = ({userInfo: uInfo, authToken}) => {
         userFollowedPosts.setState(uInfo.followed_posts),
         userSavedPosts.setState(uInfo.saved_posts),
         userBlockedPosts.setState(uInfo.blocked_posts),
-        feedPostIO.connect({token: authToken || authenCache.getAuthen()}),
+        feedPostIO.connect({token: authToken || authenCache.getAuthen()})
+            .then((feedPostIO) => {
+                feedPostIO.emit("join-own-room", {userID: uInfo._id});
+                feedPostIO.emit("join-posts-notification-rooms", {userID: uInfo._id});
+                feedPostIO.on("notify-user", ({data, notifyID}) => {
+                    bottomNotification.actions.push({
+                        content: (
+                            <PostNotification
+                                type={notifyID}
+                                data={data}
+                            />
+                        )
+                    });
+                });
+            })
+        ,
         messengerIO.connect({token: authToken || authenCache.getAuthen()})
             .then((messengerIO) => {
 
@@ -42,17 +58,7 @@ const initializeAuthenticateUser = ({userInfo: uInfo, authToken}) => {
                         })
                     }
                 })
-                messengerIO.on("comment-on-your-post", ({comment}) => {
-                    console.log(comment)
-                    bottomNotification.actions.push({
-                        content: (
-                            <PostNotification
-                                type={'comment_on_your_post'}
-                                data={comment}
-                            />
-                        )
-                    });
-                });
+
                 messengerIO.on("request", ({from, callType}) => {
                     messengerIO.emit("ack-call", {friendID: from});
 
