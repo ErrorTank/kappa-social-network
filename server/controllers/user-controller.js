@@ -1,7 +1,8 @@
 const express = require('express');
 const router = express.Router();
 const {authorizationUserMiddleware} = require("../common/middlewares/common");
-const {getAuthenticateUserInitCredentials, getUserBasicInfo, login, sendChangePasswordToken, resendChangePasswordToken, verifyChangePasswordToken, getChangePasswordUserBrief, changePassword, addNewSearchHistory, deleteSearchHistory, updateSearchHistory, shortLogin, simpleUpdateUser} = require("../db/db-controllers/user");
+const {getAuthenticateUserInitCredentials, getUserBasicInfo, login, sendChangePasswordToken, resendChangePasswordToken,createUserNotification,
+    verifyChangePasswordToken, getChangePasswordUserBrief, changePassword, addNewSearchHistory, deleteSearchHistory, updateSearchHistory, shortLogin, simpleUpdateUser} = require("../db/db-controllers/user");
 
 module.exports = () => {
     router.get("/init-credentials", authorizationUserMiddleware, (req, res, next) => {
@@ -21,6 +22,13 @@ module.exports = () => {
     router.get("/:userID/basic-info", (req, res, next) => {
 
         return getUserBasicInfo(req.params.userID, req.query).then((data) => {
+            return res.status(200).json(data);
+        }).catch(err => next(err));
+
+    });
+    router.post("/:userID/create-notification", (req, res, next) => {
+
+        return createUserNotification(req.body).then((data) => {
             return res.status(200).json(data);
         }).catch(err => next(err));
 

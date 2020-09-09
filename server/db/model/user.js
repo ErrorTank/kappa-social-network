@@ -153,29 +153,23 @@ const userSchema = new Schema({
         type: [
             {
                 notification_type: {
+                    type: String,
                     enum: [
-                        "POST_ON_YOUR_WALL", "YOU_BEEN_TAGGED", "YOU_BEEN_MENTIONED_IN_POST", "YOU_BEEN_MENTIONED_IN_COMMENT", "YOU_BEEN_FOLLOWED", "YOUR_COMMENT_BEEN_REACTED", "YOUR_COMMENT_BEEN_LIKED",
-                        "YOUR_COMMENT_BEEN_REPLIED", "YOUR_POST_BEEN_LIKED", "YOUR_POST_BEEN_REACTED", "YOUR_POST_BEEN_COMMENTED", "FRIEND_REQUEST_ACCEPTED", "YOUR_BIRTHDAY", "FRIENDS_BIRTHDAY",
-                        "YOUR_PAGE_BEEN_LIKED", "YOUR_PAGE_HAS_MESSAGE", "YOUR_PAGE_BEEN_UPDATED", "YOUR_GROUP_BEEN_UPDATED", "INVITE_YOU_TO_PAGE", "INVITE_YOU_TO_GROUP", "LIKED_PAGE_POST", "FOLLOWED_PERSON_POST",
-                        "JOINED_GROUP_HAS_NEW_POST", "YOUR_GROUP_HAS_NEW_POST"
+                       "comment_on_followed_post"
                     ]
 
                 },
-                belonged_group: {
+                comment: {
                     type: ObjectId,
-                    ref: "Group"
+                    ref: "Comment"
                 },
-                belonged_page: {
+                reply: {
                     type: ObjectId,
-                    ref: "Page"
+                    ref: "Comment"
                 },
                 published_time: {
                     type: Date,
                     default: Date.now
-                },
-                same_count: {
-                    type: Number,
-                    default: 0
                 },
                 person: {
                     type: ObjectId,
@@ -193,9 +187,6 @@ const userSchema = new Schema({
                     type: ObjectId,
                     ref: "Group"
                 },
-                comment: {
-                    type: ObjectId
-                }
             }
         ]
     },

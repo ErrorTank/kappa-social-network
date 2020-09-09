@@ -399,7 +399,12 @@ const toggleBlockPost = ({postID, userID}) => {
         }))
 }
 
+const createUserNotification = ({type, data}) => {
+
+}
+
 module.exports = {
+    createUserNotification,
     getAuthenticateUserInitCredentials,
     login,
     sendChangePasswordToken,

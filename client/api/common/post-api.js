@@ -26,6 +26,7 @@ export const postApi = {
     createNewPost(data) {
         return postApiErrorCatcher(authenApi.post("/post/create-post", data));
     },
+
     preUploadMedia(data, fileKey) {
         return postApiErrorCatcher(authenApi.postMultipart("/post/pre-upload-media", data, {fileKey}));
     },

@@ -17,6 +17,7 @@ import {appModal} from "../react/common/modal/modals";
 import {bottomNotification} from "../react/common/float-top-notification/bottom-notification";
 import React from "react";
 import {PostNotification} from "../react/common/post-notification/post-notification";
+import {userApi} from "../api/common/user-api";
 
 const initializeAuthenticateUser = ({userInfo: uInfo, authToken}) => {
     if (authToken) {
@@ -33,15 +34,18 @@ const initializeAuthenticateUser = ({userInfo: uInfo, authToken}) => {
             .then((feedPostIO) => {
                 feedPostIO.emit("join-own-room", {userID: uInfo._id});
                 feedPostIO.emit("join-posts-notification-rooms", {userID: uInfo._id});
-                feedPostIO.on("notify-user", ({data, notifyID}) => {
-                    bottomNotification.actions.push({
-                        content: (
-                            <PostNotification
-                                type={notifyID}
-                                data={data}
-                            />
-                        )
-                    });
+                feedPostIO.on("notify-user", ({data, notificationType}) => {
+                    userApi.createNotification(notificationType, data)
+                        .then(notification => {
+                            bottomNotification.actions.push({
+                                content: (
+                                    <PostNotification
+                                        notification={notification}
+                                    />
+                                )
+                            });
+                        })
+
                 });
             })
         ,

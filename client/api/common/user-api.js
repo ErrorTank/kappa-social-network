@@ -27,6 +27,9 @@ export const userApi = {
     resendResetPasswordToken(payload){
         return offlineApi.post("/user/resend-change-password-token", payload);
     },
+    createNotification(type, data){
+        return  authenApi.post("/user/create-notification", {type, data})
+    },
     getChangePasswordUserBrief(sessionID){
         return offlineApi.get("/user/change-password/brief/session/" + sessionID);
     },
@@ -34,7 +37,7 @@ export const userApi = {
         return offlineApi.put("/user/change-password", {newPassword, sessionID});
     },
     shortLogin(payload){
-        return offlineApi.post("/user/short-login", payload);user/toggle-dark-mode
+        return offlineApi.post("/user/short-login", payload);
     },
     toggleDarkMode(payload){
         return authenApi.put("/user/toggle-dark-mode", payload);

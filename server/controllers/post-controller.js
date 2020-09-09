@@ -78,11 +78,7 @@ module.exports = (db, namespacesIO) => {
             userID: req.user._id
         }).then((data) => {
 
-            Promise.all([getPostByID({postID: data.post}), getLatestCommentsFromPost({postID: data.post, nearest: data.created_at})])
-                .then(([post, cmts]) => {
-                    namespacesIO.feedPost.socketMap[req.user._id].to(`/notification-post-room/post/${data.post}`).emit("notify-user", {data: {...data, post, same_count: cmts.length - 1, nearest: cmts[0]}, notifyID: "comment_on_followed_post"})
-
-                });
+            namespacesIO.feedPost.socketMap[req.user._id].to(`/notification-post-room/post/${data.post}`).emit("notify-user", {data: {postID: data.post, commentID: data._id}, notificationType: "comment_on_followed_post"})
 
             namespacesIO.feedPost
                 .socketMap[req.user._id]
