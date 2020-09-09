@@ -80,8 +80,7 @@ module.exports = (db, namespacesIO) => {
 
             getPostByID({postID: data.post})
                 .then(post => {
-                    namespacesIO.feedPost.socketMap[req.user._id].to(`/feed-post-room/user/${post.belonged_person._id.toString()}`).emit("notify-user", {data, notifyID: "comment_on_your_post"});
-                    namespacesIO.feedPost.socketMap[req.user._id].to(`/notification-post-room/post/${data.post}`).emit("notify-user", {data, notifyID: "comment_on_followed_post"})
+                    namespacesIO.feedPost.socketMap[req.user._id].to(`/notification-post-room/post/${data.post}`).emit("notify-user", {data: {...data, post}, notifyID: "comment_on_followed_post"})
 
                 });
 
@@ -157,6 +156,16 @@ module.exports = (db, namespacesIO) => {
             ...req.params,
             userID: req.user._id
         }).then((data) => {
+            if(data.actionType === "FOLLOWED"){
+                namespacesIO.feedPost
+                    .socketMap[req.user._id]
+                    .join(`/notification-post-room/post/${req.params.postID}`);
+            }else{
+                namespacesIO.feedPost
+                    .socketMap[req.user._id]
+                    .leave(`/notification-post-room/post/${req.params.postID}`);
+            }
+
             return res.status(200).json(data);
         })
             .catch((err) => next(err));

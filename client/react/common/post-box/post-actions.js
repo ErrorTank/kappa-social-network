@@ -7,7 +7,7 @@ export const PostActions = ({post, isMyPost, editPost, deletePost, toggleFollow,
     let savedPosts = userSavedPosts.getState();
     let followedPosts = userFollowedPosts.getState();
     let isSaved = savedPosts.find(each => each === post._id);
-    let isFollowed = followedPosts.find(each => each === post._id);
+    let isFollowed = followedPosts.find(each => each.post === post._id);
     let isBlocked = blockedPosts.find(each => each === post._id);
     let postActions = [
         {

@@ -3,7 +3,7 @@ import React from "react"
 import {CSSTransition, TransitionGroup} from "react-transition-group";
 import remove from "lodash/remove";
 import classnames from "classnames"
-
+import {v4 as uuidv4} from 'uuid';
 
 class FloatTopNotification extends React.Component{
     constructor(props){
@@ -74,7 +74,8 @@ export class NotificationRegistry extends React.Component {
 
             let notiOptions = {
                 options,
-                resolve: null
+                resolve: null,
+                key: uuidv4()
             };
 
             let {stack} = this.state;
@@ -103,7 +104,7 @@ export class NotificationRegistry extends React.Component {
                 <TransitionGroup>
                     {stack.map((n, i) => (
                         <CSSTransition
-                            key={i}
+                            key={n.key}
                             timeout={300}
                             classNames={"fade"}
                         >

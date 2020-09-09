@@ -23,7 +23,6 @@ const createNewPost = (value) => {
         }
     })];
     if(value.shared_post){
-        console.log(value.shared_post)
         promises.push(Post.findOneAndUpdate({
             _id: ObjectId(value.shared_post)
         }, {
@@ -496,7 +495,8 @@ const createNewCommentForPost = ({postID, comment, userID}) => {
         fields: "comments",
     }), new Comment(newComment).save(), User.findOneAndUpdate({
         _id: ObjectId(newComment.from_person),
-    }, {
+         'followed_posts.post': { '$ne': ObjectId(newComment.post) },
+}, {
         $addToSet: {
             followed_posts: {
                 post: ObjectId(newComment.post),
@@ -504,7 +504,7 @@ const createNewCommentForPost = ({postID, comment, userID}) => {
             }
         }
     })])
-        .then(([_post, data]) => data)
+        .then(([_post, data]) => data.toObject())
 }
 
 const updatePostCommentReaction = ({postID, userID, commentID, reactionConfig}) => {
@@ -537,7 +537,8 @@ const updatePostCommentReaction = ({postID, userID, commentID, reactionConfig}) 
 const createCommentReply = ({postID, commentID, reply, userID}) => {
     let newReply = {...reply, _id: new ObjectId(), from_person: ObjectId(userID), post: ObjectId(postID), is_reply: true}
     return Promise.all([Comment.findOneAndUpdate({
-        _id: ObjectId(commentID)
+        _id: ObjectId(commentID),
+
     }, {
         $set: {
             last_updated: Date.now()
@@ -549,6 +550,7 @@ const createCommentReply = ({postID, commentID, reply, userID}) => {
         new: true,
     }), new Comment(newReply).save(), User.findOneAndUpdate({
         _id: ObjectId(newReply.from_person),
+        'followed_posts.post': { '$ne': ObjectId(newReply.post) },
     }, {
         $addToSet: {
             followed_posts:{

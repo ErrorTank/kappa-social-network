@@ -25,6 +25,7 @@ import {SharePostDisplay} from "../share-post-display/share-post-display";
 import ReactDOM from "react-dom";
 import {LastActive, } from "../use-last-active";
 import {feedPostIO, } from "../../../socket/sockets";
+import {topFloatNotifications} from "../float-top-notification/float-top-notification";
 
 
 
@@ -80,6 +81,14 @@ export class PostBox extends PureComponent {
         let {post, onDeletePost} = this.props;
         postApi.deletePost(post._id)
             .then(() => {
+                topFloatNotifications.actions.push({
+                    content: (
+                        <p className="common-noti-layout success">
+                            <i className="fal fa-check"></i>
+                            <span>Xóa bài đăng thành công!</span>
+                        </p>
+                    )
+                });
                 userFollowedPosts.setState(userFollowedPosts.getState().filter(each => each !== post._id))
                 return onDeletePost()
             })
@@ -104,6 +113,14 @@ export class PostBox extends PureComponent {
             }
         }).then(p => {
             if(p){
+                topFloatNotifications.actions.push({
+                    content: (
+                        <p className="common-noti-layout success">
+                            <i className="fal fa-check"></i>
+                            <span>Cập nhật bài đăng thành công!</span>
+                        </p>
+                    )
+                });
                 onChangePost(p)
             }
         })
@@ -112,7 +129,15 @@ export class PostBox extends PureComponent {
     toggleFollow = () => {
         let {post} = this.props;
         postApi.toggleFollowPost(post._id)
-            .then(({followed_posts}) => {
+            .then(({followed_posts, actionType}) => {
+                topFloatNotifications.actions.push({
+                    content: (
+                        <p className="common-noti-layout success">
+                            <i className="fal fa-check"></i>
+                            <span>{actionType === "FOLLOWED" ? "Đã theo dõi bài đăng" : "Đã hủy theo dõi bài đăng"}!</span>
+                        </p>
+                    )
+                });
                 userFollowedPosts.setState(followed_posts);
             })
     }

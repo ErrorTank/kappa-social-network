@@ -320,8 +320,8 @@ const toggleFollowPost = ({postID, userID}) => {
     }).lean()
         .then(user => {
 
-
-            let query = user.followed_posts.find(each => each.post.toString() === postID) ? {
+            let isPull = user.followed_posts.find(each => each.post.toString() === postID);
+            let query = isPull ? {
                 $pull: {
                     followed_posts: {
                         post: ObjectId(postID)
@@ -338,12 +338,13 @@ const toggleFollowPost = ({postID, userID}) => {
                 _id: ObjectId(userID)
             }, query, {
                 new: true
-            }).lean()
+            }).lean().then(u => ({
+                followed_posts: u.followed_posts,
+                actionType: isPull ? "UN_FOLLOWED" : "FOLLOWED"
+            }))
 
         })
-        .then(u => ({
-            followed_posts: u.followed_posts
-        }))
+
 }
 
 const toggleSavePost = ({postID, userID}) => {
