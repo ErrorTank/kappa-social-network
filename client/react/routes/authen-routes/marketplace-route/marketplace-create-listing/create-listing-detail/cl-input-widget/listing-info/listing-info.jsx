@@ -321,6 +321,7 @@ export class ListingInfo extends Component {
                   displayAs={(item) => item.name}
                   key={each.englishName}
                   id={each.englishName}
+                  error={error[each.englishName]}
                   value={
                     state[each.englishName] && {
                       name: state[each.englishName],
@@ -332,6 +333,12 @@ export class ListingInfo extends Component {
                     option.name === (state[each.englishName] || each.default)
                   }
                   onChange={(value) => {
+                    each.error &&
+                      this.handleCheckError(
+                        each.englishName,
+                        each.error,
+                        value.name
+                      );
                     updateValue(`${each.englishName}`, value.name);
                   }}
                 />

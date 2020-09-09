@@ -1,93 +1,98 @@
-.listing-info-input{
+.listing-info-input {
   padding: 16px 16px 0px 16px;
   box-sizing: border-box;
-  &.focus{
-    .listing-info-wrapper{
-      border-color: blueTextLight ;
-      &:hover{
-        border-color: blueTextLight ;
+
+  &.focus {
+    .listing-info-wrapper {
+      border-color: blueTextLight;
+
+      &:hover {
+        border-color: blueTextLight;
       }
     }
   }
 
-  .listing-info-wrapper{
-    cursor text
+  .listing-info-wrapper {
+    cursor: text;
     border-radius: 6px;
-    position relative;
+    position: relative;
     border: 1px solid lightgray;
-    width 100%;
-    min-height 58px;
+    width: 100%;
+    min-height: 58px;
     margin: 0;
     overflow: hidden;
     z-index: 0;
-    &.has-value{
-      .listing-info-label{
+
+    &.has-value {
+      .listing-info-label {
         transition-property: transform;
         transition-duration: 200ms;
-        transform: scale(.75) translateY(-11px);
-        transform-origin: top left;  
+        transform: scale(0.75) translateY(-11px);
+        transform-origin: top left;
       }
     }
 
-    &.is-invalid{
+    &.is-invalid {
       border-color: #d9534f !important;
-      .listing-info-label{
-        color:#d9534f !important;
+
+      .listing-info-label {
+        color: #d9534f !important;
       }
     }
 
-    &:hover{
+    &:hover {
       border-color: gray;
     }
 
-    .listing-info-label{
+    .listing-info-label {
       position: absolute;
       left: 16px;
       font-size: 16px;
       white-space: nowrap;
       line-height: 20px;
       top: 18px;
-      max-width 100%;
+      max-width: 100%;
       right: 8px;
       color: gray;
-      font-weight: 400
+      font-weight: 400;
     }
-    
-    .form-control{
+
+    .form-control {
       font-size: 16px;
       box-sizing: border-box;
       padding: 26px 16px 10px 16px;
       width: 100%;
       border: none;
       line-height: 20px;
-      height 56px;
-       &:focus{
-        & ~ span{
-          color blueTextLight;
+      height: 56px;
+
+      &:focus {
+        & ~ span {
+          color: blueTextLight;
           transition-property: transform;
           transition-duration: 200ms;
-          transform: scale(.75) translateY(-11px);
-          transform-origin: top left;  
+          transform: scale(0.75) translateY(-11px);
+          transform-origin: top left;
         }
       }
-
     }
-    textarea{
-      height 200px !important;
+
+    textarea {
+      height: 200px !important;
       resize: none;
     }
   }
-  .textArea{
-    height 200px;
-    
+
+  .textArea {
+    height: 200px;
   }
 
-  .invalid-feedback{
-    display block;
+  .invalid-feedback {
+    display: block;
     padding: 0;
     margin: 0;
     font-size: 12px;
-    color:#d9534f;
-    height 15px;  
+    color: #d9534f;
+    height: 15px;
   }
 }

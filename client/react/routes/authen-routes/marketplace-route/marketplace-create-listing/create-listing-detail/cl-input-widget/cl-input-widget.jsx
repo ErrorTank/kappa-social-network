@@ -45,9 +45,9 @@ export class CreateListingInputWidget extends Component {
 
   requireField = {
     item: ['title', 'price', 'category', 'location', 'availability'],
-    vehicle: ['vehicleType', 'year', 'make', 'model', 'price'],
+    vehicle: ['category', 'year', 'make', 'model', 'price'],
     home: [
-      'homeFor',
+      'category',
       'homeType',
       'numberOfBedrooms',
       'numberOfBathrooms',
@@ -92,7 +92,6 @@ export class CreateListingInputWidget extends Component {
   };
 
   setError = (name, error) => {
-    console.log(error, 'sdf');
     this.setState((prevState) => ({
       error: {
         ...prevState.error,
@@ -108,7 +107,7 @@ export class CreateListingInputWidget extends Component {
   };
 
   setNewListing = () => {
-    const { state } = this.props;
+    const { state, updateValue, setValues } = this.props;
     const { files, type } = state;
     if (this.state.canCreate) {
       let newListing = cleanBlankProp(state);
@@ -124,8 +123,6 @@ export class CreateListingInputWidget extends Component {
         switch (ele) {
           case 'type':
           case 'pictureLimit':
-          case 'vehicleType':
-          case 'homeFor':
             delete newListing[ele];
             break;
         }
@@ -152,14 +149,21 @@ export class CreateListingInputWidget extends Component {
           });
         }
       );
+    } else {
+      let requiredInput = this.setRequiredInput();
+      const setField = {
+        item: itemField,
+        vehicle: vehicleField,
+        home: homeField,
+      };
+      let inputField = setField[type];
+      // let errorMessageArr = this.inputField()
     }
   };
 
-  checkRequiredfield = () => {
+  setRequiredInput = () => {
     const { state } = this.props;
-    const { type, files } = state;
-    const { canCreate } = this.state;
-    let checkBool = true;
+    const { type } = state;
     let requiredInput = this.requireField[type];
 
     if (state.type === 'vehicle') {
@@ -170,6 +174,15 @@ export class CreateListingInputWidget extends Component {
         requiredInput = [...requiredInput, 'milage'];
       }
     }
+    return requiredInput;
+  };
+
+  checkRequiredfield = () => {
+    const { state } = this.props;
+    const { type, files } = state;
+    const { canCreate } = this.state;
+    let checkBool = true;
+    let requiredInput = this.setRequiredInput();
 
     if (!files.length && files.length > state.pictureLimit) {
       checkBool = false;

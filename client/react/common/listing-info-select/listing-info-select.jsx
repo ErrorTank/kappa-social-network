@@ -44,7 +44,7 @@ export class ListingInfoSelect extends Component {
     return (
       <div
         className={classnames('listing-info-select', className, {
-          error: !!error,
+          'is-invalid': error,
           focus: this.state.show,
         })}
       >
@@ -79,6 +79,7 @@ export class ListingInfoSelect extends Component {
                 <i className='fas fa-caret-down'></i>
               </div>
             </div>
+            {error && <div className='invalid-feedback'>{error.message}</div>}
             {this.state.show && (
               <div className='select-dropdown'>
                 {options.map((each, i) => {

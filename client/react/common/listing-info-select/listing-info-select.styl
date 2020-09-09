@@ -1,84 +1,99 @@
-.listing-info-select{
+.listing-info-select {
   padding: 16px 16px 0px 16px;
   box-sizing: border-box;
-  
+
   &.focus {
-    .listing-info-toggle {
-      border-color primaryButton !important
+    .listing-info-wrapper {
+      .listing-info-toggle {
+        border-color: primaryButton;
+      }
     }
   }
-  .listing-info-wrapper{
-    cursor pointer
-    border-radius: 6px;
-    
-    width 100%;
-    height 58px;
-    margin: 0;
-    position relative;
-   
-    &:hover{
-      border-color: gray
+
+  &.is-invalid {
+    border-color: #d9534f !important;
+
+    .listing-info-toggle {
+      color: #d9534f !important;
     }
-    
-    .listing-info-toggle{
-      display: flex
-      overflow hidden
+  }
+
+  .listing-info-wrapper {
+    cursor: pointer;
+    border-radius: 6px;
+    width: 100%;
+    height: 58px;
+    margin: 0;
+    position: relative;
+
+    .listing-info-toggle {
+      display: flex;
+      overflow: hidden;
       border: 1px solid lightgray;
       height: 56px;
-      background-color: white
-      z-index: 1
-      border-radius: 5px
-      .label-wrapper{
-        position relative
-        width 90%;
-        &.disabled{
-          cursor not-allowed;
-        } 
-        &.has-value{
-          .listing-info-label{  
+      background-color: white;
+      z-index: 1;
+      border-radius: 5px;
+
+      &:hover {
+        border-color: gray;
+      }
+
+      .label-wrapper {
+        position: relative;
+        width: 90%;
+
+        &.disabled {
+          cursor: not-allowed;
+        }
+
+        &.has-value {
+          .listing-info-label {
             position: absolute;
             left: 16px;
             font-size: 16px;
             white-space: nowrap;
             line-height: 20px;
             top: 18px;
-            max-width 100%;
+            max-width: 100%;
             right: 8px;
             color: gray;
             font-weight: 400;
             transition-property: transform;
             transition-duration: 200ms;
-            transform: scale(.75) translateY(-11px);
-            transform-origin: top left; 
+            transform: scale(0.75) translateY(-11px);
+            transform-origin: top left;
           }
-          .listing-info-value{
+
+          .listing-info-value {
             color: normalTextLight;
             transition-property: transform;
             transition-duration: 200ms;
             transform: translateY(8px);
-            transform-origin: top left; 
+            transform-origin: top left;
           }
         }
-        .listing-info-value{
+
+        .listing-info-value {
           position: absolute;
           left: 16px;
           font-size: 16px;
           white-space: nowrap;
           line-height: 20px;
           top: 18px;
-          max-width 100%;
+          max-width: 100%;
           right: 8px;
           color: gray;
-          font-weight: 400
+          font-weight: 400;
         }
       }
-      
-      .toggle-icon{
+
+      .toggle-icon {
         width: 10%;
         display: flex;
-        
-        i{
-          align-self center
+
+        i {
+          align-self: center;
           font-size: 16px;
           font-weight: 600;
         }
@@ -86,77 +101,86 @@
     }
 
     .select-dropdown {
-      position absolute
-      top 101%
-      left 0
-      width 100%
-      overflow-y auto
-      max-height 200px
-      background-color white
-      border 1px solid common-border
-      color #1a1a1a
-      font-size 1.4rem
-      z-index 3
+      position: absolute;
+      top: 101%;
+      left: 0;
+      width: 100%;
+      overflow-y: auto;
+      max-height: 200px;
+      background-color: white;
+      border: 1px solid common-border;
+      color: #1a1a1a;
+      font-size: 1.4rem;
+      z-index: 3;
       padding: 0 8px;
-      .linked{
-        cursor pointer
+
+      .linked {
+        cursor: pointer;
+
         &:hover {
-          background-color darken(white, 5%)
-          cursor pointer
+          background-color: darken(white, 5%);
+          cursor: pointer;
         }
       }
-      .not-option{
-        padding  0 8px
-        color #1a1a1a
-        font-weight 500
-        font-size 1.4rem
+
+      .not-option {
+        padding: 0 8px;
+        color: #1a1a1a;
+        font-weight: 500;
+        font-size: 1.4rem;
         min-height: 44px;
-        cursor none
-        
-        .displayIcon{
+        cursor: none;
+
+        .displayIcon {
           margin: 8px 12px 8px 0;
           display: inline-block;
           border-radius: 50%;
           background-color: rgb(228, 230, 235);
-          height 36px
-          width: 36px 
+          height: 36px;
+          width: 36px;
           display: inline-flex;
           justify-content: center;
           align-items: center;
-          i{
+
+          i {
             font-size: 20px;
             color: lightIcon;
           }
         }
-        .displayName{
-          display inline-block;
+
+        .displayName {
+          display: inline-block;
           padding: 12px 0;
           font-size: 15px;
         }
       }
+
       .select-option {
-        padding  0 8px
-        color #1a1a1a
-        font-weight 500
-        font-size 1.4rem
+        padding: 0 8px;
+        color: #1a1a1a;
+        font-weight: 500;
+        font-size: 1.4rem;
         min-height: 44px;
         border-radius: 5px;
         border: 1px solid transparent;
+
         &:hover {
-          background-color darken(white, 5%)
-          cursor pointer
+          background-color: darken(white, 5%);
+          cursor: pointer;
         }
 
         &.disabled {
-          cursor none
+          cursor: none;
         }
+
         &.selected {
-          background-color iconActive
-          color white
+          background-color: iconActive;
+          color: white;
         }
-        .option-name{
+
+        .option-name {
           font-weight: 400;
-          display inline-block;
+          display: inline-block;
           padding: 12px 0 12px 48px;
           font-size: 15px;
         }
