@@ -21,6 +21,7 @@ export class CreateListingInputWidget extends Component {
     super(props);
     this.state = {
       canCreate: false,
+      error: {},
     };
   }
 
@@ -90,18 +91,20 @@ export class CreateListingInputWidget extends Component {
       }));
   };
 
+  setError = (name, error) => {
+    this.setState((prevState) => ({
+      error: {
+        ...prevState.error,
+        [name]: { type: error.type, message: error.message },
+      },
+    }));
+  };
+
   setNewListing = () => {
     const { state } = this.props;
     const { files, type } = state;
     if (this.state.canCreate) {
       let newListing = cleanBlankProp(state);
-
-      if (type === 'vehicle' && state.vehicleType) {
-        newListing.category = newListing.vehicleType;
-      }
-      if (type === 'home' && state.homeFor) {
-        newListing.category = newListing.homeFor;
-      }
 
       for (let ele in newListing) {
         if (
@@ -214,7 +217,11 @@ export class CreateListingInputWidget extends Component {
             </div>
           </div>
 
-          <ListingInfo {...this.props} />
+          <ListingInfo
+            {...this.props}
+            setError={this.setError}
+            error={this.state.error}
+          />
         </div>
 
         <div className='cs-input-footer'>

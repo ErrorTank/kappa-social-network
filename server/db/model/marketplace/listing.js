@@ -123,9 +123,9 @@ const listingSchema = new Schema({
   vehicleIdentificationNumber: {
     type: String,
   },
-  vehicleType: {
-    type: String,
-  },
+  // vehicleType: {
+  //   type: String,
+  // },
   year: {
     type: Number,
   },
@@ -152,9 +152,9 @@ const listingSchema = new Schema({
   },
 
   //Home for Rent
-  homeFor: {
-    type: String,
-  },
+  // homeFor: {
+  //   type: String,
+  // },
   homeType: {
     type: String,
   },
