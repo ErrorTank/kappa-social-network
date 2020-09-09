@@ -19,7 +19,7 @@ const initDbCollections = (appDb) => {
   const Match = require('../db/model/dating/match')(appDb);
   // Comment.updateMany({}, {$set: {replies: []}}).then(() => console.log("cac"))
   // ChatRoom.deleteMany({}).then(() => console.log("cac"))
-  // User.updateMany({}, {$set: {saved_posts: []}}).then(() => console.log("cac"))
+  // User.updateMany({}, {$set: {followed_posts: []}}).then(() => console.log("cac"))
   // Post.updateMany({}, {$set: {saved_posts: []}}).then(() => console.log("cac"))
   console.log('Initialize Db collections successfully!');
   return feed({

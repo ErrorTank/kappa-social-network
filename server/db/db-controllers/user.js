@@ -321,13 +321,17 @@ const toggleFollowPost = ({postID, userID}) => {
         .then(user => {
 
 
-            let query = user.followed_posts.find(each => each._id.toString() === postID) ? {
+            let query = user.followed_posts.find(each => each.post.toString() === postID) ? {
                 $pull: {
-                    followed_posts: ObjectId(postID)
+                    followed_posts: {
+                        post: ObjectId(postID)
+                    }
                 }
             } : {
                 $addToSet: {
-                    followed_posts: ObjectId(postID)
+                    followed_posts: {
+                        post: ObjectId(postID),
+                    }
                 }
             };
             return User.findOneAndUpdate({

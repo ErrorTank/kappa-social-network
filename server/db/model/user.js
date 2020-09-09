@@ -95,8 +95,15 @@ const userSchema = new Schema({
     followed_posts: {
         type: [
             {
-                type: ObjectId,
-                ref: "Post"
+                post: {
+                    type: ObjectId,
+                    ref: "Post"
+
+                },
+                followed_at: {
+                    type: Date,
+                    default: Date.now
+                }
             }
         ],
         default: []
@@ -177,14 +184,6 @@ const userSchema = new Schema({
                 post: {
                     type: ObjectId,
                     ref: "Post"
-                },
-                page_post: {
-                    type: ObjectId,
-                    ref: "PagePost"
-                },
-                group_post: {
-                    type: ObjectId,
-                    ref: "GroupPost"
                 },
                 page: {
                     type: ObjectId,
