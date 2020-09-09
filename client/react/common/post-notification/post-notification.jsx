@@ -3,6 +3,8 @@ import {getRenderableContentFromMessage} from "../../../common/utils/editor-util
 import {Avatar} from "../avatar/avatar";
 import {Emoji} from "emoji-mart";
 import {userInfo} from "../../../common/states/common";
+import moment from "moment";
+import classnames from "classnames"
 
 export class PostNotification extends Component {
 
@@ -17,9 +19,20 @@ export class PostNotification extends Component {
                 getReaction: () => null,
                 getContent: () => (
                     <span>
-                        <span className="high-light dark">{data.comment.from_person.basic_info.username}</span> đã bình luận về <span  className="high-light dark">bài viết</span> {data.post.belonged_person._id === userInfo.getState()._id ? "của bạn" : "mà bạn đang theo dõi"}: <span>{getRenderableContentFromMessage(data)}</span>
+                        <span className="high-light dark">{data.comment.from_person.basic_info.username}</span> đã bình luận về <span  className="high-light dark">bài viết</span> {data.post.belonged_person._id === userInfo.getState()._id ? "của bạn" : "mà bạn đang theo dõi"}: <span className="content">{getRenderableContentFromMessage(data.comment,  {disabledLink: true})}</span>
                     </span>
-                )
+                ),
+                getTime: () => data.comment.created_at
+            },
+            "mentioned_in_comment": {
+                getAvatarUser: () => data.comment.from_person,
+                getReaction: () => null,
+                getContent: () => (
+                    <span>
+                        <span className="high-light dark">{data.comment.from_person.basic_info.username}</span> đã nhắc tới bạn trong một <span  className="high-light dark">bình luận</span>: <span className="content">{getRenderableContentFromMessage(data.comment, {disabledLink: true})}</span>
+                    </span>
+                ),
+                getTime: () => data.comment.created_at
             }
         };
         return dataMatcher[notification_type]
@@ -27,11 +40,11 @@ export class PostNotification extends Component {
     }
 
     render() {
-        let {notification} = this.props;
-        let {getAvatarUser, getReaction, getContent} = this.getRenderData(notification);
+        let {notification, highLight} = this.props;
+        let {getAvatarUser, getReaction, getContent, getTime} = this.getRenderData(notification);
         let reaction = getReaction();
         return (
-            <div className="post-notification">
+            <div className={classnames("post-notification", {active: highLight && !notification.is_seen})}>
                 <div className="avatar-wrapper">
                     <Avatar user={getAvatarUser()}/>
                     {reaction && (
@@ -45,6 +58,9 @@ export class PostNotification extends Component {
                 </div>
                 <div className="content-wrapper">
                     {getContent()}
+                    <div className="from-now">
+                        {moment(getTime()).fromNow()}
+                    </div>
                 </div>
             </div>
         );

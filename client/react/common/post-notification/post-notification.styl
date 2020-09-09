@@ -1,8 +1,17 @@
 .post-notification{
   padding 16px
   display flex
-  width 300px
+  width 350px
   align-items center
+  color commonTextLight
+  cursor pointer
+  &.active{
+    background-color rgba(primaryButton, 0.1)
+  }
+  &:not(.active):hover{
+    background-color darken(white, 5%)
+  }
+
   .avatar-wrapper{
     flex 0 0 50px
 
@@ -10,5 +19,16 @@
   .content-wrapper{
     flex 0 0 calc(100% - 50px)
     font-size 1.4rem
+    .from-now{
+      color greyTextLight
+      font-weight 500
+      font-size 1.3rem
+    }
+    .content{
+      display block
+      white-space nowrap
+      overflow-x hidden
+      text-overflow ellipsis
+    }
   }
 }

@@ -33,18 +33,16 @@ const initializeAuthenticateUser = ({userInfo: uInfo, authToken}) => {
         feedPostIO.connect({token: authToken || authenCache.getAuthen()})
             .then((feedPostIO) => {
                 feedPostIO.emit("join-own-room", {userID: uInfo._id});
-                feedPostIO.emit("join-posts-notification-rooms", {userID: uInfo._id});
-                feedPostIO.on("notify-user", ({data, notificationType}) => {
-                    userApi.createNotification(notificationType, data)
-                        .then(notification => {
-                            bottomNotification.actions.push({
-                                content: (
-                                    <PostNotification
-                                        notification={notification}
-                                    />
-                                )
-                            });
-                        })
+
+                feedPostIO.on("notify-user", ({notification}) => {
+                    feedPostIO.emit("seen-notification", {notificationID: notification._id, userID: uInfo._id});
+                    bottomNotification.actions.push({
+                        content: (
+                            <PostNotification
+                                notification={notification}
+                            />
+                        )
+                    });
 
                 });
             })

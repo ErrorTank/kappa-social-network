@@ -70,7 +70,7 @@ const formatUTF8EmojiText = text => {
 
 }
 
-const transformMessageContentToPaths = ({content, mentions}) => {
+const transformMessageContentToPaths = ({content, mentions}, {disabledLink = false}) => {
 
     let resultStr = content;
     let contentPaths = [];
@@ -104,19 +104,19 @@ const transformMessageContentToPaths = ({content, mentions}) => {
     // console.log(contentPaths)
 
     return contentPaths.map((each => (
-        <Fragment key={uuidv4()}>{each.link ? (
+        <Fragment key={uuidv4()}>{(each.link && !disabledLink) ? (
             <Link className="message-link" to={each.link}>{each.path}</Link>) : each.path}</Fragment>
     )))
 }
 
-const getRenderableContentFromMessage = (message) => {
+const getRenderableContentFromMessage = (message, options = {}) => {
 
     let pipelines = createPipelines([
         (message) => ({
             content: checkText(message.content),
             mentions: message.mentions || []
         }),
-        transformMessageContentToPaths
+        (data) => transformMessageContentToPaths({...data}, options)
     ])
     return pipelines(message)
 

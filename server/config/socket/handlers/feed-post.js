@@ -20,6 +20,19 @@ module.exports = (io, socket, context) => {
         }
 
     });
+    socket.on("seen-notification", function (data) {
+        if (data.notificationID) {
+
+            User.findOneAndUpdate({
+                _id: ObjectId(data.userID)
+            },  {"$set": {"notifications.$[elem].is_seen": true}}, {
+                "arrayFilters": [{"elem._id": ObjectId(data.notificationID)}],
+                "multi": true,
+                new: true
+            }).exec()
+        }
+
+    });
     socket.on("join-posts-notification-rooms", function (data) {
         if (data.userID) {
             console.log(`User ${data.userID} join posts notification rooms!`);

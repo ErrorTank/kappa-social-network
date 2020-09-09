@@ -250,6 +250,18 @@ var exceptionRequestsDev = [
     method: 'POST',
   },
   {
+    endpoint: /https:\/\/localhost:4000\/api\/user\/unseen-notifications-count/,
+    method: 'GET',
+  },
+  {
+    endpoint: /https:\/\/localhost:4000\/api\/user\/notifications/,
+    method: 'GET',
+  },
+  {
+    endpoint: /https:\/\/localhost:4000\/api\/user\/seen-notifications/,
+    method: 'PUT',
+  },
+  {
     endpoint: /https:\/\/localhost:4000\/api\/listing\/create-listing/,
     method: 'POST',
   },

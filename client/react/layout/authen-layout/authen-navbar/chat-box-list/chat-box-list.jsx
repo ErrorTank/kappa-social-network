@@ -9,13 +9,8 @@ import {StatusAvatar} from "../../../../common/status-avatar/status-avatar";
 import {WithUserStatus} from "../../../../common/user-statuts-subcriber/user-status-subscriber";
 import {messageWidgetController} from "../../create-message-widget/create-message-widget";
 import {Emoji} from "emoji-mart";
-import {Progress} from "../../../../common/progress/progress";
-import {MessageFileDisplay} from "../../create-message-widget/chat-box/message-section/message-file-display";
-import {Tooltip} from "../../../../common/tooltip/tooltip";
-import moment from "moment";
-import {HyperLink} from "../../create-message-widget/chat-box/message-section/hyper-link";
 import {isImageFile} from "../../../../../common/utils/file-upload-utils";
-import ReactDOM from "react-dom";
+
 
 export class ChatBoxList extends Component {
     constructor(props) {
@@ -46,8 +41,8 @@ export class ChatBoxList extends Component {
         let {unseen} = this.props;
         return (
 
-            <div className="chat-box-list">
-                <div className="cbl-title">
+            <div className="chat-box-list nav-bar-dropdown">
+                <div className="nbd-title">
                     Tin nhắn
                 </div>
                 <InfiniteScrollWrapper
@@ -60,7 +55,7 @@ export class ChatBoxList extends Component {
 
                 >
                     {() => (
-                        <div className="cbl-content">
+                        <div className="nbd-content">
                             {!chat_rooms.length ? (
                                 <div className="empty-notify">
                                     Bạn chưa có tin nhắn nào

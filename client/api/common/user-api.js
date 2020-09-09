@@ -44,5 +44,14 @@ export const userApi = {
     },
     getUserBasicInfo(userID){
         return authenApi.get(`/user/${userID}/basic-info`);
+    },
+    getUnseenNotificationsCount(){
+        return authenApi.get(`/user/unseen-notifications-count`);
+    },
+    getUserNotifications(skip){
+        return authenApi.get(`/user/notifications?skip=${skip}`)
+    },
+    seenNotifications(ids){
+        return authenApi.put(`/user/seen-notifications`, {notifications: ids})
     }
 };
