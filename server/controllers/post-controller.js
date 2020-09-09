@@ -4,7 +4,7 @@ const {authorizationUserMiddleware, } = require('../common/middlewares/common');
 const {checkReplyExistedMiddleware, checkPostExistedMiddleware, checkCommentExistedMiddleware} = require("../common/middlewares/post");
 const {
     createNewPost, getAllPosts, updateFilesInPost, updatePost, updatePostReaction, getPostReactionByReactionKey,
-    getPostComments, createNewCommentForPost, updatePostCommentReaction, createCommentReply, getCommentReplies, deleteComment, deletePost, deleteReply, updateComment, getPostByID
+    getPostComments, createNewCommentForPost, updatePostCommentReaction, createCommentReply, getCommentReplies, deleteComment, deletePost, deleteReply, updateComment, getLatestCommentsFromPost,getPostByID
 } = require("../db/db-controllers/post");
 const {toggleFollowPost, toggleSavePost, toggleBlockPost} = require('../db/db-controllers/user');
 const {MessageState} = require('../common/const/message-state');
@@ -78,9 +78,9 @@ module.exports = (db, namespacesIO) => {
             userID: req.user._id
         }).then((data) => {
 
-            getPostByID({postID: data.post})
-                .then(post => {
-                    namespacesIO.feedPost.socketMap[req.user._id].to(`/notification-post-room/post/${data.post}`).emit("notify-user", {data: {...data, post}, notifyID: "comment_on_followed_post"})
+            Promise.all([getPostByID({postID: data.post}), getLatestCommentsFromPost({postID: data.post, nearest: data.created_at})])
+                .then(([post, cmts]) => {
+                    namespacesIO.feedPost.socketMap[req.user._id].to(`/notification-post-room/post/${data.post}`).emit("notify-user", {data: {...data, post, same_count: cmts.length - 1, nearest: cmts[0]}, notifyID: "comment_on_followed_post"})
 
                 });
 

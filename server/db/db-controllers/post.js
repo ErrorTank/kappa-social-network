@@ -778,7 +778,19 @@ const getPostByID = ({postID}) => {
     }).lean()
 }
 
+const getLatestCommentsFromPost = ({postID, nearest}) => {
+    return Comment.find({
+        post: ObjectId(postID),
+        is_reply: false,
+        created_at: {
+            $gt: nearest
+        }
+    }).sort({"created_at": -1})
+
+}
+
 module.exports = {
+    getLatestCommentsFromPost,
     getAllPosts,
     createNewPost,
     updateFilesInPost,
