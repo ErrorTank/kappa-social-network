@@ -6,7 +6,7 @@ const {
     createNewPost, getAllPosts, updateFilesInPost, updatePost, updatePostReaction, getPostReactionByReactionKey,
     getPostComments, createNewCommentForPost, updatePostCommentReaction, createCommentReply, getCommentReplies, deleteComment, deletePost, deleteReply, updateComment, getLatestCommentsFromPost,getPostByID
 } = require("../db/db-controllers/post");
-const {toggleFollowPost, toggleSavePost, toggleBlockPost} = require('../db/db-controllers/user');
+const {toggleFollowPost, toggleSavePost, toggleBlockPost, getMentionsUserByComment, getFollowedUserByPost, createUserNotification} = require('../db/db-controllers/user');
 const {MessageState} = require('../common/const/message-state');
 const {fileUploader} = require('../common/upload-services/file-upload');
 const mongoose = require('mongoose');
@@ -77,8 +77,27 @@ module.exports = (db, namespacesIO) => {
             ...req.params,
             userID: req.user._id
         }).then((data) => {
+            Promise.all([
+                getFollowedUserByPost(data.post),
+                getMentionsUserByComment(data)
+            ]).then(([followedUsers, mentionedUsers]) => {
+                let fuIds = followedUsers.map(each => each._id.toString()).filter(each => each !== req.user._id);
+                let mIds = mentionedUsers.map(each => each._id.toString()).filter(each => each !== req.user._id);
 
-            namespacesIO.feedPost.socketMap[req.user._id].to(`/notification-post-room/post/${data.post}`).emit("notify-user", {data: {postID: data.post, commentID: data._id}, notificationType: "comment_on_followed_post"})
+
+                for(let u1 of fuIds.filter(each => !mIds.find(f => f === each))){
+                    createUserNotification({type: "comment_on_followed_post", data: {comment: data._id, post: data.post}, userID: u1})
+                        .then(notification => namespacesIO.feedPost.socketMap[req.user._id].to(`/feed-post-room/user/${u1}`).emit("notify-user", {notification}));
+
+                }
+
+                for(let u2 of mIds){
+                    createUserNotification({type: "mentioned_in_comment", data: {comment: data._id, post: data.post}, userID: u2})
+                        .then(notification => namespacesIO.feedPost.socketMap[req.user._id].to(`/feed-post-room/user/${u2}`).emit("notify-user", {notification}));
+
+                }
+
+            })
 
             namespacesIO.feedPost
                 .socketMap[req.user._id]

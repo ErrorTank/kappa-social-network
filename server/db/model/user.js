@@ -152,10 +152,14 @@ const userSchema = new Schema({
 
         type: [
             {
+                is_seen: {
+                    type: Boolean,
+                    default: false
+                },
                 notification_type: {
                     type: String,
                     enum: [
-                       "comment_on_followed_post"
+                       "comment_on_followed_post", "mentioned_in_comment"
                     ]
 
                 },

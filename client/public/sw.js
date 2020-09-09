@@ -250,6 +250,10 @@ var exceptionRequestsDev = [
     method: 'POST',
   },
   {
+    endpoint: /https:\/\/localhost:4000\/api\/user\/unseen-notifications-count/,
+    method: 'GET',
+  },
+  {
     endpoint: /https:\/\/localhost:4000\/api\/listing\/create-listing/,
     method: 'POST',
   },
@@ -275,8 +279,8 @@ var notGetRequests = [
     dbCollectionName: 'contacts',
   },
 ];
-var CACHE_STATIC_NAME = 'static-v1599633744041';
-var CACHE_DYNAMIC_NAME = 'dynamic-v1599633744041';
+var CACHE_STATIC_NAME = 'static-v1599650930443';
+var CACHE_DYNAMIC_NAME = 'dynamic-v1599650930443';
 
 var STATIC_FILES = [
   '/',

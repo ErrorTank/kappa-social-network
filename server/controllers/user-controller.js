@@ -2,7 +2,8 @@ const express = require('express');
 const router = express.Router();
 const {authorizationUserMiddleware} = require("../common/middlewares/common");
 const {getAuthenticateUserInitCredentials, getUserBasicInfo, login, sendChangePasswordToken, resendChangePasswordToken,createUserNotification,
-    verifyChangePasswordToken, getChangePasswordUserBrief, changePassword, addNewSearchHistory, deleteSearchHistory, updateSearchHistory, shortLogin, simpleUpdateUser} = require("../db/db-controllers/user");
+    verifyChangePasswordToken, getChangePasswordUserBrief, changePassword, addNewSearchHistory, deleteSearchHistory,
+    updateSearchHistory, shortLogin, simpleUpdateUser, getUnseenNotificationsCount} = require("../db/db-controllers/user");
 
 module.exports = () => {
     router.get("/init-credentials", authorizationUserMiddleware, (req, res, next) => {
@@ -26,10 +27,17 @@ module.exports = () => {
         }).catch(err => next(err));
 
     });
-    router.post("/:userID/create-notification", (req, res, next) => {
+    router.post("/create-notification",authorizationUserMiddleware, (req, res, next) => {
 
-        return createUserNotification(req.body).then((data) => {
+        return createUserNotification({...req.body, userID: req.user._id}).then((data) => {
             return res.status(200).json(data);
+        }).catch(err => next(err));
+
+    });
+    router.get("/unseen-notifications-count",authorizationUserMiddleware, (req, res, next) => {
+
+        return getUnseenNotificationsCount({userID: req.user._id}).then((data) => {
+            return res.status(200).json({count: data});
         }).catch(err => next(err));
 
     });

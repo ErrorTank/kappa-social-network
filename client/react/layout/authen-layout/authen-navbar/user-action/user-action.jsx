@@ -8,6 +8,7 @@ import {UserSpecificAction} from "./user-specific-action";
 import {Tooltip} from "../../../../common/tooltip/tooltip";
 import {ChatBoxList} from "../chat-box-list/chat-box-list";
 import {messengerApi} from "../../../../../api/common/messenger-api";
+import {userApi} from "../../../../../api/common/user-api";
 
 class UserActionDropdownable extends Component {
     constructor(props) {
@@ -46,11 +47,20 @@ export class UserAction extends KComponent {
     constructor(props) {
         super(props);
         this.state = {
-            unseen: []
+            unseen: [],
+            notificationsCount: 0
 
         }
-        messengerApi.getUserUnseenMessagesCount(userInfo.getState()._id)
-            .then((unseen) => this.setState({unseen}))
+        let userID = userInfo.getState()._id;
+        Promise.all([
+            messengerApi.getUserUnseenMessagesCount(userID),
+            userApi.getUnseenNotificationsCount()
+
+        ]).then(([unseen, {count: notificationsCount}]) => {
+            this.setState({unseen, notificationsCount})
+        })
+
+
         userAction = {
             removeChatRoom: crID => this.setState({unseen: this.state.unseen.filter(each => each._id !== crID)})
         }
@@ -97,7 +107,7 @@ export class UserAction extends KComponent {
                             className={"user-action-tooltip"}
                             text={() => "Chat"}
                         >
-                            <div className="circle-action messenger-action">
+                            <div className="circle-action badge-action">
                                 {!!this.state.unseen.length && (
                                     <div className="unseen-count">
                                         <span>{this.state.unseen.length}</span>
@@ -124,7 +134,13 @@ export class UserAction extends KComponent {
                             className={"user-action-tooltip"}
                             text={() => "Thông báo"}
                         >
-                            <div className="circle-action">
+                            <div className="circle-action  badge-action">
+                                {this.state.notificationsCount > 0 && (
+                                    <div className="unseen-count">
+                                        <span>{this.state.notificationsCount}</span>
+
+                                    </div>
+                                )}
                                 <i className="fas fa-bell"></i>
                             </div>
                         </Tooltip>

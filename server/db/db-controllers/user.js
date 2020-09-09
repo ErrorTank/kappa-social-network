@@ -399,11 +399,106 @@ const toggleBlockPost = ({postID, userID}) => {
         }))
 }
 
-const createUserNotification = ({type, data}) => {
+const createUserNotification = ({type, data, userID}) => {
+    let notificationID = new ObjectId();
+    return User.findOneAndUpdate({
+        _id: ObjectId(userID)
+    }, {
+        $push: {
+            notifications: {
+                _id:  notificationID,
+                notification_type: type,
+                ...data
+            }
+        }
+    }, {
+        new: true
+    }).populate([
+        {
+            path: "notifications.person",
+            model: "User",
+            select: "_id basic_info avatar last_active_at active"
+        },{
+            path: "notifications.page",
+            model: "Page",
+            select: "_id basic_info avatar",
 
+        },{
+            path: "notifications.group",
+            model: "Group",
+            select: "_id basic_info"
+        }, {
+            path: "notifications.comment",
+            model: "Comment",
+            populate : [
+                {
+                    path: "from_person",
+                    model: "User",
+                    select: "_id basic_info avatar last_active_at active"
+                },  {
+                    path: "from_page",
+                    model: "Page",
+                    select: "_id basic_info avatar"
+                }
+            ]
+
+        }, {
+            path: "notifications.reply",
+            model: "Comment",
+            populate : [
+                {
+                    path: "from_person",
+                    model: "User",
+                    select: "_id basic_info avatar last_active_at active"
+                },  {
+                    path: "from_page",
+                    model: "Page",
+                    select: "_id basic_info avatar"
+                }
+            ]
+        },{
+            path: "notifications.post",
+            model: "Post",
+            populate: [
+                {
+                    path: "belonged_person",
+                    model: "User",
+                    select: "_id basic_info avatar last_active_at active"
+                },
+            ]
+        },
+    ])
+        .then(user => {
+            return user.notifications.sort((a, b) => new Date(b.published_time).getTime() - new Date(a.published_time).getTime())[0]
+        })
+}
+
+const getFollowedUserByPost = (postID) => {
+    return User.find({
+       "followed_posts.post": ObjectId(postID)
+    }).lean()
+}
+
+const getMentionsUserByComment = (comment) => {
+    let {mentions} = comment;
+    return User.find({
+        _id: {
+            $in: mentions.map(each => ObjectId(each.related._id))
+        }
+    }).lean()
+}
+
+const getUnseenNotificationsCount = ({userID}) => {
+    return User.findOne({
+        _id: ObjectId(userID)
+    }).lean()
+        .then(u => u.notifications.filter(each => !each.is_seen).length)
 }
 
 module.exports = {
+    getUnseenNotificationsCount,
+    getMentionsUserByComment,
+    getFollowedUserByPost,
     createUserNotification,
     getAuthenticateUserInitCredentials,
     login,
