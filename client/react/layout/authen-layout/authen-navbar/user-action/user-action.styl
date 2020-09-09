@@ -83,7 +83,11 @@
   .user-action-dropdownable {
     flex 0
     margin-left 15px
-
+    &.notifications-dd{
+      .dropdown {
+        width auto !important
+      }
+    }
     .user-action-tooltip {
       height 100%
 
@@ -154,7 +158,7 @@
       }
     }
 
-    .avatar-wrapper {
+    & .toggle .avatar-wrapper {
       display inline-block
       vertical-align middle
       width 40px

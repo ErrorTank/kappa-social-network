@@ -4,6 +4,7 @@ import {Avatar} from "../avatar/avatar";
 import {Emoji} from "emoji-mart";
 import {userInfo} from "../../../common/states/common";
 import moment from "moment";
+import classnames from "classnames"
 
 export class PostNotification extends Component {
 
@@ -39,11 +40,11 @@ export class PostNotification extends Component {
     }
 
     render() {
-        let {notification} = this.props;
+        let {notification, highLight} = this.props;
         let {getAvatarUser, getReaction, getContent, getTime} = this.getRenderData(notification);
         let reaction = getReaction();
         return (
-            <div className="post-notification">
+            <div className={classnames("post-notification", {active: highLight && !notification.is_seen})}>
                 <div className="avatar-wrapper">
                     <Avatar user={getAvatarUser()}/>
                     {reaction && (

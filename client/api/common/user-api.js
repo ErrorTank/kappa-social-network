@@ -48,4 +48,10 @@ export const userApi = {
     getUnseenNotificationsCount(){
         return authenApi.get(`/user/unseen-notifications-count`);
     },
+    getUserNotifications(skip){
+        return authenApi.get(`/user/notifications?skip=${skip}`)
+    },
+    seenNotifications(ids){
+        return authenApi.put(`/user/seen-notifications`, {notifications: ids})
+    }
 };

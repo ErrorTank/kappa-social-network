@@ -3,7 +3,7 @@ const router = express.Router();
 const {authorizationUserMiddleware} = require("../common/middlewares/common");
 const {getAuthenticateUserInitCredentials, getUserBasicInfo, login, sendChangePasswordToken, resendChangePasswordToken,createUserNotification,
     verifyChangePasswordToken, getChangePasswordUserBrief, changePassword, addNewSearchHistory, deleteSearchHistory,
-    updateSearchHistory, shortLogin, simpleUpdateUser, getUnseenNotificationsCount} = require("../db/db-controllers/user");
+    updateSearchHistory, shortLogin, simpleUpdateUser, getUnseenNotificationsCount, getUserNotifications, seenNotifications} = require("../db/db-controllers/user");
 
 module.exports = () => {
     router.get("/init-credentials", authorizationUserMiddleware, (req, res, next) => {
@@ -29,7 +29,14 @@ module.exports = () => {
     });
     router.post("/create-notification",authorizationUserMiddleware, (req, res, next) => {
 
-        return createUserNotification({...req.body, userID: req.user._id}).then((data) => {
+        return createUserNotification({userID: req.user._id, ...req.body}).then((data) => {
+            return res.status(200).json(data);
+        }).catch(err => next(err));
+
+    });
+    router.put("/seen-notifications",authorizationUserMiddleware, (req, res, next) => {
+
+        return seenNotifications({userID: req.user._id, ...req.body}).then((data) => {
             return res.status(200).json(data);
         }).catch(err => next(err));
 
@@ -38,6 +45,13 @@ module.exports = () => {
 
         return getUnseenNotificationsCount({userID: req.user._id}).then((data) => {
             return res.status(200).json({count: data});
+        }).catch(err => next(err));
+
+    });
+    router.get("/notifications",authorizationUserMiddleware, (req, res, next) => {
+
+        return getUserNotifications({userID: req.user._id, ...req.query}).then((data) => {
+            return res.status(200).json(data);
         }).catch(err => next(err));
 
     });

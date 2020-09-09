@@ -9,6 +9,7 @@ import {Tooltip} from "../../../../common/tooltip/tooltip";
 import {ChatBoxList} from "../chat-box-list/chat-box-list";
 import {messengerApi} from "../../../../../api/common/messenger-api";
 import {userApi} from "../../../../../api/common/user-api";
+import {Notifications} from "../notifications/notifications";
 
 class UserActionDropdownable extends Component {
     constructor(props) {
@@ -19,10 +20,10 @@ class UserActionDropdownable extends Component {
     }
 
     render() {
-        let {toggleRender, dropdownRender} = this.props;
+        let {toggleRender, dropdownRender, className} = this.props;
         return (
             <ClickOutside onClickOut={() => this.setState({show: false})}>
-                <div className="user-action-dropdownable">
+                <div className={classnames("user-action-dropdownable", className)}>
                     <div className={classnames("toggle", {active: this.state.show})}
                          onClick={() => this.setState({show: !this.state.show})}>
                         {toggleRender()}
@@ -64,6 +65,14 @@ export class UserAction extends KComponent {
         userAction = {
             removeChatRoom: crID => this.setState({unseen: this.state.unseen.filter(each => each._id !== crID)})
         }
+    }
+
+    seenNotifications = (unseens) => {
+        if(unseens.length){
+            userApi.seenNotifications(unseens.map(each => each._id))
+                .then(() => this.setState({notificationsCount: this.state.notificationsCount - unseens.length}))
+        }
+
     }
 
     render() {
@@ -129,6 +138,7 @@ export class UserAction extends KComponent {
 
                 />
                 <UserActionDropdownable
+                    className={"notifications-dd"}
                     toggleRender={() => (
                         <Tooltip
                             className={"user-action-tooltip"}
@@ -144,6 +154,12 @@ export class UserAction extends KComponent {
                                 <i className="fas fa-bell"></i>
                             </div>
                         </Tooltip>
+                    )}
+                    dropdownRender={() => (
+                        <Notifications
+                            darkMode={this.props.darkMode}
+                            onSeen={this.seenNotifications}
+                        />
                     )}
                 />
                 <UserActionDropdownable

@@ -1,6 +1,6 @@
-.chat-box-list{
 
-  .cbl-title{
+.nav-bar-dropdown{
+  .nbd-title{
     font-weight 500
     font-size 2.2rem
     color commonTextLight
@@ -8,64 +8,70 @@
     padding-top 8px
     margin-bottom 10px
   }
-  .cbl-content{
+  .nbd-content{
     .empty-notify{
       color greyTextLight
       font-size 1.4rem
       text-align center
     }
-    max-height 300px
+
     overflow-y auto
     padding 8px
-    .chat-room-box{
-      padding 8px
-      border-radius 5px
-      cursor pointer
-      display flex
-      &.unseen{
-        background-color rgba(primaryButton, 0.1)
-      }
-      &:not(.unseen):hover{
-        background-color darken(white, 5%)
-      }
-      .avatar{
-        flex 0 0 60px
-        height auto !important
-        .status-avatar{
+
+  }
+}
+.chat-box-list{
+  max-height 300px
+  .chat-room-box{
+    padding 8px
+    border-radius 5px
+    cursor pointer
+    display flex
+    &.unseen{
+      background-color rgba(primaryButton, 0.1)
+    }
+    &:not(.unseen):hover{
+      background-color darken(white, 5%)
+    }
+    .avatar{
+      flex 0 0 60px
+      height auto !important
+      .status-avatar{
+        width 50px
+        height 50px
+
+        .common-avatar{
           width 50px
           height 50px
-
-          .common-avatar{
-            width 50px
-            height 50px
-            .avatar-holder{
-              span{
-                font-size 1.8rem
-              }
+          .avatar-holder{
+            span{
+              font-size 1.8rem
             }
           }
         }
-
       }
-      .content-wrapper{
-        flex 0 0 calc(100% - 60px)
-        overflow-x hidden
-        .chat-room-name{
-          font-size 1.5rem
-          font-weight 500
-          color commonTextLight
-        }
-        .latest-message{
-          font-size 1.3rem
-          color commonTextLight
-          white-space nowrap
 
-          span{
-            display inline-block
-            vertical-align middle
-          }
+    }
+    .content-wrapper{
+      flex 0 0 calc(100% - 60px)
+      overflow-x hidden
+      .chat-room-name{
+        font-size 1.5rem
+        font-weight 500
+        color commonTextLight
+      }
+      .latest-message{
+        font-size 1.3rem
+        color commonTextLight
+        white-space nowrap
+
+        span{
+          display inline-block
+          vertical-align middle
         }
       }
     }
   }
+
+
 }

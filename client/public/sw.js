@@ -254,6 +254,14 @@ var exceptionRequestsDev = [
     method: 'GET',
   },
   {
+    endpoint: /https:\/\/localhost:4000\/api\/user\/notifications/,
+    method: 'GET',
+  },
+  {
+    endpoint: /https:\/\/localhost:4000\/api\/user\/seen-notifications/,
+    method: 'PUT',
+  },
+  {
     endpoint: /https:\/\/localhost:4000\/api\/listing\/create-listing/,
     method: 'POST',
   },
@@ -279,8 +287,8 @@ var notGetRequests = [
     dbCollectionName: 'contacts',
   },
 ];
-var CACHE_STATIC_NAME = 'static-v1599650930443';
-var CACHE_DYNAMIC_NAME = 'dynamic-v1599650930443';
+var CACHE_STATIC_NAME = 'static-v1599660550818';
+var CACHE_DYNAMIC_NAME = 'dynamic-v1599660550818';
 
 var STATIC_FILES = [
   '/',

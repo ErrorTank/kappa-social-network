@@ -54,7 +54,7 @@ const getAuthenticateUserInitCredentials = (userID) => {
 
             return {
                 ...data,
-                search_history: data.search_history.sort((a,b) => new Date(b.search_at).getTime() - new Date(a.search_at).getTime())
+                search_history: data.search_history.sort((a, b) => new Date(b.search_at).getTime() - new Date(a.search_at).getTime())
             };
 
         })
@@ -81,7 +81,7 @@ const shortLogin = ({_id, password}) => {
                     token,
                     user: {
                         ...omit(data, "private_info"),
-                        search_history: data.search_history.sort((a,b) => new Date(b.search_at).getTime() - new Date(a.search_at).getTime())
+                        search_history: data.search_history.sort((a, b) => new Date(b.search_at).getTime() - new Date(a.search_at).getTime())
                     }
                 }
             })
@@ -114,7 +114,7 @@ const login = ({login_username, password}) => {
                     token,
                     user: {
                         ...omit(data, "private_info"),
-                        search_history: data.search_history.sort((a,b) => new Date(b.search_at).getTime() - new Date(a.search_at).getTime())
+                        search_history: data.search_history.sort((a, b) => new Date(b.search_at).getTime() - new Date(a.search_at).getTime())
                     }
                 }
             })
@@ -247,7 +247,7 @@ const addNewSearchHistory = (userID, data) => {
         .then(data => {
             return {
                 ...data,
-                search_history: data.search_history.sort((a,b) => new Date(b.search_at).getTime() - new Date(a.search_at).getTime())
+                search_history: data.search_history.sort((a, b) => new Date(b.search_at).getTime() - new Date(a.search_at).getTime())
             }
         })
 
@@ -269,7 +269,7 @@ const deleteSearchHistory = (userID, historyID) => {
         .then(data => {
             return {
                 ...data,
-                search_history: data.search_history.sort((a,b) => new Date(b.search_at).getTime() - new Date(a.search_at).getTime())
+                search_history: data.search_history.sort((a, b) => new Date(b.search_at).getTime() - new Date(a.search_at).getTime())
             }
         })
 };
@@ -279,13 +279,11 @@ const updateSearchHistory = (userID, historyID, data) => {
     let updatedQuery = {
         "search_history.$.search_at": Date.now()
     };
-    if(data.related_person){
+    if (data.related_person) {
         updatedQuery["search_history.$.related_person"] = ObjectId(data.related_person)
-    }
-    else if(data.related_page){
+    } else if (data.related_page) {
         updatedQuery["search_history.$.related_page"] = ObjectId(data.related_page)
-    }
-    else if(data.related_group){
+    } else if (data.related_group) {
         updatedQuery["search_history.$.related_group"] = ObjectId(data.related_group)
     }
     if (!historyID) {
@@ -299,19 +297,22 @@ const updateSearchHistory = (userID, historyID, data) => {
         .then(data => {
             return {
                 ...data,
-                search_history: data.search_history.sort((a,b) => new Date(b.search_at).getTime() - new Date(a.search_at).getTime())
+                search_history: data.search_history.sort((a, b) => new Date(b.search_at).getTime() - new Date(a.search_at).getTime())
             }
         })
 
 };
 
 const simpleUpdateUser = (userID, data) => {
-  return User.findOneAndUpdate({_id: ObjectId(userID)}, data, {new: true, select: "followed_posts saved_posts blocked_posts _id contact basic_info joined_at isVerify last_active_at dark_mode private_info search_history avatar"}).lean()
+    return User.findOneAndUpdate({_id: ObjectId(userID)}, data, {
+        new: true,
+        select: "followed_posts saved_posts blocked_posts _id contact basic_info joined_at isVerify last_active_at dark_mode private_info search_history avatar"
+    }).lean()
 };
 
 const getUserBasicInfo = (userID, query = {}) => {
 
-    return User.findOne({_id: ObjectId(userID)}, query.full === 'true' ? "_id basic_info avatar contact" :"_id basic_info avatar").lean()
+    return User.findOne({_id: ObjectId(userID)}, query.full === 'true' ? "_id basic_info avatar contact" : "_id basic_info avatar").lean()
 }
 
 const toggleFollowPost = ({postID, userID}) => {
@@ -406,7 +407,7 @@ const createUserNotification = ({type, data, userID}) => {
     }, {
         $push: {
             notifications: {
-                _id:  notificationID,
+                _id: notificationID,
                 notification_type: type,
                 ...data
             }
@@ -418,24 +419,24 @@ const createUserNotification = ({type, data, userID}) => {
             path: "notifications.person",
             model: "User",
             select: "_id basic_info avatar last_active_at active"
-        },{
+        }, {
             path: "notifications.page",
             model: "Page",
             select: "_id basic_info avatar",
 
-        },{
+        }, {
             path: "notifications.group",
             model: "Group",
             select: "_id basic_info"
         }, {
             path: "notifications.comment",
             model: "Comment",
-            populate : [
+            populate: [
                 {
                     path: "from_person",
                     model: "User",
                     select: "_id basic_info avatar last_active_at active"
-                },  {
+                }, {
                     path: "from_page",
                     model: "Page",
                     select: "_id basic_info avatar"
@@ -445,18 +446,18 @@ const createUserNotification = ({type, data, userID}) => {
         }, {
             path: "notifications.reply",
             model: "Comment",
-            populate : [
+            populate: [
                 {
                     path: "from_person",
                     model: "User",
                     select: "_id basic_info avatar last_active_at active"
-                },  {
+                }, {
                     path: "from_page",
                     model: "Page",
                     select: "_id basic_info avatar"
                 }
             ]
-        },{
+        }, {
             path: "notifications.post",
             model: "Post",
             populate: [
@@ -475,7 +476,7 @@ const createUserNotification = ({type, data, userID}) => {
 
 const getFollowedUserByPost = (postID) => {
     return User.find({
-       "followed_posts.post": ObjectId(postID)
+        "followed_posts.post": ObjectId(postID)
     }).lean()
 }
 
@@ -494,8 +495,81 @@ const getUnseenNotificationsCount = ({userID}) => {
     }).lean()
         .then(u => u.notifications.filter(each => !each.is_seen).length)
 }
+const getUserNotifications = ({userID, skip}) => {
+    return User.findOne({
+        _id: ObjectId(userID)
+    })
+        .populate([
+            {
+                path: "notifications.person",
+                model: "User",
+                select: "_id basic_info avatar last_active_at active"
+            }, {
+                path: "notifications.page",
+                model: "Page",
+                select: "_id basic_info avatar",
+
+            }, {
+                path: "notifications.group",
+                model: "Group",
+                select: "_id basic_info"
+            }, {
+                path: "notifications.comment",
+                model: "Comment",
+                populate: [
+                    {
+                        path: "from_person",
+                        model: "User",
+                        select: "_id basic_info avatar last_active_at active"
+                    }, {
+                        path: "from_page",
+                        model: "Page",
+                        select: "_id basic_info avatar"
+                    }
+                ]
+
+            }, {
+                path: "notifications.reply",
+                model: "Comment",
+                populate: [
+                    {
+                        path: "from_person",
+                        model: "User",
+                        select: "_id basic_info avatar last_active_at active"
+                    }, {
+                        path: "from_page",
+                        model: "Page",
+                        select: "_id basic_info avatar"
+                    }
+                ]
+            }, {
+                path: "notifications.post",
+                model: "Post",
+                populate: [
+                    {
+                        path: "belonged_person",
+                        model: "User",
+                        select: "_id basic_info avatar last_active_at active"
+                    },
+                ]
+            },
+        ])
+        .then(u => u.notifications.sort((a, b) => new Date(b.published_time).getTime() - new Date(a.published_time).getTime()).slice(Number(skip), Number(skip) + 10 ))
+}
+
+const seenNotifications = ({userID, notifications}) => {
+    return User.findOneAndUpdate({
+        _id: ObjectId(userID)
+    },  {"$set": {"notifications.$[elem].is_seen": true}}, {
+        "arrayFilters": [{"elem._id": {$in: notifications.map(each => ObjectId(each))}}],
+        "multi": true,
+        new: true
+    }).exec()
+}
 
 module.exports = {
+    seenNotifications,
+    getUserNotifications,
     getUnseenNotificationsCount,
     getMentionsUserByComment,
     getFollowedUserByPost,
