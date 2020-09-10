@@ -40,7 +40,7 @@ export class ListingInfoSelect extends Component {
       isSelected = (option) => false,
       ...others
     } = this.props;
-
+    console.log(error);
     return (
       <div
         className={classnames('listing-info-select', className, {

@@ -130,7 +130,6 @@ export class CreateListingInputWidget extends Component {
       Promise.all(files.map((each) => this.uploadSingleFile(each))).then(
         (newFiles) => {
           let user = userInfo.getState();
-          console.log(user);
           let moreInfo = {
             postTime: Date.now(),
             files: newFiles,
@@ -156,8 +155,18 @@ export class CreateListingInputWidget extends Component {
         vehicle: vehicleField,
         home: homeField,
       };
-      let inputField = setField[type];
-      // let errorMessageArr = this.inputField()
+
+      let inputNeeded = setField[type].filter((e) => e.error);
+      inputNeeded.forEach((e) => {
+        let value = state[e.englishName];
+        if (
+          e.error['required'] &&
+          (!value || (value.includes('&nbsp;') && value.length === 7))
+        ) {
+          let modifyError = { type: 'required', message: e.error['required'] };
+          this.setError(e.englishName, modifyError);
+        }
+      });
     }
   };
 

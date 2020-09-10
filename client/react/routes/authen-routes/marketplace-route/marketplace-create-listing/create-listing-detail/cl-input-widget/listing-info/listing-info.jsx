@@ -190,7 +190,7 @@ export class ListingInfo extends Component {
     const { state, updateValue, error } = this.props;
     let { pictureLimit, type, category, files, ...other } = state;
     const { inputField, dependedInput } = this.state;
-    console.log(error);
+    // console.log(error);
     return (
       <div className='listing-info'>
         <div className='picture-input'>
