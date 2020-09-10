@@ -307,7 +307,7 @@ const getAllPosts = ({userID, skip, limit}) => {
 const updateFilesInPost = ({postID, fileID, file}) => {
     return Post.findOneAndUpdate({
         _id: ObjectId(postID)
-    }, {"$set": {"files.$[elem]": {...file}, "last_updated": Date.now()}}, {
+    }, {"$set": {"files.$[elem]": {...file}, "updated_at": Date.now()}}, {
         "arrayFilters": [{"elem._id": ObjectId(fileID)}],
         "multi": true,
         new: true
@@ -317,14 +317,14 @@ const updateFilesInPost = ({postID, fileID, file}) => {
 const updatePost = ({postID, post}) => {
     return Post.findOneAndUpdate({
         _id: ObjectId(postID)
-    }, {$set: {...post, last_updated: Date.now()}}, {new: true})
+    }, {$set: {...post, updated_at: Date.now()}}, {new: true})
         .lean()
 
 }
 
 const updatePostReaction = ({postID, reactionConfig, userID}) => {
     let execCommand = {
-        $set: {"last_updated": Date.now()}
+        $set: {"updated_at": Date.now()}
     };
 
     let {on, off} = reactionConfig;
@@ -485,7 +485,7 @@ const createNewCommentForPost = ({postID, comment, userID}) => {
         _id: ObjectId(postID)
     }, {
         $set: {
-            last_updated: Date.now()
+            updated_at: Date.now()
         },
         $addToSet: {
             comments: newComment._id
@@ -508,7 +508,9 @@ const createNewCommentForPost = ({postID, comment, userID}) => {
 }
 
 const updatePostCommentReaction = ({postID, userID, commentID, reactionConfig}) => {
-    let execCommand = {};
+    let execCommand = {
+        $set: {"updated_at": Date.now()}
+    };
 
     let {on, off} = reactionConfig;
     if (on) {
@@ -541,7 +543,7 @@ const createCommentReply = ({postID, commentID, reply, userID}) => {
 
     }, {
         $set: {
-            last_updated: Date.now()
+            updated_at: Date.now()
         },
         $addToSet: {
             replies: newReply._id
@@ -667,6 +669,9 @@ const deleteReply = ({replyID, commentID}) => {
             {
                 $pull: {
                     replies: ObjectId(replyID)
+                },
+                $set: {
+                    updated_at: Date.now()
                 }
             }
         ).lean(),
@@ -686,7 +691,7 @@ const deleteReply = ({replyID, commentID}) => {
                             followed_posts: {
                                 post: ObjectId(comment.post)
                             }
-                        }
+                        },
                     }, {
                         new: true
                     }).lean().then((data) => (
@@ -710,6 +715,9 @@ const deleteComment = ({commentID, postID}) => {
             {
                 $pull: {
                     comments: ObjectId(commentID)
+                },
+                $set: {
+                    updated_at: Date.now()
                 }
             }
         ).lean(),
@@ -767,7 +775,7 @@ const deletePost = ({postID,}) => {
 const updateComment = ({commentID, comment}) => {
     return Comment.findOneAndUpdate({
         _id: ObjectId(commentID)
-    }, {$set: {...comment, last_updated: Date.now()}}, {new: true})
+    }, {$set: {...comment, updated_at: Date.now()}}, {new: true})
         .lean()
 
 }

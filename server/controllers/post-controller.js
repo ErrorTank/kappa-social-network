@@ -27,6 +27,15 @@ module.exports = (db, namespacesIO) => {
                     .to(`/post-room/${req.body.shared_post}`)
                     .emit('edit-post', shared_post);
             }
+            if(data.tagged.length){
+                let mIds = data.tagged.map(each => each._id.toString()).filter(each => each !== req.user._id);
+                for(let u1 of mIds){
+                    createUserNotification({type: "tagged_on_post", data: {post: data}, userID: u1})
+                        .then(notification => namespacesIO.feedPost.io.to(`/feed-post-room/user/${u1}`).emit("notify-user", {notification}));
+
+                }
+
+            }
             return res.status(200).json(data);
         })
             .catch((err) => next(err));
@@ -254,6 +263,11 @@ module.exports = (db, namespacesIO) => {
             ...req.params,
             ...req.body
         }).then((data) => {
+            let reaction = req.body.reactionConfig;
+            if(data.belonged_person._id.toString() !== req.user._id && reaction.on){
+                createUserNotification({type: "react_post", data: {post: data, reacted_by: req.user._id, reaction: reaction.on}, userID: data.belonged_person._id })
+                    .then(notification => namespacesIO.feedPost.io.to(`/feed-post-room/user/${data.belonged_person._id}`).emit("notify-user", {notification}));
+            }
 
             namespacesIO.feedPost
                 .socketMap[req.user._id]

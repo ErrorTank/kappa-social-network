@@ -71,7 +71,29 @@ export class PostNotification extends Component {
                     </span>
                 ),
                 getTime: () => data.comment.updated_at
-            }
+            },
+            "react_post": {
+                getAvatarUser: () => data.reacted_by,
+                getReaction: () => REACTION_EMOJI_MAP[data.reaction],
+                getContent: () => (
+                    <span>
+                        <span className="high-light dark">{data.reacted_by.basic_info.username}</span> đã bày tỏ cảm xúc tới <span  className="high-light dark">bài đăng</span> của
+                        <span  className="high-light dark"> bạn</span>
+                    </span>
+                ),
+                getTime: () => data.post.updated_at
+            },
+            "tagged_on_post": {
+                getAvatarUser: () => data.post.belonged_person,
+                getReaction: () => null,
+                getContent: () => (
+                    <span>
+                        <span className="high-light dark">{data.post.belonged_person.basic_info.username}</span> đã gắn thẻ bạn trong <span  className="high-light dark">bài đăng</span>:
+                         <span className="content"> {getRenderableContentFromMessage(data.post, {disabledLink: true})}</span>
+                    </span>
+                ),
+                getTime: () => data.post.created_at
+            },
         };
         return dataMatcher[notification_type]
 

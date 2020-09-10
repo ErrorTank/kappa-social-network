@@ -159,7 +159,8 @@ const userSchema = new Schema({
                 notification_type: {
                     type: String,
                     enum: [
-                       "comment_on_followed_post", "mentioned_in_comment", "reply_on_comment", "mentioned_in_reply", "react_comment"
+                       "comment_on_followed_post", "mentioned_in_comment", "reply_on_comment", "mentioned_in_reply", "react_comment",
+                        "react_post", "tagged_on_post"
                     ]
 
                 },
