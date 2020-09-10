@@ -1,13 +1,15 @@
 import React, { Component } from "react";
-import { Card } from "./card/card";
 import { DatingCardActions } from "./action/action";
+import { DatingCard } from "./card/datingCard";
 
 export class CardContainer extends Component {
   render() {
     return (
       <div className="container">
         <div className="card-container">
-          <div className="top-panel">{/* <Card /> */}</div>
+          <div className="top-panel">
+            <DatingCard />
+          </div>
 
           <div className="bot-panel">
             <DatingCardActions />
