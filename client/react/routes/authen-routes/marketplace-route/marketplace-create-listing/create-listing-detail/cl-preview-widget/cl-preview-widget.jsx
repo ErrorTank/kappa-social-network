@@ -169,6 +169,12 @@ export class CreateListingPreviewWidget extends Component {
                       'on-mouse': hoverArr === 'location',
                     })}
                   >
+                    <div className='example-map'>
+                      <img
+                        src={`/assets/others/best-google-maps-plugins.png`}
+                        alt=''
+                      />
+                    </div>
                     <div className='location-info'>
                       {state.location ? state.location : 'Vị trí...'}
                     </div>

@@ -1,8 +1,6 @@
 import React, { Component } from 'react';
 import { addressApi } from './../api/common/address-api';
 import { userInfo } from './../common/states/common';
-let user = userInfo.getState();
-console.log(user);
 
 export let itemField = [
   {
@@ -487,6 +485,10 @@ export let vehicleField = [
     name: 'Số khung(không bắt buộc)',
     englishName: 'vehicleIdentificationNumber',
     isDepended: true,
+    neededLength: 17,
+    error: {
+      needed_length: 'VIN hợp lệ cần có 17 ký tự',
+    },
   },
   {
     name: 'Loại xe',
@@ -565,8 +567,12 @@ export let vehicleField = [
     name: 'Số dặm đã đi',
     englishName: 'mileage',
     isDepended: true,
+    min: 300,
+    max: 1000000,
     error: {
       required: 'Hãy thêm số dặm mà phương tiện đã đi được.',
+      min_value: 'Vui lòng thêm số dặm đã đi trong khoảng 300 - 1.000.000 km.',
+      max_value: 'Vui lòng thêm số dặm đã đi trong khoảng 300 - 1.000.000 km.',
     },
   },
   {

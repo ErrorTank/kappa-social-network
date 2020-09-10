@@ -101,13 +101,13 @@ export class ListingInfo extends Component {
       this.handleInputDisplay();
     }
     if (oldState.category !== newState.category) {
-      this.handleSetDependent(fieldByCategory, newState.category);
-    }
-    if (oldState.vehicleType !== newState.vehicleType) {
-      this.handleSetDependent(fieldByVehicleType, newState.vehicleType);
-    }
-    if (oldState.homeFor !== newState.homeFor) {
-      this.handleSetDependent(fieldByHomeFor, newState.homeFor);
+      const fieldOfType = {
+        item: fieldByCategory,
+        vehicle: fieldByVehicleType,
+        home: fieldByHomeFor,
+      };
+
+      this.handleSetDependent(fieldOfType[newState.type], newState.category);
     }
   }
 
@@ -132,15 +132,41 @@ export class ListingInfo extends Component {
     }
   };
   // check error, only check needed input now
-  handleCheckError = (name, error, value) => {
+  handleCheckError = (item, value) => {
     const { state, updateValue, setError, resetError } = this.props;
-    let check = true;
+    let check = true,
+      name = item.englishName,
+      error = item.error;
     if (
       error['required'] &&
       (!value || (value.includes('&nbsp;') && value.length === 7))
     ) {
       check = false;
       let modifyError = { type: 'required', message: error['required'] };
+      setError(name, modifyError);
+    }
+    if (error['needed_length'] && item.neededLength !== value.length) {
+      check = false;
+      let modifyError = {
+        type: 'needed_length',
+        message: error['needed_length'],
+      };
+      setError(name, modifyError);
+    }
+    if (error['min_value'] && item.min > value) {
+      check = false;
+      let modifyError = {
+        type: 'min_value',
+        message: error['min_value'],
+      };
+      setError(name, modifyError);
+    }
+    if (error['max_value'] && item.max < value) {
+      check = false;
+      let modifyError = {
+        type: 'max_value',
+        message: error['max_value'],
+      };
       setError(name, modifyError);
     }
     check && resetError(name);
@@ -190,7 +216,6 @@ export class ListingInfo extends Component {
     const { state, updateValue, error } = this.props;
     let { pictureLimit, type, category, files, ...other } = state;
     const { inputField, dependedInput } = this.state;
-    // console.log(error);
     return (
       <div className='listing-info'>
         <div className='picture-input'>
@@ -296,12 +321,7 @@ export class ListingInfo extends Component {
                   onMouseLeave={() => this.mouseOut()}
                   contentEditable={each.contentEditable}
                   onChange={(e) => {
-                    each.error &&
-                      this.handleCheckError(
-                        each.englishName,
-                        each.error,
-                        e.target.value
-                      );
+                    each.error && this.handleCheckError(each, e.target.value);
 
                     each.numberOnly && each.isMoney
                       ? this.handlePriceDisplay(
@@ -333,12 +353,7 @@ export class ListingInfo extends Component {
                     option.name === (state[each.englishName] || each.default)
                   }
                   onChange={(value) => {
-                    each.error &&
-                      this.handleCheckError(
-                        each.englishName,
-                        each.error,
-                        value.name
-                      );
+                    each.error && this.handleCheckError(each, value.name);
                     updateValue(`${each.englishName}`, value.name);
                   }}
                 />
