@@ -789,7 +789,14 @@ const getLatestCommentsFromPost = ({postID, nearest}) => {
 
 }
 
+const getCommentByReply = ({replyID}) => {
+    return Comment.findOne({
+        replies: ObjectId(replyID)
+    }).populate("replies")
+}
+
 module.exports = {
+    getCommentByReply,
     getLatestCommentsFromPost,
     getAllPosts,
     createNewPost,

@@ -3,7 +3,7 @@ import {MESSAGE_TYPES} from "../message";
 import {userInfo} from "../../../../../../../common/states/common";
 import {Emoji} from "emoji-mart";
 
-let genderMatcher = {
+export const genderMatcher = {
     "MALE": "anh ấy",
     "FEMALE": "cô ấy"
 }

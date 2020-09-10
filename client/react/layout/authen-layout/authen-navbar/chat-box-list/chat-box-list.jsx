@@ -47,7 +47,7 @@ export class ChatBoxList extends Component {
                 </div>
                 <InfiniteScrollWrapper
                     onScrollTop={() => {
-                        this.setState({fetching: true})
+
                         this.fetchUserChatRooms();
 
                     }}

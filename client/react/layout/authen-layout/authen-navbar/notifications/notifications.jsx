@@ -12,21 +12,26 @@ export class Notifications extends Component {
         this.state = {
             notifications: [],
             skip: 0,
-            fetching: true
+            fetching: true,
+            total: 0
         }
-        this.fetchNotifications()
+        this.fetchNotifications(true)
 
     }
 
-    fetchNotifications = () => {
-        return userApi.getUserNotifications(this.state.skip).then((notifications) => {
-            this.props.onSeen(notifications.filter(each => !each.is_seen));
-            this.setState({
-                notifications: this.state.notifications.concat(notifications),
-                skip: this.state.skip + 10,
-                fetching: false
+    fetchNotifications = (force = false) => {
+        if(this.state.notifications.length < this.state.total || force){
+            return userApi.getUserNotifications(this.state.skip).then(({notifications, total}) => {
+                this.props.onSeen(notifications.filter(each => !each.is_seen));
+                this.setState({
+                    notifications: this.state.notifications.concat(notifications),
+                    skip: this.state.skip + 7,
+                    fetching: false,
+                    total
+                })
             })
-        })
+        }
+
 
     }
 
@@ -38,8 +43,8 @@ export class Notifications extends Component {
                     Thông báo
                 </div>
                 <InfiniteScrollWrapper
-                    onScrollTop={() => {
-                        this.setState({fetching: true})
+                    className={"notifications-wrapper"}
+                    onScrollBottom={() => {
                         this.fetchNotifications();
 
                     }}
@@ -48,7 +53,7 @@ export class Notifications extends Component {
                 >
                     {() => (
                         <div className="nbd-content">
-                            {!notifications.length ? (
+                            {(!notifications.length && !fetching) ? (
                                 <div className="empty-notify">
                                     Bạn không có thông báo nào
                                 </div>
@@ -57,6 +62,7 @@ export class Notifications extends Component {
                                     highLight
                                     key={each._id}
                                     notification={each}
+                                    isPopup={false}
                                 />
                             ))}
                             {fetching && (

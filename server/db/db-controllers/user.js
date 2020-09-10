@@ -428,6 +428,10 @@ const createUserNotification = ({type, data, userID}) => {
             path: "notifications.group",
             model: "Group",
             select: "_id basic_info"
+        },{
+            path: "notifications.reacted_by",
+            model: "User",
+            select: "_id basic_info  avatar last_active_at active"
         }, {
             path: "notifications.comment",
             model: "Comment",
@@ -501,6 +505,11 @@ const getUserNotifications = ({userID, skip}) => {
     })
         .populate([
             {
+                path: "notifications.reacted_by",
+                model: "User",
+                select: "_id basic_info  avatar last_active_at active"
+            },
+            {
                 path: "notifications.person",
                 model: "User",
                 select: "_id basic_info avatar last_active_at active"
@@ -554,7 +563,12 @@ const getUserNotifications = ({userID, skip}) => {
                 ]
             },
         ])
-        .then(u => u.notifications.sort((a, b) => new Date(b.published_time).getTime() - new Date(a.published_time).getTime()).slice(Number(skip), Number(skip) + 10 ))
+        .then(u => (
+            {
+                notifications: u.notifications.sort((a, b) => new Date(b.published_time).getTime() - new Date(a.published_time).getTime()).slice(Number(skip), Number(skip) + 7 ),
+                total: u.notifications.length
+            }
+        ))
 }
 
 const seenNotifications = ({userID, notifications}) => {

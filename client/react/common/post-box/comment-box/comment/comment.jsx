@@ -56,6 +56,13 @@ export class Comment extends Component {
                 }
 
             })
+            this.io.on("reaction-cmt", ({postID, comment}) => {
+                if(postID === props.post._id){
+                    props.onChangeComment(comment)
+
+                }
+
+            })
         }
 
 
@@ -64,7 +71,10 @@ export class Comment extends Component {
 
     componentWillUnmount() {
         if(this.io){
-            this.io.off("reply");
+            this.io.off("new-reply");
+            this.io.off("edit-reply");
+            this.io.off("delete-reply");
+            this.io.off("reaction-cmt");
         }
     }
 
