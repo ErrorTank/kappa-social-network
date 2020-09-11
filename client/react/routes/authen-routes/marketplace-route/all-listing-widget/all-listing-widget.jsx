@@ -8,7 +8,7 @@ export class AllListingWidget extends Component {
   constructor(props) {
     super(props);
     this.state = {};
-    // listingApi.getListing({}).then((listingArr) => console.log(listingArr));
+    listingApi.getListing({}).then((listingArr) => console.log(listingArr));
   }
   render() {
     return (

@@ -20,7 +20,7 @@ export class BrowseAllWidget extends Component {
     categoryApi.getCategory({}).then((e) => {
       let itemInfo = itemField.find((e) => e.englishName === 'category');
       let itemIcon = itemInfo.options.filter((e) => e.icon);
-      console.log(itemIcon);
+      // console.log(itemIcon);
       let categoryWithIcon = e.map((category) => {
         let checkIcon = itemIcon.find((e) => e.name === category.name);
         if (checkIcon && checkIcon.icon) {
@@ -33,7 +33,7 @@ export class BrowseAllWidget extends Component {
         }
       });
       // should use reduce to map and filter to get icon only maybe
-      console.log(categoryWithIcon);
+      // console.log(categoryWithIcon);
       let categoryDisplay = categoryWithIcon.reduce((res, option) => {
         if (option.icon) {
           res.push({
@@ -51,7 +51,7 @@ export class BrowseAllWidget extends Component {
         },
       ];
       let final = [...categoryDisplay, ...otherCategory];
-      console.log(final);
+      // console.log(final);
       // console.log(categoryDisplay);
       this.setState({ categoryDisplay: final });
       // console.log(e);

@@ -19,6 +19,22 @@ const createListing = (value) => {
 };
 
 const getListing = (query) => {
+  return Category.find({})
+    .lean()
+    .then((categories) => {
+      categories.map((e) => {
+        let chilrenArr = getRootCategories(categories, e._id);
+        return Item.find({
+          category: {
+            $in: chilrenArr.map((e) => ObjectId(e)),
+          },
+        })
+          .lean()
+          .then((products) => {
+            return products;
+          });
+      });
+    });
   return Listing.find({}).then((listingArr) => {
     return listingArr;
   });

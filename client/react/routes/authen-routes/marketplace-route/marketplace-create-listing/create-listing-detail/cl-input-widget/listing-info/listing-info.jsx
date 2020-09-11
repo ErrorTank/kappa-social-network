@@ -131,44 +131,39 @@ export class ListingInfo extends Component {
       }
     }
   };
+
   // check error, only check needed input now
   handleCheckError = (item, value) => {
     const { state, updateValue, setError, resetError } = this.props;
     let check = true,
       name = item.englishName,
       error = item.error;
-    if (
-      error['required'] &&
-      (!value || (value.includes('&nbsp;') && value.length === 7))
-    ) {
-      check = false;
-      let modifyError = { type: 'required', message: error['required'] };
-      setError(name, modifyError);
-    }
-    if (error['needed_length'] && item.neededLength !== value.length) {
-      check = false;
-      let modifyError = {
+    const errorList = [
+      {
+        type: 'required',
+        condition: !value || (value.includes('&nbsp;') && value.length === 7),
+      },
+      {
         type: 'needed_length',
-        message: error['needed_length'],
-      };
-      setError(name, modifyError);
-    }
-    if (error['min_value'] && item.min > value) {
-      check = false;
-      let modifyError = {
+        condition: item.neededLength !== value.length,
+      },
+      {
         type: 'min_value',
-        message: error['min_value'],
-      };
-      setError(name, modifyError);
-    }
-    if (error['max_value'] && item.max < value) {
-      check = false;
-      let modifyError = {
+        condition: item.min > value,
+      },
+      {
         type: 'max_value',
-        message: error['max_value'],
-      };
-      setError(name, modifyError);
-    }
+        condition: item.max < value,
+      },
+    ];
+
+    errorList.forEach((e) => {
+      if (error[e.type] && e.condition) {
+        check = false;
+        let modifyError = { type: e.type, message: error[e.type] };
+        setError(name, modifyError);
+      }
+    });
     check && resetError(name);
   };
 
