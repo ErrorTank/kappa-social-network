@@ -140,9 +140,7 @@ export class CommentBox extends Component {
     }
 
     changeComment = (comment, i) => {
-        console.log(comment)
-        console.log(this.state.list)
-        console.log(i)
+
         let {list} = this.state;
         let newList = [...list];
         newList.splice(i, 1, comment);

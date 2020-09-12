@@ -140,7 +140,7 @@ export class Comment extends Component {
     }
 
     changeReply = (reply, i) => {
-        console.log(i)
+
         let {replies} = this.state;
         let newList = [...replies];
         newList.splice(i, 1, reply);
