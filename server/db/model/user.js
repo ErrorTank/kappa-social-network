@@ -160,7 +160,7 @@ const userSchema = new Schema({
                     type: String,
                     enum: [
                        "comment_on_followed_post", "mentioned_in_comment", "reply_on_comment", "mentioned_in_reply", "react_comment",
-                        "react_post", "tagged_on_post"
+                        "react_post", "tagged_on_post", "tagged_on_post_file"
                     ]
 
                 },
@@ -174,6 +174,15 @@ const userSchema = new Schema({
                 comment: {
                     type: ObjectId,
                     ref: "Comment"
+                },
+                file: {
+                    rootFileID: {
+                        type: ObjectId
+                    },
+                    caption: String,
+                    origin_path: String,
+                    path: String,
+                    name: String
                 },
                 reply: {
                     type: ObjectId,

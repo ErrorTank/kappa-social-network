@@ -54,6 +54,13 @@ const MarketplaceCreateListing = lazy(
     )
   )
 );
+const PostRoute = lazy(
+    delayLoad(() =>
+        import(
+            './authen-routes/post-route/post-route'
+            )
+    )
+);
 const CreateListingDetail = lazy(
   delayLoad(() =>
     import(
@@ -147,7 +154,14 @@ class MainRoute extends React.Component {
                       <DatingRoute {...props} />
                     }
                   />
-                 
+                  <AuthenRoute
+                      {...layoutProps}
+                      path={'/post/:postID'}
+                      exact
+                      render={(props) =>
+                          <PostRoute {...props} />
+                      }
+                  />
                 </CustomSwitch>
               )}
             </WithRouterKappaLayout>

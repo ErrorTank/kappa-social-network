@@ -31,23 +31,22 @@ export class Comment extends Component {
         }
         this.io = feedPostIO.getIOInstance();
         if(!props.isReply){
-            this.io.on("new-reply", ({postID, reply}) => {
+            this.io.on("new-reply", ({postID, reply, comment}) => {
 
-                if(postID === props.post._id ){
+                if(postID === props.post._id && comment._id === props.comment._id){
                     this.addNewReply(reply)
                 }
 
             })
-            this.io.on("delete-reply", ({postID, reply}) => {
-
-                if(postID === props.post._id){
-
+            this.io.on("delete-reply", ({postID, reply, comment}) => {
+                if(postID === props.post._id && comment._id === props.comment._id){
                     this.deleteReply(reply)
                 }
 
+
             })
-            this.io.on("edit-reply", ({postID, reply}) => {
-                if(postID === props.post._id){
+            this.io.on("edit-reply", ({postID, reply, comment}) => {
+                if(postID === props.post._id && comment._id === props.comment._id){
                     let i = this.state.replies.findIndex(each => each._id === reply._id)
                     if(i > -1){
                         this.changeReply(reply, i)
@@ -56,15 +55,15 @@ export class Comment extends Component {
                 }
 
             })
-            this.io.on("reaction-cmt", ({postID, comment}) => {
-                if(postID === props.post._id){
-                    props.onChangeComment(comment)
 
-                }
-
-            })
         }
+        this.io.on("reaction-cmt", ({postID, comment}) => {
+            if(postID === props.post._id && comment._id === props.comment._id){
+                props.onChangeComment(comment)
 
+            }
+
+        })
 
 
     }
@@ -141,6 +140,7 @@ export class Comment extends Component {
     }
 
     changeReply = (reply, i) => {
+
         let {replies} = this.state;
         let newList = [...replies];
         newList.splice(i, 1, reply);
@@ -328,7 +328,7 @@ export class Comment extends Component {
                                         isReply={true}
                                         father={comment}
                                         key={each._id}
-                                        onChangeComment={reply => this.changeReply(reply, replies.findIndex(r => r._id === reply._id))}
+                                        onChangeComment={reply => this.changeReply(reply, this.state.replies.findIndex(r => r._id === reply._id))}
                                         onDeleteReply={() => {
                                             this.deleteReply(each);
                                         }}
