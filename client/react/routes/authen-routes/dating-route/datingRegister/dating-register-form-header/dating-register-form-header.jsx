@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { userInfo } from "../../../../../../common/states/common";
 
-class Header extends Component {
+export class DatingRegisterFormHeader extends Component {
   constructor() {
     super();
   }
@@ -9,7 +9,7 @@ class Header extends Component {
     let user = userInfo.getState();
 
     return (
-      <div className="header">
+      <div className="dating-register-form-header">
         <h1>
           Chào mừng bạn, <span>{user.basic_info.username} !</span>
         </h1>
@@ -22,5 +22,3 @@ class Header extends Component {
     );
   }
 }
-
-export default Header;
