@@ -171,7 +171,7 @@ export class CreateListingPreviewWidget extends Component {
                   >
                     <div className='example-map'>
                       <img
-                        src={`/assets/others/best-google-maps-plugins.png`}
+                        src={`https://localhost:2000/assets/others/best-google-maps-plugins.png`}
                         alt=''
                       />
                     </div>

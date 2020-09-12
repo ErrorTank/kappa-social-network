@@ -22,22 +22,22 @@ const getListing = (query) => {
   return Category.find({})
     .lean()
     .then((categories) => {
-      categories.map((e) => {
-        let chilrenArr = getRootCategories(categories, e._id);
-        return Item.find({
-          category: {
-            $in: chilrenArr.map((e) => ObjectId(e)),
-          },
+      let listingList = [];
+      return Promise.all(
+        categories.map((e) => {
+          let chilrenArr = getRootCategories(categories, e._id);
+          return Listing.find({
+            category: {
+              $in: chilrenArr.map((e) => ObjectId(e)),
+            },
+          })
+            .lean()
+            .then((products) => {
+              return { _id: e._id, name: e.name, listingArr: [...products] };
+            });
         })
-          .lean()
-          .then((products) => {
-            return products;
-          });
-      });
+      );
     });
-  return Listing.find({}).then((listingArr) => {
-    return listingArr;
-  });
 };
 
 module.exports = {
