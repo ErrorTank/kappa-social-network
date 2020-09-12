@@ -140,6 +140,7 @@ export class Comment extends Component {
     }
 
     changeReply = (reply, i) => {
+        console.log(i)
         let {replies} = this.state;
         let newList = [...replies];
         newList.splice(i, 1, reply);
@@ -327,7 +328,7 @@ export class Comment extends Component {
                                         isReply={true}
                                         father={comment}
                                         key={each._id}
-                                        onChangeComment={reply => this.changeReply(reply, replies.findIndex(r => r._id === reply._id))}
+                                        onChangeComment={reply => this.changeReply(reply, this.state.replies.findIndex(r => r._id === reply._id))}
                                         onDeleteReply={() => {
                                             this.deleteReply(each);
                                         }}
