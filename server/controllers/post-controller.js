@@ -13,6 +13,7 @@ const mongoose = require('mongoose');
 const ObjectId = mongoose.Types.ObjectId;
 const {isImage} = require('../utils/file-utils');
 const uniq = require("lodash/uniq");
+const pick = require("lodash/pick");
 
 module.exports = (db, namespacesIO) => {
 
@@ -27,9 +28,18 @@ module.exports = (db, namespacesIO) => {
                     .to(`/post-room/${req.body.shared_post}`)
                     .emit('edit-post', shared_post);
             }
-            if(data.tagged.length){
-                let mIds = data.tagged.map(each => each._id.toString()).filter(each => each !== req.user._id);
-                for(let u1 of mIds){
+            let filesTagged = uniq(data.files.reduce((total, cur) => [...total, ...cur.tagged.map(each => ({userID: each.related._id.toString(), file: {...pick(cur, ["origin_path", "caption", "path", "name"]), rootFileID: cur._id}}))], []));
+            if(filesTagged.length){
+                for(let u of filesTagged){
+                    createUserNotification({type: "tagged_on_post_file", data: {post: data, file: u.file}, userID: u.userID})
+                        .then(notification => namespacesIO.feedPost.io.to(`/feed-post-room/user/${u.userID}`).emit("notify-user", {notification}));
+
+                }
+
+            }
+            let postTagged = data.tagged.map(each => each._id.toString()).filter(each => !filesTagged.find(t => t.userID === each)).filter(each => each !== req.user._id);
+            if(postTagged.length){
+                for(let u1 of postTagged){
                     createUserNotification({type: "tagged_on_post", data: {post: data}, userID: u1})
                         .then(notification => namespacesIO.feedPost.io.to(`/feed-post-room/user/${u1}`).emit("notify-user", {notification}));
 

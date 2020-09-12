@@ -56,15 +56,15 @@ export class Comment extends Component {
                 }
 
             })
-            this.io.on("reaction-cmt", ({postID, comment}) => {
-                if(postID === props.post._id){
-                    props.onChangeComment(comment)
 
-                }
-
-            })
         }
+        this.io.on("reaction-cmt", ({postID, comment}) => {
+            if(postID === props.post._id){
+                props.onChangeComment(comment)
 
+            }
+
+        })
 
 
     }

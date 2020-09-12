@@ -25,7 +25,8 @@ export class PostNotification extends Component {
                         <span className="high-light dark">{data.comment.from_person.basic_info.username}</span> đã bình luận về <span  className="high-light dark">bài viết</span> {data.post.belonged_person._id === userID ? "của bạn" : "mà bạn đang theo dõi"}: <span className="content">{getRenderableContentFromMessage(data.comment,  {disabledLink: true})}</span>
                     </span>
                 ),
-                getTime: () => data.comment.created_at
+                getTime: () => data.comment.created_at,
+                toLink: () => `/post/${data.post._id}?commentID=${data.comment._id}`
             },
             "mentioned_in_comment": {
                 getAvatarUser: () => data.comment.from_person,
@@ -35,7 +36,8 @@ export class PostNotification extends Component {
                         <span className="high-light dark">{data.comment.from_person.basic_info.username}</span> đã nhắc tới bạn trong một <span  className="high-light dark">bình luận</span>: <span className="content">{getRenderableContentFromMessage(data.comment, {disabledLink: true})}</span>
                     </span>
                 ),
-                getTime: () => data.comment.created_at
+                getTime: () => data.comment.created_at,
+                toLink: () => `/post/${data.post._id}?commentID=${data.comment._id}`
             },
             "mentioned_in_reply": {
                 getAvatarUser: () => data.reply.from_person,
@@ -47,7 +49,8 @@ export class PostNotification extends Component {
                         <span className="content"> {getRenderableContentFromMessage(data.reply, {disabledLink: true})}</span>
                     </span>
                 ),
-                getTime: () => data.reply.created_at
+                getTime: () => data.reply.created_at,
+                toLink: () =>  `/post/${data.post._id}?commentID=${data.comment._id}&replyID=${data.reply._id}`
             },
             "reply_on_comment": {
                 getAvatarUser: () => data.reply.from_person,
@@ -59,7 +62,8 @@ export class PostNotification extends Component {
                         <span className="content"> {getRenderableContentFromMessage(data.reply, {disabledLink: true})}</span>
                     </span>
                 ),
-                getTime: () => data.reply.created_at
+                getTime: () => data.reply.created_at,
+                toLink: () => `/post/${data.post._id}?commentID=${data.comment._id}&replyID=${data.reply._id}`
             },
             "react_comment": {
                 getAvatarUser: () => data.reacted_by,
@@ -70,7 +74,8 @@ export class PostNotification extends Component {
                         <span  className="high-light dark"> bạn</span>
                     </span>
                 ),
-                getTime: () => data.comment.updated_at
+                getTime: () => data.comment.updated_at,
+                toLink: () =>  `/post/${data.post._id}?commentID=${data.comment._id}`
             },
             "react_post": {
                 getAvatarUser: () => data.reacted_by,
@@ -81,7 +86,8 @@ export class PostNotification extends Component {
                         <span  className="high-light dark"> bạn</span>
                     </span>
                 ),
-                getTime: () => data.post.updated_at
+                getTime: () => data.post.updated_at,
+                toLink:() =>  `/post/${data.post._id}`
             },
             "tagged_on_post": {
                 getAvatarUser: () => data.post.belonged_person,
@@ -92,7 +98,21 @@ export class PostNotification extends Component {
                          <span className="content"> {getRenderableContentFromMessage(data.post, {disabledLink: true})}</span>
                     </span>
                 ),
-                getTime: () => data.post.created_at
+                getTime: () => data.post.created_at,
+                toLink:() =>  `/post/${data.post._id}`
+            },
+            "tagged_on_post_file": {
+                getFilePreview: () => data.file.path,
+                getAvatarUser: () => data.post.belonged_person,
+                getReaction: () => null,
+                getContent: () => (
+                    <span>
+                        <span className="high-light dark">{data.post.belonged_person.basic_info.username}</span> đã gắn thẻ bạn trong <span  className="high-light dark">một ảnh</span>:
+                         <span className="content"> {data.file.caption}</span>
+                    </span>
+                ),
+                getTime: () => data.post.created_at,
+                toLink:() =>  `/post/${data.post._id}?fileID=${data.file.rootFileID}`
             },
         };
         return dataMatcher[notification_type]
@@ -101,7 +121,7 @@ export class PostNotification extends Component {
 
     render() {
         let {notification, highLight, isPopup = true} = this.props;
-        let {getAvatarUser, getReaction, getContent, getTime} = this.getRenderData(notification);
+        let {getAvatarUser, getReaction, getContent, getTime, getFilePreview} = this.getRenderData(notification);
         let reaction = getReaction();
         return (
             <div className={classnames("post-notification", {active: highLight && !notification.is_seen})}>
@@ -116,7 +136,7 @@ export class PostNotification extends Component {
                         </div>
                     )}
                 </div>
-                <div className="content-wrapper">
+                <div className={classnames("content-wrapper", {shorten: !!getFilePreview})}>
                     {getContent()}
                     {!isPopup && (
                         <div className="from-now">
@@ -125,6 +145,11 @@ export class PostNotification extends Component {
                     )}
 
                 </div>
+                {getFilePreview && (
+                    <div className="pn-file-preview">
+                        <img src={getFilePreview()}/>
+                    </div>
+                )}
             </div>
         );
     }
