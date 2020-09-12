@@ -75,8 +75,8 @@ export class PostNotification extends Component {
                         <span  className="high-light dark"> bạn</span>
                     </span>
                 ),
-                getTime: () => data.comment.updated_at,
-                toLink: () =>  `/post/${data.post._id}?commentID=${data.comment._id}`
+                getTime: () => data.reply ? data.reply.updated_at : data.comment.updated_at,
+                toLink: () =>  `/post/${data.post._id}?${data.reply ? `replyID=${data.reply._id}` : `commentID=${data.comment._id}`}`
             },
             "react_post": {
                 getAvatarUser: () => data.reacted_by,

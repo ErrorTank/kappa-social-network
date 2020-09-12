@@ -45,8 +45,11 @@ export const postApi = {
     getPostReactionList(postID, reactionKey, skip = 0, limit = 10){
         return postApiErrorCatcher(authenApi.get(`/post/reaction/post/${postID}/reaction_key/${reactionKey}?skip=${skip}&limit=${limit}`))
     },
-    getCommentsForPost(postID, skip = 0, limit = 2){
-        return postApiErrorCatcher(authenApi.get(`/post/comments/post/${postID}?skip=${skip}&limit=${limit}`))
+    getCommentsForPost(postID, skip = 0, limit = 2, config){
+        let queryStr = urlUtils.buildParams({
+            skip, limit, ...config
+        })
+        return postApiErrorCatcher(authenApi.get(`/post/comments/post/${postID}${queryStr}`))
     },
     createComment(postID, comment){
         return postApiErrorCatcher(authenApi.post(`/post/create-comment/post/${postID}`, {comment}))
@@ -57,8 +60,11 @@ export const postApi = {
     createCommentReply(postID, commentID, reply){
         return postApiErrorCatcher(authenApi.post(`/post/create-reply/post/${postID}/comment/${commentID}`, {reply}))
     },
-    getReplyForComment(commentID, {skip = 0, limit = 5}){
-        return postApiErrorCatcher(authenApi.get(`/post/replies/comment/${commentID}?skip=${skip}&limit=${limit}`))
+    getReplyForComment(commentID, {skip = 0, limit = 5}, config){
+        let queryStr = urlUtils.buildParams({
+            skip, limit, ...config
+        })
+        return postApiErrorCatcher(authenApi.get(`/post/replies/comment/${commentID}${queryStr}`))
     },
     deletePost(postID){
         return postApiErrorCatcher(authenApi.delete(`/post/${postID}`))

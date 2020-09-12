@@ -46,6 +46,17 @@ export class CommentBox extends Component {
         })
     }
 
+    reFetch = () => {
+        this.setState({list: []}, () => {
+            this.fetchComments({
+                skip: 0,
+                limit: 2
+            });
+        })
+
+
+    }
+
     unsubscribeIO = () => {
         if(this.io){
             this.io
@@ -149,8 +160,9 @@ export class CommentBox extends Component {
 
     render() {
         let {list} = this.state;
-        let {post, commentsTotal} = this.props;
+        let {post, commentsTotal, initBehaviorConfig = {}} = this.props;
         let left = commentsTotal - list.length;
+        let {commentID, replyID} = initBehaviorConfig;
         return (
             <div className="comment-box">
                 <div className="comments">
@@ -164,7 +176,9 @@ export class CommentBox extends Component {
                     )}
                     {[...list].reverse().map((each, i) => (
                         <Comment
+                            getRepliesApi={config => postApi.getReplyForComment(each._id, config, {focusReply: replyID})}
                             comment={each}
+                            needPreFetch={each._id === initBehaviorConfig.commentID && initBehaviorConfig.replyID}
                             post={post}
                             key={each._id}
                             onChangeComment={comment => this.changeComment(comment, this.state.list.findIndex(c => c._id === comment._id))}

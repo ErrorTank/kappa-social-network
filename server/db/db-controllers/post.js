@@ -384,7 +384,7 @@ const getPostReactionByReactionKey = ({postID, skip = 0, limit = 10, reactionKey
     })
 }
 
-const getPostComments = ({postID, skip, limit}) => {
+const getPostComments = ({postID, skip, limit, focusComment, focusReply}) => {
     return Comment.aggregate([
         {
             $match: {
@@ -464,8 +464,19 @@ const getPostComments = ({postID, skip, limit}) => {
     ]).then(data => {
         let total = data.length;
         // console.log(data)
+        let returnedData = [...data];
+        if(focusComment || focusReply){
+            let comment = returnedData.find(each => focusReply ? each.replies.find(rp => rp.toString() === focusReply) : each._id.toString() === focusComment);
+
+            if(comment){
+                returnedData = returnedData.filter(each => each._id.toString() !== comment._id.toString());
+                returnedData.unshift(comment);
+            }
+        }
+
+
         return {
-            list: data
+            list: returnedData
                 .slice(Number(skip), Number(skip) + Number(limit))
                 .map(each => ({
                     ...each,
@@ -563,7 +574,7 @@ const createCommentReply = ({postID, commentID, reply, userID}) => {
         .then(([_post, data]) => data)
 }
 
-const getCommentReplies = ({commentID, skip, limit}) => {
+const getCommentReplies = ({commentID, skip, limit, focusReply}) => {
     return Comment.findOne({
         _id: ObjectId(commentID)
     }).lean()
@@ -648,8 +659,17 @@ const getCommentReplies = ({commentID, skip, limit}) => {
             ]).then(data => {
                 let total = data.length;
                 // console.log(data)
+                let returnedData = [...data];
+                if(focusReply){
+                    let comment = returnedData.find(each => each.replies.find(rp => rp.toString() === focusReply));
+
+                    if(comment){
+                        returnedData = returnedData.filter(each => each._id.toString() !== comment._id.toString());
+                        returnedData.unshift(comment);
+                    }
+                }
                 return {
-                    list: data
+                    list: returnedData
                         .slice(Number(skip), Number(skip) + Number(limit))
                         .map(each => ({
                             ...each,
