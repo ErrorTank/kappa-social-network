@@ -2,7 +2,7 @@ import React, {PureComponent, Fragment} from 'react';
 import {Dropdownable} from "../dropdownable/dropdownable";
 import {Avatar} from "../avatar/avatar";
 import isNil from "lodash/isNil"
-
+import isEqual from "lodash/isEqual"
 import {createPostModal, PostPolicies, PostPoliciesMAP} from "../create-post-modal/create-post-modal";
 import {getRenderableContentFromMessage} from "../../../common/utils/editor-utils";
 import {PbFilesPreview} from "./files-preview";
@@ -26,6 +26,7 @@ import ReactDOM from "react-dom";
 import {LastActive, } from "../use-last-active";
 import {feedPostIO, } from "../../../socket/sockets";
 import {topFloatNotifications} from "../float-top-notification/float-top-notification";
+import {postFilesPreviewModal} from "../post-files-preview-modal/post-files-preview-modal";
 
 
 
@@ -93,6 +94,8 @@ export class PostBox extends PureComponent {
                 return onDeletePost()
             })
     }
+
+
 
     editPost = () => {
         let {post, onChangePost} = this.props;
@@ -178,9 +181,29 @@ export class PostBox extends PureComponent {
 
     }
 
+    componentDidUpdate(prevProps, prevState, snapshot) {
+        if(!isEqual(prevProps.initBehaviorConfig, this.props.initBehaviorConfig)){
+            this.initializeBehavior();
+        }
+    }
+
+    initializeBehavior = () => {
+        let {initBehaviorConfig = {}, post, onChangePost} = this.props;
+        if(initBehaviorConfig.fileID){
+            postFilesPreviewModal.open({
+                focusFileID: initBehaviorConfig.fileID,
+                post,
+                onChangePost
+            })
+        }
+    }
+
     componentDidMount() {
-        let {isPreview} = this.props
+        let {isPreview} = this.props;
         if(!isPreview){
+            this.initializeBehavior();
+
+
             let root = document.getElementsByClassName("feed-infinite")[0];
             this.observer = new IntersectionObserver(this.handleObserver, {
                 root,
