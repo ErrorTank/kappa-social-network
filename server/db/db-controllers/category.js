@@ -44,11 +44,6 @@ const getCategories = (query) => {
               children: [],
             });
           }
-          //tim ten cac category con voi pipeline - aggruate?
-          // return {
-          //   ...e,
-          //   children: childrenArr.length > 1 ? childrenArr : [],
-          // };
         })
       );
     });
