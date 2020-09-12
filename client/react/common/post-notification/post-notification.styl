@@ -22,10 +22,26 @@
     }
 
   }
+  .pn-file-preview{
+    flex 0 0 50px
+    max-height 80px
+    border-radius 4px
+
+    img{
+
+      width 100%
+      height 100%
+      object-fit cover
+    }
+  }
   .content-wrapper{
     padding-left 10px
     flex 0 0 calc(100% - 50px)
     font-size 1.4rem
+    &.shorten{
+      flex 0 0 calc(100% - 100px)
+      padding-right 10px
+    }
     .from-now{
       color greyTextLight
       font-weight 500

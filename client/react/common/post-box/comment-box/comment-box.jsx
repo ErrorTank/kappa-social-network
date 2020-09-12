@@ -140,6 +140,7 @@ export class CommentBox extends Component {
     }
 
     changeComment = (comment, i) => {
+
         let {list} = this.state;
         let newList = [...list];
         newList.splice(i, 1, comment);
@@ -166,9 +167,9 @@ export class CommentBox extends Component {
                             comment={each}
                             post={post}
                             key={each._id}
-                            onChangeComment={comment => this.changeComment(comment, list.findIndex(c => c._id === comment._id))}
+                            onChangeComment={comment => this.changeComment(comment, this.state.list.findIndex(c => c._id === comment._id))}
                             onDeleteComment={() => this.deleteComment(each)}
-                            onDeleteReply={(reply) => this.deleteReply(each, reply, list.findIndex(c => c._id === each._id))}
+                            onDeleteReply={(reply) => this.deleteReply(each, reply, this.state.list.findIndex(c => c._id === each._id))}
                         />
                     ))}
                 </div>

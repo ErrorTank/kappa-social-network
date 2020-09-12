@@ -409,7 +409,7 @@ const createUserNotification = ({type, data, userID}) => {
             notifications: {
                 _id: notificationID,
                 notification_type: type,
-                ...data
+                ...data,
             }
         }
     }, {
