@@ -27,6 +27,7 @@ import {LastActive, } from "../use-last-active";
 import {feedPostIO, } from "../../../socket/sockets";
 import {topFloatNotifications} from "../float-top-notification/float-top-notification";
 import {postFilesPreviewModal} from "../post-files-preview-modal/post-files-preview-modal";
+import {Link} from "react-router-dom";
 
 
 
@@ -262,17 +263,19 @@ export class PostBox extends PureComponent {
             <div className="post-box white-box">
                 <div className="post-header">
                     <div className="avatar-wrapper">
-                        <Avatar
-                            user={post.belonged_person}
-                        />
+                        <Link to={`/user/${post.belonged_person._id}`}>
+                            <Avatar
+                                user={post.belonged_person}
+                            />
+                        </Link>
                     </div>
                     <div className="post-meta-data">
                         <div className="upper">
                             {post.belonged_person && (
                                 <>
-                                    <a className="link">{post.belonged_person.basic_info.username}</a>
+                                    <Link className="link" to={`/user/${post.belonged_person._id}`}>{post.belonged_person.basic_info.username}</Link>
                                     {!post.belonged_group && !!post.tagged.length && (
-                                        <span> đang ở cùng với {post.tagged.map((each, i) => <Fragment key={each._id}><a className="link">{each.basic_info.username}</a>{i === post.tagged.length - 2 && " và "}{i < post.tagged.length - 2 && ", "}</Fragment>)}</span>
+                                        <span> đang ở cùng với {post.tagged.map((each, i) => <Fragment key={each._id}><Link to={`/user/${each._id}`} className="link">{each.basic_info.username}</Link>{i === post.tagged.length - 2 && " và "}{i < post.tagged.length - 2 && ", "}</Fragment>)}</span>
                                     )}
                                 </>
                             )}

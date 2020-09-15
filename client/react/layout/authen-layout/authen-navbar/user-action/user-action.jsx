@@ -10,6 +10,7 @@ import {ChatBoxList} from "../chat-box-list/chat-box-list";
 import {messengerApi} from "../../../../../api/common/messenger-api";
 import {userApi} from "../../../../../api/common/user-api";
 import {Notifications} from "../notifications/notifications";
+import {Link} from "react-router-dom";
 
 class UserActionDropdownable extends Component {
     constructor(props) {
@@ -28,7 +29,7 @@ class UserActionDropdownable extends Component {
                          onClick={() => this.setState({show: !this.state.show})}>
                         {toggleRender()}
                     </div>
-                    {this.state.show && (
+                    {this.state.show && dropdownRender && (
 
                         <div className="dropdown">
                             {dropdownRender()}
@@ -68,7 +69,7 @@ export class UserAction extends KComponent {
     }
 
     seenNotifications = (unseens) => {
-        if(unseens.length){
+        if (unseens.length) {
             userApi.seenNotifications(unseens.map(each => each._id))
                 .then(() => this.setState({notificationsCount: this.state.notificationsCount - unseens.length}))
         }
@@ -95,21 +96,27 @@ export class UserAction extends KComponent {
                     )}
 
                 />
-                <UserActionDropdownable
-                    toggleRender={() => (
-
+                <div className="user-action-dropdownable">
+                    <div className="toggle">
                         <div className="avatar-wrapper">
-                            {user.avatar ? (
-                                <img src={user.avatar}/>
+                            <Link to={`/user/${user._id}`}>
+                                {user.avatar ? (
+                                    <img src={user.avatar}/>
 
-                            ) : (
-                                <div className="avatar-holder">
-                                    <span>{getNamePrefix(user.basic_info.username.trim())}</span>
-                                </div>
-                            )}
+                                ) : (
+                                    <div className="avatar-holder">
+
+                                        <span>{getNamePrefix(user.basic_info.username.trim())}</span>
+
+
+                                    </div>
+                                )}
+                            </Link>
                         </div>
-                    )}
-                />
+                    </div>
+
+                </div>
+
                 <UserActionDropdownable
                     toggleRender={() => (
                         <Tooltip
