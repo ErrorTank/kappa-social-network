@@ -1,4 +1,5 @@
 const crypto = require("crypto");
+const get = require("lodash/get");
 
 const getRandomToken = l => {
     return crypto.randomBytes(l).toString('hex');
@@ -30,8 +31,34 @@ function binarySearch(items, value, getValue){
     return (getValue(items[middle]) != value) ? -1 : middle;
 }
 
+
+const scorizeArray = (arr, field) => {
+    const createScoreItem = (item, score = 0) => ({
+       value: item,
+       score
+    });
+    let result = [];
+    if(arr.length){
+        let score = 0;
+        let sortedArr = arr.sort((a,b) => get(a, field) - get(b, field));
+        result.push(createScoreItem(sortedArr[0]));
+        for(let i = 1; i < sortedArr.length; i++){
+            let item = sortedArr[i];
+            let lastItem = sortedArr[i-1];
+            if(get(item, field) > get(lastItem, field)){
+                score++;
+
+            }
+            result.push(createScoreItem(item, score))
+        }
+    }
+
+    return result;
+};
+
 module.exports = {
     getRandomToken,
     asynchronized,
-    binarySearch
+    binarySearch,
+    scorizeArray
 };

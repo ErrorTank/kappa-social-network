@@ -6,6 +6,7 @@ const Comment = require("../model/comment")(appDb);
 const mongoose = require("mongoose");
 const ObjectId = mongoose.Types.ObjectId;
 const {ApplicationError} = require("../../utils/error/error-types");
+const {scorizeArray} = require("../../utils/common-utils");
 const omit = require("lodash/omit");
 const pick = require("lodash/pick");
 const {MessageState} = require("../../common/const/message-state")
@@ -281,11 +282,11 @@ const getAllPosts = ({userID, skip, limit}) => {
 
         })
         .then((data) => {
-            let sortedByComments = data.sort((a, b) => b.comments_count - a.comments_count);
+            let scoredByComments = scorizeArray(data, "comments_count");
 
-            let sortedByReactions = data.sort((a, b) => b.reaction_count - a.reaction_count);
+            let scoredByReactions = scorizeArray(data, "reaction_count");
 
-            let sortedByShareCount = data.sort((a, b) => b.share_count - a.share_count);
+            let scoredByShareCount = scorizeArray(data, "share_count");
 
             return data.map((each, i) => ({
                 ...each,
@@ -293,14 +294,15 @@ const getAllPosts = ({userID, skip, limit}) => {
                 belonged_person: each.belonged_person ? pick(each.belonged_person, ["_id", "avatar", "basic_info"]) : null,
                 belonged_group: each.belonged_group ? pick(each.belonged_group, ["_id", "basic_info"]) : null,
                 tagged: each.tagged.map(tag => pick(tag, ["_id", "avatar", "basic_info"])),
-                score: (data.length - i) +
-                    (data.length - sortedByComments.findIndex(a => a._id.toString() === each._id.toString())) * 2 +
-                    (data.length - sortedByReactions.findIndex(a => a._id.toString() === each._id.toString())) * 2 +
-                    (data.length - sortedByShareCount.findIndex(a => a._id.toString() === each._id.toString()))
+                score: (data.length - i) * 1.5 +
+                    scoredByComments.find(c => c.value._id.toString() === each._id.toString()).score * 4 +
+                    scoredByReactions.find(c => c.value._id.toString() === each._id.toString()).score * 3 +
+                    scoredByShareCount.find(c => c.value._id.toString() === each._id.toString()).score * 3,
+
 
             }))
                 .sort((a, b) => b.score - a.score)
-                .map(each => omit(each, "score"))
+                // .map(each => omit(each, "score"))
         })
 }
 

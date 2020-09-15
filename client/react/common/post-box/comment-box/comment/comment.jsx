@@ -17,6 +17,7 @@ import {convertToRaw, EditorState} from "draft-js";
 import {utilityApi} from "../../../../../api/common/utilities-api";
 import createMentionEntities from "../../../../../common/utils/mention-utils";
 import {feedPostIO} from "../../../../../socket/sockets";
+import {Link} from "react-router-dom";
 
 
 export class Comment extends Component {
@@ -30,25 +31,25 @@ export class Comment extends Component {
             replyData: null
         }
         this.io = feedPostIO.getIOInstance();
-        if(!props.isReply){
+        if (!props.isReply) {
             this.io.on("new-reply", ({postID, reply, comment}) => {
 
-                if(postID === props.post._id && comment._id === props.comment._id){
+                if (postID === props.post._id && comment._id === props.comment._id) {
                     this.addNewReply(reply)
                 }
 
             })
             this.io.on("delete-reply", ({postID, reply, comment}) => {
-                if(postID === props.post._id && comment._id === props.comment._id){
+                if (postID === props.post._id && comment._id === props.comment._id) {
                     this.deleteReply(reply)
                 }
 
 
             })
             this.io.on("edit-reply", ({postID, reply, comment}) => {
-                if(postID === props.post._id && comment._id === props.comment._id){
+                if (postID === props.post._id && comment._id === props.comment._id) {
                     let i = this.state.replies.findIndex(each => each._id === reply._id)
-                    if(i > -1){
+                    if (i > -1) {
                         this.changeReply(reply, i)
                     }
 
@@ -58,7 +59,7 @@ export class Comment extends Component {
 
         }
         this.io.on("reaction-cmt", ({postID, comment}) => {
-            if(postID === props.post._id && comment._id === props.comment._id){
+            if (postID === props.post._id && comment._id === props.comment._id) {
                 props.onChangeComment(comment)
 
             }
@@ -69,7 +70,7 @@ export class Comment extends Component {
     }
 
     componentDidMount() {
-        if(this.props.needPreFetch){
+        if (this.props.needPreFetch) {
             this.fetchReplies({
                 skip: this.state.replies.length,
                 limit: 5
@@ -78,7 +79,7 @@ export class Comment extends Component {
     }
 
     componentWillUnmount() {
-        if(this.io){
+        if (this.io) {
             this.io.off("new-reply");
             this.io.off("edit-reply");
             this.io.off("delete-reply");
@@ -111,10 +112,10 @@ export class Comment extends Component {
                 postApi.createCommentReply(post._id, comment._id, submittedData)
                     .then(data => {
                         let followedPosts = userFollowedPosts.getState();
-                        if(!followedPosts.find(each => each === post._id)){
+                        if (!followedPosts.find(each => each === post._id)) {
                             userFollowedPosts.setState(followedPosts.concat(post._id))
                         }
-                       this.addNewReply(data);
+                        this.addNewReply(data);
                     })
             })
     }
@@ -169,13 +170,13 @@ export class Comment extends Component {
         !isReply ?
             postApi.deleteComment(post._id, comment._id)
                 .then((followed_posts) => {
-                    if(followed_posts)
+                    if (followed_posts)
                         userFollowedPosts.setState(followed_posts)
                     return onDeleteComment()
-                }):
+                }) :
             postApi.deleteReply(father._id, comment._id)
                 .then((followed_posts) => {
-                    if(followed_posts)
+                    if (followed_posts)
                         userFollowedPosts.setState(followed_posts)
                     onDeleteReply(comment);
                 })
@@ -216,7 +217,7 @@ export class Comment extends Component {
                 {edit ? (
                     <CommentInput
                         initData={{
-                            editorState:  EditorState.createWithContent(createMentionEntities(comment.content, comment.mentions)),
+                            editorState: EditorState.createWithContent(createMentionEntities(comment.content, comment.mentions)),
                             files: comment.files
                         }}
                         onSubmit={this.updateComment}
@@ -228,14 +229,16 @@ export class Comment extends Component {
                     <>
                         <div className="comment-main">
                             <div className="avatar-wrapper">
-                                <Avatar
-                                    user={comment.from_person}
-                                />
+                                <Link to={`/user/${comment.from_person._id}`}>
+                                    <Avatar
+                                        user={comment.from_person}
+                                    />
+                                </Link>
                             </div>
                             <div className={classnames("comment-content", {"no-content": !comment.content})}>
-                                <div className="username">{comment.from_person.basic_info.username}</div>
+                                <Link  to={`/user/${comment.from_person._id}`} className="username">{comment.from_person.basic_info.username}</Link>
                                 {comment.content && (
-                                    <div className="content">{getRenderableContentFromMessage(comment)}</div>
+                                    <div  className="content">{getRenderableContentFromMessage(comment)}</div>
                                 )}
                                 {!comment.files.length && (
                                     <div className="comment-reaction">
@@ -354,7 +357,10 @@ export class Comment extends Component {
                                         replyData={replyData}
                                         ref={replyInput => this.replyInput = replyInput}
                                         initData={replyData ? {
-                                            editorState:  EditorState.createWithContent(createMentionEntities(`@${replyData.basic_info.username}`, [{related: replyData._id, name: replyData.basic_info.username}])),
+                                            editorState: EditorState.createWithContent(createMentionEntities(`@${replyData.basic_info.username}`, [{
+                                                related: replyData._id,
+                                                name: replyData.basic_info.username
+                                            }])),
                                         } : {}}
                                     />
                                 )}
