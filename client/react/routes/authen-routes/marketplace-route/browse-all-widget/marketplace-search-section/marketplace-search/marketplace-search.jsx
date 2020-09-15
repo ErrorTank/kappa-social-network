@@ -1,11 +1,11 @@
-import React, { Component } from "react";
-import { IconRoundBorderInput } from "../../../../../../common/icon-round-border-input/icon-round-border-input";
+import React, { Component } from 'react';
+import { IconRoundBorderInput } from '../../../../../../common/icon-round-border-input/icon-round-border-input';
 
 export class MarketplaceSearch extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      keyword: "",
+      keyword: '',
       loading: false,
     };
   }
@@ -15,10 +15,11 @@ export class MarketplaceSearch extends Component {
       <div className='market-search-container'>
         <div className='market-search-wrapper'>
           <IconRoundBorderInput
-            id={"market-search"}
+            id={'market-search'}
             value={keyword}
-            placeholder={"Tìm kiếm trên marketplace"}
+            placeholder={'Tìm kiếm trên marketplace'}
             icon={!loading ? <i className='far fa-search'></i> : <div></div>}
+            onChange={(e) => {}}
           />
         </div>
       </div>

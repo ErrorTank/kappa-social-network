@@ -25,15 +25,15 @@ export class AllListingWidget extends Component {
             {allListing.map((e) => {
               return (
                 !!e.listingArr.length && (
-                  <div className='category-with-listing'>
+                  <div className='category-with-listing' key={e._id}>
                     <div className='category-header'>
                       <div className='category-name'>{e.name}</div>
                       <div className='see-category-listing'>Xem tất cả</div>
                     </div>
                     <div className='listing-list-display'>
-                      {e.listingArr.map((listing) => {
-                        <ListingDisplay listing={listing} />;
-                      })}
+                      {e.listingArr.map((listing) => (
+                        <ListingDisplay listing={listing} key={listing._id} />
+                      ))}
                     </div>
                   </div>
                 )

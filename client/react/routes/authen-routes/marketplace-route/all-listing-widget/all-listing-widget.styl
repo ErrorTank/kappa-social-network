@@ -2,11 +2,13 @@
   padding: 20px 32px 0 32px;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   width: 100%;
+  overflow-y: auto;
 
   .category-with-listing {
     max-width: 1872px;
 
     .category-header {
+      width: 100%;
       margin: 20px 0;
       display: flex;
       justify-content: space-between;
@@ -21,6 +23,14 @@
         color: blueTextLight;
         font-size: 15px;
       }
+    }
+
+    .listing-list-display {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: flex-start;
+      align-content: flex-start;
+      width: 100%;
     }
   }
 }
