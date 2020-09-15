@@ -287,17 +287,18 @@ const getAllPosts = ({userID, skip, limit}) => {
             let scoredByReactions = scorizeArray(data, "reaction_count");
 
             let scoredByShareCount = scorizeArray(data, "share_count");
-            console.log(scoredByComments)
+
             return data.map((each, i) => ({
                 ...each,
                 belonged_page: each.belonged_page ? pick(each.belonged_page, ["_id", "avatar", "basic_info"]) : null,
                 belonged_person: each.belonged_person ? pick(each.belonged_person, ["_id", "avatar", "basic_info"]) : null,
                 belonged_group: each.belonged_group ? pick(each.belonged_group, ["_id", "basic_info"]) : null,
                 tagged: each.tagged.map(tag => pick(tag, ["_id", "avatar", "basic_info"])),
-                score: (data.length - i) * 1.2 +
-                    scoredByComments.find(c => c.value._id.toString() === each._id.toString()).score * 2 +
-                    scoredByReactions.find(c => c.value._id.toString() === each._id.toString()).score * 1.5 +
-                    scoredByShareCount.find(c => c.value._id.toString() === each._id.toString()).score * 1.2
+                score: (data.length - i) * 1.5 +
+                    scoredByComments.find(c => c.value._id.toString() === each._id.toString()).score * 4 +
+                    scoredByReactions.find(c => c.value._id.toString() === each._id.toString()).score * 3 +
+                    scoredByShareCount.find(c => c.value._id.toString() === each._id.toString()).score * 3,
+
 
             }))
                 .sort((a, b) => b.score - a.score)
