@@ -20,7 +20,7 @@ export class InfiniteScrollWrapper extends Component {
         this.refresh();
         let root = ReactDOM.findDOMNode(this)
         this.observer = new IntersectionObserver(this.handleObserver, {
-            root,
+            root: this.props.useWindowRoot ? null : root,
             threshold: 1,
             rootMargin: "0px"
         });

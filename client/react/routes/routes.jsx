@@ -61,6 +61,13 @@ const PostRoute = lazy(
             )
     )
 );
+const UserProfileRoute = lazy(
+    delayLoad(() =>
+        import(
+            './authen-routes/user-profile-route/user-profile-route'
+            )
+    )
+);
 const CreateListingDetail = lazy(
   delayLoad(() =>
     import(
@@ -160,6 +167,14 @@ class MainRoute extends React.Component {
                       exact
                       render={(props) =>
                           <PostRoute {...props} />
+                      }
+                  />
+                  <AuthenRoute
+                      {...layoutProps}
+                      path={'/user/:userID'}
+                      exact
+                      render={(props) =>
+                          <UserProfileRoute {...props} />
                       }
                   />
                 </CustomSwitch>

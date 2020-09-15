@@ -69,7 +69,8 @@ class FeedRoute extends Component {
                 title={"Trang chủ"}
             >
                 <InfiniteScrollWrapper
-                    className={"feed-infinite"}
+                    // className={"feed-infinite"}
+                    useWindowRoot
                     onScrollBottom={() => {
                         this.debounceLoad();
 

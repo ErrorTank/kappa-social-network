@@ -25,7 +25,7 @@ class PostRoute extends Component {
             <PageTitle
                 title={!belonged_person ? "Tải nội dung..." : `Bài đăng của ${belonged_person.basic_info.username}`}
             >
-                <div className="feed-infinite overflow-y">
+                <div className="overflow-y">
                     <div className="post-route">
                         <CommonLayout
                             rightRender={() => (

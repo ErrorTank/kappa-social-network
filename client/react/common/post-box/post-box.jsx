@@ -214,9 +214,9 @@ export class PostBox extends PureComponent {
 
 
 
-            let root = document.getElementsByClassName("feed-infinite")[0];
+
             this.observer = new IntersectionObserver(this.handleObserver, {
-                root,
+                root: null,
                 threshold: 0.1,
                 rootMargin: "0px"
             });
