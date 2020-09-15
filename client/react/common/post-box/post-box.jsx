@@ -2,7 +2,7 @@ import React, {PureComponent, Fragment} from 'react';
 import {Dropdownable} from "../dropdownable/dropdownable";
 import {Avatar} from "../avatar/avatar";
 import isNil from "lodash/isNil"
-
+import isEqual from "lodash/isEqual"
 import {createPostModal, PostPolicies, PostPoliciesMAP} from "../create-post-modal/create-post-modal";
 import {getRenderableContentFromMessage} from "../../../common/utils/editor-utils";
 import {PbFilesPreview} from "./files-preview";
@@ -26,6 +26,7 @@ import ReactDOM from "react-dom";
 import {LastActive, } from "../use-last-active";
 import {feedPostIO, } from "../../../socket/sockets";
 import {topFloatNotifications} from "../float-top-notification/float-top-notification";
+import {postFilesPreviewModal} from "../post-files-preview-modal/post-files-preview-modal";
 
 
 
@@ -93,6 +94,8 @@ export class PostBox extends PureComponent {
                 return onDeletePost()
             })
     }
+
+
 
     editPost = () => {
         let {post, onChangePost} = this.props;
@@ -178,9 +181,39 @@ export class PostBox extends PureComponent {
 
     }
 
+    componentDidUpdate(prevProps, prevState, snapshot) {
+        let {initBehaviorConfig = {}, post, onChangePost} = this.props;
+        if(prevProps.initBehaviorConfig?.fileID !== initBehaviorConfig.fileID && initBehaviorConfig.fileID){
+
+            postFilesPreviewModal.open({
+                focusFileID: initBehaviorConfig.fileID,
+                post,
+                onChangePost
+            })
+        }
+        if(prevProps.initBehaviorConfig?.commentID !== initBehaviorConfig.commentID && initBehaviorConfig.commentID){
+            this.commentBox.reFetch()
+        }
+        if(prevProps.initBehaviorConfig?.replyID !== initBehaviorConfig.replyID && initBehaviorConfig.replyID){
+            this.commentBox.reFetch()
+        }
+    }
+
+
+
     componentDidMount() {
-        let {isPreview} = this.props
+        let {isPreview, initBehaviorConfig = {}, post, onChangePost} = this.props;
         if(!isPreview){
+            if(initBehaviorConfig.fileID){
+                postFilesPreviewModal.open({
+                    focusFileID: initBehaviorConfig.fileID,
+                    post,
+                    onChangePost
+                })
+            }
+
+
+
             let root = document.getElementsByClassName("feed-infinite")[0];
             this.observer = new IntersectionObserver(this.handleObserver, {
                 root,
@@ -215,9 +248,9 @@ export class PostBox extends PureComponent {
 
     render() {
         let {commentsTotal} = this.state;
-        let {post, isMyPost, onChangePost, isPreview} = this.props;
+        let {post, isMyPost, onChangePost, isPreview, initBehaviorConfig = {}} = this.props;
 
-
+        let {commentID, replyID} = initBehaviorConfig;
 
         let reactions = sortReactions(post.reactions);
         let user = userInfo.getState();
@@ -387,15 +420,17 @@ export class PostBox extends PureComponent {
                         </div>
 
                         <CommentBox
-                            api={({skip, limit}) => postApi.getCommentsForPost(post._id, skip, limit).then(data => {
+                            api={({skip, limit}) => postApi.getCommentsForPost(post._id, skip, limit, {focusComment: commentID, focusReply: replyID}).then(data => {
                                 this.setState({commentsTotal: data.total})
                                 return data;
                             })}
+                            ref={commentBox => this.commentBox = commentBox}
                             post={post}
                             onAddComment={() => this.setState({commentsTotal: commentsTotal + 1})}
                             commentsTotal={commentsTotal}
                             inputRef={mainInput => this.mainInput = mainInput}
                             onDeleteComment={() => this.setState({commentsTotal: commentsTotal - 1})}
+                            initBehaviorConfig={initBehaviorConfig}
                         />
                     </div>
                 )}

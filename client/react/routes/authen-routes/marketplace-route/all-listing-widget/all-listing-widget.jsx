@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import classnames from 'classnames';
 import { ThemeContext } from '../../../../context/theme-context';
 import { listingApi } from './../../../../../api/common/listing-api';
+import { ListingDisplay } from './listing-display/listing-display';
 
 export class AllListingWidget extends Component {
   constructor(props) {
@@ -25,14 +26,13 @@ export class AllListingWidget extends Component {
               return (
                 !!e.listingArr.length && (
                   <div className='category-with-listing'>
-                    <div className='category-name'>{e.name}</div>
+                    <div className='category-header'>
+                      <div className='category-name'>{e.name}</div>
+                      <div className='see-category-listing'>Xem tất cả</div>
+                    </div>
                     <div className='listing-list-display'>
                       {e.listingArr.map((listing) => {
-                        return (
-                          <div className='listing-display' key={listing._id}>
-                            {listing.title}
-                          </div>
-                        );
+                        <ListingDisplay listing={listing} />;
                       })}
                     </div>
                   </div>

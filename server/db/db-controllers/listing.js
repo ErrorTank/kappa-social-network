@@ -32,6 +32,7 @@ const getListing = (query) => {
             },
           })
             .lean()
+            .sort('-created_at')
             .then((products) => {
               return { _id: e._id, name: e.name, listingArr: [...products] };
             });

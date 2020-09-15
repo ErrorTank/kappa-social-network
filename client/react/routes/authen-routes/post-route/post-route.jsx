@@ -5,52 +5,50 @@ import {CommonLayout} from "../../../layout/common-layout/common-layout";
 import {ChatWidget} from "../feed-route/chat-widget/chat-widget";
 import {NavigationWidget} from "../feed-route/navigation-widget/navigation-widget";
 import {FeedWidget} from "../feed-route/feed-widget/feed-widget";
+import {PostContainer} from "./post-container";
+import {postApi} from "../../../../api/common/post-api";
+import {parseQueryString} from "../../../../common/utils/string-utils";
 
 class PostRoute extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            post: null,
-            loading: true
+            belonged_person: null
         }
+
+
     }
 
     render() {
-        let {post, loading} = this.state;
+        let {belonged_person} = this.state;
         return (
             <PageTitle
-                title={loading ? "Tải nội dung..." : "T"}
+                title={!belonged_person ? "Tải nội dung..." : `Bài đăng của ${belonged_person.basic_info.username}`}
             >
-                <InfiniteScrollWrapper
-                    className={"feed-infinite"}
-                    onScrollBottom={() => {
-                        this.debounceLoad();
+                <div className="feed-infinite overflow-y">
+                    <div className="post-route">
+                        <CommonLayout
+                            rightRender={() => (
+                                <ChatWidget/>
+                            )}
+                            leftRender={() => (
+                                <NavigationWidget/>
+                            )}
+                            mainRender={() => (
+                                <PostContainer
+                                    postID={this.props.match.params.postID}
+                                    params={parseQueryString(this.props.location.search)}
+                                    api={(postID) =>  postApi.getPostByID(postID)
+                                        .then(post => {
+                                            this.setState({belonged_person: post.belonged_person})
+                                            return post;
+                                        })}
+                                />
+                            )}
+                        />
+                    </div>
+                </div>
 
-                    }}
-                >
-                    {() => (
-                        <div className="feed-route" ref={feedRoute => this.feedRoute = feedRoute}>
-                            <CommonLayout
-                                rightRender={() => (
-                                    <ChatWidget/>
-                                )}
-                                leftRender={() => (
-                                    <NavigationWidget/>
-                                )}
-                                mainRender={() => (
-                                    <FeedWidget
-                                        observer={this.observer}
-                                        posts={posts}
-                                        onChange={posts => this.setState({posts})}
-                                        loading={fetching}
-                                        needReloaded={needReloaded}
-                                        onReload={this.reload}
-                                    />
-                                )}
-                            />
-                        </div>
-                    )}
-                </InfiniteScrollWrapper>
 
             </PageTitle>
 

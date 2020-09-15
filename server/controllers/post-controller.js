@@ -345,7 +345,7 @@ module.exports = (db, namespacesIO) => {
                     .then(([post]) => {
                         createUserNotification({
                             type: "react_comment",
-                            data: {comment: data, post, reacted_by: req.user._id, reaction: reaction.on},
+                            data: {comment: data.is_reply ? null : data, reply: data.is_reply ? data : null, post, reacted_by: req.user._id, reaction: reaction.on},
                             userID: data.from_person._id
                         })
                             .then(notification => namespacesIO.feedPost.io.to(`/feed-post-room/user/${data.from_person._id}`).emit("notify-user", {notification}));

@@ -7,6 +7,7 @@ import moment from "moment";
 import classnames from "classnames"
 import {genderMatcher} from "../../layout/authen-layout/create-message-widget/chat-box/message-section/special-message/special-message";
 import {REACTION_EMOJI_MAP} from "../reactions-widget/reactions-widget";
+import {customHistory} from "../../routes/routes";
 
 export class PostNotification extends Component {
 
@@ -74,8 +75,8 @@ export class PostNotification extends Component {
                         <span  className="high-light dark"> bạn</span>
                     </span>
                 ),
-                getTime: () => data.comment.updated_at,
-                toLink: () =>  `/post/${data.post._id}?commentID=${data.comment._id}`
+                getTime: () => data.reply ? data.reply.updated_at : data.comment.updated_at,
+                toLink: () =>  `/post/${data.post._id}?${data.reply ? `replyID=${data.reply._id}` : `commentID=${data.comment._id}`}`
             },
             "react_post": {
                 getAvatarUser: () => data.reacted_by,
@@ -121,10 +122,10 @@ export class PostNotification extends Component {
 
     render() {
         let {notification, highLight, isPopup = true} = this.props;
-        let {getAvatarUser, getReaction, getContent, getTime, getFilePreview} = this.getRenderData(notification);
+        let {getAvatarUser, getReaction, getContent, getTime, getFilePreview, toLink} = this.getRenderData(notification);
         let reaction = getReaction();
         return (
-            <div className={classnames("post-notification", {active: highLight && !notification.is_seen})}>
+            <div className={classnames("post-notification", {active: highLight && !notification.is_seen})} onClick={() => customHistory.push(toLink())}>
                 <div className="avatar-wrapper">
                     <Avatar user={getAvatarUser()}/>
                     {reaction && (

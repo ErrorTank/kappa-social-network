@@ -68,6 +68,15 @@ export class Comment extends Component {
 
     }
 
+    componentDidMount() {
+        if(this.props.needPreFetch){
+            this.fetchReplies({
+                skip: this.state.replies.length,
+                limit: 5
+            });
+        }
+    }
+
     componentWillUnmount() {
         if(this.io){
             this.io.off("new-reply");
@@ -149,7 +158,7 @@ export class Comment extends Component {
 
     fetchReplies = (config) => {
         this.setState({loadReplies: true})
-        return postApi.getReplyForComment(this.props.comment._id, config).then(({list}) => {
+        return this.props.getRepliesApi(config).then(({list}) => {
             this.setState({replies: this.state.replies.concat(list), loadReplies: false})
         })
     }
