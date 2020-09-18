@@ -18,8 +18,8 @@ export const userApi = {
     login(payload){
         return offlineApi.post("/user/login", payload);
     },
-    updateUser(data){
-        return authenApi.put(`/user/update`, data)
+    updateUser(userID, data){
+        return authenApi.put(`/user/${userID}/simple-update`, data)
     },
     sendChangePasswordToken(payload){
         return offlineApi.post("/user/send-change-password-token", payload);

@@ -35,6 +35,8 @@ class UserProfileRoute extends Component {
                 <div className="user-profile-route">
                     <CommonLayout
                         extendMain={true}
+                        haveLeftRender={false}
+                        haveRightRender={false}
                         mainRender={() => user ? (
                             <div className="upr-wrapper">
                                 <UprHeader

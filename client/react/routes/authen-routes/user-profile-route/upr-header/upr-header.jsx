@@ -11,6 +11,7 @@ export const UprHeader = ({user}) => {
             <div className="common-container">
                 <div className="user-avatar-section">
                     <CoverPhotoUploader
+                        user={user}
                         src={cover_photo}
                         isOwner={isOwner}
                     />

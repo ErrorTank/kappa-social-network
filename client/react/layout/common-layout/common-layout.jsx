@@ -24,8 +24,8 @@ export const CommonLayout = (props) => {
                             'extend-main': extendMain
                         })}
                     >
-                        <div className='left-widget'>{leftRender && leftRender()}</div>
-                        <div className='main-widget'>{mainRender && mainRender()}</div>
+                        {haveLeftRender && <div className='left-widget'>{leftRender()}</div>}
+                        {mainRender && <div className='main-widget'>{mainRender()}</div>}
                         {haveRightRender && (
                             <div className='right-widget'>{rightRender && rightRender()}</div>
                         )}

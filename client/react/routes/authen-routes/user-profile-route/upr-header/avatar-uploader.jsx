@@ -41,7 +41,7 @@ export class AvatarUploader extends Component {
         this.setState({loading: true});
         postApi.preUploadMedia({file: file.file,  }, "file")
             .then((fileData) => {
-                return userApi.updateUser({
+                return userApi.updateUser(this.props.user._id, {
                     avatar: fileData.path
                 })
 
@@ -50,6 +50,7 @@ export class AvatarUploader extends Component {
                 this.setState({
                     imgSrc: user.avatar,
                     loading: false,
+                    file: null
                 })
                 userInfo.setState(user)
             })
@@ -101,8 +102,8 @@ export class AvatarUploader extends Component {
                                 </div>
                             )}
                         </InputFileWrapper>
-                            <div className="cancel-wrapper">
-                                <i className="far fa-times" onClick={this.cancelUpload}></i>
+                            <div className="cancel-wrapper" onClick={this.cancelUpload}>
+                                <i className="far fa-times" ></i>
                             </div>
                             <div className="upload-actions">
                                 <Button className="btn-common-primary" onClick={this.saveAvatar} loading={loading}>

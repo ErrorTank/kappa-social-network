@@ -11,6 +11,8 @@ import {messengerApi} from "../../../../../api/common/messenger-api";
 import {userApi} from "../../../../../api/common/user-api";
 import {Notifications} from "../notifications/notifications";
 import {Link} from "react-router-dom";
+import {Avatar} from "../../../../common/avatar/avatar";
+import {WithUserInfo} from "../../../../common/with-user-info";
 
 class UserActionDropdownable extends Component {
     constructor(props) {
@@ -100,17 +102,19 @@ export class UserAction extends KComponent {
                     <div className="toggle">
                         <div className="avatar-wrapper">
                             <Link to={`/user/${user._id}`}>
-                                {user.avatar ? (
-                                    <img src={user.avatar}/>
+                                <WithUserInfo
+                                    neededUpdate={(oldState, newState) => {
+                                        return oldState.avatar !== newState.avatar
+                                    }}
+                                >
+                                    {({user}) => (
+                                        <Avatar
+                                            user={user}
+                                        />
+                                    )}
+                                </WithUserInfo>
 
-                                ) : (
-                                    <div className="avatar-holder">
 
-                                        <span>{getNamePrefix(user.basic_info.username.trim())}</span>
-
-
-                                    </div>
-                                )}
                             </Link>
                         </div>
                     </div>

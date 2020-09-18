@@ -78,6 +78,7 @@
           width 160px
           height 160px
           overflow hidden
+          background-color white
           .common-avatar{
             width 100%
             height 100%
@@ -99,10 +100,52 @@
     .cover-photo-uploader{
       background-color bgLight
       border-radius 0 0 5px 5px
-      height 340px
-      img{
-        width: 100%;
-        object-fit cover
+
+      .cpu-container{
+        position relative
+        height 340px
+        .cancel-wrapper{
+          position absolute
+          top 15px
+          left 15px
+          width 35px
+          height 35px
+          display flex
+          align-items center
+          justify-content center
+          cursor pointer
+          background-color darken(bgLight, 3%)
+          border-radius 50%
+          i{
+            font-size 2rem
+          }
+        }
+        .upload-actions{
+          position absolute
+          bottom 15px
+          right 30px
+        }
+        .upload-btn{
+          position absolute
+          bottom 15px
+          right 30px
+          padding 10px 12px
+          font-size 1.5rem
+          color commonTextLight
+          font-weight 500
+          cursor pointer
+          i{
+            margin-right 6px
+          }
+          background-color btnCancelLight
+          border-radius 5px
+
+        }
+        & > img{
+          height 100%
+          width: 100%;
+          object-fit cover
+        }
       }
     }
   }

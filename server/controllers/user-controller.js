@@ -1,9 +1,11 @@
 const express = require('express');
 const router = express.Router();
-const {authorizationUserMiddleware} = require("../common/middlewares/common");
+const {authorizationUserMiddleware, checkAuthorizeUser} = require("../common/middlewares/common");
+const omit = require("lodash/omit");
+
 const {getAuthenticateUserInitCredentials, getUserBasicInfo, login, sendChangePasswordToken, resendChangePasswordToken,createUserNotification,
     verifyChangePasswordToken, getChangePasswordUserBrief, changePassword, addNewSearchHistory, deleteSearchHistory,
-    updateSearchHistory, shortLogin, simpleUpdateUser, getUnseenNotificationsCount, getUserNotifications, seenNotifications} = require("../db/db-controllers/user");
+    updateSearchHistory, shortLogin, simpleUpdateUser, getUnseenNotificationsCount, getUserNotifications, seenNotifications, } = require("../db/db-controllers/user");
 
 module.exports = () => {
     router.get("/init-credentials", authorizationUserMiddleware, (req, res, next) => {
@@ -38,6 +40,14 @@ module.exports = () => {
 
         return seenNotifications({userID: req.user._id, ...req.body}).then((data) => {
             return res.status(200).json(data);
+        }).catch(err => next(err));
+
+    });
+    router.put("/:userID/simple-update",authorizationUserMiddleware, checkAuthorizeUser ,(req, res, next) => {
+
+        return simpleUpdateUser(req.user._id, omit(req.body, "_id")).then((data) => {
+            return getUserBasicInfo(req.user._id)
+                .then(user => res.status(200).json(user))
         }).catch(err => next(err));
 
     });
