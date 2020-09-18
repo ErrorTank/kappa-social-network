@@ -2,29 +2,49 @@ import React, {Component} from 'react';
 import {PageTitle} from "../../../common/page-title/page-title";
 import {CommonLayout} from "../../../layout/common-layout/common-layout";
 import {userApi} from "../../../../api/common/user-api";
+import {UprHeader} from "./upr-header/upr-header";
+import {UprBody} from "./upr-body/upr-body";
 
 class UserProfileRoute extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            user_name: ""
+            user: null
         }
-        userApi.getUserBasicInfo(props.match.params.userID)
-            .then(user => this.setState({user_name: user.basic_info.username}))
+        this.fetchUser(props.match.params.userID);
+    }
+
+    fetchUser = userID => {
+        userApi.getUserBasicInfo(userID)
+            .then(user => this.setState({user}))
+    }
+
+    componentDidUpdate(prevProps, prevState, snapshot) {
+        if(prevProps.match.params.userID !== this.props.match.params.userID && this.props.match.params.userID){
+            this.fetchUser(this.props.match.params.userID);
+        }
     }
 
     render() {
-        let {user_name} = this.state;
+        let {user} = this.state;
+
         return (
             <PageTitle
-                title={!user_name ? `Tải thông tin...` : user_name}
+                title={!user ? `Tải thông tin...` : user.basic_info.username}
             >
                 <div className="user-profile-route">
                     <CommonLayout
-                        mainRender={() => (
-                            <div>
+                        extendMain={true}
+                        mainRender={() => user ? (
+                            <div className="upr-wrapper">
+                                <UprHeader
+                                    user={user}
+                                />
+                                <UprBody
+
+                                />
                             </div>
-                        )}
+                        ) : null}
                     />
                 </div>
 

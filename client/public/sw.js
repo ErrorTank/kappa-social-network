@@ -25,6 +25,7 @@ var exceptionRequestsDev = [
     endpoint: 'https://localhost:4000/api/user/login',
     method: 'POST',
   },
+
   {
     endpoint: 'https://localhost:4000/api/user/send-change-password-token',
     method: 'POST',
@@ -40,6 +41,10 @@ var exceptionRequestsDev = [
   {
     endpoint: /https:\/\/localhost:4000\/api\/user\/change-password\/brief\/session\//,
     method: 'GET',
+  },
+  {
+    endpoint: /https:\/\/localhost:4000\/api\/user\/update/,
+    method: 'PUT',
   },
   {
     endpoint: 'https://localhost:4000/api/user/change-password',
