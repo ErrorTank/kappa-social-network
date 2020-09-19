@@ -312,7 +312,7 @@ const simpleUpdateUser = (userID, data) => {
 
 const getUserBasicInfo = (userID, query = {}) => {
 
-    return User.findOne({_id: ObjectId(userID)}, query.full === 'true' ? "_id basic_info avatar contact cover_photo" : "_id basic_info avatar cover_photo").lean()
+    return User.findOne({_id: ObjectId(userID)}, query.full === 'true' ? "_id basic_info avatar contact cover_photo bio" : "_id basic_info avatar cover_photo bio").lean()
 }
 
 const toggleFollowPost = ({postID, userID}) => {

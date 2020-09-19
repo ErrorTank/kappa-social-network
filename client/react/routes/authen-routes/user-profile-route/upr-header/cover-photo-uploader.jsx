@@ -55,6 +55,7 @@ export class CoverPhotoUploader extends Component {
 
     render() {
         let {file, imgSrc, loading} = this.state;
+        let {isOwner} = this.props;
         return (
             <div className="cover-photo-uploader">
                 <div className="cpu-container">
@@ -87,7 +88,7 @@ export class CoverPhotoUploader extends Component {
                             </div>
                         </>
                     )}
-                    {!file && (
+                    {(!file && isOwner) && (
                         <InputFileWrapper
                             multiple={false}
                             accept={"image/*,image/heif,image/heic"}
