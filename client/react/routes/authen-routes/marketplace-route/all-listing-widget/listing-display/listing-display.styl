@@ -1,13 +1,45 @@
 .listing-display {
-  padding: 4px;
   flex-basis: 20%;
   position: relative;
   margin: 4px;
+  cursor: pointer;
 
   &:before {
     content: '';
     display: block;
     padding-top: 100%; /* initial ratio of 1:1 */
+  }
+
+  .hover-display {
+    position: absolute;
+    background-color: rgba(0 0 0 0.2);
+    width: 100%;
+    z-index: 1;
+    top: 0;
+    height: 70%;
+    border-radius: 6px;
+
+    .addition-button-wrapper {
+      position: absolute;
+      top: 0;
+      right: 4px;
+
+      .addition-button {
+        background-color: white;
+        border-radius: 50%;
+        width: 36px;
+        height: 36px;
+        position: relative;
+        margin-left: 8px;
+        margin-top: 4px;
+
+        i {
+          absoluteMiddle();
+          font-size: 20px;
+          color: lightIcon;
+        }
+      }
+    }
   }
 
   .listing-picture {
@@ -16,10 +48,13 @@
     left: 0;
     bottom: 0;
     right: 0;
+    height: 70%;
+    border: 1px solid lightgray;
+    border-radius: 6px;
 
     img {
       border-radius: 6px;
-      height: 80%;
+      height: 100%;
       width: 100%;
       object-fit: cover;
       overflow: hidden;
@@ -29,12 +64,24 @@
   .listing-main-info {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     padding: 12px 0;
+    color: normalTextLight;
+    font-weight: 400;
 
     .listing-price {
-      margin-top: 4px;
+      // margin-top: 4px;
       font-size: 17px;
       font-weight: 600;
-      color: normalTextLight;
+    }
+
+    .listing-title {
+      // margin-top: 4px;
+      font-size: 15px;
+    }
+
+    .listing-location {
+      // margin-top: 4px;
+      font-size: 13px;
+      color: greyTextLight;
     }
   }
 }

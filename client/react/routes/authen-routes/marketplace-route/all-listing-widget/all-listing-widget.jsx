@@ -9,34 +9,35 @@ export class AllListingWidget extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      allListing: [],
+      listingByCategory: [],
+      showItems: 5,
     };
-    listingApi
-      .getListing({})
-      .then((allListing) => this.setState({ allListing }));
+    listingApi.getListing({}).then((allListing) => {
+      let listingByCategory = allListing.filter((e) => !!e.listingArr.length);
+      this.setState({ listingByCategory });
+    });
   }
   render() {
-    const { allListing } = this.state;
-    console.log(allListing);
+    const { listingByCategory, showItems } = this.state;
+    console.log(listingByCategory);
     return (
       <ThemeContext.Consumer>
         {({ darkMode }) => (
           <div className={classnames('all-listing-widget', { darkMode })}>
-            {allListing.map((e) => {
+            {listingByCategory.slice(0, showItems).map((e) => {
               return (
-                !!e.listingArr.length && (
-                  <div className='category-with-listing' key={e._id}>
-                    <div className='category-header'>
-                      <div className='category-name'>{e.name}</div>
-                      <div className='see-category-listing'>Xem tất cả</div>
-                    </div>
-                    <div className='listing-list-display'>
-                      {e.listingArr.map((listing) => (
-                        <ListingDisplay listing={listing} key={listing._id} />
-                      ))}
-                    </div>
+                <div className='category-with-listing' key={e._id}>
+                  <div className='category-header'>
+                    <div className='category-name'>{e.name}</div>
+                    <div className='see-category-listing'>Xem tất cả</div>
                   </div>
-                )
+                  <div className='listing-list-display'>
+                    {e.listingArr.map((listing) => (
+                      <ListingDisplay listing={listing} key={listing._id} />
+                    ))}
+                  </div>
+                  <div className='line-break'></div>
+                </div>
               );
             })}
           </div>

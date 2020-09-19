@@ -46,7 +46,7 @@ export class BrowseAllWidget extends Component {
       let otherCategory = [
         { icon: 'fas fa-home', title: 'Bán nhà' },
         {
-          icon: 'fas fa-house',
+          icon: 'far fa-home-alt',
           title: 'Cho thuê',
         },
       ];
@@ -81,27 +81,29 @@ export class BrowseAllWidget extends Component {
         {({ darkMode }) => (
           <div className={classnames('browse-all-widget', { darkMode })}>
             <MarketplaceSearchSection darkMode={darkMode} />
-            <MarketplaceMenuSection
-              darkMode={darkMode}
-              menuNavigation={this.browseAllMenu}
-            />
-            <MarketplaceFilterSection />
-            <CategoriesSection darkMode={darkMode}>
-              <>
-                {categoryDisplay &&
-                  categoryDisplay.map((each) => {
-                    return (
-                      <MenuNavigationWithIcon
-                        key={each.title}
-                        icon={each.icon}
-                        title={each.title}
-                        type={each.type}
-                        onClick={() => customHistory.push(each.link)}
-                      />
-                    );
-                  })}
-              </>
-            </CategoriesSection>
+            <div className='browse-all-body'>
+              <MarketplaceMenuSection
+                darkMode={darkMode}
+                menuNavigation={this.browseAllMenu}
+              />
+              <MarketplaceFilterSection />
+              <CategoriesSection darkMode={darkMode}>
+                <>
+                  {categoryDisplay &&
+                    categoryDisplay.map((each) => {
+                      return (
+                        <MenuNavigationWithIcon
+                          key={each.title}
+                          icon={each.icon}
+                          title={each.title}
+                          type={each.type}
+                          onClick={() => customHistory.push(each.link)}
+                        />
+                      );
+                    })}
+                </>
+              </CategoriesSection>
+            </div>
           </div>
         )}
       </ThemeContext.Consumer>
