@@ -22,4 +22,9 @@ const moneyToNumber = (value) => {
   return value.split('.').join('');
 };
 
-export { checkNumber, cleanBlankProp, moneyToNumber };
+const numberToMoney = (value) => {
+  let money = value.replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+  return `${money} ₫`;
+};
+
+export { checkNumber, cleanBlankProp, moneyToNumber, numberToMoney };

@@ -20,7 +20,7 @@ import classnames from 'classnames';
 import {
   checkNumber,
   moneyToNumber,
-  checkRequired,
+  numberToMoney,
 } from '../../../../../../../../common/utils/listing-utils';
 
 export class ListingInfo extends Component {
@@ -126,8 +126,7 @@ export class ListingInfo extends Component {
       if (newValue.length > 10) {
         this.props.updateValue([name], '');
       } else {
-        let money = newValue.replace(/\B(?=(\d{3})+(?!\d))/g, '.');
-        this.props.updateValue([name], `${money} ₫`);
+        this.props.updateValue([name], numberToMoney(newValue));
       }
     }
   };
