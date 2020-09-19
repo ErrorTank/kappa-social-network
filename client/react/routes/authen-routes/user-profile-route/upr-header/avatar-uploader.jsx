@@ -36,6 +36,16 @@ export class AvatarUploader extends Component {
         })
     }
 
+    componentDidUpdate(prevProps, prevState, snapshot) {
+        if(prevProps.user._id !== this.props.user._id){
+            this.setState({
+                file: null,
+                loading: false,
+                imgSrc: this.props.user.avatar
+            })
+        }
+    }
+
     saveAvatar = () => {
         let {file} = this.state;
         this.setState({loading: true});

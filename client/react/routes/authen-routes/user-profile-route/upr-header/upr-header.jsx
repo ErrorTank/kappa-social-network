@@ -3,9 +3,10 @@ import {CoverPhotoUploader} from "./cover-photo-uploader";
 import {AvatarUploader} from "./avatar-uploader";
 import {userInfo} from "../../../../../common/states/common";
 import {UserBasicInfo} from "./user-basic-info";
+import {ProfileNavigator} from "./profile-navigator";
 
 export const UprHeader = ({user}) => {
-    let {avatar, cover_photo, _id} = user;
+    let { _id} = user;
     let isOwner = _id === userInfo.getState()._id;
     return (
         <div className="upr-header">
@@ -13,7 +14,6 @@ export const UprHeader = ({user}) => {
                 <div className="user-avatar-section">
                     <CoverPhotoUploader
                         user={user}
-                        src={cover_photo}
                         isOwner={isOwner}
                     />
                     <AvatarUploader
@@ -26,6 +26,9 @@ export const UprHeader = ({user}) => {
                 <UserBasicInfo
                     user={user}
                     isOwner={isOwner}
+                />
+                <ProfileNavigator
+                    user={user}
                 />
             </div>
         </div>

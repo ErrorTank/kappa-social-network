@@ -5,7 +5,7 @@ const omit = require("lodash/omit");
 
 const {getAuthenticateUserInitCredentials, getUserBasicInfo, login, sendChangePasswordToken, resendChangePasswordToken,createUserNotification,
     verifyChangePasswordToken, getChangePasswordUserBrief, changePassword, addNewSearchHistory, deleteSearchHistory,
-    updateSearchHistory, shortLogin, simpleUpdateUser, getUnseenNotificationsCount, getUserNotifications, seenNotifications, } = require("../db/db-controllers/user");
+    updateSearchHistory, shortLogin, simpleUpdateUser, getUnseenNotificationsCount, getUserNotifications, seenNotifications, getUserFriendsCount} = require("../db/db-controllers/user");
 
 module.exports = () => {
     router.get("/init-credentials", authorizationUserMiddleware, (req, res, next) => {
@@ -39,6 +39,13 @@ module.exports = () => {
     router.put("/seen-notifications",authorizationUserMiddleware, (req, res, next) => {
 
         return seenNotifications({userID: req.user._id, ...req.body}).then((data) => {
+            return res.status(200).json(data);
+        }).catch(err => next(err));
+
+    });
+    router.get("/:userID/friends-count",authorizationUserMiddleware, (req, res, next) => {
+
+        return getUserFriendsCount({userID: req.params.userID}).then((data) => {
             return res.status(200).json(data);
         }).catch(err => next(err));
 

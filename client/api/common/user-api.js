@@ -56,5 +56,8 @@ export const userApi = {
     },
     seenNotifications(ids){
         return authenApi.put(`/user/seen-notifications`, {notifications: ids})
+    },
+    getUserFriendsCount(userID){
+        return authenApi.get(`/user/${userID}/friends-count`)
     }
 };

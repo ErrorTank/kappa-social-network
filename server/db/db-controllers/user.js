@@ -581,6 +581,12 @@ const seenNotifications = ({userID, notifications}) => {
     }).exec()
 }
 
+const getUserFriendsCount = ({userID}) => {
+    return User.findOne({_id: ObjectId(userID)})
+        .lean()
+        .then((data) => ({count: data.friends.length}))
+}
+
 module.exports = {
     seenNotifications,
     getUserNotifications,
@@ -603,5 +609,6 @@ module.exports = {
     getUserBasicInfo,
     toggleFollowPost,
     toggleSavePost,
-    toggleBlockPost
+    toggleBlockPost,
+    getUserFriendsCount
 };

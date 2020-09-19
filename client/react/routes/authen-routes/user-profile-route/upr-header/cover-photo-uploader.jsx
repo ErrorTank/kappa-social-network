@@ -11,9 +11,19 @@ export class CoverPhotoUploader extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            imgSrc: props.src,
+            imgSrc: props.user.cover_photo,
             file: null,
             loading: false,
+        }
+    }
+
+    componentDidUpdate(prevProps, prevState, snapshot) {
+        if(prevProps.user._id !== this.props.user._id){
+            this.setState({
+                file: null,
+                loading: false,
+                imgSrc: this.props.user.cover_photo
+            })
         }
     }
 
@@ -25,6 +35,8 @@ export class CoverPhotoUploader extends Component {
             })
         })
     }
+
+
 
     cancelUpload = () => {
         this.setState({

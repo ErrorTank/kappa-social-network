@@ -263,6 +263,10 @@ var exceptionRequestsDev = [
     method: 'GET',
   },
   {
+    endpoint: /https:\/\/localhost:4000\/api\/user\/\w+\/friends-count/,
+    method: 'GET',
+  },
+  {
     endpoint: /https:\/\/localhost:4000\/api\/user\/seen-notifications/,
     method: 'PUT',
   },
