@@ -2,6 +2,7 @@ import React from 'react';
 import {CoverPhotoUploader} from "./cover-photo-uploader";
 import {AvatarUploader} from "./avatar-uploader";
 import {userInfo} from "../../../../../common/states/common";
+import {UserBasicInfo} from "./user-basic-info";
 
 export const UprHeader = ({user}) => {
     let {avatar, cover_photo, _id} = user;
@@ -20,7 +21,12 @@ export const UprHeader = ({user}) => {
                         isOwner={isOwner}
 
                     />
+
                 </div>
+                <UserBasicInfo
+                    user={user}
+                    isOwner={isOwner}
+                />
             </div>
         </div>
     );
