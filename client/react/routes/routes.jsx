@@ -172,7 +172,7 @@ class MainRoute extends React.Component {
                   <AuthenRoute
                       {...layoutProps}
                       path={'/user/:userID'}
-                      exact
+                      // exact
                       render={(props) =>
                           <UserProfileRoute {...props} />
                       }

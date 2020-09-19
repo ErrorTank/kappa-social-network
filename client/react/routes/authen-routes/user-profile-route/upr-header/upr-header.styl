@@ -1,21 +1,98 @@
-.upr-header{
+.upr-header {
   background-color white
-  box-shadow:0px 1px 3px #CCCCCC
-  .user-basic-info{
-    padding 20px 0
-    border-bottom 1px solid common-border
-    .bio-editor{
-      text-align center
+  box-shadow: 0px 1px 3px #CCCCCC
+
+  .profile-navigators {
+
+    display flex
+    align-items center
+    justify-content center
+
+    a {
+      text-decoration none
+      padding-top 3px
+      border-bottom 3px solid transparent
+      .navigator{
+        padding 12px 16px
+        font-size 1.5rem
+        font-weight 500
+        cursor pointer
+        transition all 0.1s ease
+        color greyTextLight
+
+        border-radius 5px
+        .sub{
+          font-size 1.4rem
+          font-weight 400
+        }
+      }
+      &:not(.active):hover {
+        .navigator{
+          background-color darken(white, 5%)
+        }
+      }
+
+
+      &.active {
+        border-bottom-color: primaryButton;
+       .navigator{
+         color primaryButton
+         border-radius 0 !important
+
+       }
+
+      }
     }
-    .bio{
+
+
+
+  }
+
+  .user-basic-info {
+    padding 15px 0
+    border-bottom 1px solid common-border
+
+    .bio-editor {
+      margin auto
+      width 300px
+
+      .bio-actions {
+        text-align right
+      }
+
+      .bio-left {
+        text-align right
+        padding 6px 0
+        color greyTextLight
+        font-size 1.3rem
+
+
+      }
+
+      .bio-input {
+        margin 0 !important
+
+        textarea {
+          text-align center
+          border-radius 5px
+          border 1px solid common-border
+          min-height 75px
+          font-weight 500
+          font-size 1.5rem
+        }
+      }
+    }
+
+    .bio {
       text-align center
-      & > p{
-        margin-bottom 5px
+
+      & > p {
         font-size 1.5rem
         font-weight 400
 
       }
-      .edit-btn{
+
+      .edit-btn {
         display inline-block
         color primaryButton
         font-size 1.5rem
@@ -24,34 +101,38 @@
 
       }
     }
-    .username{
-      margin-bottom 15px
+
+    .username {
       text-align center
       font-size 3rem
       font-weight bold
     }
   }
-  .user-avatar-section{
+
+  .user-avatar-section {
     position relative
-    .avatar-uploader{
+
+    .avatar-uploader {
       position absolute
       left 50%
       transform translateX(-50%)
       bottom -20px
 
-      .au-container{
-        &:hover{
-          .upload-overlay{
+      .au-container {
+        &:hover {
+          .upload-overlay {
             display block
           }
         }
-        .upload-actions{
+
+        .upload-actions {
           position absolute
           top calc(100% + 5px)
           left 50%
           transform translateX(-50%)
         }
-        .upload-overlay{
+
+        .upload-overlay {
           position absolute
           top 0
           left 0
@@ -67,7 +148,8 @@
           display none
           line-height 160px
         }
-        .cancel-wrapper{
+
+        .cancel-wrapper {
           position absolute
           top 10px
           left 10px
@@ -79,17 +161,20 @@
           cursor pointer
           background-color darken(bgLight, 3%)
           border-radius 50%
-          i{
+
+          i {
             font-size 1.5rem
           }
         }
-        .upload-btn{
+
+        .upload-btn {
           position absolute
           width 36px
           height 36px
           border-radius 50%
           background-color darken(bgLight, 3%)
-          &:hover{
+
+          &:hover {
             background-color darken(bgLight, 5%)
           }
           cursor pointer
@@ -98,27 +183,32 @@
           right 5px
           top 110px
           justify-content center
-          i{
+
+          i {
             font-size 2rem
           }
         }
-        .avatar-wrapper{
+
+        .avatar-wrapper {
           border-radius 50%
           border 5px solid white
           width 160px
           height 160px
           overflow hidden
           background-color white
-          .common-avatar{
+
+          .common-avatar {
             width 100%
             height 100%
-            .avatar-holder{
-              span{
+
+            .avatar-holder {
+              span {
                 font-size 4.5rem
               }
             }
           }
-          &>img{
+
+          & > img {
             width 100%
             height 100%
             object-fit cover
@@ -127,14 +217,17 @@
       }
 
     }
-    .cover-photo-uploader{
+
+    .cover-photo-uploader {
       background-color bgLight
       border-radius 0 0 5px 5px
       overflow hidden
-      .cpu-container{
+
+      .cpu-container {
         position relative
         height 340px
-        .cancel-wrapper{
+
+        .cancel-wrapper {
           position absolute
           top 15px
           left 15px
@@ -146,16 +239,19 @@
           cursor pointer
           background-color darken(bgLight, 3%)
           border-radius 50%
-          i{
+
+          i {
             font-size 2rem
           }
         }
-        .upload-actions{
+
+        .upload-actions {
           position absolute
           bottom 15px
           right 30px
         }
-        .upload-btn{
+
+        .upload-btn {
           position absolute
           bottom 15px
           right 30px
@@ -164,14 +260,16 @@
           color commonTextLight
           font-weight 500
           cursor pointer
-          i{
+
+          i {
             margin-right 6px
           }
           background-color btnCancelLight
           border-radius 5px
 
         }
-        & > img{
+
+        & > img {
           height 100%
           width: 100%;
           object-fit cover
