@@ -1,5 +1,6 @@
 import {authenCache} from "./cache/authen-cache";
 import {
+    userBlockedPersons,
     userBlockedPosts,
     userChatSettings,
     userFollowedPosts,
@@ -30,6 +31,7 @@ const initializeAuthenticateUser = ({userInfo: uInfo, authToken}) => {
         userFollowedPosts.setState(uInfo.followed_posts),
         userSavedPosts.setState(uInfo.saved_posts),
         userBlockedPosts.setState(uInfo.blocked_posts),
+        userBlockedPersons.setState(uInfo.person_blocked),
         feedPostIO.connect({token: authToken || authenCache.getAuthen()})
             .then((feedPostIO) => {
                 feedPostIO.emit("join-own-room", {userID: uInfo._id});

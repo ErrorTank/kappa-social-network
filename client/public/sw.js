@@ -47,6 +47,26 @@ var exceptionRequestsDev = [
     method: 'PUT',
   },
   {
+    endpoint: /https:\/\/localhost:4000\/api\/user\/\w+\/is-friend\/\w+/,
+    method: 'GET',
+  },
+  {
+    endpoint: /https:\/\/localhost:4000\/api\/user\/\w+\/unfriend\/\w+/,
+    method: 'PUT',
+  },
+  {
+    endpoint: /https:\/\/localhost:4000\/api\/user\/\w+\/send-friend-request\/\w+/,
+    method: 'PUT',
+  },
+  {
+    endpoint: /https:\/\/localhost:4000\/api\/user\/\w+\/cancel-friend-request\/\w+/,
+    method: 'PUT',
+  },
+  {
+    endpoint: /https:\/\/localhost:4000\/api\/user\/\w+\/accept-friend-request\/\w+/,
+    method: 'PUT',
+  },
+  {
     endpoint: 'https://localhost:4000/api/user/change-password',
     method: 'PUT',
   },

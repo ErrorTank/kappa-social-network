@@ -3,47 +3,63 @@
   box-shadow: 0px 1px 3px #CCCCCC
 
   .profile-navigators {
-
     display flex
     align-items center
-    justify-content center
-
-    a {
-      text-decoration none
-      padding-top 3px
-      border-bottom 3px solid transparent
-      .navigator{
-        padding 12px 16px
-        font-size 1.5rem
-        font-weight 500
-        cursor pointer
-        transition all 0.1s ease
-        color greyTextLight
-
-        border-radius 5px
-        .sub{
-          font-size 1.4rem
-          font-weight 400
-        }
+    justify-content space-between
+    .profile-actions{
+      display flex
+      align-items center
+      .action{
+        margin-left 8px
+        position relative
       }
-      &:not(.active):hover {
-        .navigator{
-          background-color darken(white, 5%)
-        }
-      }
-
-
-      &.active {
-        border-bottom-color: primaryButton;
-       .navigator{
-         color primaryButton
-         border-radius 0 !important
-
-       }
-
+      .loading-wrapper{
+        position relative
+        width 250px
+        height 30px
       }
     }
+    .navigators{
+      display flex
+      align-items center
 
+      a {
+        text-decoration none
+        padding-top 3px
+        border-bottom 3px solid transparent
+        .navigator{
+          padding 12px 16px
+          font-size 1.5rem
+          font-weight 500
+          cursor pointer
+          transition all 0.1s ease
+          color greyTextLight
+
+          border-radius 5px
+          .sub{
+            font-size 1.4rem
+            font-weight 400
+          }
+        }
+        &:not(.active):hover {
+          .navigator{
+            background-color darken(white, 5%)
+          }
+        }
+
+
+        &.active {
+          border-bottom-color: primaryButton;
+          .navigator{
+            color primaryButton
+            border-radius 0 !important
+
+          }
+
+        }
+      }
+
+    }
 
 
   }

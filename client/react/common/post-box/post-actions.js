@@ -54,9 +54,9 @@ export const PostActions = ({post, isMyPost, editPost, deletePost, toggleFollow,
         },
     ]
     return (
-        <div className={"post-actions-dropdown"}>
+        <div className={"post-actions-dropdown common-dropdown-content"}>
             {postActions.map((each, i) => (isNil(each.condition) ? true : each.condition?.(each)) ? (
-                <div className="setting-row" key={i} onClick={() => {
+                <div className="setting-row content" key={i} onClick={() => {
                     each.onClick();
                     close();
                 }}>

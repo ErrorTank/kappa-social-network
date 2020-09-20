@@ -160,7 +160,7 @@ const userSchema = new Schema({
                     type: String,
                     enum: [
                        "comment_on_followed_post", "mentioned_in_comment", "reply_on_comment", "mentioned_in_reply", "react_comment",
-                        "react_post", "tagged_on_post", "tagged_on_post_file"
+                        "react_post", "tagged_on_post", "tagged_on_post_file", "friend_request"
                     ]
 
                 },
@@ -346,6 +346,11 @@ const userSchema = new Schema({
     },
     privacy_setting: {
         can_see_photos: {
+            type: String,
+            enum: ["PERSONAL", "FRIENDS", "PUBLIC"],
+            default: "FRIENDS"
+        },
+        can_see_videos: {
             type: String,
             enum: ["PERSONAL", "FRIENDS", "PUBLIC"],
             default: "FRIENDS"

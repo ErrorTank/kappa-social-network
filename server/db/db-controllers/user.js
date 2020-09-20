@@ -1,6 +1,7 @@
 const dbManager = require("../../config/db");
 const appDb = dbManager.getConnections()[0];
 const User = require("../model/user")(appDb);
+const Post = require("../model/post")(appDb);
 const ResetPasswordToken = require("../model/reset-password-token")(appDb);
 const mongoose = require("mongoose");
 const {getUnverifiedUserRegisterType} = require("../../utils/user-utils");
@@ -13,6 +14,12 @@ const {getPrivateKey, getPublicKey} = require("../../authorization/keys/keys");
 const {createNewConfirmToken} = require("./confirm-token");
 const {twilioSmsService, nexmoSmsService} = require("../../common/sms-service/sms-service");
 const emailService = require("../../common/email-service/email-service");
+
+const USER_FRIEND_RELATION = {
+    FRIEND: "FRIEND",
+    NOT_FRIEND: "NOT_FRIEND",
+    PENDING: "PENDING"
+}
 
 const sendResetPasswordToken = ({credentials, user}) => {
     if (credentials.register_type === "PHONE") {
@@ -46,7 +53,7 @@ const sendResetPasswordToken = ({credentials, user}) => {
 };
 
 const getAuthenticateUserInitCredentials = (userID) => {
-    return User.findOne({_id: ObjectId(userID)}, "_id contact basic_info joined_at isVerify last_active_at dark_mode search_history followed_posts saved_posts blocked_posts avatar").lean()
+    return User.findOne({_id: ObjectId(userID)}, "_id contact basic_info joined_at isVerify last_active_at dark_mode search_history followed_posts saved_posts blocked_posts avatar person_blocked").lean()
         .then(data => {
             if (!data) {
                 return Promise.reject(new ApplicationError("account_not_existed"))
@@ -65,7 +72,7 @@ const shortLogin = ({_id, password}) => {
     return User.findOne({
         _id: ObjectId(_id),
         "private_info.password": password.trim()
-    }, "_id contact basic_info joined_at chat_settings isVerify chat_settings last_active_at dark_mode private_info search_history followed_posts saved_posts blocked_posts avatar").lean()
+    }, "_id contact basic_info joined_at chat_settings isVerify chat_settings person_blocked last_active_at dark_mode private_info search_history followed_posts saved_posts blocked_posts avatar").lean()
         .then((data) => {
             if (!data) {
                 return Promise.reject(new ApplicationError("wrong_password"));
@@ -95,7 +102,7 @@ const login = ({login_username, password}) => {
             {"contact.login_username.phone": login_username},
             {"contact.login_username.email": login_username},
         ]
-    }, "_id contact basic_info joined_at followed_posts saved_posts blocked_posts isVerify last_active_at chat_settings dark_mode private_info search_history avatar").lean()
+    }, "_id contact basic_info joined_at followed_posts person_blocked saved_posts blocked_posts isVerify last_active_at chat_settings dark_mode private_info search_history avatar").lean()
         .then((data) => {
             if (!data || data.private_info.password !== password) {
                 return Promise.reject(new ApplicationError("account_not_existed"));
@@ -306,7 +313,7 @@ const updateSearchHistory = (userID, historyID, data) => {
 const simpleUpdateUser = (userID, data) => {
     return User.findOneAndUpdate({_id: ObjectId(userID)}, data, {
         new: true,
-        select: "followed_posts saved_posts blocked_posts _id contact basic_info joined_at isVerify last_active_at dark_mode private_info search_history avatar"
+        select: "followed_posts saved_posts blocked_posts person_blocked _id contact basic_info joined_at isVerify last_active_at dark_mode private_info search_history avatar"
     }).lean()
 };
 
@@ -428,7 +435,7 @@ const createUserNotification = ({type, data, userID}) => {
             path: "notifications.group",
             model: "Group",
             select: "_id basic_info"
-        },{
+        }, {
             path: "notifications.reacted_by",
             model: "User",
             select: "_id basic_info  avatar last_active_at active"
@@ -565,7 +572,7 @@ const getUserNotifications = ({userID, skip}) => {
         ])
         .then(u => (
             {
-                notifications: u.notifications.sort((a, b) => new Date(b.published_time).getTime() - new Date(a.published_time).getTime()).slice(Number(skip), Number(skip) + 7 ),
+                notifications: u.notifications.sort((a, b) => new Date(b.published_time).getTime() - new Date(a.published_time).getTime()).slice(Number(skip), Number(skip) + 7),
                 total: u.notifications.length
             }
         ))
@@ -574,7 +581,7 @@ const getUserNotifications = ({userID, skip}) => {
 const seenNotifications = ({userID, notifications}) => {
     return User.findOneAndUpdate({
         _id: ObjectId(userID)
-    },  {"$set": {"notifications.$[elem].is_seen": true}}, {
+    }, {"$set": {"notifications.$[elem].is_seen": true}}, {
         "arrayFilters": [{"elem._id": {$in: notifications.map(each => ObjectId(each))}}],
         "multi": true,
         new: true
@@ -587,7 +594,128 @@ const getUserFriendsCount = ({userID}) => {
         .then((data) => ({count: data.friends.length}))
 }
 
+const checkIsFriend = (userID, friendID) => {
+    return Promise.all([
+        User.findOne({
+            _id: ObjectId(userID)
+        })
+            .lean(),
+        User.findOne({
+            _id: ObjectId(friendID)
+        })
+            .lean()
+    ])
+        .then(([user, friend]) => {
+            return {
+                value: friend.friend_requests.find(each => each.toString() === userID) ?
+                    USER_FRIEND_RELATION.PENDING :
+                    user.friends.find(each => each.info.toString() === friendID) ?
+                        USER_FRIEND_RELATION.FRIEND : USER_FRIEND_RELATION.NOT_FRIEND
+            }
+        })
+}
+
+const unfriend = (userID, friendID) => {
+    return Promise.all([
+        Post.find({
+            belonged_person: ObjectId(userID),
+            policy: {
+                $ne: "PUBLIC"
+            }
+        }).lean(),
+        Post.find({
+            belonged_person: ObjectId(friendID),
+            policy: {
+                $ne: "PUBLIC"
+            }
+        }).lean()
+    ])
+
+        .then(([friend_non_public_from_user, user_non_public_from_friend]) => {
+            return Promise.all([
+                User.findOneAndUpdate({
+                    _id: ObjectId(userID)
+                }, {
+                    $pull: {
+                        friends: {
+                            info: ObjectId(friendID)
+                        },
+                        followed_posts: {
+                            post: {
+                                $in: user_non_public_from_friend
+                            }
+
+                        },
+                        saved_posts: {
+                            $in: friend_non_public_from_user
+                        },
+                    }
+                }).exec(),
+                User.findOneAndUpdate({
+                    _id: ObjectId(friendID)
+                }, {
+                    $pull: {
+                        friends: {
+                            info: ObjectId(userID)
+                        },
+                        followed_posts: {
+                            post: {
+                                $in: friend_non_public_from_user
+                            }
+
+                        },
+                        saved_posts: {
+                            $in: friend_non_public_from_user
+                        },
+                    }
+                }).exec()
+            ])
+                .then(() => null)
+        })
+}
+
+const sendFriendRequest = (userID, friendID) => {
+    return User.findOneAndUpdate({
+        _id: ObjectId(friendID),
+        friend_requests: {
+            $ne: ObjectId(userID)
+        }
+    }, {
+        $push: {
+            friend_requests: ObjectId(userID)
+        }
+    }).exec()
+}
+
+const cancelFriendRequest = (userID, friendID) => {
+    return User.findOneAndUpdate({
+        _id: ObjectId(friendID),
+        friend_requests: ObjectId(userID)
+    }, {
+        $pull: {
+            friend_requests: ObjectId(userID)
+        }
+    }).exec()
+}
+const deleteNotificationByType = (userID, type, condition) => {
+    return User.findOneAndUpdate({
+        _id: ObjectId(userID)
+    }, {
+        "$pull": {
+            "notifications": {
+                notification_type: type,
+                ...condition
+            }
+        }
+    }).exec()
+}
+
 module.exports = {
+    deleteNotificationByType,
+    cancelFriendRequest,
+    sendFriendRequest,
+    unfriend,
+    checkIsFriend,
     seenNotifications,
     getUserNotifications,
     getUnseenNotificationsCount,

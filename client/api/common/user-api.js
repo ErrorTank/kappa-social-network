@@ -15,6 +15,9 @@ export const userApi = {
 
             });
     },
+    checkIsFriend(userID, friendID){
+        return authenApi.get(`/user/${userID}/is-friend/${friendID}`)
+    },
     login(payload){
         return offlineApi.post("/user/login", payload);
     },
@@ -59,5 +62,17 @@ export const userApi = {
     },
     getUserFriendsCount(userID){
         return authenApi.get(`/user/${userID}/friends-count`)
-    }
+    },
+    unfriend(userID, friendID){
+        return authenApi.put(`/user/${userID}/unfriend/${friendID}`)
+    },
+    sendFriendRequest(userID, friendID){
+        return authenApi.put(`/user/${userID}/send-friend-request/${friendID}`)
+    },
+    cancelFriendRequest(userID, friendID){
+        return authenApi.put(`/user/${userID}/cancel-friend-request/${friendID}`)
+    },
+    acceptFriendRequest(userID, friendID){
+        return authenApi.put(`/user/${userID}/accept-friend-request/${friendID}`)
+    },
 };

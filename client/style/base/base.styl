@@ -5,7 +5,41 @@
   padding: 0;
   box-sizing: inherit;
 }
+.common-dropdown-content{
+  padding 8px
+  width 250px
+  .content{
+    padding 8px
+    display flex
+    align-items center
+    cursor pointer
+    &:hover{
+      background-color darken(white, 5%)
 
+    }
+
+    .label{
+      font-size 1.4rem
+      white-space nowrap
+      font-weight 500
+      padding-left 12px
+      flex 0 0 calc(100% - 25px)
+    }
+    .icon-wrapper{
+      position relative
+      flex 0 0 25px
+      i{
+        font-size 1.8rem
+        position absolute
+        absoluteMiddle()
+      }
+    }
+    i{
+      font-size 2rem
+
+    }
+  }
+}
 html {
 
   font-size: 62.5%;
@@ -64,6 +98,9 @@ html {
 .btn-cancel{
   background-color danger
   color white
+  padding 5px 10px !important
+  font-size 1.5rem
+  font-weight 500
   &:hover{
     background-color darken(danger, 10%)
     color white !important

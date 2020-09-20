@@ -2,12 +2,14 @@ const express = require('express');
 const router = express.Router();
 const {authorizationUserMiddleware, checkAuthorizeUser} = require("../common/middlewares/common");
 const omit = require("lodash/omit");
-
+const mongoose = require("mongoose");
+const ObjectId = mongoose.Types.ObjectId;
 const {getAuthenticateUserInitCredentials, getUserBasicInfo, login, sendChangePasswordToken, resendChangePasswordToken,createUserNotification,
     verifyChangePasswordToken, getChangePasswordUserBrief, changePassword, addNewSearchHistory, deleteSearchHistory,
-    updateSearchHistory, shortLogin, simpleUpdateUser, getUnseenNotificationsCount, getUserNotifications, seenNotifications, getUserFriendsCount} = require("../db/db-controllers/user");
+    updateSearchHistory, shortLogin, simpleUpdateUser, getUnseenNotificationsCount, getUserNotifications,
+    seenNotifications, getUserFriendsCount, checkIsFriend, unfriend, sendFriendRequest, cancelFriendRequest, deleteNotificationByType} = require("../db/db-controllers/user");
 
-module.exports = () => {
+module.exports = (db, namespacesIO) => {
     router.get("/init-credentials", authorizationUserMiddleware, (req, res, next) => {
 
         return getAuthenticateUserInitCredentials(req.user._id).then((data) => {
@@ -25,6 +27,47 @@ module.exports = () => {
     router.get("/:userID/basic-info", (req, res, next) => {
 
         return getUserBasicInfo(req.params.userID, req.query).then((data) => {
+            return res.status(200).json(data);
+        }).catch(err => next(err));
+
+    });
+    router.get("/:userID/is-friend/:friendID", authorizationUserMiddleware, (req, res, next) => {
+
+        return checkIsFriend(req.params.userID, req.params.friendID).then((data) => {
+            return res.status(200).json(data);
+        }).catch(err => next(err));
+
+    });
+    router.put("/:userID/unfriend/:friendID", authorizationUserMiddleware, (req, res, next) => {
+
+        return unfriend(req.params.userID, req.params.friendID).then((data) => {
+            return res.status(200).json(data);
+        }).catch(err => next(err));
+
+    });
+    router.put("/:userID/cancel-friend-request/:friendID", authorizationUserMiddleware, (req, res, next) => {
+
+        return cancelFriendRequest(req.params.userID, req.params.friendID).then((data) => {
+            deleteNotificationByType(req.params.friendID, "friend_request", {person: ObjectId(req.params.userID)});
+
+            return res.status(200).json(data);
+        }).catch(err => next(err));
+
+    });
+    router.put("/:userID/send-friend-request/:friendID", authorizationUserMiddleware, (req, res, next) => {
+
+        return sendFriendRequest(req.params.userID, req.params.friendID).then((data) => {
+            createUserNotification({
+                type: "friend_request",
+                data: {
+                    person: req.params.userID
+                },
+                userID: req.params.friendID
+            }).then(notification => {
+                namespacesIO.feedPost.io.to(`/feed-post-room/user/${req.params.friendID}`)
+                    .emit('notify-user', {notification});
+            })
+
             return res.status(200).json(data);
         }).catch(err => next(err));
 

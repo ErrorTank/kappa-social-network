@@ -8,6 +8,54 @@ import classnames from "classnames"
 import {genderMatcher} from "../../layout/authen-layout/create-message-widget/chat-box/message-section/special-message/special-message";
 import {REACTION_EMOJI_MAP} from "../reactions-widget/reactions-widget";
 import {customHistory} from "../../routes/routes";
+import {Button} from "../button/button";
+import {userApi} from "../../../api/common/user-api";
+
+
+
+
+class FRNotification extends Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            status: "PENDING",
+            loadingA: false,
+            loadingC: false
+        }
+    }
+
+    cancelRequest = () => {
+        this.setState({loadingC: true})
+        userApi.cancelFriendRequest(this.props.data.person._id, userInfo.getState()._id)
+            .then(() => this.setState({status: "CANCEL"}))
+    }
+
+    acceptRequest = () => {
+
+    }
+
+    render() {
+        let {data} = this.props;
+        let {status, loadingA, loadingC} = this.state;
+        return (
+            <div className="fr-notification">
+                <div><span className="high-light dark">{data.person.basic_info.username}</span> đã gửi cho bạn lời mời kết bạn </div>
+                {status === "PENDING" ? (
+                    <div className="fr-actions">
+                        <Button className="btn btn-cancel mr-2" loading={loadingC} onClick={this.cancelRequest}>Hủy</Button>
+                        <Button className="btn btn-common-primary" loading={loadingA}  onClick={this.acceptRequest}>Chấp nhận</Button>
+                    </div>
+                ) : (
+                    <div className="result">
+                        {status === "ACCEPT" ? `Bạn và ${data.person.basic_info.username} đã trở thành bạn bè.` : `Hủy lời mời kết bạn thành công`}
+                    </div>
+                )}
+            </div>
+        );
+    }
+}
+
+
 
 export class PostNotification extends Component {
 
@@ -17,7 +65,17 @@ export class PostNotification extends Component {
         let {notification_type} = data;
         let userID = userInfo.getState()._id;
         const dataMatcher = {
+            "friend_request": {
+                getAvatarUser: () => data.person,
+                getReaction: () => null,
+                getContent: () => (
+                    <FRNotification
+                        data={data}
+                    />
+                ),
+                getTime: () => data.published_time,
 
+            },
             "comment_on_followed_post": {
                 getAvatarUser: () => data.comment.from_person,
                 getReaction: () => null,
@@ -125,7 +183,7 @@ export class PostNotification extends Component {
         let {getAvatarUser, getReaction, getContent, getTime, getFilePreview, toLink} = this.getRenderData(notification);
         let reaction = getReaction();
         return (
-            <div className={classnames("post-notification", {active: highLight && !notification.is_seen})} onClick={() => customHistory.push(toLink())}>
+            <div className={classnames("post-notification", {active: highLight && !notification.is_seen})} onClick={ () => toLink && customHistory.push(toLink())}>
                 <div className="avatar-wrapper">
                     <Avatar user={getAvatarUser()}/>
                     {reaction && (
