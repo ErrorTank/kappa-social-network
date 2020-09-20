@@ -5,7 +5,7 @@ import { userInfo, datingProfile } from "./../../../../common/states/common";
 import { DatingRegister } from "./datingRegister/datingRegister";
 import { LoadingInline } from "./../../../common/loading-inline/loading-inline";
 import { CardContainer } from "./card-container/card-container";
-import { Header } from "./header/header";
+import { DatingLeftPanel } from "./dating-left-panel";
 
 export default class DatingRoute extends Component {
   constructor(props) {
@@ -45,14 +45,7 @@ export default class DatingRoute extends Component {
         ) : profile ? (
           <PageTitle title={"Hẹn hò"}>
             <div className="dating-home">
-              <div className="left-panel">
-                <Header />
-                <div className="dating-home-tab">
-                  <div className="tab-button">Kết đôi</div>
-                  <div className="tab-button">Đã thích bạn</div>
-                  <div className="tab-button">Tin nhắn</div>
-                </div>
-              </div>
+              <DatingLeftPanel />
               <div className="right-panel">
                 <CardContainer />
               </div>
