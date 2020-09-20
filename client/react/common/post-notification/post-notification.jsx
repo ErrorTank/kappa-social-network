@@ -10,7 +10,7 @@ import {REACTION_EMOJI_MAP} from "../reactions-widget/reactions-widget";
 import {customHistory} from "../../routes/routes";
 import {Button} from "../button/button";
 import {userApi} from "../../../api/common/user-api";
-
+moment.locale("vi")
 
 
 
@@ -31,7 +31,9 @@ class FRNotification extends Component {
     }
 
     acceptRequest = () => {
-
+        this.setState({loadingA: true})
+        userApi.acceptFriendRequest(this.props.data.person._id, userInfo.getState()._id)
+            .then(() => this.setState({status: "ACCEPT"}))
     }
 
     render() {
@@ -47,7 +49,7 @@ class FRNotification extends Component {
                     </div>
                 ) : (
                     <div className="result">
-                        {status === "ACCEPT" ? `Bạn và ${data.person.basic_info.username} đã trở thành bạn bè.` : `Hủy lời mời kết bạn thành công`}
+                        {status === "ACCEPT" ? (<span>Bạn và <span  className="high-light dark">{data.person.basic_info.username}</span> đã trở thành bạn bè.</span>) : `Hủy lời mời kết bạn thành công`}
                     </div>
                 )}
             </div>
@@ -65,6 +67,17 @@ export class PostNotification extends Component {
         let {notification_type} = data;
         let userID = userInfo.getState()._id;
         const dataMatcher = {
+            "accept_friend_request": {
+                getAvatarUser: () => data.person,
+                getReaction: () => null,
+                getContent: () => (
+                    <span>
+                        <span className="high-light dark">{data.person.basic_info.username}</span> đã chấp nhận lời mời kết bạn
+                    </span>
+                ),
+                getTime: () => data.published_time,
+
+            },
             "friend_request": {
                 getAvatarUser: () => data.person,
                 getReaction: () => null,

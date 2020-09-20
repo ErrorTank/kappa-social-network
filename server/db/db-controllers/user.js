@@ -710,7 +710,49 @@ const deleteNotificationByType = (userID, type, condition) => {
     }).exec()
 }
 
+const acceptFriendRequest = (userID, friendID) => {
+    return Promise.all([
+        User.findOneAndUpdate({
+            _id: ObjectId(friendID),
+            "friends.info": {
+                $ne: ObjectId(userID)
+
+            }
+        }, {
+            $push: {
+                friends: {
+                    info: ObjectId(userID)
+                }
+            }
+        }).exec(),
+        User.findOneAndUpdate({
+            _id: ObjectId(userID),
+            "friends.info": {
+                $ne: ObjectId(friendID)
+
+            }
+        }, {
+            $push: {
+                friends: {
+                    info: ObjectId(friendID)
+                }
+            }
+        }).exec(),
+        User.findOneAndUpdate({
+            _id: ObjectId(friendID),
+            friend_requests: ObjectId(userID),
+
+        }, {
+            $pull: {
+                friend_requests: ObjectId(userID)
+            },
+
+        }).exec()
+    ])
+}
+
 module.exports = {
+    acceptFriendRequest,
     deleteNotificationByType,
     cancelFriendRequest,
     sendFriendRequest,

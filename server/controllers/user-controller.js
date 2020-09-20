@@ -7,7 +7,8 @@ const ObjectId = mongoose.Types.ObjectId;
 const {getAuthenticateUserInitCredentials, getUserBasicInfo, login, sendChangePasswordToken, resendChangePasswordToken,createUserNotification,
     verifyChangePasswordToken, getChangePasswordUserBrief, changePassword, addNewSearchHistory, deleteSearchHistory,
     updateSearchHistory, shortLogin, simpleUpdateUser, getUnseenNotificationsCount, getUserNotifications,
-    seenNotifications, getUserFriendsCount, checkIsFriend, unfriend, sendFriendRequest, cancelFriendRequest, deleteNotificationByType} = require("../db/db-controllers/user");
+    seenNotifications, getUserFriendsCount, checkIsFriend, unfriend, sendFriendRequest, cancelFriendRequest, deleteNotificationByType
+,acceptFriendRequest} = require("../db/db-controllers/user");
 
 module.exports = (db, namespacesIO) => {
     router.get("/init-credentials", authorizationUserMiddleware, (req, res, next) => {
@@ -49,6 +50,25 @@ module.exports = (db, namespacesIO) => {
 
         return cancelFriendRequest(req.params.userID, req.params.friendID).then((data) => {
             deleteNotificationByType(req.params.friendID, "friend_request", {person: ObjectId(req.params.userID)});
+
+            return res.status(200).json(data);
+        }).catch(err => next(err));
+
+    });
+    router.put("/:userID/accept-friend-request/:friendID", authorizationUserMiddleware, (req, res, next) => {
+
+        return acceptFriendRequest(req.params.userID, req.params.friendID).then((data) => {
+            deleteNotificationByType(req.params.friendID, "friend_request", {person: ObjectId(req.params.userID)})
+            createUserNotification({
+                type: "accept_friend_request",
+                data: {
+                    person: req.params.friendID
+                },
+                userID: req.params.userID
+            }).then(notification => {
+                namespacesIO.feedPost.io.to(`/feed-post-room/user/${req.params.userID}`)
+                    .emit('notify-user', {notification});
+            })
 
             return res.status(200).json(data);
         }).catch(err => next(err));
