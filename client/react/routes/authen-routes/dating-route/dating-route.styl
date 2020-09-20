@@ -5,26 +5,33 @@
         display: flex;
         height: 100 vh;
 
-        .left-panel {
-            flex: 0 0 30%;
-            background-color: pink;
-        }
-
-        .dating-home-tab {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            width: 100%;
-            padding: 0 20px;
-
-            .tab-button {
-                font-weight: 600;
-                font-size: 13px;
-            }
-        }
-
         .right-panel {
             flex: 0 0 70%;
+        }
+    }
+}
+
+.dating-left-panel {
+    flex: 0 0 30%;
+    background-color: pink;
+
+    .dating-home-tab {
+        display: flex;
+        align-items: center;
+        padding: 12px 20px;
+
+        .tab-button {
+            flex-grow: 1;
+            font-weight: 600;
+            font-size: 13px;
+            text-align: center;
+            cursor: pointer;
+            padding: 8px;
+            border-bottom: 3px solid transparent;
+
+            &.active {
+                border-bottom-color: tinderPink;
+            }
         }
     }
 }
