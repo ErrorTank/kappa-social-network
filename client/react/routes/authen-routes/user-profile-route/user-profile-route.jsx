@@ -43,7 +43,8 @@ class UserProfileRoute extends Component {
                                     user={user}
                                 />
                                 <UprBody
-
+                                    user={user}
+                                    renderChildRoute={this.props.children}
                                 />
                             </div>
                         ) : null}
