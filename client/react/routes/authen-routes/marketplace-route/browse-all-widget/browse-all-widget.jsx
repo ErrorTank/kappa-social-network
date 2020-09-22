@@ -17,46 +17,39 @@ export class BrowseAllWidget extends Component {
     this.state = {
       categoryDisplay: [],
     };
-    categoryApi.getCategory({}).then((e) => {
+    categoryApi.getCategory({}).then((categories) => {
       let itemInfo = itemField.find((e) => e.englishName === 'category');
       let itemIcon = itemInfo.options.filter((e) => e.icon);
-      // console.log(itemIcon);
-      let categoryWithIcon = e.map((category) => {
-        let checkIcon = itemIcon.find((e) => e.name === category.name);
-        if (checkIcon && checkIcon.icon) {
-          return {
-            ...category,
-            icon: checkIcon.icon,
-          };
+      let additionInfo = [...itemIcon, ...this.otherCategory];
+
+      let categoryWithIcon = categories.reduce((res, option) => {
+        let checkIcon = additionInfo.find((each) => each.name === option.name);
+        if (checkIcon) {
+          return [
+            ...res,
+            {
+              ...option,
+              icon: checkIcon.icon,
+            },
+          ];
         } else {
-          return category;
+          return res;
         }
-      });
-      // should use reduce to map and filter to get icon only maybe
-      // console.log(categoryWithIcon);
-      let categoryDisplay = categoryWithIcon.reduce((res, option) => {
-        if (option.icon) {
-          res.push({
-            title: option.name,
-            icon: option.icon,
-          });
-        }
-        return res;
       }, []);
-      let otherCategory = [
-        { icon: 'fas fa-home', title: 'Bán nhà' },
-        {
-          icon: 'far fa-home-alt',
-          title: 'Cho thuê',
-        },
-      ];
-      let final = [...categoryDisplay, ...otherCategory];
-      // console.log(final);
-      // console.log(categoryDisplay);
-      this.setState({ categoryDisplay: final });
-      // console.log(e);
+
+      console.log(categoryWithIcon);
+
+      this.setState({ categoryDisplay: categoryWithIcon });
     });
   }
+
+  otherCategory = [
+    { icon: 'fas fa-home', name: 'Bán nhà' },
+    {
+      icon: 'far fa-home-alt',
+      name: 'Cho thuê',
+    },
+  ];
 
   browseAllMenu = [
     {
@@ -93,9 +86,9 @@ export class BrowseAllWidget extends Component {
                     categoryDisplay.map((each) => {
                       return (
                         <MenuNavigationWithIcon
-                          key={each.title}
+                          key={each.name}
                           icon={each.icon}
-                          title={each.title}
+                          title={each.name}
                           type={each.type}
                           onClick={() => customHistory.push(each.link)}
                         />

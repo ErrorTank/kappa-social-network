@@ -7,7 +7,8 @@ const Category = require('../model/marketplace/category')(appDb);
 const { getRootCategories } = require('./category');
 
 const createListing = (value) => {
-  return Category.findOne({ name: value.category }).then((category) => {
+  let categoryName = findSubCategory(value);
+  return Category.findOne({ name: categoryName }).then((category) => {
     let newListing = {
       ...value,
       category: category._id,
@@ -16,6 +17,15 @@ const createListing = (value) => {
       return newListing;
     });
   });
+};
+
+const findSubCategory = (value) => {
+  const { category } = value;
+  const subCategoryName = {
+    'Xe hơi/Xe tải': value.bodyType,
+    'Cho thuê': value.homeType,
+  };
+  return subCategoryName[category] ? subCategoryName[category] : category;
 };
 
 const getListing = (query) => {

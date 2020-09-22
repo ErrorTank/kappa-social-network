@@ -700,9 +700,10 @@ export const homeField = [
   //Home is a little different
   {
     name: 'Nhà dùng để',
-    englishName: 'homeFor',
+    // englishName: 'homeFor',
+    englishName: 'category',
     isSelected: true,
-    options: [{ name: 'Bán' }, { name: 'Cho thuê' }],
+    options: [{ name: 'Bán nhà' }, { name: 'Cho thuê' }],
     error: {
       required: 'Vui lòng chọn giá trị hợp lệ.',
     },

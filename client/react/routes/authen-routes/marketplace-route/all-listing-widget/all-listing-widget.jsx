@@ -19,7 +19,7 @@ export class AllListingWidget extends Component {
   }
   render() {
     const { listingByCategory, showItems } = this.state;
-    console.log(listingByCategory);
+    // console.log(listingByCategory);
     return (
       <ThemeContext.Consumer>
         {({ darkMode }) => (
