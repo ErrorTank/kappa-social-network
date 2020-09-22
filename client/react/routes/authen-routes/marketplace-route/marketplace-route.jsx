@@ -8,16 +8,38 @@ import { AllListingWidget } from './all-listing-widget/all-listing-widget';
 class MarketplaceRoute extends KComponent {
   constructor(props) {
     super(props);
-    this.state = {};
+    this.state = {
+      myPosition: '',
+      radius: null,
+    };
+    navigator.geolocation.getCurrentPosition((position) => {
+      const { latitude, longitude } = position.coords;
+      let result = {
+        lat: latitude,
+        lon: longitude,
+      };
+
+      this.setState({ myPosition: result });
+    });
   }
+  updateValue = (key, val) => {
+    this.setState({ [key]: val });
+  };
   render() {
     return (
       <PageTitle title={'Marketplace'}>
         <div className='marketplace-route'>
           <CommonLayout
-            mainRender={() => <AllListingWidget />}
+            mainRender={() => (
+              <AllListingWidget myPosition={this.state.myPosition} />
+            )}
             haveRightRender={false}
-            leftRender={() => <BrowseAllWidget />}
+            leftRender={() => (
+              <BrowseAllWidget
+                updateValue={this.updateValue}
+                radius={this.state.radius}
+              />
+            )}
           />
         </div>
       </PageTitle>

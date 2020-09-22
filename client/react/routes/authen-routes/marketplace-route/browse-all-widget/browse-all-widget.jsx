@@ -17,6 +17,7 @@ export class BrowseAllWidget extends Component {
     this.state = {
       categoryDisplay: [],
     };
+
     categoryApi.getCategory({}).then((categories) => {
       let itemInfo = itemField.find((e) => e.englishName === 'category');
       let itemIcon = itemInfo.options.filter((e) => e.icon);
@@ -36,8 +37,6 @@ export class BrowseAllWidget extends Component {
           return res;
         }
       }, []);
-
-      console.log(categoryWithIcon);
 
       this.setState({ categoryDisplay: categoryWithIcon });
     });
@@ -69,6 +68,7 @@ export class BrowseAllWidget extends Component {
   ];
   render() {
     const { categoryDisplay } = this.state;
+    const { updateValue, radius } = this.props;
     return (
       <ThemeContext.Consumer>
         {({ darkMode }) => (
@@ -79,7 +79,10 @@ export class BrowseAllWidget extends Component {
                 darkMode={darkMode}
                 menuNavigation={this.browseAllMenu}
               />
-              <MarketplaceFilterSection />
+              <MarketplaceFilterSection
+                updateValue={updateValue}
+                radius={radius}
+              />
               <CategoriesSection darkMode={darkMode}>
                 <>
                   {categoryDisplay &&
