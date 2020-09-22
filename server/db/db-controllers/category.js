@@ -36,7 +36,7 @@ const getCategories = (query) => {
             })
               .lean()
               .then((childrenCategory) => {
-                return { ...e, childrenCategory: childrenCategory };
+                return { ...e, children: childrenCategory };
               });
           } else {
             return Promise.resolve({
