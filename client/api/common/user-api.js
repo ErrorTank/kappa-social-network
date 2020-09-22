@@ -75,4 +75,5 @@ export const userApi = {
     acceptFriendRequest(userID, friendID){
         return authenApi.put(`/user/${userID}/accept-friend-request/${friendID}`)
     },
+
 };

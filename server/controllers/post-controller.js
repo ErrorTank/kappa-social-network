@@ -5,9 +5,9 @@ const {checkReplyExistedMiddleware, checkPostExistedMiddleware, checkCommentExis
 const {
     createNewPost, getAllPosts, updateFilesInPost, updatePost, updatePostReaction, getPostReactionByReactionKey,
     getPostComments, createNewCommentForPost, updatePostCommentReaction, createCommentReply, getCommentReplies, deleteComment, deletePost, deleteReply, updateComment, getLatestCommentsFromPost, getPostByID
-    , getCommentByReply
+    , getCommentByReply,getPostsByUserID
 } = require("../db/db-controllers/post");
-const {toggleFollowPost, toggleSavePost, toggleBlockPost, getMentionsUserByComment, getFollowedUserByPost, createUserNotification, getUserBasicInfo} = require('../db/db-controllers/user');
+const {toggleFollowPost, toggleSavePost, toggleBlockPost, getMentionsUserByComment, getFollowedUserByPost, createUserNotification, getUserBasicInfo, getUserFriends} = require('../db/db-controllers/user');
 const {MessageState} = require('../common/const/message-state');
 const {fileUploader} = require('../common/upload-services/file-upload');
 const mongoose = require('mongoose');
@@ -29,31 +29,38 @@ module.exports = (db, namespacesIO) => {
                     .to(`/post-room/${req.body.shared_post}`)
                     .emit('edit-post', shared_post);
             }
-            let filesTagged = uniq(data.files.reduce((total, cur) => [...total, ...cur.tagged.map(each => ({
-                userID: each.related._id.toString(),
-                file: {...pick(cur, ["origin_path", "caption", "path", "name"]), rootFileID: cur._id}
-            }))], []));
-            if (filesTagged.length) {
-                for (let u of filesTagged) {
-                    createUserNotification({
-                        type: "tagged_on_post_file",
-                        data: {post: data, file: u.file},
-                        userID: u.userID
-                    })
-                        .then(notification => namespacesIO.feedPost.io.to(`/feed-post-room/user/${u.userID}`).emit("notify-user", {notification}));
+
+
+            if(data.policy !== "PERSONAL"){
+                let filesTagged = uniq(data.files.reduce((total, cur) => [...total, ...cur.tagged.map(each => ({
+                    userID: each.related._id.toString(),
+                    file: {...pick(cur, ["origin_path", "caption", "path", "name"]), rootFileID: cur._id}
+                }))], []));
+
+                if (filesTagged.length) {
+                    for (let u of filesTagged) {
+                        createUserNotification({
+                            type: "tagged_on_post_file",
+                            data: {post: data, file: u.file},
+                            userID: u.userID
+                        })
+                            .then(notification => namespacesIO.feedPost.io.to(`/feed-post-room/user/${u.userID}`).emit("notify-user", {notification}));
+
+                    }
 
                 }
+                let postTagged = data.tagged.map(each => each._id.toString()).filter(each => !filesTagged.find(t => t.userID === each)).filter(each => each !== req.user._id);
 
-            }
-            let postTagged = data.tagged.map(each => each._id.toString()).filter(each => !filesTagged.find(t => t.userID === each)).filter(each => each !== req.user._id);
-            if (postTagged.length) {
-                for (let u1 of postTagged) {
-                    createUserNotification({type: "tagged_on_post", data: {post: data}, userID: u1})
-                        .then(notification => namespacesIO.feedPost.io.to(`/feed-post-room/user/${u1}`).emit("notify-user", {notification}));
+                if (postTagged.length) {
+                    for (let u1 of postTagged) {
+                        createUserNotification({type: "tagged_on_post", data: {post: data}, userID: u1})
+                            .then(notification => namespacesIO.feedPost.io.to(`/feed-post-room/user/${u1}`).emit("notify-user", {notification}));
+
+                    }
 
                 }
-
             }
+
             return res.status(200).json(data);
         })
             .catch((err) => next(err));
@@ -211,6 +218,15 @@ module.exports = (db, namespacesIO) => {
     router.get("/get-all", authorizationUserMiddleware, (req, res, next) => {
         return getAllPosts({
             userID: req.user._id,
+            ...req.query
+        }).then((data) => {
+            return res.status(200).json(data);
+        })
+            .catch((err) => next(err));
+
+    })
+    router.get("/user/:userID/get-all", authorizationUserMiddleware, (req, res, next) => {
+        return getPostsByUserID(req.user._id, req.params.userID, {
             ...req.query
         }).then((data) => {
             return res.status(200).json(data);

@@ -227,7 +227,7 @@ export class CreatePostMain extends Component {
                                                 ref={(element) => {
                                                     this.editor = element;
                                                 }}
-                                                placeholder={isShare ? `Bình luận về bài đăng này...` :`${user.basic_info.username} ơi, bạn đang nghĩ gì thế?`}
+                                                placeholder={this.props.placeholder}
 
                                             />
                                             <MentionSuggestions

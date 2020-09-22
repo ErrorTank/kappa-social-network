@@ -38,3 +38,53 @@
     .h2 {
     }
 }
+
+.dating-message {
+    .dating-chat-box {
+        padding: 8px;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        background-color: white;
+        margin-bottom: 5px;
+
+        &:hover {
+            border-right: 4px solid tinderPink;
+        }
+
+        .dating-chat-avatar {
+            flex: 0 0 50px;
+            height: 50px;
+
+            .avatar-wrapper {
+                width: 100%;
+                height: 100%;
+                overflow: hidden;
+                border-radius: 50%;
+
+                img {
+                    width: 100%;
+                    height: 100%;
+                    object-fit: cover;
+                }
+            }
+        }
+
+        .dating-wapper-content {
+            flex: 0 0 calc(100% -50px);
+            padding-left: 10px;
+
+            .dating-chat-name {
+                font-size: 16px;
+                font-weight: 500;
+                color: tinderPink;
+            }
+
+            .dating-last-message {
+                font-size: 1.4rem;
+                color: commonTextLight;
+                white-space: nowrap;
+            }
+        }
+    }
+}

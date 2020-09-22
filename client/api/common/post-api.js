@@ -89,5 +89,8 @@ export const postApi = {
     },
     getPostByID(postID){
         return postApiErrorCatcher(authenApi.get(`/post/detail/post/${postID}`))
+    },
+    getPostsByUserID(userID, {skip, limit}){
+        return postApiErrorCatcher(authenApi.get(`/post/user/${userID}/get-all?skip=${skip}&limit=${limit}`))
     }
 };

@@ -36,10 +36,10 @@ class FeedRoute extends Component {
 
     reload = () => {
 
-        this.setState({loading: true, posts: []}, () => {
-            let routeWrapper = ReactDOM.findDOMNode(this.feedRoute);
+        this.setState({loading: true, posts: [], neededReload: false}, () => {
+
             // console.log("Cac")
-            routeWrapper.scrollTo({
+            window.scrollTo({
                 top: 0,
                 behavior: 'smooth'
             });
@@ -77,7 +77,7 @@ class FeedRoute extends Component {
                     }}
                 >
                     {() => (
-                        <div className="feed-route" ref={feedRoute => this.feedRoute = feedRoute}>
+                        <div className="feed-route">
                             <CommonLayout
                                 rightRender={() => (
                                     <ChatWidget/>
