@@ -32,6 +32,14 @@ module.exports = (db, namespacesIO) => {
 
 
             if(data.policy !== "PERSONAL"){
+                if(data.belonged_wall){
+                    createUserNotification({
+                        type: "post_on_wall",
+                        data: {post: data},
+                        userID: data.belonged_wall._id.toString()
+                    })
+                        .then(notification => namespacesIO.feedPost.io.to(`/feed-post-room/user/${data.belonged_wall._id.toString()}`).emit("notify-user", {notification}));
+                }
                 let filesTagged = uniq(data.files.reduce((total, cur) => [...total, ...cur.tagged.map(each => ({
                     userID: each.related._id.toString(),
                     file: {...pick(cur, ["origin_path", "caption", "path", "name"]), rootFileID: cur._id}

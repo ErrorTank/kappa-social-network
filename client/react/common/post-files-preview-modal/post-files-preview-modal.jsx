@@ -14,6 +14,7 @@ import {postApi} from "../../../api/common/post-api";
 import {mergeArray} from "../../../common/utils/array-utils";
 import {CommonInput} from "../common-input/common-input";
 import {postFilesDetectionsCache} from "../../../common/cache/files-cache";
+import {Link} from "react-router-dom";
 
 
 export const postFilesPreviewModal = {
@@ -172,7 +173,13 @@ class PostFilesPreviewModal extends Component {
                         </div>
                         <div className="post-meta-data">
                             <div className="upper">
-                                {post.belonged_person.basic_info.username}
+                                <Link className="link" to={`/user/${post.belonged_person._id}`}>{post.belonged_person.basic_info.username}</Link>
+                                {post.belonged_wall && (
+                                    <>
+                                        <i className="fas fa-caret-right ml-2 mr-2"></i>
+                                        <Link className="link" to={`/user/${post.belonged_wall._id}`}>{post.belonged_wall.basic_info.username}</Link>
+                                    </>
+                                )}
                             </div>
 
                             <div className="timer">
