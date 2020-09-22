@@ -3,6 +3,7 @@ import { Header } from "./header/header";
 import classnames from "classnames";
 import { DatingMatched } from "./dating-tabs/dating-matched";
 import { DatingLike } from "./dating-tabs/dating-like";
+import { DatingMessage } from "./dating-tabs/dating-message";
 
 const LEFT_PANEL_TABS = {
   MATCHES: "MATCHES",
@@ -32,6 +33,7 @@ export class DatingLeftPanel extends Component {
       {
         label: "Tin nhắn",
         mode: LEFT_PANEL_TABS.MESSAGE,
+        component: DatingMessage,
       },
     ];
     let { mode } = this.state;
