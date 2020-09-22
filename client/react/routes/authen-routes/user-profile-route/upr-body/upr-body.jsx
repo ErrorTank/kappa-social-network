@@ -5,7 +5,9 @@ export const UprBody = ({user, renderChildRoute}) => {
     return (
         <div className="upr-body">
             <div className="upr-body-container common-container">
-                {renderChildRoute()}
+                {renderChildRoute({
+                    user
+                })}
             </div>
         </div>
     );

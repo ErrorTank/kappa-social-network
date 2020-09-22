@@ -96,6 +96,7 @@ class CreatePostModal extends Component {
                     block_share,
                     policy: policy.value,
                     files: newFiles,
+                    belonged_wall: this.props.belongedWall,
                     tagged: tagged.map(each => each._id),
                     shared_post: this.props.isShare ? this.props.postID : null,
                     ...transformEditorState(convertToRaw(editorState.getCurrentContent()))
@@ -145,6 +146,7 @@ class CreatePostModal extends Component {
 
                 component: (
                     <CreatePostMain
+                        placeholder={this.props.placeholder}
                         postID={postID}
                         {...this.state}
                         isShare={isShare}

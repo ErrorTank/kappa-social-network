@@ -7,7 +7,6 @@ import {postApi} from "../../../../../../../api/common/post-api";
 import {LoadingInline} from "../../../../../../common/loading-inline/loading-inline";
 import {PostBox} from "../../../../../../common/post-box/post-box";
 import {userInfo} from "../../../../../../../common/states/common";
-import ReactDOM from "react-dom";
 
 export class ProfileFeedWidget extends Component {
     constructor(props) {
@@ -21,7 +20,7 @@ export class ProfileFeedWidget extends Component {
     }
 
     fetchPostsForFeed = () => {
-        return postApi.getPostsForFeed({skip: this.state.list.length, limit: 5})
+        return postApi.getPostsByUserID(this.props.user._id, {skip: this.state.list.length, limit: 5})
             .then(posts => {
                 this.setState({
                     list: this.state.list.concat(posts),
@@ -83,7 +82,9 @@ export class ProfileFeedWidget extends Component {
         return (
             <div className="profile-feed-widget">
                 <PostCreationBox
+                    belongedWall={this.props.user._id}
                     onCreatePost={this.appendNewPost}
+                    placeholder={`Bạn có gì muốn nói với ${this.props.user.basic_info.username} à? Nói đi bạn eiii...`}
                 />
                 <InfiniteScrollWrapper
                     useWindowRoot
