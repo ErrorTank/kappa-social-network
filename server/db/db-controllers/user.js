@@ -476,6 +476,10 @@ const createUserNotification = ({type, data, userID}) => {
                     path: "belonged_person",
                     model: "User",
                     select: "_id basic_info avatar last_active_at active"
+                },{
+                    path: "belonged_wall",
+                    model: "User",
+                    select: "_id basic_info avatar last_active_at active"
                 },
             ]
         },
