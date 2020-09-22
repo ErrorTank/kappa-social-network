@@ -18,7 +18,10 @@ export class PostCreationBox extends Component {
     }
 
     openCreatePostModal = () => {
-        createPostModal.open()
+        createPostModal.open({
+            placeholder: this.props.placeholder,
+            belongedWall: this.props.belongedWall
+        })
             .then(data => {
                 if(data){
                     this.props.onCreatePost(data);
@@ -36,7 +39,7 @@ export class PostCreationBox extends Component {
                     />
                 </div>
                 <div className="placeholder" onClick={this.openCreatePostModal}>
-                    {user.basic_info.username} ơi, bạn đang nghĩ gì thế?
+                    {this.props.placeholder}
                 </div>
             </div>
         )
@@ -78,6 +81,7 @@ export class FeedWidget extends Component {
             <div className="feed-widget">
                 <PostCreationBox
                     onCreatePost={this.appendNewPost}
+                    placeholder={`${userInfo.getState().basic_info.username} ơi! Bạn đang nghĩ gì thế?`}
                 />
                 <FeedList
                     observer={observer}

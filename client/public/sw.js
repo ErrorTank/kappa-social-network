@@ -199,6 +199,10 @@ var exceptionRequestsDev = [
     method: 'GET',
   },
   {
+    endpoint: /https:\/\/localhost:4000\/api\/post\/user\/\w+\/get-all/,
+    method: 'GET',
+  },
+  {
     endpoint: /https:\/\/localhost:4000\/api\/post\/update\/post\/\w+\/file\/\w+/,
     method: 'PUT',
   },

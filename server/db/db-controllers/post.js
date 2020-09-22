@@ -91,6 +91,11 @@ const getAllPosts = ({userID, skip, limit}) => {
                                 },
                             },
                             {
+                                belonged_wall: {
+                                    $exists: false
+                                }
+                            },
+                            {
                                 $or: [
                                     {
                                         belonged_person: ObjectId(userID)
@@ -237,23 +242,35 @@ const getAllPosts = ({userID, skip, limit}) => {
                     $lookup: {
                         from: 'pages', localField: 'belonged_page', foreignField: '_id', as: "belonged_page"
                     }
-                }, {
+                },
+                {
+                    $lookup: {
+                        from: 'users', localField: 'belonged_wall', foreignField: '_id', as: "belonged_wall"
+                    }
+                },
+                {
                     $lookup: {
                         from: 'groups', localField: 'belonged_group', foreignField: '_id', as: "belonged_group"
                     }
-                }, {
+                },
+                {
                     $lookup: {
                         from: 'users', localField: 'belonged_person', foreignField: '_id', as: "belonged_person"
                     }
-                }, {
+                },
+                {
                     $lookup: {
                         from: 'users', localField: 'tagged', foreignField: '_id', as: "tagged"
                     }
                 }, {
                     $addFields: {
+                        "belonged_wall": {
+                            $arrayElemAt: ["$belonged_wall", 0]
+                        },
                         "belonged_page": {
                             $arrayElemAt: ["$belonged_page", 0]
                         },
+
                         "belonged_group": {
                             $arrayElemAt: ["$belonged_group", 0]
                         },
@@ -292,6 +309,7 @@ const getAllPosts = ({userID, skip, limit}) => {
                 ...each,
                 belonged_page: each.belonged_page ? pick(each.belonged_page, ["_id", "avatar", "basic_info"]) : null,
                 belonged_person: each.belonged_person ? pick(each.belonged_person, ["_id", "avatar", "basic_info"]) : null,
+                // belonged_wall: each.belonged_wall ? pick(each.belonged_wall, ["_id", "avatar", "basic_info"]) : null,
                 belonged_group: each.belonged_group ? pick(each.belonged_group, ["_id", "basic_info"]) : null,
                 tagged: each.tagged.map(tag => pick(tag, ["_id", "avatar", "basic_info"])),
                 score: (data.length - i) * 1.5 +
@@ -825,7 +843,291 @@ const getCommentByReply = ({replyID}) => {
     }).populate("replies")
 }
 
+const getPostsByUserID = (getterID, userID, {skip, limit}) => {
+    return Promise.all([
+        User.findOne({
+            _id: ObjectId(userID)
+        })
+            .lean(),
+        User.findOne({
+            _id: ObjectId(getterID)
+        })
+            .lean()
+    ])
+        .then(([user, getter]) => {
+            let isOwner = userID === getterID;
+            let isFriend = !!user.friends.find(each => each.info.toString() === getterID);
+            let {
+
+                person_blocked: _person_blocked,
+                blocked_posts: _blocked_posts,
+
+            } = getter;
+            // console.log(_friends)
+
+            let person_blocked = _person_blocked.map(each => ObjectId(each));
+            let blocked_posts = _blocked_posts.map(each => ObjectId(each));
+
+            return Post.aggregate([
+                {
+                    $match:{
+                        $and: [
+                            {
+                                belonged_group: {
+                                    $exists: false
+                                }
+                            },
+                            {
+                                _id: {
+                                    $nin: blocked_posts
+                                }
+                            },
+                            {
+                                belonged_person: {
+                                    $nin: person_blocked
+                                }
+                            },
+                            {
+                                $or: [
+                                    {
+                                        ...(isOwner ? {
+                                            belonged_person: ObjectId(userID)
+                                        } : {
+                                            $and: [
+                                                {
+                                                    belonged_person: ObjectId(userID),
+                                                },{
+                                                    ...(isFriend ? {
+                                                        policy: {
+                                                            $in: ["PUBLIC", "FRIENDS"]
+                                                        }
+                                                    } : {
+                                                        policy: "PUBLIC"
+                                                    })
+                                                }
+                                            ]
+                                        })
+                                    },{
+                                        $and: [
+                                            {
+                                                tagged: ObjectId(userID)
+                                            }, {
+                                                $or: [
+                                                    {
+                                                        belonged_person: ObjectId(getterID),
+                                                    }, {
+                                                        policy: "PUBLIC"
+                                                    }, {
+                                                        policy: "FRIENDS",
+                                                        belonged_person: {
+                                                            $in: getter.friends.map(each => ObjectId(each.info))
+                                                        }
+                                                    }
+                                                ]
+                                            }
+                                        ],
+
+                                    },{
+                                        $and: [
+                                            {
+                                                belonged_wall: ObjectId(userID)
+                                            }, {
+                                                $or: [
+                                                    {
+                                                        belonged_person: ObjectId(getterID),
+                                                    }, {
+                                                        policy: "PUBLIC"
+                                                    }, {
+                                                        policy: "FRIENDS",
+                                                        belonged_person: {
+                                                            $in: getter.friends.map(each => ObjectId(each.info))
+                                                        }
+                                                    }
+                                                ]
+                                            }
+                                        ],
+                                    }
+                                ]
+                            }
+                        ],
+
+                    }
+                },
+                {
+                    $addFields: {
+                        "love_size": {
+                            $size: "$reactions.love"
+                        },
+                        "laugh_size": {
+                            $size: "$reactions.laugh"
+                        },
+                        "wow_size": {
+                            $size: "$reactions.wow"
+                        },
+                        "cry_size": {
+                            $size: "$reactions.cry"
+                        },
+                        "angry_size": {
+                            $size: "$reactions.angry"
+                        },
+                        "thump_up_size": {
+                            $size: "$reactions.thump_up"
+                        },
+                        "thump_down_size": {
+                            $size: "$reactions.thump_down"
+                        },
+                    }
+                }, {
+                    $addFields: {
+                        "comments_count": {$size: "$comments"},
+                        "reaction_count": {$add: ['$love_size', '$laugh_size', "$wow_size", "$cry_size", "$cry_size", "$angry_size", "$thump_up_size", "$thump_down_size"]}
+                    }
+                }, {
+                    $sort: {
+                        updated_at: -1,
+
+                    }
+                }, {
+                    $skip: Number(skip)
+                }, {
+                    $limit: Number(limit)
+                },
+                {
+                    "$addFields": {
+                        "file_ids": {
+                            "$reduce": {
+                                "input": "$files",
+                                "initialValue": [],
+                                "in": {
+                                    "$setUnion": ["$$value", {
+                                        "$map": {
+                                            "input": "$$this.tagged",
+                                            "as": "el",
+                                            "in": "$$el.related"
+                                        }
+                                    }]
+                                }
+                            }
+                        }
+                    }
+                },
+
+                {
+                    "$lookup": {
+                        "from": "users",
+                        "localField": "file_ids",
+                        "foreignField": "_id",
+                        "as": "file_tags"
+                    }
+                },
+                {
+                    "$addFields": {
+                        "files": {
+                            "$map": {
+                                "input": "$files",
+                                "in": {
+                                    "$mergeObjects": [
+                                        "$$this",
+                                        {
+                                            "tagged": {
+                                                "$map": {
+                                                    "input": "$$this.tagged",
+                                                    "in": {
+                                                        "$mergeObjects": [
+                                                            "$$this",
+                                                            {
+                                                                "related": {
+                                                                    "$arrayElemAt": [
+                                                                        "$file_tags",
+                                                                        {"$indexOfArray": ["$file_ids", "$$this.related"]}
+                                                                    ]
+                                                                }
+                                                            }
+                                                        ]
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    ]
+                                }
+                            }
+                        }
+                    }
+                },
+                {"$project": {"file_ids": 0, "file_tags": 0}},
+                {
+                    $lookup: {
+                        from: 'users', localField: 'belonged_wall', foreignField: '_id', as: "belonged_wall"
+                    }
+                },
+                {
+                    $lookup: {
+                        from: 'pages', localField: 'belonged_page', foreignField: '_id', as: "belonged_page"
+                    }
+                }, {
+                    $lookup: {
+                        from: 'groups', localField: 'belonged_group', foreignField: '_id', as: "belonged_group"
+                    }
+                }, {
+                    $lookup: {
+                        from: 'users', localField: 'belonged_person', foreignField: '_id', as: "belonged_person"
+                    }
+                }, {
+                    $lookup: {
+                        from: 'users', localField: 'tagged', foreignField: '_id', as: "tagged"
+                    }
+                }, {
+                    $addFields: {
+                        "belonged_page": {
+                            $arrayElemAt: ["$belonged_page", 0]
+                        },
+                        "belonged_group": {
+                            $arrayElemAt: ["$belonged_group", 0]
+                        },
+                        "belonged_person": {
+                            $arrayElemAt: ["$belonged_person", 0]
+                        },
+                        "belonged_wall": {
+                            $arrayElemAt: ["$belonged_wall", 0]
+                        },
+                        // "tagged": {
+                        //     $arrayElemAt: ["$tagged", 0]
+                        // },
+
+
+                    }
+                }, {
+                    $project: {
+                        "love_size": 0,
+                        "laugh_size": 0,
+                        "wow_size": 0,
+                        "cry_size": 0,
+                        "angry_size": 0,
+                        "thump_up_size": 0,
+                        "thump_down_size": 0,
+                        "comments": 0
+                    }
+                }
+            ])
+        })
+        .then((data) => {
+
+            return data.map((each, i) => ({
+                ...each,
+                belonged_page: each.belonged_page ? pick(each.belonged_page, ["_id", "avatar", "basic_info"]) : null,
+                belonged_person: each.belonged_person ? pick(each.belonged_person, ["_id", "avatar", "basic_info"]) : null,
+                belonged_group: each.belonged_group ? pick(each.belonged_group, ["_id", "basic_info"]) : null,
+                belonged_wall: each.belonged_wall ? pick(each.belonged_wall, ["_id", "avatar", "basic_info"]) : null,
+                tagged: each.tagged.map(tag => pick(tag, ["_id", "avatar", "basic_info"])),
+                score: (data.length - i) * 1.5
+            }))
+                .sort((a, b) => b.score - a.score)
+            // .map(each => omit(each, "score"))
+        })
+}
+
 module.exports = {
+    getPostsByUserID,
     getCommentByReply,
     getLatestCommentsFromPost,
     getAllPosts,

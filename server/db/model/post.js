@@ -56,6 +56,10 @@ const postSchema = new Schema({
         type: Date,
         default: Date.now
     },
+    belonged_wall:{
+        type: ObjectId,
+        ref: "User"
+    },
     files: {
         default: [],
         type: [
@@ -117,6 +121,11 @@ const postSchema = new Schema({
 const autoPopulateParent = function(next){
     this.populate([
         {
+            path: "belonged_wall",
+            model: "User",
+            select: "_id basic_info avatar last_active_at active"
+        },
+        {
             path: "belonged_person",
             model: "User",
             select: "_id basic_info avatar last_active_at active"
@@ -143,6 +152,11 @@ const autoPopulateParent = function(next){
 postSchema.pre("find", autoPopulateParent).pre("findOne", autoPopulateParent).pre("findOneAndUpdate", autoPopulateParent);
 postSchema.post('save', function(doc, next) {
     doc.populate([
+        {
+            path: "belonged_wall",
+            model: "User",
+            select: "_id basic_info avatar last_active_at active"
+        },
         {
             path: "belonged_person",
             model: "User",

@@ -13,6 +13,7 @@ export default class ProfileFeed extends Component {
 
 
     render() {
+        let {user} = this.props;
         return (
             <div className="profile-feed-route">
                 <div className="pfr-left-panel">
@@ -20,7 +21,7 @@ export default class ProfileFeed extends Component {
                 </div>
                 <div className='pfr-right-panel'>
                     <ProfileFeedWidget
-
+                        user={user}
                     />
                 </div>
             </div>

@@ -70,6 +70,7 @@ export class PostBox extends PureComponent {
     sharePost = () => {
         let {post} = this.props;
         createPostModal.open({
+            placeholder: "Bình luận về bài đăng này...",
             isShare: true,
             postID: post.shared_post || post._id
         }).then((p) => {
@@ -106,6 +107,7 @@ export class PostBox extends PureComponent {
             isEdit: true,
             isShare: !!post.shared_post,
             postID: post.shared_post || post._id,
+            placeholder: "Cập nhật bài đăng",
             data: {
                 _id: post._id,
                 editorState: EditorState.createWithContent(createMentionEntities(post.content, post.mentions)),
@@ -273,7 +275,13 @@ export class PostBox extends PureComponent {
                         <div className="upper">
                             {post.belonged_person && (
                                 <>
-                                    <Link className="link" to={`/user/${post.belonged_person._id}`}>{post.belonged_person.basic_info.username}</Link>
+                                {!post.belonged_wall ? <Link className="link" to={`/user/${post.belonged_person._id}`}>{post.belonged_person.basic_info.username}</Link> : (
+                                    <div>
+                                        <Link className="link" to={`/user/${post.belonged_person._id}`}>{post.belonged_person.basic_info.username}</Link>
+                                        <i className="fas fa-caret-right ml-2 mr-2"></i>
+                                        <Link className="link" to={`/user/${post.belonged_wall._id}`}>{post.belonged_wall.basic_info.username}</Link>
+                                    </div>
+                                )}
                                     {!post.belonged_group && !!post.tagged.length && (
                                         <span> đang ở cùng với {post.tagged.map((each, i) => <Fragment key={each._id}><Link to={`/user/${each._id}`} className="link">{each.basic_info.username}</Link>{i === post.tagged.length - 2 && " và "}{i < post.tagged.length - 2 && ", "}</Fragment>)}</span>
                                     )}
