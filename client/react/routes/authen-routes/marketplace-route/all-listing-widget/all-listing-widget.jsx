@@ -4,6 +4,7 @@ import classnames from 'classnames';
 import { ThemeContext } from '../../../../context/theme-context';
 import { listingApi } from './../../../../../api/common/listing-api';
 import { ListingDisplay } from './listing-display/listing-display';
+import { insideCircle } from 'geolocation-utils';
 
 export class AllListingWidget extends Component {
   constructor(props) {
@@ -24,7 +25,7 @@ export class AllListingWidget extends Component {
       <ThemeContext.Consumer>
         {({ darkMode }) => (
           <div className={classnames('all-listing-widget', { darkMode })}>
-            {listingByCategory.slice(0, showItems).map((e) => {
+            {listingByCategory.map((e) => {
               return (
                 <div className='category-with-listing' key={e._id}>
                   <div className='category-header'>
@@ -32,9 +33,11 @@ export class AllListingWidget extends Component {
                     <div className='see-category-listing'>Xem tất cả</div>
                   </div>
                   <div className='listing-list-display'>
-                    {e.listingArr.map((listing) => (
-                      <ListingDisplay listing={listing} key={listing._id} />
-                    ))}
+                    {e.listingArr.slice(0, showItems).map((listing) => {
+                      return (
+                        <ListingDisplay listing={listing} key={listing._id} />
+                      );
+                    })}
                   </div>
                   <div className='line-break'></div>
                 </div>

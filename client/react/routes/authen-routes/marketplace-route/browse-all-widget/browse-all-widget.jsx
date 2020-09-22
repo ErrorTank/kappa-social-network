@@ -91,6 +91,7 @@ export class BrowseAllWidget extends Component {
                           title={each.name}
                           type={each.type}
                           onClick={() => customHistory.push(each.link)}
+                          // options={each.children}
                         />
                       );
                     })}

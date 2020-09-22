@@ -59,6 +59,7 @@
     "emoji-mart": "^3.0.0",
     "env-cmd": "^8.0.2",
     "file-loader": "^4.2.0",
+    "geolocation-utils": "^1.2.3",
     "history": "^4.7.2",
     "html-loader": "^0.5.5",
     "js-cookie": "^2.2.1",

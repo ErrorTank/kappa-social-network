@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import classnames from 'classnames';
+import { each } from 'lodash';
 
 export class MenuNavigationWithIcon extends Component {
   constructor(props) {
@@ -15,6 +16,7 @@ export class MenuNavigationWithIcon extends Component {
       title,
       type,
       onClick,
+      options = [],
       ...other
     } = this.props;
     return (
@@ -32,6 +34,12 @@ export class MenuNavigationWithIcon extends Component {
             <span className='mn-title'>{title}</span>
           </div>
         </div>
+        {!!options.length &&
+          options.map((e) => (
+            <div className='children-navigation-wrapper'>
+              <div className='children-navigation'>{e.name}</div>
+            </div>
+          ))}
       </div>
     );
   }

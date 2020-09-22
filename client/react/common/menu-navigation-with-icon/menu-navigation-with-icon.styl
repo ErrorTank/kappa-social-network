@@ -1,59 +1,80 @@
-.menu-navigation-with-icon{
+.menu-navigation-with-icon {
   padding: 0 8px;
   border-radius: 8px;
-  
-  .menu-navigation-wrapper{
-    position relative
+  min-height: 52px;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+
+  .menu-navigation-wrapper {
+    position: relative;
     text-align: left;
     padding: 8px;
     border-radius: 8px;
-    height 52px
-    &:hover{
-      background-color: hover;
-      cursor pointer
-    }
-    // &:focus{
-    //   background-color: hover;
-    // }
+    min-height: 52px;
 
-    .mn-icon{
-      position absolute;
+    &:hover {
+      background-color: hover;
+      cursor: pointer;
+    }
+
+    .mn-icon {
+      position: absolute;
       margin: 8px 12px 8px 0px;
       border-radius: 50%;
       width: 36px;
-      height 36px;
+      height: 36px;
       line-height: 36px;
       background-color: btnCancelLight;
-      transform translateY(-50%);
+      transform: translateY(-50%);
       display: flex;
       top: 35%;
       justify-content: center;
       align-items: center;
       text-align: center;
-      i{
+
+      i {
         color: iconColorLight;
         font-size: 17px;
       }
     }
 
-    .mn-title-wrapper{
+    .mn-title-wrapper {
       padding: 4px 0;
-      .mn-title{
-        width 100%;
+
+      .mn-title {
+        width: 100%;
         font-size: 15px;
         font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         font-weight: 500;
-        padding: 12px 0px 12px 48px; 
-      } 
+        padding: 12px 0px 12px 48px;
+      }
     }
-  }  
+  }
+
+  .children-navigation-wrapper {
+    padding: 0px 8px 0px 24px;
+    border-radius: 6px;
+
+    &:hover {
+      background-color: hover;
+      cursor: pointer;
+    }
+
+    .children-navigation {
+      padding-left: 27px;
+      font-weight: 500;
+      font-size: 15px;
+    }
+  }
 }
-.main{
-  .menu-navigation-wrapper{
+
+.main {
+  .menu-navigation-wrapper {
     background-color: lightPrimary !important;
-    .mn-icon{
+
+    .mn-icon {
       background-color: activeIcon;
-      i{
+
+      i {
         color: white;
       }
     }
