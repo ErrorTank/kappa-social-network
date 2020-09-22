@@ -77,14 +77,14 @@ export class ProfileFeedWidget extends Component {
 
     render() {
         let {list, loading, needReloaded} = this.state;
-
+        console.log(list)
         let user = userInfo.getState();
         return (
             <div className="profile-feed-widget">
                 <PostCreationBox
-                    belongedWall={this.props.user._id}
-                    onCreatePost={this.appendNewPost}
-                    placeholder={`Bạn có gì muốn nói với ${this.props.user.basic_info.username} à? Nói đi bạn eiii...`}
+                    belongedWall={user._id === this.props.user._id ? null : this.props.user._id}
+                    onCreatePost={this.addPost}
+                    placeholder={user._id === this.props.user._id ? `${user.basic_info.username} ơi! Bạn đang nghĩ gì thế?` :`Bạn có gì muốn nói với ${this.props.user.basic_info.username} à? Nói đi bạn eiii...`}
                 />
                 <InfiniteScrollWrapper
                     useWindowRoot

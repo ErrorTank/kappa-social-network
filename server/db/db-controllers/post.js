@@ -91,9 +91,15 @@ const getAllPosts = ({userID, skip, limit}) => {
                                 },
                             },
                             {
-                                belonged_wall: {
-                                    $exists: false
-                                }
+                                $or: [
+                                    {
+                                        belonged_wall: {
+                                            $exists: false
+                                        }
+                                    }, {
+                                        belonged_wall: null
+                                    }
+                                ]
                             },
                             {
                                 $or: [
