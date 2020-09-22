@@ -58,7 +58,9 @@ export class DatingMessage extends Component {
               <div className="dating-last-message">
                 {each.message.from_person._id === userInfo.getState()._id ? (
                   <span className="highlight dark">Bạn : </span>
-                ) : null}
+                ) : (
+                  `${each.message.from_person.name} :  `
+                )}
                 {each.message.content}
               </div>
             </div>
