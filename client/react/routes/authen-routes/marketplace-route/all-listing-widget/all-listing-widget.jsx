@@ -20,9 +20,8 @@ export class AllListingWidget extends Component {
   }
   render() {
     const { listingByCategory, showItems } = this.state;
-    const { myPosition } = this.props;
-    const radius = 10000; // meters
-    // console.log(listingByCategory);
+    const { myPosition, radius } = this.props;
+    let radiusByMeter = parseInt(radius) * 1000;
     return (
       <ThemeContext.Consumer>
         {({ darkMode }) => (
@@ -37,7 +36,11 @@ export class AllListingWidget extends Component {
                   <div className='listing-list-display'>
                     {e.listingArr.slice(0, showItems).map((listing) => {
                       return (
-                        insideCircle(listing.position, myPosition, radius) && (
+                        insideCircle(
+                          listing.position,
+                          myPosition,
+                          radiusByMeter
+                        ) && (
                           <ListingDisplay listing={listing} key={listing._id} />
                         )
                       );
