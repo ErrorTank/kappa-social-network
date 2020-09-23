@@ -7,6 +7,7 @@ import {userInfo} from "../../../../../common/states/common";
 import {LoadingInline} from "../../../../common/loading-inline/loading-inline";
 import {v4 as uuidv4} from 'uuid';
 import {Dropdownable} from "../../../../common/dropdownable/dropdownable";
+import {messageWidgetController} from "../../../../layout/authen-layout/create-message-widget/create-message-widget";
 
 export const USER_FRIEND_RELATION = {
     FRIEND: "FRIEND",
@@ -58,6 +59,12 @@ export class ProfileNavigator extends Component {
             .then(() =>  this.props.onCancelRequest())
     }
 
+    handleMessage = () => {
+        messageWidgetController.createNewChatBox({
+            userID: this.props.user._id
+        })
+    }
+
     render() {
         let {friendsCount,} = this.state;
         let {isOwner, friendStatus} = this.props;
@@ -95,7 +102,8 @@ export class ProfileNavigator extends Component {
                         <i className={"fas fa-comment"}></i> Nhắn tin
                     </span>
             ),
-            condition: !isOwner && friendStatus === USER_FRIEND_RELATION.FRIEND
+            condition: !isOwner && friendStatus === USER_FRIEND_RELATION.FRIEND,
+            onClick: this.handleMessage
         }, {
             label: (
                 <span>

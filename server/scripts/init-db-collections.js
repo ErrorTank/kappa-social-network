@@ -20,6 +20,7 @@ const initDbCollections = (appDb) => {
   // Comment.updateMany({}, {$set: {replies: []}}).then(() => console.log("cac"))
   // ChatRoom.deleteMany({}).then(() => console.log("cac"))
   // User.updateMany({}, {$set: {followed_posts: []}}).then(() => console.log("cac"))
+  // User.updateMany({}, {$set: {notifications: []}}).then(() => console.log("cac"))
   // Post.updateMany({}, {$set: {belonged_wall: null}}).then(() => console.log("cac"))
   // Post.deleteMany({}).then(() => console.log("cac"))
   console.log('Initialize Db collections successfully!');
