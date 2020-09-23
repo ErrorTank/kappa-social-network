@@ -10,7 +10,7 @@ class MarketplaceRoute extends KComponent {
     super(props);
     this.state = {
       myPosition: '',
-      radius: null,
+      radius: 10,
     };
     navigator.geolocation.getCurrentPosition((position) => {
       const { latitude, longitude } = position.coords;
@@ -31,7 +31,10 @@ class MarketplaceRoute extends KComponent {
         <div className='marketplace-route'>
           <CommonLayout
             mainRender={() => (
-              <AllListingWidget myPosition={this.state.myPosition} />
+              <AllListingWidget
+                myPosition={this.state.myPosition}
+                radius={this.state.radius}
+              />
             )}
             haveRightRender={false}
             leftRender={() => (

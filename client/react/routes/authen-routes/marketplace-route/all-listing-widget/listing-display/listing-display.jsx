@@ -30,7 +30,6 @@ export class ListingDisplay extends Component {
   };
   render() {
     const { listing } = this.props;
-    console.log(listing);
     return (
       <div
         className='listing-display'
