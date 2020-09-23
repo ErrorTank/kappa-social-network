@@ -56,9 +56,12 @@ const scorizeArray = (arr, field) => {
     return result;
 };
 
+const isValidDate = d => d instanceof Date && !isNaN(d);
+
 module.exports = {
     getRandomToken,
     asynchronized,
     binarySearch,
-    scorizeArray
+    scorizeArray,
+    isValidDate
 };

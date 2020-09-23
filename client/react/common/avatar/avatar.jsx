@@ -3,10 +3,10 @@ import classnames from "classnames"
 import {getNamePrefix} from "../../../common/utils/common";
 
 export const Avatar = props => {
-    let {className, user, getName = item => item.basic_info.username} = props;
+    let {className, user, getName = item => item.basic_info.username, circle = true} = props;
 
     return (
-        <div className={classnames("common-avatar", className)}>
+        <div className={classnames("common-avatar", className, {rectangle: !circle })}>
             {user.avatar ? (
                 <img src={user.avatar}/>
 

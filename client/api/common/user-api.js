@@ -75,5 +75,12 @@ export const userApi = {
     acceptFriendRequest(userID, friendID){
         return authenApi.put(`/user/${userID}/accept-friend-request/${friendID}`)
     },
-
+    getUserFriends(userID, config){
+        let queryStr = urlUtils.buildParams(config)
+        return authenApi.get(`/user/${userID}/friends${queryStr}`)
+    },
+    getUserFriendInvitations(userID, config){
+        let queryStr = urlUtils.buildParams(config)
+        return authenApi.get(`/user/${userID}/friend-invitations${queryStr}`)
+    }
 };
