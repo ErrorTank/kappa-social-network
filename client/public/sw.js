@@ -51,6 +51,14 @@ var exceptionRequestsDev = [
     method: 'GET',
   },
   {
+    endpoint: /https:\/\/localhost:4000\/api\/user\/\w+\/friends/,
+    method: 'GET',
+  },
+  {
+    endpoint: /https:\/\/localhost:4000\/api\/user\/\w+\/friend-invitations/,
+    method: 'GET',
+  },
+  {
     endpoint: /https:\/\/localhost:4000\/api\/user\/\w+\/unfriend\/\w+/,
     method: 'PUT',
   },

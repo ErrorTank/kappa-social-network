@@ -16,11 +16,11 @@ export class ProfileFeedWidget extends Component {
             loading: true,
             needReloaded: false
         }
-        this.fetchPostsForFeed()
+        this.fetchPostsForFeed(props.user._id)
     }
 
-    fetchPostsForFeed = () => {
-        return postApi.getPostsByUserID(this.props.user._id, {skip: this.state.list.length, limit: 5})
+    fetchPostsForFeed = (userID) => {
+        return postApi.getPostsByUserID(userID, {skip: this.state.list.length, limit: 5})
             .then(posts => {
                 this.setState({
                     list: this.state.list.concat(posts),
@@ -30,12 +30,23 @@ export class ProfileFeedWidget extends Component {
             })
     }
 
+    componentDidUpdate(prevProps, prevState, snapshot) {
+        if(prevProps.user._id !== this.props.user._id){
+            this.setState({list: [], loading: true, needReloaded: false}, () => {
+                setTimeout(() => {
+                    this.fetchPostsForFeed(this.props.user._id)
+                }, 500)
+            })
+
+        }
+    }
+
     debounceLoad = debounce(() => {
         let {posts, needReloaded} = this.state;
         if(!needReloaded === !this.state.loading){
             this.setState({loading: true}, () => {
 
-                this.fetchPostsForFeed()
+                this.fetchPostsForFeed(this.props.user._id)
             })
 
         }

@@ -1,0 +1,50 @@
+.user-friend-list{
+  display flex
+  justify-content space-between
+  flex-wrap wrap
+  .user-box{
+    border 1px solid common-border
+    margin-top 10px
+    border-radius 8px
+    padding 16px
+    flex 0 0 calc((100% - 10px) / 2)
+    display flex
+    align-items center
+    .info{
+      flex-grow 1
+      padding-left 10px
+      .username{
+        font-size 1.7rem
+        font-weight 500
+        a{
+          text-decoration none
+          color commonTextLight
+        }
+      }
+      .sub{
+        font-size 1.3rem
+        color greyTextLight
+        .fa-birthday-cake{
+          color tinderPink
+          font-size 1.6rem
+        }
+      }
+    }
+    .action{
+
+    }
+    .avatar-wrapper{
+      flex 0 0 80px
+      .common-avatar{
+        width 80px
+        height 80px
+        border 1px solid common-border
+        .avatar-holder{
+          span{
+            font-size 3.5rem
+          }
+        }
+      }
+    }
+  }
+}

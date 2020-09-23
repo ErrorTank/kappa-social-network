@@ -4,7 +4,8 @@ const User = require("../model/user")(appDb);
 const Post = require("../model/post")(appDb);
 const ResetPasswordToken = require("../model/reset-password-token")(appDb);
 const mongoose = require("mongoose");
-const {getUnverifiedUserRegisterType} = require("../../utils/user-utils");
+const {getUnverifiedUserRegisterType, getSameFriends} = require("../../utils/user-utils");
+const {isValidDate} = require("../../utils/common-utils");
 const ObjectId = mongoose.Types.ObjectId;
 const {ApplicationError} = require("../../utils/error/error-types");
 const omit = require("lodash/omit");
@@ -476,7 +477,7 @@ const createUserNotification = ({type, data, userID}) => {
                     path: "belonged_person",
                     model: "User",
                     select: "_id basic_info avatar last_active_at active"
-                },{
+                }, {
                     path: "belonged_wall",
                     model: "User",
                     select: "_id basic_info avatar last_active_at active"
@@ -754,8 +755,114 @@ const acceptFriendRequest = (userID, friendID) => {
         }).exec()
     ])
 }
+const getUserFriends = (callerID, userID, config) => {
+    let {skip = 0, limit = 8, mode = 'all', keyword} = config;
+    let pipelines = [
+        {
+            $match: {
+                _id: ObjectId(userID)
+            }
+        },
+        {
+            $unwind: "$friends"
+        },
+        {
+            $lookup: {
+                from: 'users', localField: 'friends.info', foreignField: '_id', as: "friends.info"
+            }
+        }, {
+            $addFields: {
+                "friends.info": {
+                    $arrayElemAt: ["$friends.info", 0]
+                }
+            }
+        },
+    ];
+    if(keyword){
+        pipelines.push({
+            $match: {
+                "friends.info.basic_info.username": {$regex: keyword, $options: "i"}
+            }
+        },)
+    }
+    if (mode === "same_city") {
+        pipelines = pipelines.concat([
+            {
+                $match: {$expr: {$eq: ["$contact.address.city", "$friends.info.contact.address.city"]}}
+            }
+        ])
+    }
+    if (mode !== "birthday") {
+        pipelines.push({
+            $sort: {
+                "friends.info.basic_info.username": -1
+            }
+        },)
+    }
+    return Promise.all([
+        User.aggregate(pipelines),
+        User.findOne({
+            _id: ObjectId(callerID)
+        }).lean(),
+        User.findOne({
+            _id: ObjectId(userID)
+        }).lean()
+    ]).then(([data, caller, user]) => {
+        let list = [...data];
+        let total = data.length;
+        if (mode === "birthday") {
+            let now= new Date();
+            list = list.map(each => {
+                let birthday = new Date(each.friends.info.basic_info.dob);
+                let currentYear= new Date().getFullYear();
+
+                let thisYearBirthday = new Date(currentYear, birthday.getMonth(), birthday.getDate());
+
+
+                if (isValidDate(thisYearBirthday)) {
+                    return {
+                        ...each,
+                        birthday_countdown: thisYearBirthday.getTime() - now.getTime()
+                    };
+                }
+                return {
+                    ...each,
+                    birthday_countdown: -1
+                };
+            })
+                .filter(each => each.birthday_countdown < 259200000 && each.birthday_countdown >= 0)
+                .sort((a, b) => a.birthday_countdown - b.birthday_countdown)
+            ;
+            total = list.length;
+        }
+        if (mode === "same_friends") {
+            list = list.filter(each => getSameFriends(
+                each.friends.info.friends.map(each => each.info.toString())
+                , user.friends.map(each => each.info.toString())).length
+            );
+            total = list.length
+        }
+        list = list
+            .slice(Number(skip), Number(skip) + Number(limit))
+            .map(each => ({
+                ...each,
+                same_friends_count: getSameFriends(each.friends.info.friends.map(each => each.info.toString()), caller.friends.map(each => each.info.toString())).length,
+                is_caller_friend: !!caller.friends.find(f => f.info.toString() === each.friends.info._id.toString())
+            }))
+            .map(each => ({
+                birthday_countdown: each.birthday_countdown,
+                is_caller_friend: each.is_caller_friend,
+                same_friends_count: each.same_friends_count, ...pick(each.friends.info, ["_id", "avatar", "basic_info"])
+            }));
+        return {
+            list,
+            total
+        }
+    });
+}
 
 module.exports = {
+    getUserFriends,
     acceptFriendRequest,
     deleteNotificationByType,
     cancelFriendRequest,

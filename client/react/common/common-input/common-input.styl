@@ -1,6 +1,26 @@
 .common-input {
   font-size 1.3rem
   margin-bottom 1.2rem
+  overflow hidden
+  &.haveIcon{
+
+    position relative
+    border 1px solid common-border
+    padding 5px 0 5px 40px !important
+
+    input{
+      border none !important
+      padding-left 0 !important
+    }
+    i{
+      position absolute
+      top 50%
+      transform translateY(-50%)
+      font-size 2rem
+      left 10px
+      color commonTextLight
+    }
+  }
   &.darkMode{
     input
     textarea

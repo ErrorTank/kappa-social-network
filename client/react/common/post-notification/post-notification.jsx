@@ -67,6 +67,18 @@ export class PostNotification extends Component {
         let {notification_type} = data;
         let userID = userInfo.getState()._id;
         const dataMatcher = {
+            "post_on_wall": {
+                getAvatarUser: () => data.post.belonged_person,
+                getReaction: () => null,
+                getContent: () => (
+                    <span>
+                        <span className="high-light dark">{data.post.belonged_person.basic_info.username}</span> đã đăng lên dòng thời gian của bạn
+                    </span>
+                ),
+                getTime: () => data.published_time,
+                toLink: () => `/post/${data.post._id}`
+
+            },
             "accept_friend_request": {
                 getAvatarUser: () => data.person,
                 getReaction: () => null,

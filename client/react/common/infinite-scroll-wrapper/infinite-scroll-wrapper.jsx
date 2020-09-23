@@ -64,7 +64,7 @@ export class InfiniteScrollWrapper extends Component {
 
         return (
             <div
-                className={classnames("infinite-scroll-wrapper", this.props.className)}
+                className={classnames("infinite-scroll-wrapper", this.props.className, {"window-root": this.props.useWindowRoot})}
             >
                 <div ref={top => this.top = top} id={"top"}/>
                     {this.props.children({ refresh: this.refresh})}

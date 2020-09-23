@@ -1,5 +1,6 @@
 const feed = require('./feed');
-
+const mongoose = require("mongoose");
+const ObjectId = mongoose.Types.ObjectId;
 const initDbCollections = (appDb) => {
   const User = require('../db/model/user')(appDb);
   const PageCategory = require('../db/model/page-category')(appDb);
@@ -19,9 +20,12 @@ const initDbCollections = (appDb) => {
   const Match = require('../db/model/dating/match')(appDb);
   // Comment.updateMany({}, {$set: {replies: []}}).then(() => console.log("cac"))
   // ChatRoom.deleteMany({}).then(() => console.log("cac"))
+  // User.updateMany({}, {$set: {"contact.address": {ward: ObjectId("5e92c7b6b4c8182784f5bcff"), city: ObjectId("5e92c7b4b4c8182784f59d4a"), district: ObjectId("5e92c7b4b4c8182784f5994b")}}}).then(() => console.log("cac"))
   // User.updateMany({}, {$set: {followed_posts: []}}).then(() => console.log("cac"))
+  // User.updateMany({}, {$set: {notifications: []}}).then(() => console.log("cac"))
   // Post.updateMany({}, {$set: {belonged_wall: null}}).then(() => console.log("cac"))
   // Post.deleteMany({}).then(() => console.log("cac"))
+  // User.findOneAndUpdate({_id: ObjectId("5eccd70efc70863c7c5f9e0c")}, {$set: {"basic_info.dob": new Date(new Date().getTime() + 86400000)}}).then(() => console.log("cac"))
   console.log('Initialize Db collections successfully!');
   return feed({
     PageCategory,
