@@ -10,6 +10,7 @@ import { categoryApi } from './../../../../../api/common/category-api';
 import { itemField } from './../../../../../const/listing';
 import { MenuNavigationWithIcon } from './../../../../common/menu-navigation-with-icon/menu-navigation-with-icon';
 import { ListingInfoSelect } from './../../../../common/listing-info-select/listing-info-select';
+import { customHistory } from '../../../routes';
 
 export class BrowseAllWidget extends Component {
   constructor(props) {
@@ -24,6 +25,7 @@ export class BrowseAllWidget extends Component {
       let additionInfo = [...itemIcon, ...this.otherCategory];
 
       let categoryWithIcon = categories.reduce((res, option) => {
+        console.log(option._id);
         let checkIcon = additionInfo.find((each) => each.name === option.name);
         if (checkIcon) {
           return [
@@ -31,7 +33,7 @@ export class BrowseAllWidget extends Component {
             {
               ...option,
               icon: checkIcon.icon,
-              link: `/marketplace/${checkIcon.name}`,
+              link: `/marketplace/${option._id}`,
             },
           ];
         } else {
@@ -122,6 +124,7 @@ export class BrowseAllWidget extends Component {
                 <>
                   {categoryDisplay &&
                     categoryDisplay.map((each) => {
+                      console.log(each.link);
                       return (
                         <MenuNavigationWithIcon
                           key={each.name}
