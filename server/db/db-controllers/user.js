@@ -858,7 +858,28 @@ const getUserFriends = (callerID, userID, config) => {
     });
 }
 
+const getUserFriendInvitations = (userID, {totalOnly = false, skip = 0, limit = 8}) => {
+    return User.findOne({
+        _id: ObjectId(userID)
+    })
+
+        .populate("friend_requests", "_id basic_info avatar friends")
+        .then((user) => {
+            return {
+                list: user.friend_requests
+                    .map(each => ({
+
+                    same_friends_count: getSameFriends(each.friends.map(each => each.info.toString()), user.friends.map(each => each.info.toString())).length,
+                    ...omit(each.toObject(), "friends")
+                })).slice(Number(skip), Number(skip) + Number(limit)),
+                total: user.friend_requests.length
+            }
+        })
+        .then(data => omit(data, totalOnly ? "list" : ""))
+};
+
 module.exports = {
+    getUserFriendInvitations,
     getUserFriends,
     acceptFriendRequest,
     deleteNotificationByType,

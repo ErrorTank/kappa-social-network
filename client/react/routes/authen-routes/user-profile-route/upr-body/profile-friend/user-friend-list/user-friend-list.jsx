@@ -49,6 +49,16 @@ export class UserBox extends Component {
             })
     }
 
+    cancelRequest = () => {
+        userApi.cancelFriendRequest(this.props.user._id, userInfo.getState()._id)
+            .then(() => this.props.removeFromList())
+    }
+
+    acceptRequest = () => {
+        userApi.acceptFriendRequest(this.props.user._id, userInfo.getState()._id)
+            .then(() => this.props.removeFromList())
+    }
+
 
     render() {
         let actionConfigs = {
@@ -102,28 +112,40 @@ export class UserBox extends Component {
                                 ) : null}
                             </div>
                         </div>
-                        <Dropdownable
-                            position={"center"}
-                            // className={"pa-dropdown"}
-                            toggle={() => (
-                                <Button className="btn-grey action" onClick={() => config.onClick?.()}>
-                                    {config.label}
+                        {mode === "invitation" ? (
+                            <>
+                                <Button className="btn-grey action mr-2" onClick={this.cancelRequest}>
+                                    <i className="far fa-times"></i>
                                 </Button>
+                                <Button className="btn-grey action" onClick={this.acceptRequest}>
+                                    <i className="far fa-check"></i>
+                                </Button>
+                            </>
+                        ) : (
+                            <Dropdownable
+                                position={"center"}
+                                // className={"pa-dropdown"}
+                                toggle={() => (
+                                    <Button className="btn-grey action" onClick={() => config.onClick?.()}>
+                                        {config.label}
+                                    </Button>
 
-                            )}
-                            content={() => config.dropdown ? (
-                                <div className={"common-dropdown-content"}>
-                                    {config.dropdown.map((each, i) => (
-                                        <div className="content" onClick={each.onClick} key={i}>
+                                )}
+                                content={() => config.dropdown ? (
+                                    <div className={"common-dropdown-content"}>
+                                        {config.dropdown.map((each, i) => (
+                                            <div className="content" onClick={each.onClick} key={i}>
 
-                                            <div className="label">{each.label}</div>
+                                                <div className="label">{each.label}</div>
 
-                                        </div>
-                                    ))}
-                                </div>
+                                            </div>
+                                        ))}
+                                    </div>
 
-                            ) : null}
-                        />
+                                ) : null}
+                            />
+                        )}
+
 
                     </>
                 ) : (
@@ -191,6 +213,12 @@ export class UserFriendList extends Component {
             .then(({list, total}) => this.setState({list: this.state.list.concat(list), total, loading: false}))
     }
 
+    removeInvitation = user => {
+        let newList = this.state.list.filter(each => each._id !== user._id);
+        this.setState({list: newList});
+        this.props.onChangeTotal(newList.length);
+    }
+
     render() {
         let {list, loading} = this.state;
         let {mode} = this.props;
@@ -214,6 +242,7 @@ export class UserFriendList extends Component {
 
                             {list.map(each => (
                                 <UserBox
+                                    removeFromList={() => this.removeInvitation(each)}
                                     key={each._id}
                                     user={each}
                                     mode={mode}

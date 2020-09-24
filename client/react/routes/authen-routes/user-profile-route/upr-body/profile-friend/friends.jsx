@@ -15,17 +15,19 @@ export class Friends extends Component {
             },
             invitationsCount: 0
         }
-        this.getInvitationsCount();
+        this.getInvitationsCount(props.user._id);
     }
 
     componentDidUpdate(prevProps, prevState, snapshot) {
         if(prevProps.user._id !== this.props.user._id){
             this.list.fetchFriends({skip: 0, limit: 8})
+            this.getInvitationsCount(this.props.user._id);
         }
     }
 
-    getInvitationsCount = () => {
-
+    getInvitationsCount = (userID) => {
+        return userApi.getUserFriendInvitations(userID, {totalOnly: true })
+            .then(({total}) => this.setState({invitationsCount: total}))
     }
 
 
@@ -68,9 +70,12 @@ export class Friends extends Component {
                             }}
                         />
                     </div>
-                    <div className="bw-btn ml-3" onClick={onToggleMode}>
-                        Lời mời kết bạn ({invitationsCount})
-                    </div>
+                    {isOwner && (
+                        <div className="bw-btn ml-3" onClick={onToggleMode}>
+                            Lời mời kết bạn ({invitationsCount})
+                        </div>
+                    )}
+
                 </div>
                 <div className="bw-navigators mb-1">
                     {filterOptions.map(each => each.condition ? (
