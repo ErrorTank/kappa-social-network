@@ -7,6 +7,8 @@ const ObjectId = mongoose.Types.ObjectId;
 const {
   checkDatingProfile,
   createProfile,
+  getCardProfileInfo,
+  getInitCardProfileInfo,
 } = require("../db/db-controllers/dating");
 module.exports = (db, namespacesIO) => {
   router.get(
@@ -25,6 +27,29 @@ module.exports = (db, namespacesIO) => {
     authorizationUserMiddleware,
     (req, res, next) => {
       return createProfile(req.body, req.params)
+        .then((data) => {
+          return res.status(200).json(data);
+        })
+        .catch((err) => next(err));
+    }
+  );
+  router.put(
+    "/card-profile-info",
+    authorizationUserMiddleware,
+    (req, res, next) => {
+      console.log(1);
+      return getCardProfileInfo(req.user._id, req.body)
+        .then((data) => {
+          return res.status(200).json(data);
+        })
+        .catch((err) => next(err));
+    }
+  );
+  router.get(
+    "/init-card-profile-info",
+    authorizationUserMiddleware,
+    (req, res, next) => {
+      return getInitCardProfileInfo(req.user._id)
         .then((data) => {
           return res.status(200).json(data);
         })

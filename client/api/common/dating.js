@@ -12,4 +12,10 @@ export const datingApi = {
   createProfile(data, userID) {
     return authenApi.post(`/dating/user/${userID}/create-profile`, data);
   },
+  getCardProfileInfo(seen) {
+    return authenApi.put(`/dating/card-profile-info`, seen);
+  },
+  getInitCardProfileInfo() {
+    return authenApi.get(`/dating/init-card-profile-info`);
+  },
 };

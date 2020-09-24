@@ -159,12 +159,18 @@ const profileSchema = new Schema({
   seen: {
     type: [
       {
-        url: ObjectId,
+        user: {
+          type: ObjectId,
+          ref: "Profile",
+        },
         action: {
           type: String,
           enum: ["LIKE", "DISLIKE"],
         },
-        time: Date,
+        time: {
+          type: Date,
+          default: Date.now,
+        },
       },
     ],
     default: [],

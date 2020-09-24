@@ -155,6 +155,7 @@ export class DatingRegisterForm extends Component {
     });
   };
   render() {
+    console.log(this.state);
     let {
       name,
       dob,
