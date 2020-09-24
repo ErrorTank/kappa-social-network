@@ -8,7 +8,7 @@ const {getAuthenticateUserInitCredentials, getUserBasicInfo, login, sendChangePa
     verifyChangePasswordToken, getChangePasswordUserBrief, changePassword, addNewSearchHistory, deleteSearchHistory,
     updateSearchHistory, shortLogin, simpleUpdateUser, getUnseenNotificationsCount, getUserNotifications,
     seenNotifications, getUserFriendsCount, checkIsFriend, unfriend, sendFriendRequest, cancelFriendRequest, deleteNotificationByType
-,acceptFriendRequest, getUserFriends} = require("../db/db-controllers/user");
+,acceptFriendRequest, getUserFriends, getUserFriendInvitations} = require("../db/db-controllers/user");
 
 module.exports = (db, namespacesIO) => {
     router.get("/init-credentials", authorizationUserMiddleware, (req, res, next) => {
@@ -35,6 +35,13 @@ module.exports = (db, namespacesIO) => {
     router.get("/:userID/friends",authorizationUserMiddleware, (req, res, next) => {
 
         return getUserFriends(req.user._id ,req.params.userID, req.query).then((data) => {
+            return res.status(200).json(data);
+        }).catch(err => next(err));
+
+    });
+    router.get("/:userID/friend-invitations",authorizationUserMiddleware, (req, res, next) => {
+
+        return getUserFriendInvitations(req.params.userID, req.query).then((data) => {
             return res.status(200).json(data);
         }).catch(err => next(err));
 

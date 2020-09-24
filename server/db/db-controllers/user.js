@@ -836,10 +836,7 @@ const getUserFriends = (callerID, userID, config) => {
             total = list.length;
         }
         if (mode === "same_friends") {
-            list = list.filter(each => getSameFriends(
-                each.friends.info.friends.map(each => each.info.toString())
-                , user.friends.map(each => each.info.toString())).length
-            );
+            list = list.filter(each => caller.friends.find(f => f.info.toString() === each.friends.info._id.toString()));
             total = list.length
         }
         list = list
@@ -847,11 +844,11 @@ const getUserFriends = (callerID, userID, config) => {
             .map(each => ({
                 ...each,
                 same_friends_count: getSameFriends(each.friends.info.friends.map(each => each.info.toString()), caller.friends.map(each => each.info.toString())).length,
-                is_caller_friend: !!caller.friends.find(f => f.info.toString() === each.friends.info._id.toString())
+                caller_friend_status: !!caller.friends.find(f => f.info.toString() === each.friends.info._id.toString()) ? "FRIEND" : each.friend_requests.find(each => each.toString() === callerID) ? "PENDING" : "NOT_FRIEND"
             }))
             .map(each => ({
                 birthday_countdown: each.birthday_countdown,
-                is_caller_friend: each.is_caller_friend,
+                caller_friend_status: each.caller_friend_status,
                 same_friends_count: each.same_friends_count, ...pick(each.friends.info, ["_id", "avatar", "basic_info"])
             }));
         return {
@@ -861,7 +858,28 @@ const getUserFriends = (callerID, userID, config) => {
     });
 }
 
+const getUserFriendInvitations = (userID, {totalOnly = false, skip = 0, limit = 8}) => {
+    return User.findOne({
+        _id: ObjectId(userID)
+    })
+
+        .populate("friend_requests", "_id basic_info avatar friends")
+        .then((user) => {
+            return {
+                list: user.friend_requests
+                    .map(each => ({
+
+                    same_friends_count: getSameFriends(each.friends.map(each => each.info.toString()), user.friends.map(each => each.info.toString())).length,
+                    ...omit(each.toObject(), "friends")
+                })).slice(Number(skip), Number(skip) + Number(limit)),
+                total: user.friend_requests.length
+            }
+        })
+        .then(data => omit(data, totalOnly ? "list" : ""))
+};
+
 module.exports = {
+    getUserFriendInvitations,
     getUserFriends,
     acceptFriendRequest,
     deleteNotificationByType,

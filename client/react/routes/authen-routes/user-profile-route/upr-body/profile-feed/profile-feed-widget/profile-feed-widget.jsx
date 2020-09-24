@@ -88,7 +88,7 @@ export class ProfileFeedWidget extends Component {
 
     render() {
         let {list, loading, needReloaded} = this.state;
-        console.log(list)
+
         let user = userInfo.getState();
         return (
             <div className="profile-feed-widget">
