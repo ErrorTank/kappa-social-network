@@ -8,12 +8,75 @@ import moment from "moment"
 import {LoadingInline} from "../../../../../../common/loading-inline/loading-inline";
 import {userInfo} from "../../../../../../../common/states/common";
 import {Link} from "react-router-dom";
+import {Dropdownable} from "../../../../../../common/dropdownable/dropdownable";
+import {userApi} from "../../../../../../../api/common/user-api";
 
 moment.locale("vi");
-//TODO Invitation status in userbox
+
 export class UserBox extends Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            status: props.user.caller_friend_status
+        }
+    }
+
+
+    unFriend = () => {
+        userApi.unfriend(userInfo.getState()._id, this.props.user._id)
+            .then(() => {
+                this.setState({
+                    status: "NOT_FRIEND"
+                });
+            })
+    };
+
+    addFriend = () => {
+        return userApi.sendFriendRequest(userInfo.getState()._id, this.props.user._id)
+            .then(() => {
+                this.setState({
+                    status: "PENDING"
+                });
+            })
+    };
+
+    removeFriendRequest = () => {
+        userApi.cancelFriendRequest(userInfo.getState()._id, this.props.user._id)
+            .then(() =>  {
+                this.setState({
+                    status: "NOT_FRIEND"
+                });
+            })
+    }
+
+
     render() {
+        let actionConfigs = {
+            "FRIEND": {
+                label: "Bạn bè",
+                dropdown: [
+                    {
+                        label: "Hủy kết bạn",
+                        onClick: this.unFriend
+                    }
+                ]
+            },
+            "NOT_FRIEND": {
+                label: "Thêm bạn bè",
+                onClick: this.addFriend
+            },
+            "PENDING": {
+                label: "Đã gửi lời mời",
+                dropdown: [
+                    {
+                        label: "Hủy lời mời",
+                        onClick: this.removeFriendRequest
+                    }
+                ]
+            },
+        };
         let {mode, user} = this.props;
+        let config = actionConfigs[this.state.status];
         return (
             <div className="user-box">
                 <div className="avatar-wrapper">
@@ -39,9 +102,29 @@ export class UserBox extends Component {
                                 ) : null}
                             </div>
                         </div>
-                        <Button className="btn-grey action">
-                            {user.is_caller_friend ? "Bạn bè" : "Thêm bạn bè"}
-                        </Button>
+                        <Dropdownable
+                            position={"center"}
+                            // className={"pa-dropdown"}
+                            toggle={() => (
+                                <Button className="btn-grey action" onClick={() => config.onClick?.()}>
+                                    {config.label}
+                                </Button>
+
+                            )}
+                            content={() => config.dropdown ? (
+                                <div className={"common-dropdown-content"}>
+                                    {config.dropdown.map((each, i) => (
+                                        <div className="content" onClick={each.onClick} key={i}>
+
+                                            <div className="label">{each.label}</div>
+
+                                        </div>
+                                    ))}
+                                </div>
+
+                            ) : null}
+                        />
+
                     </>
                 ) : (
                     <>

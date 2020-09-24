@@ -836,10 +836,7 @@ const getUserFriends = (callerID, userID, config) => {
             total = list.length;
         }
         if (mode === "same_friends") {
-            list = list.filter(each => getSameFriends(
-                each.friends.info.friends.map(each => each.info.toString())
-                , user.friends.map(each => each.info.toString())).length
-            );
+            list = list.filter(each => caller.friends.find(f => f.info.toString() === each.friends.info._id.toString()));
             total = list.length
         }
         list = list
@@ -847,11 +844,11 @@ const getUserFriends = (callerID, userID, config) => {
             .map(each => ({
                 ...each,
                 same_friends_count: getSameFriends(each.friends.info.friends.map(each => each.info.toString()), caller.friends.map(each => each.info.toString())).length,
-                is_caller_friend: !!caller.friends.find(f => f.info.toString() === each.friends.info._id.toString())
+                caller_friend_status: !!caller.friends.find(f => f.info.toString() === each.friends.info._id.toString()) ? "FRIEND" : each.friend_requests.find(each => each.toString() === callerID) ? "PENDING" : "NOT_FRIEND"
             }))
             .map(each => ({
                 birthday_countdown: each.birthday_countdown,
-                is_caller_friend: each.is_caller_friend,
+                caller_friend_status: each.caller_friend_status,
                 same_friends_count: each.same_friends_count, ...pick(each.friends.info, ["_id", "avatar", "basic_info"])
             }));
         return {
