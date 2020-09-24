@@ -1,4 +1,5 @@
 const dbManager = require('../../config/db');
+const { insideCircle } = require('geolocation-utils');
 const appDb = dbManager.getConnections()[0];
 const mongoose = require('mongoose');
 const ObjectId = mongoose.Types.ObjectId;
@@ -29,6 +30,7 @@ const findSubCategory = (value) => {
 };
 
 const getListing = (query) => {
+  let { lat, lon, radius } = query;
   return Category.find({})
     .lean()
     .then((categories) => {
@@ -42,9 +44,21 @@ const getListing = (query) => {
             },
           })
             .lean()
-            .sort('-created_at')
+            .sort('-postTime')
             .then((products) => {
-              return { _id: e._id, name: e.name, listingArr: [...products] };
+              let radiusByMeter = parseInt(radius) * 1000;
+              let productsInRadius = products.filter((e) =>
+                insideCircle(
+                  e.position,
+                  { lat: Number(lat), lon: Number(lon) },
+                  radiusByMeter
+                )
+              );
+              return {
+                _id: e._id,
+                name: e.name,
+                listingArr: [...productsInRadius],
+              };
             });
         })
       );

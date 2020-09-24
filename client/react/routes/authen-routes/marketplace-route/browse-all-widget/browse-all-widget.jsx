@@ -25,7 +25,6 @@ export class BrowseAllWidget extends Component {
       let additionInfo = [...itemIcon, ...this.otherCategory];
 
       let categoryWithIcon = categories.reduce((res, option) => {
-        console.log(option._id);
         let checkIcon = additionInfo.find((each) => each.name === option.name);
         if (checkIcon) {
           return [
@@ -102,7 +101,10 @@ export class BrowseAllWidget extends Component {
       <ThemeContext.Consumer>
         {({ darkMode }) => (
           <div className={classnames('browse-all-widget', { darkMode })}>
-            <MarketplaceSearchSection darkMode={darkMode} />
+            <MarketplaceSearchSection
+              darkMode={darkMode}
+              title={'Marketplace'}
+            />
             <div className='browse-all-body'>
               <MarketplaceMenuSection
                 darkMode={darkMode}
@@ -124,7 +126,6 @@ export class BrowseAllWidget extends Component {
                 <>
                   {categoryDisplay &&
                     categoryDisplay.map((each) => {
-                      console.log(each.link);
                       return (
                         <MenuNavigationWithIcon
                           key={each.name}

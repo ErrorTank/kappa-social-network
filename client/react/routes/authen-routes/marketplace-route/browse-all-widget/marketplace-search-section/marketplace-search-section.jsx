@@ -7,9 +7,10 @@ export class MarketplaceSearchSection extends Component {
     this.state = {};
   }
   render() {
+    let { title } = this.props;
     return (
       <div className='market-search-section'>
-        <h1 className='market-search-title'>Marketplace</h1>
+        <h1 className='market-search-title'>{title}</h1>
         <MarketplaceSearch />
         <div className='line-seperate'></div>
       </div>

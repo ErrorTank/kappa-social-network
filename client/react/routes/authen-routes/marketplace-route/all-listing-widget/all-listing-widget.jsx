@@ -5,53 +5,68 @@ import { ThemeContext } from '../../../../context/theme-context';
 import { listingApi } from './../../../../../api/common/listing-api';
 import { ListingDisplay } from './listing-display/listing-display';
 import { insideCircle } from 'geolocation-utils';
+import { LoadingInline } from './../../../../common/loading-inline/loading-inline';
 
 export class AllListingWidget extends Component {
   constructor(props) {
     super(props);
     this.state = {
       listingByCategory: [],
-      showItems: 5,
+      loading: false,
     };
-    listingApi.getListing({}).then((allListing) => {
-      let listingByCategory = allListing.filter((e) => !!e.listingArr.length);
-      this.setState({ listingByCategory });
-    });
+  }
+  componentDidUpdate(prevProps) {
+    if (
+      prevProps.radius !== this.props.radius ||
+      prevProps.myPosition !== this.props.myPosition
+    ) {
+      this.setState({ loading: true });
+      listingApi
+        .getListing({
+          radius: this.props.radius,
+          lat: this.props.myPosition.lat,
+          lon: this.props.myPosition.lon,
+        })
+        .then((allListing) => {
+          let listingByCategory = allListing.filter(
+            (e) => !!e.listingArr.length
+          );
+          this.setState({ listingByCategory, loading: false });
+        });
+    }
   }
   render() {
-    const { listingByCategory, showItems } = this.state;
+    const { listingByCategory, loading } = this.state;
     const { myPosition, radius } = this.props;
-    let radiusByMeter = parseInt(radius) * 1000;
+    console.log(listingByCategory);
     return (
       <ThemeContext.Consumer>
-        {({ darkMode }) => (
-          <div className={classnames('all-listing-widget', { darkMode })}>
-            {listingByCategory.map((e) => {
-              return (
-                <div className='category-with-listing' key={e._id}>
-                  <div className='category-header'>
-                    <div className='category-name'>{e.name}</div>
-                    <div className='see-category-listing'>Xem tất cả</div>
-                  </div>
-                  <div className='listing-list-display'>
-                    {e.listingArr.slice(0, showItems).map((listing) => {
-                      return (
-                        insideCircle(
-                          listing.position,
-                          myPosition,
-                          radiusByMeter
-                        ) && (
+        {({ darkMode }) => {
+          loading ? (
+            <LoadingInline />
+          ) : (
+            <div className={classnames('all-listing-widget', { darkMode })}>
+              {listingByCategory.map((e) => {
+                return (
+                  <div className='category-with-listing' key={e._id}>
+                    <div className='category-header'>
+                      <div className='category-name'>{e.name}</div>
+                      <div className='see-category-listing'>Xem tất cả</div>
+                    </div>
+                    <div className='listing-list-display'>
+                      {e.listingArr.map((listing) => {
+                        return (
                           <ListingDisplay listing={listing} key={listing._id} />
-                        )
-                      );
-                    })}
+                        );
+                      })}
+                    </div>
+                    <div className='line-break'></div>
                   </div>
-                  <div className='line-break'></div>
-                </div>
-              );
-            })}
-          </div>
-        )}
+                );
+              })}
+            </div>
+          );
+        }}
       </ThemeContext.Consumer>
     );
   }
