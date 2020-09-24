@@ -91,10 +91,10 @@ const CreateListingDetail = lazy(
     )
   )
 );
-const CategoryTraitWidget = lazy(
+const ShowEachCategory = lazy(
   delayLoad(() =>
     import(
-      './authen-routes/marketplace-route/browse-all-widget/category-trait-widget/category-trait-widget'
+      './authen-routes/marketplace-route/show-each-category/show-each-category'
     )
   )
 );
@@ -176,9 +176,9 @@ class MainRoute extends React.Component {
                   />
                   <AuthenRoute
                     {...layoutProps}
-                    path={'/marketplace/:categoryName'}
+                    path={'/marketplace/:categoryID'}
                     exact
-                    render={(props) => <CategoryTraitWidget {...props} />}
+                    render={(props) => <ShowEachCategory {...props} />}
                   />
                   <AuthenRoute
                     {...layoutProps}
