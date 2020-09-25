@@ -482,11 +482,11 @@ let profile = [
     name: "Khánh Linh",
     avatars: [
       {
-        path: "https://localhost:2000/assets/images/KhanhLinh/khanhlinh1.jpg",
+        path: "https://localhost:2000/assets/images/KhanhLinh/khanhlinh1.jpeg",
         isAvatar: true,
       },
       {
-        path: "https://localhost:2000/assets/images/KhanhLinh/khanhlinh2.jpg",
+        path: "https://localhost:2000/assets/images/KhanhLinh/khanhlinh2.jpeg",
         isAvatar: false,
       },
     ],
@@ -588,11 +588,11 @@ let profile = [
     name: "Bảo Ngọc ",
     avatars: [
       {
-        path: "https://localhost:2000/assets/images/BaoNgoc/baongoc1.jpg",
+        path: "https://localhost:2000/assets/images/BaoNgoc/baongoc1.jpeg",
         isAvatar: true,
       },
       {
-        path: "https://localhost:2000/assets/images/BaoNgoc/baongoc2.jpg",
+        path: "https://localhost:2000/assets/images/BaoNgoc/baongoc2.jpeg",
         isAvatar: false,
       },
     ],

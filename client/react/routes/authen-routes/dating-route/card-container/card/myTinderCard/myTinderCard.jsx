@@ -35,7 +35,7 @@ export class MyTinderCard extends Component {
     let { current } = this.state;
     let avatar = info.avatars[current].path;
     return (
-      <div className="my-tinder-card">
+      <div className={classnames("my-tinder-card")}>
         <img src={avatar} />
         <div className="avatar-navigator">
           {info.avatars.length > 1 &&
