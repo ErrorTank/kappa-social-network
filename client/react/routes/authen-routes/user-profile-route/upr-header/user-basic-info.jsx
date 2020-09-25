@@ -47,12 +47,15 @@ export class UserBasicInfo extends Component {
                 <div className={"username"}>
                     {user.basic_info.username}
                 </div>
-                {isOwner && (!edit ? (
+                {(!edit ? (
                     <div className="bio">
                         {bio && <p>{bio}</p>}
-                        <div className="edit-btn" onClick={() => this.setState({edit: true})}>
-                            {bio ? "Chỉnh sửa" : "Thêm bio"}
-                        </div>
+                        {isOwner && (
+                            <div className="edit-btn" onClick={() => this.setState({edit: true})}>
+                                {bio ? "Chỉnh sửa" : "Thêm bio"}
+                            </div>
+                        )}
+
                     </div>
                 ) : (
                     <div className="bio-editor">

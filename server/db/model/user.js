@@ -3,6 +3,12 @@ const Schema = mongoose.Schema;
 const ObjectId = mongoose.Schema.Types.ObjectId;
 const {AddressSchema} = require("./common-schema/common");
 
+const privacySchema = {
+    type: String,
+    enum: ["PERSONAL", "FRIENDS", "PUBLIC"],
+    default: "PUBLIC"
+};
+
 const userSchema = new Schema({
     active: {
         type: Boolean,
@@ -388,6 +394,7 @@ const userSchema = new Schema({
             type: Date,
             default: Date.now
         },
+        profile_link: String
     },
     isVerify: {type: Boolean, default: false, required: true},
     contact: {
@@ -434,7 +441,7 @@ const userSchema = new Schema({
                     type: Date,
                     default: Date.now
                 },
-
+                privacy: privacySchema
 
             }
 
@@ -458,11 +465,32 @@ const userSchema = new Schema({
                     type: Date,
                     default: Date.now
                 },
+                privacy: privacySchema
 
-
-            }
+            },
 
         ]
+    },
+    favorites: {
+        type: [{
+            type: String
+        }],
+        default: []
+    },
+    user_about_privacy: {
+        basic_info: {
+            gender: privacySchema,
+            dob: privacySchema,
+        },
+        contact: {
+            address: privacySchema,
+            home_town: privacySchema,
+            login_username: {
+                phone: privacySchema,
+                email: privacySchema
+            },
+        },
+
     },
     chat_settings: {
         turn_off_active: {

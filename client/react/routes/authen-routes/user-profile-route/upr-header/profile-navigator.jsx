@@ -79,14 +79,15 @@ export class ProfileNavigator extends Component {
             }, {
                 label: <span>Bạn bè <span className="sub">{friendsCount}</span></span>,
                 url: `/user/${this.props.user._id}/friends`,
-            }, {
-                label: "Ảnh",
-                url: `/user/${this.props.user._id}/photos`,
-
-            }, {
-                label: "Videos",
-                url: `/user/${this.props.user._id}/videos`,
             },
+            // {
+            //     label: "Ảnh",
+            //     url: `/user/${this.props.user._id}/photos`,
+            //
+            // }, {
+            //     label: "Videos",
+            //     url: `/user/${this.props.user._id}/videos`,
+            // },
         ];
 
         let actions = [{
@@ -102,7 +103,7 @@ export class ProfileNavigator extends Component {
                         <i className={"fas fa-comment"}></i> Nhắn tin
                     </span>
             ),
-            condition: !isOwner && friendStatus === USER_FRIEND_RELATION.FRIEND,
+            condition: !isOwner,
             onClick: this.handleMessage
         }, {
             label: (

@@ -10,8 +10,8 @@ import {REACTION_EMOJI_MAP} from "../reactions-widget/reactions-widget";
 import {customHistory} from "../../routes/routes";
 import {Button} from "../button/button";
 import {userApi} from "../../../api/common/user-api";
-moment.locale("vi")
 
+moment.locale("vi")
 
 
 class FRNotification extends Component {
@@ -41,15 +41,20 @@ class FRNotification extends Component {
         let {status, loadingA, loadingC} = this.state;
         return (
             <div className="fr-notification">
-                <div><span className="high-light dark">{data.person.basic_info.username}</span> đã gửi cho bạn lời mời kết bạn </div>
+
                 {status === "PENDING" ? (
-                    <div className="fr-actions">
-                        <Button className="btn btn-cancel mr-2" loading={loadingC} onClick={this.cancelRequest}>Hủy</Button>
-                        <Button className="btn btn-common-primary" loading={loadingA}  onClick={this.acceptRequest}>Chấp nhận</Button>
-                    </div>
+                    <>
+                        <div><span className="high-light dark">{data.person.basic_info.username}</span> đã gửi cho bạn lời mời kết bạn</div>
+                        <div className="fr-actions">
+                            <Button className="btn btn-cancel mr-2" loading={loadingC}
+                                    onClick={this.cancelRequest}>Hủy</Button>
+                            <Button className="btn btn-common-primary" loading={loadingA} onClick={this.acceptRequest}>Chấp nhận</Button>
+                        </div>
+                    </>
                 ) : (
                     <div className="result">
-                        {status === "ACCEPT" ? (<span>Bạn và <span  className="high-light dark">{data.person.basic_info.username}</span> đã trở thành bạn bè.</span>) : `Hủy lời mời kết bạn thành công`}
+                        {status === "ACCEPT" ? (
+                            <span>Bạn và <span className="high-light dark">{data.person.basic_info.username}</span> đã trở thành bạn bè.</span>) : `Hủy lời mời kết bạn thành công`}
                     </div>
                 )}
             </div>
@@ -58,9 +63,7 @@ class FRNotification extends Component {
 }
 
 
-
 export class PostNotification extends Component {
-
 
 
     getRenderData = (data) => {
@@ -107,7 +110,9 @@ export class PostNotification extends Component {
                 getReaction: () => null,
                 getContent: () => (
                     <span>
-                        <span className="high-light dark">{data.comment.from_person.basic_info.username}</span> đã bình luận về <span  className="high-light dark">bài viết</span> {data.post.belonged_person._id === userID ? "của bạn" : "mà bạn đang theo dõi"}: <span className="content">{getRenderableContentFromMessage(data.comment,  {disabledLink: true})}</span>
+                        <span className="high-light dark">{data.comment.from_person.basic_info.username}</span> đã bình luận về <span
+                        className="high-light dark">bài viết</span> {data.post.belonged_person._id === userID ? "của bạn" : "mà bạn đang theo dõi"}: <span
+                        className="content">{getRenderableContentFromMessage(data.comment, {disabledLink: true})}</span>
                     </span>
                 ),
                 getTime: () => data.comment.created_at,
@@ -118,7 +123,9 @@ export class PostNotification extends Component {
                 getReaction: () => null,
                 getContent: () => (
                     <span>
-                        <span className="high-light dark">{data.comment.from_person.basic_info.username}</span> đã nhắc tới bạn trong một <span  className="high-light dark">bình luận</span>: <span className="content">{getRenderableContentFromMessage(data.comment, {disabledLink: true})}</span>
+                        <span className="high-light dark">{data.comment.from_person.basic_info.username}</span> đã nhắc tới bạn trong một <span
+                        className="high-light dark">bình luận</span>: <span
+                        className="content">{getRenderableContentFromMessage(data.comment, {disabledLink: true})}</span>
                     </span>
                 ),
                 getTime: () => data.comment.created_at,
@@ -130,21 +137,26 @@ export class PostNotification extends Component {
                 getContent: () => (
                     <span>
                         <span className="high-light dark">{data.reply.from_person.basic_info.username}</span> đã nhắc đến
-                        <span  className="high-light dark"> bạn </span>trong một câu trả lời:
-                        <span className="content"> {getRenderableContentFromMessage(data.reply, {disabledLink: true})}</span>
+                        <span className="high-light dark"> bạn </span>trong một câu trả lời:
+                        <span
+                            className="content"> {getRenderableContentFromMessage(data.reply, {disabledLink: true})}</span>
                     </span>
                 ),
                 getTime: () => data.reply.created_at,
-                toLink: () =>  `/post/${data.post._id}?commentID=${data.comment._id}&replyID=${data.reply._id}`
+                toLink: () => `/post/${data.post._id}?commentID=${data.comment._id}&replyID=${data.reply._id}`
             },
             "reply_on_comment": {
                 getAvatarUser: () => data.reply.from_person,
                 getReaction: () => null,
                 getContent: () => (
                     <span>
-                        <span className="high-light dark">{data.reply.from_person.basic_info.username}</span> đã trả lời <span  className="high-light dark">bình luận</span> của
-                        <span  className="high-light dark"> {data.comment.from_person._id === userID ? "bạn" : data.comment.from_person._id === data.comment.from_person._id ? genderMatcher[data.comment.from_person.basic_info.gender] : data.comment.from_person.basic_info.username}</span>:
-                        <span className="content"> {getRenderableContentFromMessage(data.reply, {disabledLink: true})}</span>
+                        <span
+                            className="high-light dark">{data.reply.from_person.basic_info.username}</span> đã trả lời <span
+                        className="high-light dark">bình luận</span> của
+                        <span
+                            className="high-light dark"> {data.comment.from_person._id === userID ? "bạn" : data.comment.from_person._id === data.comment.from_person._id ? genderMatcher[data.comment.from_person.basic_info.gender] : data.comment.from_person.basic_info.username}</span>:
+                        <span
+                            className="content"> {getRenderableContentFromMessage(data.reply, {disabledLink: true})}</span>
                     </span>
                 ),
                 getTime: () => data.reply.created_at,
@@ -155,36 +167,40 @@ export class PostNotification extends Component {
                 getReaction: () => REACTION_EMOJI_MAP[data.reaction],
                 getContent: () => (
                     <span>
-                        <span className="high-light dark">{data.reacted_by.basic_info.username}</span> đã bày tỏ cảm xúc tới <span  className="high-light dark">bình luận</span> của
-                        <span  className="high-light dark"> bạn</span>
+                        <span className="high-light dark">{data.reacted_by.basic_info.username}</span> đã bày tỏ cảm xúc tới <span
+                        className="high-light dark">bình luận</span> của
+                        <span className="high-light dark"> bạn</span>
                     </span>
                 ),
                 getTime: () => data.reply ? data.reply.updated_at : data.comment.updated_at,
-                toLink: () =>  `/post/${data.post._id}?${data.reply ? `replyID=${data.reply._id}` : `commentID=${data.comment._id}`}`
+                toLink: () => `/post/${data.post._id}?${data.reply ? `replyID=${data.reply._id}` : `commentID=${data.comment._id}`}`
             },
             "react_post": {
                 getAvatarUser: () => data.reacted_by,
                 getReaction: () => REACTION_EMOJI_MAP[data.reaction],
                 getContent: () => (
                     <span>
-                        <span className="high-light dark">{data.reacted_by.basic_info.username}</span> đã bày tỏ cảm xúc tới <span  className="high-light dark">bài đăng</span> của
-                        <span  className="high-light dark"> bạn</span>
+                        <span className="high-light dark">{data.reacted_by.basic_info.username}</span> đã bày tỏ cảm xúc tới <span
+                        className="high-light dark">bài đăng</span> của
+                        <span className="high-light dark"> bạn</span>
                     </span>
                 ),
                 getTime: () => data.post.updated_at,
-                toLink:() =>  `/post/${data.post._id}`
+                toLink: () => `/post/${data.post._id}`
             },
             "tagged_on_post": {
                 getAvatarUser: () => data.post.belonged_person,
                 getReaction: () => null,
                 getContent: () => (
                     <span>
-                        <span className="high-light dark">{data.post.belonged_person.basic_info.username}</span> đã gắn thẻ bạn trong <span  className="high-light dark">bài đăng</span>:
-                         <span className="content"> {getRenderableContentFromMessage(data.post, {disabledLink: true})}</span>
+                        <span className="high-light dark">{data.post.belonged_person.basic_info.username}</span> đã gắn thẻ bạn trong <span
+                        className="high-light dark">bài đăng</span>:
+                         <span
+                             className="content"> {getRenderableContentFromMessage(data.post, {disabledLink: true})}</span>
                     </span>
                 ),
                 getTime: () => data.post.created_at,
-                toLink:() =>  `/post/${data.post._id}`
+                toLink: () => `/post/${data.post._id}`
             },
             "tagged_on_post_file": {
                 getFilePreview: () => data.file.path,
@@ -192,12 +208,13 @@ export class PostNotification extends Component {
                 getReaction: () => null,
                 getContent: () => (
                     <span>
-                        <span className="high-light dark">{data.post.belonged_person.basic_info.username}</span> đã gắn thẻ bạn trong <span  className="high-light dark">một ảnh</span>:
+                        <span className="high-light dark">{data.post.belonged_person.basic_info.username}</span> đã gắn thẻ bạn trong <span
+                        className="high-light dark">một ảnh</span>:
                          <span className="content"> {data.file.caption}</span>
                     </span>
                 ),
                 getTime: () => data.post.created_at,
-                toLink:() =>  `/post/${data.post._id}?fileID=${data.file.rootFileID}`
+                toLink: () => `/post/${data.post._id}?fileID=${data.file.rootFileID}`
             },
         };
         return dataMatcher[notification_type]
@@ -209,7 +226,8 @@ export class PostNotification extends Component {
         let {getAvatarUser, getReaction, getContent, getTime, getFilePreview, toLink} = this.getRenderData(notification);
         let reaction = getReaction();
         return (
-            <div className={classnames("post-notification", {active: highLight && !notification.is_seen})} onClick={ () => toLink && customHistory.push(toLink())}>
+            <div className={classnames("post-notification", {active: highLight && !notification.is_seen})}
+                 onClick={() => toLink && customHistory.push(toLink())}>
                 <div className="avatar-wrapper">
                     <Avatar user={getAvatarUser()}/>
                     {reaction && (

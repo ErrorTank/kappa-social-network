@@ -89,7 +89,7 @@ const getUserBubbleChatBrief = (ownerID, userID) => {
         getUserPersonalChatRoom(ownerID, userID),
         User.findOne({
             _id: ObjectId(userID),
-            "friends.info": ObjectId(ownerID)
+            // "friends.info": ObjectId(ownerID)
         }, "_id basic_info.username active avatar last_active_at").lean()
     ])
         .then(([chat_room, user]) => {
@@ -112,7 +112,7 @@ const getUserChatRoomBrief = (ownerID, userID) => {
         getUserPersonalChatRoom(ownerID, userID, {omitFields: ["context"]}),
         User.findOne({
             _id: ObjectId(userID),
-            "friends.info": ObjectId(ownerID)
+            // "friends.info": ObjectId(ownerID)
         }, "_id basic_info.username active avatar last_active_at").lean()
     ])
         .then(([chat_room, user]) => {
