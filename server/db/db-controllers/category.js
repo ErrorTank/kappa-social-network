@@ -49,7 +49,7 @@ const getCategories = (query) => {
     });
 };
 const getCategoryByID = (categoryID) => {
-  return Category.find({ _id: categoryID })
+  return Category.findOne({ _id: categoryID })
     .lean()
     .then((category) => {
       return category;

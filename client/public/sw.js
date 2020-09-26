@@ -327,6 +327,10 @@ var exceptionRequestsDev = [
     endpoint: /https:\/\/localhost:4000\/api\/listing\/get-listing-by-categoryID\/\w+/,
     method: 'GET',
   },
+  {
+    endpoint: /https:\/\/localhost:4000\/api\/category\/get-category-by-ID\/\w+/,
+    method: 'GET',
+  },
 ];
 
 var notGetRequests = [

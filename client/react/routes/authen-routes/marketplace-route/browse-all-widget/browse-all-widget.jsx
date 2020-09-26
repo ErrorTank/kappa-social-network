@@ -7,7 +7,7 @@ import { MarketplaceMenuSection } from './marketplace-menu-section/marketplace-m
 import { CategoriesSection } from './categories-section/categories-section';
 import { MarketplaceFilterSection } from './marketplace-filter-section/marketplace-filter-section';
 import { categoryApi } from './../../../../../api/common/category-api';
-import { itemField } from './../../../../../const/listing';
+import { itemField, radiusArr } from './../../../../../const/listing';
 import { MenuNavigationWithIcon } from './../../../../common/menu-navigation-with-icon/menu-navigation-with-icon';
 import { ListingInfoSelect } from './../../../../common/listing-info-select/listing-info-select';
 import { customHistory } from '../../../routes';
@@ -68,32 +68,7 @@ export class BrowseAllWidget extends Component {
       title: 'Tài khoản của bạn',
     },
   ];
-  radiusArr = [
-    {
-      value: 1,
-    },
-    {
-      value: 2,
-    },
-    {
-      value: 5,
-    },
-    {
-      value: 10,
-    },
-    {
-      value: 20,
-    },
-    {
-      value: 40,
-    },
-    {
-      value: 60,
-    },
-    {
-      value: 1000,
-    },
-  ];
+
   render() {
     const { categoryDisplay } = this.state;
     const { updateValue, radius } = this.props;
@@ -113,7 +88,7 @@ export class BrowseAllWidget extends Component {
               <MarketplaceFilterSection radius={radius}>
                 <ListingInfoSelect
                   label={'Bán kính'}
-                  options={this.radiusArr}
+                  options={radiusArr}
                   displayAs={(item) => item.value + ' km'}
                   value={{ value: radius }}
                   isSelected={(option) => option.value === radius}

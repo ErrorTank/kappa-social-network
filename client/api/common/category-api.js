@@ -6,4 +6,7 @@ export const categoryApi = {
     let category = urlUtils.buildParams(data);
     return authenApi.get(`/category/get-category${category}`);
   },
+  getCategoryByID(categoryID) {
+    return authenApi.get(`/category/get-category-by-ID/${categoryID}`);
+  },
 };

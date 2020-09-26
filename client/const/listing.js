@@ -806,3 +806,30 @@ export const fieldByHomeFor = [
     //option
   },
 ];
+
+export const radiusArr = [
+  {
+    value: 1,
+  },
+  {
+    value: 2,
+  },
+  {
+    value: 5,
+  },
+  {
+    value: 10,
+  },
+  {
+    value: 20,
+  },
+  {
+    value: 40,
+  },
+  {
+    value: 60,
+  },
+  {
+    value: 1000,
+  },
+];
