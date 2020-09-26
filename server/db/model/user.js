@@ -410,6 +410,7 @@ const userSchema = new Schema({
             type: Date,
             default: Date.now
         },
+        home_town: AddressSchema
     },
     relationship: {
         status: {

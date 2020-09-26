@@ -894,6 +894,24 @@ const getUserAboutBrief = (userID) => {
             path: "schools.school.related",
             model: "Page",
             select: "_id basic_info avatar"
+        },{
+            path: "contact.address.city",
+            model: "City",
+        },{
+            path: "contact.address.ward",
+            model: "Ward",
+        },{
+            path: "contact.address.district",
+            model: "District",
+        },{
+            path: "contact.home_town.city",
+            model: "City",
+        },{
+            path: "contact.home_town.ward",
+            model: "Ward",
+        },{
+            path: "contact.home_town.district",
+            model: "District",
         },
     ])
         .then((data) => {

@@ -46,7 +46,34 @@ export const createAboutPanels = ({isOwner, user}) =>  [
         ]
     }, {
         label: "Thông tin liên hệ",
-        icon: <i className="fad fa-phone-alt"></i>
+        icon: <i className="fad fa-phone-alt"></i>,
+        fields: [
+            {
+                label: "Email",
+                getValue: () => user.contact.email + "*",
+                editable: isOwner,
+                isExisted: () => user.contact.email,
+            }, {
+                label: "Số điện thoại",
+                getValue: () => user.contact.phone + "*",
+                editable: isOwner,
+                isExisted: () => user.contact.phone,
+            }, {
+                label: "Quê quán",
+                getValue: () => {
+                    return user.contact.home_town.ward.path_with_type
+                },
+                editable: isOwner,
+                isExisted: () => Object.keys(user.contact.home_town).length
+            },{
+                label: "Tỉnh/Thành phố hiện tại",
+                getValue: () => {
+                    return user.contact.address.ward.path_with_type
+                },
+                editable: isOwner,
+                isExisted: () => Object.keys(user.contact.address).length
+            },
+        ]
     },{
         label: "Công việc",
         icon: <i className="fad fa-briefcase"></i>,
