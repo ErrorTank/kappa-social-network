@@ -63,6 +63,9 @@ export const userApi = {
     getUserFriendsCount(userID){
         return authenApi.get(`/user/${userID}/friends-count`)
     },
+    getUserAboutBrief(userID){
+        return authenApi.get(`/user/${userID}/about-brief`)
+    },
     unfriend(userID, friendID){
         return authenApi.put(`/user/${userID}/unfriend/${friendID}`)
     },

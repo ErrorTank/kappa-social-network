@@ -410,10 +410,14 @@ const userSchema = new Schema({
             type: Date,
             default: Date.now
         },
+        home_town: AddressSchema
     },
     relationship: {
-        status: ["SINGLE", "IN_RELATIONSHIP", "COMPLICATED"],
-        related_person: {
+        status: {
+            enum: ["SINGLE", "DATING", "COMPLICATED", "MARRIED"],
+            type: String
+        },
+        related: {
             type: ObjectId,
             ref: "User"
         },
