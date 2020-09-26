@@ -30,11 +30,11 @@ export class DatingMatched extends Component {
   render() {
     const { peoples } = this.state;
     return (
-      <div className="dating-matched">
-        {peoples.map((people) => (
-          <div className="img-matched">
+      <div className='dating-matched'>
+        {peoples.map((people, i) => (
+          <div className='img-matched' key={i}>
             <img src={people.imgUrl} />
-            <div className="username">{people.name}</div>
+            <div className='username'>{people.name}</div>
           </div>
         ))}
       </div>
