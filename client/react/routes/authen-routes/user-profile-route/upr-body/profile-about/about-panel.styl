@@ -1,9 +1,61 @@
 .about-panel{
   margin-top 24px
+  .ap-body{
+    .ap-fields{
+      margin-top 16px
+      .ap-field{
+        padding 8px 0
+        border-top 1px solid #f2f2f2
+        display flex
+        align-items center
+        .ap-field-label{
+          flex 0 0 33%
+          font-size 1.6rem
+          color commonTextLight
+        }
+        .ap-field-value{
+          flex 0 0 52%
+          font-size 1.6rem
+          font-weight 500
+          color commonTextLight
+          white-space nowrap
+          overflow hidden
+          text-overflow ellipsis
+        }
+        .ap-field-action{
+          flex 0 0 15%
+          text-align right
+          .edit-btn{
+            display inline-block
+            color primaryButton
+            font-size 1.4rem
+            cursor pointer
+            font-weight 500
+            &:hover{
+              color darken(primaryButton, 10%)
+            }
+          }
+        }
+        &:last-of-type{
+          border-bottom 1px solid #f2f2f2
+
+        }
+      }
+    }
+  }
   .ap-header{
     display flex
     justify-content space-between
     align-items center
+    .ap-create-btn{
+      color primaryButton
+      font-size 1.4rem
+      cursor pointer
+      font-weight 500
+      &:hover{
+        color darken(primaryButton, 10%)
+      }
+    }
     .ap-label{
       font-size 1.8rem
       font-weight 500

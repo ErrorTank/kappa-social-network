@@ -879,7 +879,7 @@ const getUserFriendInvitations = (userID, {totalOnly = false, skip = 0, limit = 
 };
 
 const getUserAboutBrief = (userID) => {
-    return User.findone({
+    return User.findOne({
         _id: ObjectId(userID)
     }).populate([
         {
@@ -897,7 +897,7 @@ const getUserAboutBrief = (userID) => {
         },
     ])
         .then((data) => {
-            return data.map(each => pick(each, ["_id", "basic_info", "relationship", "contact","works", "schools", "favorites", "user_about_privacy"]))
+            return pick(data, ["_id", "basic_info", "relationship", "contact","works", "schools", "favorites", "user_about_privacy"])
         });
 }
 

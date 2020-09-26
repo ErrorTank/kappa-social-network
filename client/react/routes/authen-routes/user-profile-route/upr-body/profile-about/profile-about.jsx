@@ -3,6 +3,7 @@ import {createAboutPanels} from "./about-panels";
 import {AboutPanel} from "./about-panel";
 import {userApi} from "../../../../../../api/common/user-api";
 import {LoadingInline} from "../../../../../common/loading-inline/loading-inline";
+import {userInfo} from "../../../../../../common/states/common";
 
 export default class ProfileAbout extends Component {
     constructor(props) {
@@ -21,8 +22,11 @@ export default class ProfileAbout extends Component {
     };
 
     render() {
-        let {user, loading} = this.state;
-        let aboutPanels = createAboutPanels({});
+        let {userBrief, loading} = this.state;
+        let aboutPanels = loading ? null: createAboutPanels({
+            isOwner: this.props.user._id === userInfo.getState()._id,
+            user: userBrief
+        });
         return (
             <div className="profile-about-route">
                 <div className="white-box">

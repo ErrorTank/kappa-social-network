@@ -3,40 +3,45 @@ import {genders} from "../../../../../../const/genders";
 import {relationships} from "../../../../../../const/relationships";
 
 
-export const createAboutPanels = ({}) =>  [
+export const createAboutPanels = ({isOwner, user}) =>  [
     {
         label: "Thông tin cá nhân",
         icon: <i className="fad fa-user"></i>,
         fields: [
             {
                 label: "Tên tài khoản",
-                getValue: user => user.basic_info.username,
-                isExisted: user => user.basic_info.username
+                getValue: () => user.basic_info.username,
+                editable: isOwner,
+                isExisted: () => user.basic_info.username
             }, {
                 label: "Giới tính",
-                getValue: user => genders.find(each => each.id === user.basic_info.gender).label,
-                isExisted: user => user.basic_info.gender
+                getValue: () => genders.find(each => each.id === user.basic_info.gender).label,
+                editable: isOwner,
+                isExisted: () => user.basic_info.gender
             }, {
                 label: "Ngày sinh",
-                getValue: user => {
+                getValue: () => {
                     let birthday = new Date(user.basic_info.dob);
-                    return `${birthday.getDate()}/${birthday.getMonth() + 1}/${birthday.getFullYear()}`;
+                    return `${birthday.getDate()} / ${birthday.getMonth() + 1} / ${birthday.getFullYear()}`;
                 },
-                isExisted: user => user.basic_info.dob
+                editable: isOwner,
+                isExisted: () => user.basic_info.dob
             },{
                 label: "Tình trạng",
-                getValue: user => {
-                    let relationshipConfig = relationships.find(each => each.id === user.relationship.status);
-                    return `${relationshipConfig.label}${relationshipConfig.canWith && ` ${user.relationship.related_person.basic_info.username}`}`
+                getValue: () => {
+                    let relationshipConfig = relationships.find(each => each.value === user.relationship.status);
+                    return `${relationshipConfig.label}${relationshipConfig.canWith ? ` ${user.relationship.related_person.basic_info.username}` : ""}`
                 },
-                isExisted: user => user.relationship
+                editable: isOwner,
+                isExisted: () => user.relationship.status
             },{
                 label: "Đường dẫn",
-                getValue: user => {
+                getValue: () => {
 
-                    return `${window.location.origin}/user/${user.basic_info.profile_link || user._id}}`
+                    return `${window.location.origin}/user/${user.basic_info.profile_link || user._id}`
                 },
-                isExisted: true
+                editable: isOwner,
+                isExisted: () => true
             },
         ]
     }, {

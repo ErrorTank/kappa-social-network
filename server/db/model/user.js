@@ -412,7 +412,10 @@ const userSchema = new Schema({
         },
     },
     relationship: {
-        status: ["SINGLE", "DATING", "COMPLICATED", "MARRIED"],
+        status: {
+            enum: ["SINGLE", "DATING", "COMPLICATED", "MARRIED"],
+            type: String
+        },
         related: {
             type: ObjectId,
             ref: "User"
