@@ -1,11 +1,15 @@
 import React, { Component } from 'react';
 import { MarketplaceSearchSection } from './../../browse-all-widget/marketplace-search-section/marketplace-search-section';
 import { ThemeContext } from './../../../../../context/theme-context';
+import { listingApi } from './../../../../../../api/common/listing-api';
 
 export class CategoryTraitWidget extends Component {
   constructor(props) {
     super(props);
     this.state = {};
+    listingApi
+      .getListingByCategoryID(this.props.match.params.categoryID)
+      .then((e) => console.log(e));
   }
   render() {
     console.log(this.props);
@@ -13,7 +17,7 @@ export class CategoryTraitWidget extends Component {
       <ThemeContext.Consumer>
         {({ darkMode }) => (
           <div className='category-trait-widget'>
-            <MarketplaceSearchSection darkMode={darkMode} title={''} />
+            <MarketplaceSearchSection darkMode={darkMode} title={'Test'} />
             {/* <div className='browse-all-body'>
           <MarketplaceMenuSection
             darkMode={darkMode}

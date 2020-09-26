@@ -15,7 +15,7 @@ class ShowEachCategory extends Component {
           <CommonLayout
             mainRender={() => <div>ok</div>}
             haveRightRender={false}
-            leftRender={() => <CategoryTraitWidget />}
+            leftRender={() => <CategoryTraitWidget {...this.props} />}
           />
         </div>
       </PageTitle>
