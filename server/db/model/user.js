@@ -412,8 +412,8 @@ const userSchema = new Schema({
         },
     },
     relationship: {
-        status: ["SINGLE", "IN_RELATIONSHIP", "COMPLICATED"],
-        related_person: {
+        status: ["SINGLE", "DATING", "COMPLICATED", "MARRIED"],
+        related: {
             type: ObjectId,
             ref: "User"
         },

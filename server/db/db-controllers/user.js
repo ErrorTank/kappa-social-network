@@ -878,7 +878,31 @@ const getUserFriendInvitations = (userID, {totalOnly = false, skip = 0, limit = 
         .then(data => omit(data, totalOnly ? "list" : ""))
 };
 
+const getUserAboutBrief = (userID) => {
+    return User.findone({
+        _id: ObjectId(userID)
+    }).populate([
+        {
+            path: "relationship.related",
+            model: "User",
+            select: "_id basic_info avatar"
+        },{
+            path: "works.company.related",
+            model: "Page",
+            select: "_id basic_info avatar"
+        },{
+            path: "schools.school.related",
+            model: "Page",
+            select: "_id basic_info avatar"
+        },
+    ])
+        .then((data) => {
+            return data.map(each => pick(each, ["_id", "basic_info", "relationship", "contact","works", "schools", "favorites", "user_about_privacy"]))
+        });
+}
+
 module.exports = {
+    getUserAboutBrief,
     getUserFriendInvitations,
     getUserFriends,
     acceptFriendRequest,
