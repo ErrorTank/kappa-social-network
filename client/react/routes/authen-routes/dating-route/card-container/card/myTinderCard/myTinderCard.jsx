@@ -67,10 +67,14 @@ export class MyTinderCard extends Component {
         )}
 
         <div className='dating-card-info'>
-          <div className='dating-card-name'>{info.name}</div>
-          <div className='dating-card-age'>{getAge(info.birthday)}</div>
+          <div className='dating-card-name-age'>
+            <div className='dating-card-name'>{info.name}</div>
+            <div className='dating-card-age'>{getAge(info.birthday)}</div>
+          </div>
+          {this.state.current === 0 && (
+            <div className='dating-card-bio'>{info.bio}</div>
+          )}
         </div>
-        <div className='dating-card-bio'>{info.bio}</div>
       </div>
     );
   }

@@ -81,24 +81,32 @@
 
     .dating-card-info {
         display: flex;
+        flex-direction: column;
         position: absolute;
         bottom: 10px;
         font-size: 25px;
         font-weight: bold;
         color: white;
-        padding-left: 10px;
+        padding-left: 15px;
+        padding-bottom: 10px;
+        padding-right: 20px;
         text-shadow: 0 1px 1px rgba(0, 0, 0, 0.12);
 
-        .dating-card-name {
-            padding-right: 10px;
+        .dating-card-name-age {
+            .dating-card-name {
+                padding-right: 10px;
+                display: inline;
+            }
+
+            .dating-card-age {
+                display: inline;
+            }
         }
 
-        .dating-card-age {
+        .dating-card-bio {
+            display: block;
+            font-weight: 400;
+            font-size: 20px;
         }
-    }
-
-    .dating-card-bio {
-        position: absolute;
-        bottom: 10px;
     }
 }
