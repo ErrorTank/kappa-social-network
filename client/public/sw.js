@@ -1,404 +1,408 @@
-importScripts("/assets/vendor/idb.js");
-importScripts("/assets/vendor/sw-utilities.js");
+importScripts('/assets/vendor/idb.js');
+importScripts('/assets/vendor/sw-utilities.js');
 var exceptionRequestsDev = [
   {
-    endpoint: "https://localhost:4000/api/register",
-    method: "POST",
+    endpoint: 'https://localhost:4000/api/register',
+    method: 'POST',
   },
 
   {
-    endpoint: "https://localhost:4000/api/dating/init-card-profile-info",
-    method: "GET",
+    endpoint: 'https://localhost:4000/api/dating/init-card-profile-info',
+    method: 'GET',
   },
   {
-    endpoint: "https://localhost:4000/api/session/check",
-    method: "POST",
+    endpoint: 'https://localhost:4000/api/session/check',
+    method: 'POST',
   },
   {
-    endpoint: "https://localhost:4000/api/confirm-token/resend",
-    method: "POST",
+    endpoint: 'https://localhost:4000/api/confirm-token/resend',
+    method: 'POST',
   },
   {
-    endpoint: "https://localhost:4000/api/verify-user",
-    method: "POST",
+    endpoint: 'https://localhost:4000/api/verify-user',
+    method: 'POST',
   },
   {
-    endpoint: "https://localhost:4000/api/user/init-credentials",
-    method: "GET",
+    endpoint: 'https://localhost:4000/api/user/init-credentials',
+    method: 'GET',
   },
   {
-    endpoint: "https://localhost:4000/api/user/login",
-    method: "POST",
+    endpoint: 'https://localhost:4000/api/user/login',
+    method: 'POST',
   },
 
   {
-    endpoint: "https://localhost:4000/api/user/send-change-password-token",
-    method: "POST",
+    endpoint: 'https://localhost:4000/api/user/send-change-password-token',
+    method: 'POST',
   },
   {
-    endpoint: "https://localhost:4000/api/user/verify-change-password-token",
-    method: "POST",
+    endpoint: 'https://localhost:4000/api/user/verify-change-password-token',
+    method: 'POST',
   },
   {
-    endpoint: "https://localhost:4000/api/user/resend-change-password-token",
-    method: "POST",
+    endpoint: 'https://localhost:4000/api/user/resend-change-password-token',
+    method: 'POST',
   },
   {
     endpoint: /https:\/\/localhost:4000\/api\/dating\/card-profile-info/,
-    method: "PUT",
+    method: 'PUT',
   },
   {
     endpoint: /https:\/\/localhost:4000\/api\/user\/change-password\/brief\/session\//,
-    method: "GET",
+    method: 'GET',
   },
   {
     endpoint: /https:\/\/localhost:4000\/api\/user\/\w+\/simple-update/,
-    method: "PUT",
+    method: 'PUT',
   },
   {
     endpoint: /https:\/\/localhost:4000\/api\/user\/\w+\/is-friend\/\w+/,
-    method: "GET",
+    method: 'GET',
   },
   {
     endpoint: /https:\/\/localhost:4000\/api\/user\/\w+\/friends/,
-    method: "GET",
+    method: 'GET',
   },
   {
     endpoint: /https:\/\/localhost:4000\/api\/user\/\w+\/friend-invitations/,
-    method: "GET",
+    method: 'GET',
   },
   {
     endpoint: /https:\/\/localhost:4000\/api\/user\/\w+\/unfriend\/\w+/,
-    method: "PUT",
+    method: 'PUT',
   },
   {
     endpoint: /https:\/\/localhost:4000\/api\/user\/\w+\/send-friend-request\/\w+/,
-    method: "PUT",
+    method: 'PUT',
   },
   {
     endpoint: /https:\/\/localhost:4000\/api\/user\/\w+\/cancel-friend-request\/\w+/,
-    method: "PUT",
+    method: 'PUT',
   },
   {
     endpoint: /https:\/\/localhost:4000\/api\/user\/\w+\/accept-friend-request\/\w+/,
-    method: "PUT",
+    method: 'PUT',
   },
   {
-    endpoint: "https://localhost:4000/api/user/change-password",
-    method: "PUT",
+    endpoint: 'https://localhost:4000/api/user/change-password',
+    method: 'PUT',
   },
   {
     endpoint: /https:\/\/localhost:4000\/api\/utility\/search-global/,
-    method: "GET",
+    method: 'GET',
   },
   {
     endpoint: /https:\/\/localhost:4000\/api\/utility\/pre-search/,
-    method: "GET",
+    method: 'GET',
   },
   {
     endpoint: /https:\/\/localhost:4000\/api\/user\/search-history\/history/,
-    method: "DELETE",
+    method: 'DELETE',
   },
   {
     endpoint: /https:\/\/localhost:4000\/api\/user\/search-history\/history/,
-    method: "PUT",
+    method: 'PUT',
   },
   {
-    endpoint: "https://localhost:4000/api/user/search-history/create",
-    method: "POST",
+    endpoint: 'https://localhost:4000/api/user/search-history/create',
+    method: 'POST',
   },
   {
-    endpoint: "https://localhost:4000/api/user/short-login",
-    method: "POST",
+    endpoint: 'https://localhost:4000/api/user/short-login',
+    method: 'POST',
   },
   {
     endpoint: /https:\/\/localhost:4000\/api\/user\/\w+\/basic-info/,
-    method: "GET",
+    method: 'GET',
   },
   {
-    endpoint: "https://localhost:4000/api/user/toggle-dark-mode",
-    method: "PUT",
+    endpoint: 'https://localhost:4000/api/user/toggle-dark-mode',
+    method: 'PUT',
   },
   {
     endpoint: /https:\/\/localhost:4000\/api\/utility\/search\/dialogs/,
-    method: "GET",
+    method: 'GET',
   },
   {
     endpoint: /https:\/\/localhost:4000\/api\/utility\/search-for-create\/dialogs/,
-    method: "GET",
+    method: 'GET',
   },
   {
     endpoint: /https:\/\/localhost:4000\/api\/utility\/url\/\w+\/metadata/,
-    method: "GET",
+    method: 'GET',
   },
   {
     endpoint: /https:\/\/localhost:4000\/api\/messenger\/status\/active/,
-    method: "GET",
+    method: 'GET',
   },
   {
     endpoint: /https:\/\/localhost:4000\/api\/messenger\/bubble\/user\/\w+\/brief/,
-    method: "GET",
+    method: 'GET',
   },
   {
     endpoint: /https:\/\/localhost:4000\/api\/messenger\/chat-room\/user\/\w+\/brief/,
-    method: "GET",
+    method: 'GET',
   },
   {
     endpoint: /https:\/\/localhost:4000\/api\/chat\/\w+\/send-message/,
-    method: "POST",
+    method: 'POST',
   },
   {
     endpoint: /https:\/\/localhost:4000\/api\/chat\/\w+\/send-file-message/,
-    method: "POST",
+    method: 'POST',
   },
   {
     endpoint: /https:\/\/localhost:4000\/api\/chat\/\w+\/messages\/seen-messages/,
-    method: "PUT",
+    method: 'PUT',
   },
   {
     endpoint: /https:\/\/localhost:4000\/api\/chat\/\w+\/messages\/update-to-sent/,
-    method: "PUT",
+    method: 'PUT',
   },
   {
     endpoint: /https:\/\/localhost:4000\/api\/chat\/\w+\/get-messages/,
-    method: "GET",
+    method: 'GET',
   },
   {
     endpoint: /https:\/\/localhost:4000\/api\/chat\/\w+\/mentions/,
-    method: "GET",
+    method: 'GET',
   },
   {
     endpoint: /https:\/\/localhost:4000\/api\/chat\/\w+\/nicknames/,
-    method: "GET",
+    method: 'GET',
   },
   {
     endpoint: /https:\/\/localhost:4000\/api\/utility\/download\/\w+\/original-name\/\w+/,
-    method: "GET",
+    method: 'GET',
   },
   {
     endpoint: /https:\/\/localhost:4000\/api\/utility\/friends/,
-    method: "GET",
+    method: 'GET',
   },
   {
     endpoint: /https:\/\/localhost:5000\/api\/utility\/detect-faces/,
-    method: "POST",
+    method: 'POST',
   },
   {
     endpoint: /https:\/\/localhost:5000\/api\/utility\/detect-faces-2/,
-    method: "POST",
+    method: 'POST',
   },
   {
     endpoint: /https:\/\/localhost:4000\/api\/chat\/\w+\/user\/\w+\/nickname/,
-    method: "PUT",
+    method: 'PUT',
   },
   {
     endpoint: /https:\/\/localhost:4000\/api\/chat\/\w+\/default-emoji/,
-    method: "PUT",
+    method: 'PUT',
   },
   {
     endpoint: /https:\/\/localhost:4000\/api\/messenger\/user\/\w+\/unseen-messages\/count/,
-    method: "GET",
+    method: 'GET',
   },
   {
     endpoint: /https:\/\/localhost:4000\/api\/messenger\/user\/\w+\/chat-rooms/,
-    method: "GET",
+    method: 'GET',
   },
   {
     endpoint: /https:\/\/localhost:4000\/api\/post\/create-post/,
-    method: "POST",
+    method: 'POST',
   },
   {
     endpoint: /https:\/\/localhost:4000\/api\/post\/pre-upload-media/,
-    method: "POST",
+    method: 'POST',
   },
   {
     endpoint: /https:\/\/localhost:4000\/api\/post\/get-all/,
-    method: "GET",
+    method: 'GET',
   },
   {
     endpoint: /https:\/\/localhost:4000\/api\/post\/user\/\w+\/get-all/,
-    method: "GET",
+    method: 'GET',
   },
   {
     endpoint: /https:\/\/localhost:4000\/api\/post\/update\/post\/\w+\/file\/\w+/,
-    method: "PUT",
+    method: 'PUT',
   },
   {
     endpoint: /https:\/\/localhost:4000\/api\/post\/update\/post\/\w+/,
-    method: "PUT",
+    method: 'PUT',
   },
   {
     endpoint: /https:\/\/localhost:4000\/api\/post\/update-comment\/comment\/\w+/,
-    method: "PUT",
+    method: 'PUT',
   },
   {
     endpoint: /https:\/\/localhost:4000\/api\/post\/update-reaction\/post\/\w+/,
-    method: "PUT",
+    method: 'PUT',
   },
   {
     endpoint: /https:\/\/localhost:4000\/api\/post\/update-reaction\/post\/\w+\/comment\/\w+/,
-    method: "PUT",
+    method: 'PUT',
   },
   {
     endpoint: /https:\/\/localhost:4000\/api\/address\/get-address/,
-    method: "GET",
+    method: 'GET',
   },
   {
     endpoint: /https:\/\/localhost:4000\/api\/post\/reaction\/post\/\w+\/reaction_key\/\w+/,
-    method: "GET",
+    method: 'GET',
   },
   {
     endpoint: /https:\/\/localhost:4000\/api\/post\/comments\/post\/\w+/,
-    method: "GET",
+    method: 'GET',
   },
   {
     endpoint: /https:\/\/localhost:4000\/api\/post\/replies\/comment\/\w+/,
-    method: "GET",
+    method: 'GET',
   },
   {
     endpoint: /https:\/\/localhost:4000\/api\/post\/create-comment\/post\/\w+/,
-    method: "POST",
+    method: 'POST',
   },
   {
     endpoint: /https:\/\/localhost:4000\/api\/post\/toggle-follow\/post\/\w+/,
-    method: "PUT",
+    method: 'PUT',
   },
   {
     endpoint: /https:\/\/localhost:4000\/api\/post\/toggle-block\/post\/\w+/,
-    method: "PUT",
+    method: 'PUT',
   },
   {
     endpoint: /https:\/\/localhost:4000\/api\/post\/toggle-save\/post\/\w+/,
-    method: "PUT",
+    method: 'PUT',
   },
   {
     endpoint: /https:\/\/localhost:4000\/api\/post\/create-reply\/comment\/\w+/,
-    method: "POST",
+    method: 'POST',
   },
   {
     endpoint: /https:\/\/localhost:4000\/api\/post\/\w+/,
-    method: "DELETE",
+    method: 'DELETE',
   },
   {
     endpoint: /https:\/\/localhost:4000\/api\/post\/comment\/\w+/,
-    method: "DELETE",
+    method: 'DELETE',
   },
   {
     endpoint: /https:\/\/localhost:4000\/api\/post\/reply\/\w+/,
-    method: "DELETE",
+    method: 'DELETE',
   },
   {
     endpoint: /https:\/\/localhost:4000\/api\/post\/detail\/post\/\w+/,
-    method: "GET",
+    method: 'GET',
   },
   {
     endpoint: /https:\/\/localhost:4000\/api\/user\/create-notification/,
-    method: "POST",
+    method: 'POST',
   },
   {
     endpoint: /https:\/\/localhost:4000\/api\/user\/unseen-notifications-count/,
-    method: "GET",
+    method: 'GET',
   },
   {
     endpoint: /https:\/\/localhost:4000\/api\/user\/notifications/,
-    method: "GET",
+    method: 'GET',
   },
   {
     endpoint: /https:\/\/localhost:4000\/api\/user\/\w+\/friends-count/,
-    method: "GET",
+    method: 'GET',
   },
   {
     endpoint: /https:\/\/localhost:4000\/api\/user\/seen-notifications/,
-    method: "PUT",
+    method: 'PUT',
   },
   {
     endpoint: /https:\/\/localhost:4000\/api\/listing\/create-listing/,
-    method: "POST",
+    method: 'POST',
   },
   {
     endpoint: /https:\/\/localhost:4000\/api\/listing\/get-listing/,
-    method: "GET",
+    method: 'GET',
   },
   {
     endpoint: /https:\/\/localhost:4000\/api\/category\/get-category/,
-    method: "GET",
+    method: 'GET',
+  },
+  {
+    endpoint: /https:\/\/localhost:4000\/api\/listing\/get-listing-by-categoryID\/\w+/,
+    method: 'GET',
   },
 ];
 
 var notGetRequests = [
   {
-    endpoint: "https://localhost:4000/api/utility/login-sessions/brief",
-    method: "POST",
-    dbCollectionName: "login-sessions",
+    endpoint: 'https://localhost:4000/api/utility/login-sessions/brief',
+    method: 'POST',
+    dbCollectionName: 'login-sessions',
   },
   {
-    endpoint: "https://localhost:4000/api/chat/contacts",
-    method: "GET",
-    dbCollectionName: "contacts",
+    endpoint: 'https://localhost:4000/api/chat/contacts',
+    method: 'GET',
+    dbCollectionName: 'contacts',
   },
 ];
-var CACHE_STATIC_NAME = "static-v1600147291069";
-var CACHE_DYNAMIC_NAME = "dynamic-v1600147291069";
+var CACHE_STATIC_NAME = 'static-v1600147291069';
+var CACHE_DYNAMIC_NAME = 'dynamic-v1600147291069';
 
 var STATIC_FILES = [
-  "/",
-  "/index.html",
-  "/vendor.bundle.js",
-  "/bundle.js",
-  "/assets/vendor/jquery.js",
-  "/assets/vendor/idb.js",
-  "/assets/vendor/sw-utilities.js",
-  "/main.css",
-  "/assets/vendor/fonts/css/all.min.css",
-  "/assets/images/icons/app-icon-32x32.png",
-  "/assets/images/icons/app-icon-192x192.png",
-  "https://fonts.googleapis.com/css?family=Lato:300,300i,400,400i,700,700i|Montserrat:400,400i,500,500i,600,600i,700,700i|Open+Sans:400,400i,600,600i,700,700i|Roboto:400,400i,500,500i,700,700i&display=swap&subset=latin-ext,vietnamese",
-  "https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css",
-  "/assets/vendor/fonts/webfonts/fa-brands-400.eot",
-  "/assets/vendor/fonts/webfonts/fa-brands-400.svg",
-  "/assets/vendor/fonts/webfonts/fa-brands-400.ttf",
-  "/assets/vendor/fonts/webfonts/fa-brands-400.woff",
-  "/assets/vendor/fonts/webfonts/fa-brands-400.woff2",
-  "/assets/vendor/fonts/webfonts/fa-duotone-900.eot",
-  "/assets/vendor/fonts/webfonts/fa-duotone-900.svg",
-  "/assets/vendor/fonts/webfonts/fa-duotone-900.ttf",
-  "/assets/vendor/fonts/webfonts/fa-duotone-900.woff",
-  "/assets/vendor/fonts/webfonts/fa-duotone-900.woff2",
-  "/assets/vendor/fonts/webfonts/fa-light-300.eot",
-  "/assets/vendor/fonts/webfonts/fa-light-300.svg",
-  "/assets/vendor/fonts/webfonts/fa-light-300.ttf",
-  "/assets/vendor/fonts/webfonts/fa-light-300.woff",
-  "/assets/vendor/fonts/webfonts/fa-light-300.woff2",
-  "/assets/vendor/fonts/webfonts/fa-regular-400.eot",
-  "/assets/vendor/fonts/webfonts/fa-regular-400.svg",
-  "/assets/vendor/fonts/webfonts/fa-regular-400.ttf",
-  "/assets/vendor/fonts/webfonts/fa-regular-400.woff",
-  "/assets/vendor/fonts/webfonts/fa-regular-400.woff2",
-  "/assets/vendor/fonts/webfonts/fa-solid-900.eot",
-  "/assets/vendor/fonts/webfonts/fa-solid-900.svg",
-  "/assets/vendor/fonts/webfonts/fa-solid-900.ttf",
-  "/assets/vendor/fonts/webfonts/fa-solid-900.woff",
-  "/assets/vendor/fonts/webfonts/fa-solid-900.woff2",
+  '/',
+  '/index.html',
+  '/vendor.bundle.js',
+  '/bundle.js',
+  '/assets/vendor/jquery.js',
+  '/assets/vendor/idb.js',
+  '/assets/vendor/sw-utilities.js',
+  '/main.css',
+  '/assets/vendor/fonts/css/all.min.css',
+  '/assets/images/icons/app-icon-32x32.png',
+  '/assets/images/icons/app-icon-192x192.png',
+  'https://fonts.googleapis.com/css?family=Lato:300,300i,400,400i,700,700i|Montserrat:400,400i,500,500i,600,600i,700,700i|Open+Sans:400,400i,600,600i,700,700i|Roboto:400,400i,500,500i,700,700i&display=swap&subset=latin-ext,vietnamese',
+  'https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css',
+  '/assets/vendor/fonts/webfonts/fa-brands-400.eot',
+  '/assets/vendor/fonts/webfonts/fa-brands-400.svg',
+  '/assets/vendor/fonts/webfonts/fa-brands-400.ttf',
+  '/assets/vendor/fonts/webfonts/fa-brands-400.woff',
+  '/assets/vendor/fonts/webfonts/fa-brands-400.woff2',
+  '/assets/vendor/fonts/webfonts/fa-duotone-900.eot',
+  '/assets/vendor/fonts/webfonts/fa-duotone-900.svg',
+  '/assets/vendor/fonts/webfonts/fa-duotone-900.ttf',
+  '/assets/vendor/fonts/webfonts/fa-duotone-900.woff',
+  '/assets/vendor/fonts/webfonts/fa-duotone-900.woff2',
+  '/assets/vendor/fonts/webfonts/fa-light-300.eot',
+  '/assets/vendor/fonts/webfonts/fa-light-300.svg',
+  '/assets/vendor/fonts/webfonts/fa-light-300.ttf',
+  '/assets/vendor/fonts/webfonts/fa-light-300.woff',
+  '/assets/vendor/fonts/webfonts/fa-light-300.woff2',
+  '/assets/vendor/fonts/webfonts/fa-regular-400.eot',
+  '/assets/vendor/fonts/webfonts/fa-regular-400.svg',
+  '/assets/vendor/fonts/webfonts/fa-regular-400.ttf',
+  '/assets/vendor/fonts/webfonts/fa-regular-400.woff',
+  '/assets/vendor/fonts/webfonts/fa-regular-400.woff2',
+  '/assets/vendor/fonts/webfonts/fa-solid-900.eot',
+  '/assets/vendor/fonts/webfonts/fa-solid-900.svg',
+  '/assets/vendor/fonts/webfonts/fa-solid-900.ttf',
+  '/assets/vendor/fonts/webfonts/fa-solid-900.woff',
+  '/assets/vendor/fonts/webfonts/fa-solid-900.woff2',
 ];
 
-self.addEventListener("install", function (event) {
-  console.log("[Service Worker] Installing Service Worker ...", event);
+self.addEventListener('install', function (event) {
+  console.log('[Service Worker] Installing Service Worker ...', event);
   event.waitUntil(
     caches.open(CACHE_STATIC_NAME).then(function (cache) {
-      console.log("[Service Worker] Precaching App Shell");
+      console.log('[Service Worker] Precaching App Shell');
       cache.addAll(STATIC_FILES);
     })
   );
 });
 
-self.addEventListener("activate", function (event) {
-  console.log("[Service Worker] Activating Service Worker ....", event);
+self.addEventListener('activate', function (event) {
+  console.log('[Service Worker] Activating Service Worker ....', event);
   event.waitUntil(
     caches.keys().then(function (keyList) {
       return Promise.all(
         keyList.map(function (key) {
           if (key !== CACHE_STATIC_NAME && key !== CACHE_DYNAMIC_NAME) {
-            console.log("[Service Worker] Removing old cache.", key);
+            console.log('[Service Worker] Removing old cache.', key);
             return caches.delete(key);
           }
         })
@@ -421,10 +425,10 @@ function isInArray(string, array) {
     cachePath = string;
   }
   for (var path of array) {
-    if (typeof path === "string" && path === cachePath) {
+    if (typeof path === 'string' && path === cachePath) {
       return true;
     }
-    if (typeof path === "object" && path.test(string)) {
+    if (typeof path === 'object' && path.test(string)) {
       return true;
     }
   }
@@ -477,17 +481,17 @@ function getEndpointConfig(request, arr) {
     cachePath = string;
   }
   for (var path of array) {
-    if (typeof path.endpoint === "string" && path.endpoint === cachePath) {
+    if (typeof path.endpoint === 'string' && path.endpoint === cachePath) {
       return path;
     }
-    if (typeof path.endpoint === "object" && path.endpoint.test(string)) {
+    if (typeof path.endpoint === 'object' && path.endpoint.test(string)) {
       return path;
     }
   }
   return null;
 }
 
-self.addEventListener("fetch", function (event) {
+self.addEventListener('fetch', function (event) {
   var notGetEndpointConfig = getEndpointConfig(
     event.request.clone(),
     notGetRequests
@@ -522,8 +526,8 @@ self.addEventListener("fetch", function (event) {
     );
   } else {
     if (
-      event.request.url.indexOf("/sockjs-node/info?") > -1 ||
-      event.request.url.indexOf("/socket.io")
+      event.request.url.indexOf('/sockjs-node/info?') > -1 ||
+      event.request.url.indexOf('/socket.io')
     ) {
       return;
     } else {
@@ -543,9 +547,9 @@ self.addEventListener("fetch", function (event) {
               .catch(function (err) {
                 return caches.open(CACHE_STATIC_NAME).then(function (cache) {
                   if (
-                    event.request.headers.get("accept").includes("text/html")
+                    event.request.headers.get('accept').includes('text/html')
                   ) {
-                    return cache.match("/index.html");
+                    return cache.match('/index.html');
                   }
                 });
               });
@@ -591,21 +595,21 @@ self.addEventListener("fetch", function (event) {
 //     }
 // });
 
-self.addEventListener("notificationclick", function (event) {
+self.addEventListener('notificationclick', function (event) {
   var notification = event.notification;
   var action = event.action;
 
   console.log(notification);
 
-  if (action === "confirm") {
-    console.log("Confirm was chosen");
+  if (action === 'confirm') {
+    console.log('Confirm was chosen');
     notification.close();
   } else {
     console.log(action);
     event.waitUntil(
       clients.matchAll().then(function (clis) {
         var client = clis.find(function (c) {
-          return c.visibilityState === "visible";
+          return c.visibilityState === 'visible';
         });
 
         if (client !== undefined) {
@@ -620,17 +624,17 @@ self.addEventListener("notificationclick", function (event) {
   }
 });
 
-self.addEventListener("notificationclose", function (event) {
-  console.log("Notification was closed", event);
+self.addEventListener('notificationclose', function (event) {
+  console.log('Notification was closed', event);
 });
 
-self.addEventListener("push", function (event) {
-  console.log("Push Notification received", event);
+self.addEventListener('push', function (event) {
+  console.log('Push Notification received', event);
 
   var data = {
-    title: "New!",
-    content: "Something new happened!",
-    openUrl: "/",
+    title: 'New!',
+    content: 'Something new happened!',
+    openUrl: '/',
   };
 
   if (event.data) {
@@ -639,8 +643,8 @@ self.addEventListener("push", function (event) {
 
   var options = {
     body: data.content,
-    icon: "/assets/images/icons/app-icon-192x192.png",
-    badge: "/assets/images/icons/app-icon-192x192.png",
+    icon: '/assets/images/icons/app-icon-192x192.png',
+    badge: '/assets/images/icons/app-icon-192x192.png',
     data: {
       url: data.openUrl,
     },

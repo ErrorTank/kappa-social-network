@@ -12,8 +12,18 @@ export class AllListingWidget extends Component {
     super(props);
     this.state = {
       listingByCategory: [],
-      loading: false,
+      loading: true,
     };
+    listingApi
+      .getListing({
+        radius: this.props.radius,
+        lat: this.props.myPosition.lat,
+        lon: this.props.myPosition.lon,
+      })
+      .then((allListing) => {
+        let listingByCategory = allListing.filter((e) => !!e.listingArr.length);
+        this.setState({ listingByCategory, loading: false });
+      });
   }
   componentDidUpdate(prevProps) {
     if (
@@ -36,13 +46,14 @@ export class AllListingWidget extends Component {
     }
   }
   render() {
-    const { listingByCategory, loading } = this.state;
     const { myPosition, radius } = this.props;
+    const { listingByCategory, loading } = this.state;
     console.log(listingByCategory);
+
     return (
       <ThemeContext.Consumer>
         {({ darkMode }) => {
-          loading ? (
+          return loading ? (
             <LoadingInline />
           ) : (
             <div className={classnames('all-listing-widget', { darkMode })}>

@@ -34,7 +34,6 @@ const getListing = (query) => {
   return Category.find({})
     .lean()
     .then((categories) => {
-      let listingList = [];
       return Promise.all(
         categories.map((e) => {
           let chilrenArr = getRootCategories(categories, e._id);
@@ -65,7 +64,29 @@ const getListing = (query) => {
     });
 };
 
+const getListingByCategoryID = (categoryID) => {
+  return Category.find({})
+    .lean()
+    .then((categories) => {
+      let chilrenArr = getRootCategories(categories, categoryID);
+      return Listing.find({
+        category: {
+          $in: chilrenArr.map((e) => ObjectId(e)),
+        },
+      })
+        .lean()
+        .sort('-postTime')
+        .then((products) => {
+          return {
+            _id: e._id,
+            name: e.name,
+            listingArr: [...products],
+          };
+        });
+    });
+};
 module.exports = {
   createListing,
   getListing,
+  getListingByCategoryID,
 };
