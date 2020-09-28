@@ -97,23 +97,10 @@ export class BrowseAllWidget extends Component {
                   }}
                 />
               </MarketplaceFilterSection>
-              <CategoriesSection darkMode={darkMode}>
-                <>
-                  {categoryDisplay &&
-                    categoryDisplay.map((each) => {
-                      return (
-                        <MenuNavigationWithIcon
-                          key={each.name}
-                          icon={each.icon}
-                          title={each.name}
-                          type={each.type}
-                          onClick={() => customHistory.push(each.link)}
-                          // options={each.children}
-                        />
-                      );
-                    })}
-                </>
-              </CategoriesSection>
+              <CategoriesSection
+                darkMode={darkMode}
+                categoryDisplay={this.state.categoryDisplay}
+              />
             </div>
           </div>
         )}
