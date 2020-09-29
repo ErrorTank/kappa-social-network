@@ -2,6 +2,7 @@ const express = require('express');
 const {
   getRootCategories,
   getCategories,
+  getCategoryByID,
 } = require('../db/db-controllers/category');
 const router = express.Router();
 const { authorizationUserMiddleware } = require('../common/middlewares/common');
@@ -17,5 +18,16 @@ module.exports = (db, namespacesIO) => {
       })
       .catch((err) => next(err));
   });
+  router.get(
+    '/get-category-by-ID/:categoryID',
+    authorizationUserMiddleware,
+    (req, res, next) => {
+      return getCategoryByID(req.params.categoryID)
+        .then((data) => {
+          return res.status(200).json(data);
+        })
+        .catch((err) => next(err));
+    }
+  );
   return router;
 };

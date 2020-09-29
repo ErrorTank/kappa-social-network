@@ -2,8 +2,21 @@
     display: flex;
     justify-content: center;
     margin-top: 2vh;
+    height: 70vh;
 
     .swipe {
         position: absolute;
+
+        &.animate-swipe-right {
+            transform: rotate(-30deg);
+            transition: all 0.5s linear;
+            margin-left: 2000px;
+        }
+
+        &.animate-swipe-left {
+            transform: rotate(-30deg);
+            transition: all 0.5s linear;
+            margin-left: -2000px;
+        }
     }
 }

@@ -9,4 +9,7 @@ export const listingApi = {
     let category = urlUtils.buildParams(data);
     return authenApi.get(`/listing/get-listing${category}`);
   },
+  getListingByCategoryID(categoryID) {
+    return authenApi.get(`/listing/get-listing-by-categoryID/${categoryID}`);
+  },
 };

@@ -8,17 +8,19 @@ export class MarketplaceMenuSection extends Component {
     this.state = {};
   }
   render() {
+    const { menuNavigation } = this.props;
     return (
       <div className='marketplace-menu-section'>
-        {this.props.menuNavigation.map((each) => (
-          <MenuNavigationWithIcon
-            key={each.title}
-            icon={each.icon}
-            title={each.title}
-            type={each.type}
-            onClick={() => customHistory.push(each.link)}
-          />
-        ))}
+        {menuNavigation &&
+          menuNavigation.map((each) => (
+            <MenuNavigationWithIcon
+              key={each.title}
+              icon={each.icon}
+              title={each.title}
+              type={each.type}
+              onClick={() => customHistory.push(each.link)}
+            />
+          ))}
         <div
           className='create-listing-button'
           onClick={() => customHistory.push('/marketplace/create')}

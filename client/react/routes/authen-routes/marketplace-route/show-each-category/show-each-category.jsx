@@ -6,8 +6,13 @@ import { CategoryTraitWidget } from './category-trait-widget/category-trait-widg
 class ShowEachCategory extends Component {
   constructor(props) {
     super(props);
-    this.state = {};
+    this.state = {
+      radius: 10,
+    };
   }
+  updateValue = (key, val) => {
+    this.setState({ [key]: val });
+  };
   render() {
     return (
       <PageTitle title={'Marketplace'}>
@@ -15,7 +20,13 @@ class ShowEachCategory extends Component {
           <CommonLayout
             mainRender={() => <div>ok</div>}
             haveRightRender={false}
-            leftRender={() => <CategoryTraitWidget />}
+            leftRender={() => (
+              <CategoryTraitWidget
+                {...this.props}
+                radius={this.state.radius}
+                updateValue={this.updateValue}
+              />
+            )}
           />
         </div>
       </PageTitle>

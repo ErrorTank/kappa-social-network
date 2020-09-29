@@ -10,10 +10,6 @@ export class CardContainer extends Component {
           <div className="top-panel">
             <DatingCard />
           </div>
-
-          <div className="bot-panel">
-            <DatingCardActions />
-          </div>
         </div>
       </div>
     );

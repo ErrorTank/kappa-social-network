@@ -3,6 +3,9 @@ import TinderCard from "react-tinder-card";
 import { MyTinderCard } from "./myTinderCard/myTinderCard";
 import reverse from "lodash/reverse";
 import { datingApi } from "./../../../../../../api/common/dating";
+import { DatingCardActions } from "./../action/action";
+import ReactDOM from "react-dom";
+import classnames from "classnames";
 
 export class DatingCard extends Component {
   constructor(props) {
@@ -18,53 +21,85 @@ export class DatingCard extends Component {
       })
     );
   }
-  getNewCard = (people, direction) => {
+
+  deteleCard = (seenID, direction) => {
+    let newProfiles = this.state.profiles.filter((e) => e._id !== seenID);
+    this.setState({
+      profiles: newProfiles,
+    });
     datingApi
       .getCardProfileInfo({
-        seenID: people._id,
+        exclude: newProfiles.map((each) => each._id),
         action: direction === "left" ? "DISLIKE" : "LIKE",
+        seenID,
       })
       .then((e) => {
         this.setState({
-          profiles: this.state.profiles.concat(e),
+          profiles: e.concat(this.state.profiles),
         });
       });
   };
-  deteleCard = (people) => {
-    this.setState({
-      profiles: this.state.profiles.filter((e) => e._id !== people._id),
-    });
+
+  dislike = (profile) => {
+    let datingCardElem = $(ReactDOM.findDOMNode(this.datingCard));
+
+    $(datingCardElem.find(".my-active-tinder-card"))
+      .addClass("animate-swipe-left")
+      .delay(600)
+      .queue((next) => {
+        this.deteleCard(profile._id, "left");
+        next();
+      });
   };
+
+  like = (profile) => {
+    let datingCardElem = $(ReactDOM.findDOMNode(this.datingCard));
+    $(datingCardElem.find(".my-active-tinder-card"))
+      .addClass("animate-swipe-right")
+      .delay(600)
+      .queue((next) => {
+        this.deteleCard(profile._id, "right");
+        next();
+      });
+  };
+
   render() {
     let { profiles } = this.state;
     console.log(profiles);
     return (
-      <div className="dating-card">
-        {profiles.length && (
-          <>
-            {profiles[1] && (
-              <TinderCard
-                className="swipe"
-                preventSwipe={["up", "down"]}
-                onSwipe={(direction) => this.getNewCard(profiles[1], direction)}
-                onCardLeftScreen={() => this.deteleCard(profiles[1])}
-              >
-                <MyTinderCard info={profiles[1]} />
-              </TinderCard>
-            )}
-            {profiles[0] && (
-              <TinderCard
-                className="swipe"
-                preventSwipe={["up", "down"]}
-                onSwipe={(direction) => this.getNewCard(profiles[0], direction)}
-                onCardLeftScreen={() => this.deteleCard(profiles[0])}
-              >
-                <MyTinderCard info={profiles[0]} />
-              </TinderCard>
-            )}
-          </>
-        )}
-      </div>
+      <>
+        <div
+          className="dating-card"
+          ref={(datingCard) => (this.datingCard = datingCard)}
+        >
+          {!!profiles.length && (
+            <>
+              {profiles.map((each, i) => (
+                <TinderCard
+                  className={classnames("swipe", {
+                    "my-active-tinder-card": i === profiles.length - 1,
+                  })}
+                  key={each._id}
+                  preventSwipe={["up", "down"]}
+                  onCardLeftScreen={(direction) =>
+                    this.deteleCard(
+                      each._id,
+
+                      direction
+                    )
+                  }
+                >
+                  <MyTinderCard info={each} />
+                </TinderCard>
+              ))}
+            </>
+          )}
+        </div>
+        <DatingCardActions
+          onDislike={() => this.dislike(profiles[profiles.length - 1])}
+          onLike={() => this.like(profiles[profiles.length - 1])}
+        />
+      </>
     );
   }
 }

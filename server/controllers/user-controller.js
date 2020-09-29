@@ -8,7 +8,7 @@ const {getAuthenticateUserInitCredentials, getUserBasicInfo, login, sendChangePa
     verifyChangePasswordToken, getChangePasswordUserBrief, changePassword, addNewSearchHistory, deleteSearchHistory,
     updateSearchHistory, shortLogin, simpleUpdateUser, getUnseenNotificationsCount, getUserNotifications,
     seenNotifications, getUserFriendsCount, checkIsFriend, unfriend, sendFriendRequest, cancelFriendRequest, deleteNotificationByType
-,acceptFriendRequest, getUserFriends, getUserFriendInvitations} = require("../db/db-controllers/user");
+,acceptFriendRequest, getUserFriends, getUserFriendInvitations, getUserAboutBrief} = require("../db/db-controllers/user");
 
 module.exports = (db, namespacesIO) => {
     router.get("/init-credentials", authorizationUserMiddleware, (req, res, next) => {
@@ -123,6 +123,13 @@ module.exports = (db, namespacesIO) => {
     router.get("/:userID/friends-count",authorizationUserMiddleware, (req, res, next) => {
 
         return getUserFriendsCount({userID: req.params.userID}).then((data) => {
+            return res.status(200).json(data);
+        }).catch(err => next(err));
+
+    });
+    router.get("/:userID/about-brief",authorizationUserMiddleware, (req, res, next) => {
+
+        return getUserAboutBrief(req.params.userID).then((data) => {
             return res.status(200).json(data);
         }).catch(err => next(err));
 

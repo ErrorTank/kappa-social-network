@@ -878,7 +878,49 @@ const getUserFriendInvitations = (userID, {totalOnly = false, skip = 0, limit = 
         .then(data => omit(data, totalOnly ? "list" : ""))
 };
 
+const getUserAboutBrief = (userID) => {
+    return User.findOne({
+        _id: ObjectId(userID)
+    }).populate([
+        {
+            path: "relationship.related",
+            model: "User",
+            select: "_id basic_info avatar"
+        },{
+            path: "works.company.related",
+            model: "Page",
+            select: "_id basic_info avatar"
+        },{
+            path: "schools.school.related",
+            model: "Page",
+            select: "_id basic_info avatar"
+        },{
+            path: "contact.address.city",
+            model: "City",
+        },{
+            path: "contact.address.ward",
+            model: "Ward",
+        },{
+            path: "contact.address.district",
+            model: "District",
+        },{
+            path: "contact.home_town.city",
+            model: "City",
+        },{
+            path: "contact.home_town.ward",
+            model: "Ward",
+        },{
+            path: "contact.home_town.district",
+            model: "District",
+        },
+    ])
+        .then((data) => {
+            return pick(data, ["_id", "basic_info", "relationship", "contact","works", "schools", "favorites", "user_about_privacy"])
+        });
+}
+
 module.exports = {
+    getUserAboutBrief,
     getUserFriendInvitations,
     getUserFriends,
     acceptFriendRequest,

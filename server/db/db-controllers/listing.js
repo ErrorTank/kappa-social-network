@@ -5,7 +5,7 @@ const mongoose = require('mongoose');
 const ObjectId = mongoose.Types.ObjectId;
 const Listing = require('../model/marketplace/listing')(appDb);
 const Category = require('../model/marketplace/category')(appDb);
-const { getRootCategories } = require('./category');
+const { getRootCategories, getCategoryByID } = require('./category');
 
 const createListing = (value) => {
   let categoryName = findSubCategory(value);
@@ -34,7 +34,6 @@ const getListing = (query) => {
   return Category.find({})
     .lean()
     .then((categories) => {
-      let listingList = [];
       return Promise.all(
         categories.map((e) => {
           let chilrenArr = getRootCategories(categories, e._id);
@@ -65,7 +64,32 @@ const getListing = (query) => {
     });
 };
 
+const getListingByCategoryID = (categoryID) => {
+  return Category.find({})
+    .lean()
+    .then((categories) => {
+      return getCategoryByID(categoryID).then((categoryInfo) => {
+        console.log(categoryInfo);
+        let chilrenArr = getRootCategories(categories, categoryID);
+        return Listing.find({
+          category: {
+            $in: chilrenArr.map((e) => ObjectId(e)),
+          },
+        })
+          .lean()
+          .sort('-postTime')
+          .then((products) => {
+            return {
+              _id: categoryInfo._id,
+              name: categoryInfo.name,
+              listingArr: [...products],
+            };
+          });
+      });
+    });
+};
 module.exports = {
   createListing,
   getListing,
+  getListingByCategoryID,
 };

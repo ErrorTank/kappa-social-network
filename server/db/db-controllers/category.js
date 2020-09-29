@@ -48,8 +48,16 @@ const getCategories = (query) => {
       );
     });
 };
+const getCategoryByID = (categoryID) => {
+  return Category.findOne({ _id: categoryID })
+    .lean()
+    .then((category) => {
+      return category;
+    });
+};
 
 module.exports = {
   getRootCategories,
   getCategories,
+  getCategoryByID,
 };

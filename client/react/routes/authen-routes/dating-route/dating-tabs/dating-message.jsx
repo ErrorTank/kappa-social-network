@@ -45,19 +45,19 @@ export class DatingMessage extends Component {
   render() {
     const { messages } = this.state;
     return (
-      <div className="dating-message">
-        {messages.map((each) => (
-          <div className="dating-chat-box">
-            <div className="dating-chat-avatar">
-              <div className="avatar-wrapper">
+      <div className='dating-message'>
+        {messages.map((each, i) => (
+          <div className='dating-chat-box' key={i}>
+            <div className='dating-chat-avatar'>
+              <div className='avatar-wrapper'>
                 <img src={each.from_person.avatar} />
               </div>
             </div>
-            <div className="dating-wapper-content">
-              <div className="dating-chat-name">{each.from_person.name}</div>
-              <div className="dating-last-message">
+            <div className='dating-wapper-content'>
+              <div className='dating-chat-name'>{each.from_person.name}</div>
+              <div className='dating-last-message'>
                 {each.message.from_person._id === userInfo.getState()._id ? (
-                  <span className="highlight dark">Bạn : </span>
+                  <span className='highlight dark'>Bạn : </span>
                 ) : (
                   `${each.message.from_person.name} :  `
                 )}
