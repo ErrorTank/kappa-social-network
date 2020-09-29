@@ -5,7 +5,15 @@ import { each } from 'lodash';
 export class MenuNavigationWithIcon extends Component {
   constructor(props) {
     super(props);
-    this.state = {};
+    this.state = {
+      focus: this.props.mainID === this.props.id && 'main',
+    };
+    !!this.props.options.length &&
+      this.props.options.forEach((e) => {
+        if (this.props.mainID === e._id) {
+          this.setState({ focus: 'sup' });
+        }
+      });
   }
   render() {
     let {
@@ -17,11 +25,16 @@ export class MenuNavigationWithIcon extends Component {
       type,
       onClick,
       options = [],
+      mainID,
       ...other
     } = this.props;
+    const { focus } = this.state;
     return (
       <div
-        className={classnames('menu-navigation-with-icon', type || `${type}`)}
+        className={classnames(
+          'menu-navigation-with-icon',
+          type || focus || `${type}`
+        )}
         onClick={onClick}
       >
         <div className='menu-navigation-wrapper'>
@@ -34,9 +47,12 @@ export class MenuNavigationWithIcon extends Component {
             <span className='mn-title'>{title}</span>
           </div>
         </div>
-        {!!options.length &&
+        {(!!options.length || focus) &&
           options.map((e) => (
-            <div className='children-navigation-wrapper'>
+            <div
+              className={classnames('children-navigation-wrapper')}
+              key={e._id}
+            >
               <div className='children-navigation'>{e.name}</div>
             </div>
           ))}

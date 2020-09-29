@@ -8,9 +8,7 @@ import { CategoriesSection } from './categories-section/categories-section';
 import { MarketplaceFilterSection } from './marketplace-filter-section/marketplace-filter-section';
 import { categoryApi } from './../../../../../api/common/category-api';
 import { itemField, radiusArr } from './../../../../../const/listing';
-import { MenuNavigationWithIcon } from './../../../../common/menu-navigation-with-icon/menu-navigation-with-icon';
 import { ListingInfoSelect } from './../../../../common/listing-info-select/listing-info-select';
-import { customHistory } from '../../../routes';
 
 export class BrowseAllWidget extends Component {
   constructor(props) {

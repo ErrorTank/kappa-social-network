@@ -2,12 +2,11 @@ import React, { Component } from 'react';
 import { MarketplaceSearchSection } from './../../browse-all-widget/marketplace-search-section/marketplace-search-section';
 import { ThemeContext } from './../../../../../context/theme-context';
 import { categoryApi } from './../../../../../../api/common/category-api';
-import { radiusArr } from './../../../../../../const/listing';
+import { radiusArr, itemField } from './../../../../../../const/listing';
 import { MarketplaceMenuSection } from './../../browse-all-widget/marketplace-menu-section/marketplace-menu-section';
 import { MarketplaceFilterSection } from '../../browse-all-widget/marketplace-filter-section/marketplace-filter-section';
 import { ListingInfoSelect } from './../../../../../common/listing-info-select/listing-info-select';
 import { CategoriesSection } from './../../browse-all-widget/categories-section/categories-section';
-import { MenuNavigationWithIcon } from './../../../../../common/menu-navigation-with-icon/menu-navigation-with-icon';
 
 export class CategoryTraitWidget extends Component {
   constructor(props) {
@@ -23,11 +22,26 @@ export class CategoryTraitWidget extends Component {
 
       let categoryWithIcon = categories.reduce((res, option) => {
         let checkIcon = additionInfo.find((each) => each.name === option.name);
+
         if (checkIcon) {
+          let fullOption;
+          if (!!option.children.length) {
+            fullOption = {
+              ...option,
+              children: option.children.map((e) => {
+                return {
+                  ...e,
+                  link: `/marketplace/${e._id}`,
+                };
+              }),
+            };
+          } else {
+            fullOption = option;
+          }
           return [
             ...res,
             {
-              ...option,
+              ...fullOption,
               icon: checkIcon.icon,
               link: `/marketplace/${option._id}`,
             },
@@ -50,9 +64,9 @@ export class CategoryTraitWidget extends Component {
   ];
 
   render() {
-    // console.log(this.props);
     const { radius, updateValue } = this.props;
     const { categoryDisplay } = this.state;
+    console.log(this.props);
     return (
       <ThemeContext.Consumer>
         {({ darkMode }) => (
@@ -72,23 +86,11 @@ export class CategoryTraitWidget extends Component {
                   }}
                 />
               </MarketplaceFilterSection>
-              <CategoriesSection darkMode={darkMode}>
-                <>
-                  {categoryDisplay &&
-                    categoryDisplay.map((each) => {
-                      return (
-                        <MenuNavigationWithIcon
-                          key={each.name}
-                          icon={each.icon}
-                          title={each.name}
-                          type={each.type}
-                          onClick={() => customHistory.push(each.link)}
-                          // options={each.children}
-                        />
-                      );
-                    })}
-                </>
-              </CategoriesSection>
+              <CategoriesSection
+                darkMode={darkMode}
+                categoryDisplay={categoryDisplay}
+                mainID={this.props.match.params.categoryID}
+              />
             </div>
           </div>
         )}

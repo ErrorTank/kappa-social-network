@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { customHistory } from '../../../../routes';
 import {
   itemField,
   vehicleField,
@@ -6,16 +7,14 @@ import {
 } from './../../../../../../const/listing';
 import { MenuNavigationWithIcon } from './../../../../../common/menu-navigation-with-icon/menu-navigation-with-icon';
 
-MenuNavigationWithIcon;
 export class CategoriesSection extends Component {
   constructor(props) {
     super(props);
-    this.state = {
-      categoryDisplay: this.props.categoryDisplay,
-    };
+    this.state = {};
   }
   getCategories = () => {};
   render() {
+    const { categoryDisplay, mainID } = this.props;
     return (
       <div className='categories-section'>
         <div className='line-seperate'></div>
@@ -29,7 +28,9 @@ export class CategoriesSection extends Component {
                 title={each.name}
                 type={each.type}
                 onClick={() => customHistory.push(each.link)}
-                // options={each.children}
+                options={each.children}
+                id={each.id}
+                mainID={mainID}
               />
             );
           })}

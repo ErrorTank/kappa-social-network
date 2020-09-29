@@ -48,7 +48,6 @@ export class AllListingWidget extends Component {
   render() {
     const { myPosition, radius } = this.props;
     const { listingByCategory, loading } = this.state;
-    console.log(listingByCategory);
 
     return (
       <ThemeContext.Consumer>
