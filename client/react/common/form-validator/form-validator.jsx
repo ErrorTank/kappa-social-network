@@ -65,7 +65,7 @@ export const createSimpleForm = (schema, _options) => {
 
         updatePathData(path, value);
 
-        eventManagement.emit("change", state);
+
 
         if (validateOnChange || options.validateOnChange) {
             if (!touched[path]) {
@@ -87,6 +87,8 @@ export const createSimpleForm = (schema, _options) => {
                 await validatePath(path);
             }
 
+            eventManagement.emit("change", state);
+        }else{
             eventManagement.emit("change", state);
         }
     };
