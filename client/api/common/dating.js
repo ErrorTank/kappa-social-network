@@ -18,4 +18,7 @@ export const datingApi = {
   getInitCardProfileInfo() {
     return authenApi.get(`/dating/init-card-profile-info`);
   },
+  getLikeProfile() {
+    return authenApi.get(`/dating/like-profile`);
+  },
 };

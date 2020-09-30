@@ -9,6 +9,7 @@ const {
   createProfile,
   getCardProfileInfo,
   getInitCardProfileInfo,
+  getLikeProfile,
 } = require("../db/db-controllers/dating");
 module.exports = (db, namespacesIO) => {
   router.get(
@@ -56,5 +57,12 @@ module.exports = (db, namespacesIO) => {
         .catch((err) => next(err));
     }
   );
+  router.get("/like-profile", authorizationUserMiddleware, (req, res, next) => {
+    return getLikeProfile(req.user._id)
+      .then((data) => {
+        return res.status(200).json(data);
+      })
+      .catch((err) => next(err));
+  });
   return router;
 };

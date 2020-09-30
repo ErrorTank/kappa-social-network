@@ -1,7 +1,6 @@
 .dating-matched {
     display: flex;
     align-items: center;
-    justify-content: space-between;
     padding: 12px 20px;
     flex-wrap: wrap;
 
@@ -14,6 +13,11 @@
         transition: all 0.2s ease;
         cursor: pointer;
         margin-bottom: 8px;
+        margin-right: 5px;
+
+        &:nth-child(3n) {
+            margin-right: 0;
+        }
 
         img {
             width: 100%;

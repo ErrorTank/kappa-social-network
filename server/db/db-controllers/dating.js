@@ -59,7 +59,6 @@ const getCardProfileInfo = (userID, { seenID, action, exclude }) => {
     });
 };
 const getInitCardProfileInfo = (userID) => {
-  console.log(userID);
   return Profile.findOne({
     root_user: ObjectId(userID),
   })
@@ -79,9 +78,21 @@ const getInitCardProfileInfo = (userID) => {
       ]).then((data) => data);
     });
 };
+const getLikeProfile = (userID) => {
+  return Profile.findOne({
+    root_user: ObjectId(userID),
+  })
+  .then((user) => {
+    return Profile.find({
+      "seen.user": ObjectId(user._id),
+      "seen.action": "LIKE",
+    });
+  });
+};
 module.exports = {
   checkDatingProfile,
   createProfile,
   getCardProfileInfo,
   getInitCardProfileInfo,
+  getLikeProfile,
 };

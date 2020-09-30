@@ -6,12 +6,19 @@ import { datingApi } from "./../../../../../../api/common/dating";
 import { DatingCardActions } from "./../action/action";
 import ReactDOM from "react-dom";
 import classnames from "classnames";
-
+export const datingCardUtilities = {};
 export class DatingCard extends Component {
   constructor(props) {
     super(props);
     this.state = {
       profiles: [],
+    };
+    datingCardUtilities.pushProfile = (profile) => {
+      this.setState({
+        profiles: this.state.profiles
+          .filter((e) => e._id !== profile._id)
+          .concat(profile),
+      });
     };
   }
   componentDidMount() {
