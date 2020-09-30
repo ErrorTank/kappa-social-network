@@ -1,19 +1,21 @@
 import React, { Component } from 'react';
 import classnames from 'classnames';
-import { each } from 'lodash';
+import { customHistory } from '../../routes/routes';
 
 export class MenuNavigationWithIcon extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      focus: this.props.mainID === this.props.id && 'main',
+      focus: this.props.mainID && this.props.mainID === this.props.id && 'main',
     };
-    !!this.props.options.length &&
-      this.props.options.forEach((e) => {
-        if (this.props.mainID === e._id) {
-          this.setState({ focus: 'sup' });
-        }
-      });
+    // console.log(this.props.mainID);
+    console.log(this.props.id);
+    // if(!!this.props.options.length)
+    //   this.props.options.forEach((e) => {
+    //     if (this.props.mainID === e._id) {
+    //       this.setState({ focus: 'sup' });
+    //     }
+    //   });
   }
   render() {
     let {
@@ -26,6 +28,7 @@ export class MenuNavigationWithIcon extends Component {
       onClick,
       options = [],
       mainID,
+      link,
       ...other
     } = this.props;
     const { focus } = this.state;
@@ -35,7 +38,7 @@ export class MenuNavigationWithIcon extends Component {
           'menu-navigation-with-icon',
           type || focus || `${type}`
         )}
-        onClick={onClick}
+        onClick={() => customHistory.push(link)}
       >
         <div className='menu-navigation-wrapper'>
           {icon && (
@@ -47,11 +50,12 @@ export class MenuNavigationWithIcon extends Component {
             <span className='mn-title'>{title}</span>
           </div>
         </div>
-        {(!!options.length || focus) &&
+        {focus &&
           options.map((e) => (
             <div
               className={classnames('children-navigation-wrapper')}
               key={e._id}
+              onClick={() => customHistory.push(e.link)}
             >
               <div className='children-navigation'>{e.name}</div>
             </div>
