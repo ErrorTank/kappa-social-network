@@ -9,7 +9,6 @@ export class CategoriesSection extends Component {
   }
   render() {
     const { categoryDisplay, mainID } = this.props;
-    console.log(mainID);
     return (
       <div className='categories-section'>
         <div className='line-seperate'></div>

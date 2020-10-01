@@ -8,14 +8,13 @@ export class MenuNavigationWithIcon extends Component {
     this.state = {
       focus: this.props.mainID && this.props.mainID === this.props.id && 'main',
     };
-    // console.log(this.props.mainID);
-    console.log(this.props.id);
-    // if(!!this.props.options.length)
-    //   this.props.options.forEach((e) => {
-    //     if (this.props.mainID === e._id) {
-    //       this.setState({ focus: 'sup' });
-    //     }
-    //   });
+
+    if (this.props.options && !!this.props.options.length)
+      this.props.options.forEach((e) => {
+        if (this.props.mainID === e._id) {
+          this.setState({ focus: 'sup' });
+        }
+      });
   }
   render() {
     let {
@@ -32,6 +31,7 @@ export class MenuNavigationWithIcon extends Component {
       ...other
     } = this.props;
     const { focus } = this.state;
+    console.log(options);
     return (
       <div
         className={classnames(
