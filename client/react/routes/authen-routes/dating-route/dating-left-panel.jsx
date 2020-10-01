@@ -5,6 +5,8 @@ import { DatingMatched } from "./dating-tabs/dating-matched";
 import { DatingLike } from "./dating-tabs/dating-like";
 import { DatingMessage } from "./dating-tabs/dating-message";
 
+export const datingLeftPanelUtilities = {};
+
 const LEFT_PANEL_TABS = {
   MATCHES: "MATCHES",
   LIKE_YOU: "LIKE_YOU",
@@ -16,6 +18,11 @@ export class DatingLeftPanel extends Component {
     super(props);
     this.state = {
       mode: LEFT_PANEL_TABS.MATCHES,
+    };
+    datingLeftPanelUtilities.setTab = (tab) => {
+      this.setState({
+        mode: LEFT_PANEL_TABS[tab],
+      });
     };
   }
   render() {

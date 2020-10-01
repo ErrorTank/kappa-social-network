@@ -6,6 +6,8 @@ import { datingApi } from "./../../../../../../api/common/dating";
 import { DatingCardActions } from "./../action/action";
 import ReactDOM from "react-dom";
 import classnames from "classnames";
+import { datingLikeUtilities } from "./../../dating-tabs/dating-like";
+import { datingLeftPanelUtilities } from "./../../dating-left-panel";
 export const datingCardUtilities = {};
 export class DatingCard extends Component {
   constructor(props) {
@@ -29,8 +31,8 @@ export class DatingCard extends Component {
     );
   }
 
-  deteleCard = (seenID, direction) => {
-    let newProfiles = this.state.profiles.filter((e) => e._id !== seenID);
+  deteleCard = (seen, direction) => {
+    let newProfiles = this.state.profiles.filter((e) => e._id !== seen._id);
     this.setState({
       profiles: newProfiles,
     });
@@ -38,9 +40,13 @@ export class DatingCard extends Component {
       .getCardProfileInfo({
         exclude: newProfiles.map((each) => each._id),
         action: direction === "left" ? "DISLIKE" : "LIKE",
-        seenID,
+        seenID: seen._id,
       })
       .then((e) => {
+        datingLikeUtilities.removeLiked(seen._id);
+        if (seen.isAccept) {
+          datingLeftPanelUtilities.setTab("MATCHES");
+        }
         this.setState({
           profiles: e.concat(this.state.profiles),
         });
@@ -54,7 +60,7 @@ export class DatingCard extends Component {
       .addClass("animate-swipe-left")
       .delay(600)
       .queue((next) => {
-        this.deteleCard(profile._id, "left");
+        this.deteleCard(profile, "left");
         next();
       });
   };
@@ -65,7 +71,7 @@ export class DatingCard extends Component {
       .addClass("animate-swipe-right")
       .delay(600)
       .queue((next) => {
-        this.deteleCard(profile._id, "right");
+        this.deteleCard(profile, "right");
         next();
       });
   };
@@ -90,7 +96,7 @@ export class DatingCard extends Component {
                   preventSwipe={["up", "down"]}
                   onCardLeftScreen={(direction) =>
                     this.deteleCard(
-                      each._id,
+                      each,
 
                       direction
                     )

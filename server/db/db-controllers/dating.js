@@ -50,7 +50,8 @@ const getCardProfileInfo = (userID, { seenID, action, exclude }) => {
             _id: {
               $nin: exclude
                 .map((each) => ObjectId(each))
-                .concat(user.seen.map((x) => ObjectId(x.user.toString()))),
+                .concat(user.seen.map((x) => ObjectId(x.user.toString())))
+                .concat(ObjectId(user._id)),
             },
           },
         },
@@ -70,7 +71,7 @@ const getInitCardProfileInfo = (userID) => {
             _id: {
               $nin: user.seen
                 .map((x) => ObjectId(x.user.toString()))
-                .concat(ObjectId(userID)),
+                .concat(ObjectId(user._id)),
             },
           },
         },
@@ -81,11 +82,26 @@ const getInitCardProfileInfo = (userID) => {
 const getLikeProfile = (userID) => {
   return Profile.findOne({
     root_user: ObjectId(userID),
-  })
-  .then((user) => {
+  }).then((user) => {
     return Profile.find({
       "seen.user": ObjectId(user._id),
       "seen.action": "LIKE",
+      _id: {
+        $nin: user.seen.map((x) => x.user),
+      },
+    });
+  });
+};
+const getMatchProfile = (userID) => {
+  return Profile.findOne({
+    root_user: ObjectId(userID),
+  }).then((user) => {
+    return Profile.find({
+      "seen.user": ObjectId(user._id),
+      "seen.action": "LIKE",
+      _id: {
+        $in: user.seen.filter((e) => e.action === "LIKE").map((e) => e.user),
+      },
     });
   });
 };
@@ -95,4 +111,5 @@ module.exports = {
   getCardProfileInfo,
   getInitCardProfileInfo,
   getLikeProfile,
+  getMatchProfile,
 };

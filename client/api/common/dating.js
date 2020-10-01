@@ -21,4 +21,7 @@ export const datingApi = {
   getLikeProfile() {
     return authenApi.get(`/dating/like-profile`);
   },
+  getMatchProfile() {
+    return authenApi.get(`/dating/match-profile`);
+  },
 };

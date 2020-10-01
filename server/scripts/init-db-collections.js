@@ -23,7 +23,17 @@ const initDbCollections = (appDb) => {
   //     _id: ObjectId("5f6c7d338e8e3639300b0207"),
   //   },
   //   {
-  //     seen: [],
+  //     $set: {
+  //       seen: [],
+  //     },
+  //   }
+  // ).exec();
+  // Profile.updateMany(
+  //   {},
+  //   {
+  //     $set: {
+  //       seen: [],
+  //     },
   //   }
   // ).exec();
   // Comment.updateMany({}, {$set: {replies: []}}).then(() => console.log("cac"))

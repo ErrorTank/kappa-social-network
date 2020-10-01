@@ -15,6 +15,10 @@ var exceptionRequestsDev = [
     method: "GET",
   },
   {
+    endpoint: "https://localhost:4000/api/dating/match-profiles",
+    method: "GET",
+  },
+  {
     endpoint: "https://localhost:4000/api/session/check",
     method: "POST",
   },
