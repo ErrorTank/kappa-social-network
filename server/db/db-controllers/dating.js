@@ -81,8 +81,7 @@ const getInitCardProfileInfo = (userID) => {
 const getLikeProfile = (userID) => {
   return Profile.findOne({
     root_user: ObjectId(userID),
-  })
-  .then((user) => {
+  }).then((user) => {
     return Profile.find({
       "seen.user": ObjectId(user._id),
       "seen.action": "LIKE",
