@@ -10,6 +10,7 @@ const {
   getCardProfileInfo,
   getInitCardProfileInfo,
   getLikeProfile,
+  getMatchProfile,
 } = require("../db/db-controllers/dating");
 module.exports = (db, namespacesIO) => {
   router.get(
@@ -64,5 +65,17 @@ module.exports = (db, namespacesIO) => {
       })
       .catch((err) => next(err));
   });
+  router.get(
+    "/match-profile",
+    authorizationUserMiddleware,
+    (req, res, next) => {
+      return getMatchProfile(req.user._id)
+        .then((data) => {
+          return res.status(200).json(data);
+        })
+        .catch((err) => next(err));
+    }
+  );
+
   return router;
 };
