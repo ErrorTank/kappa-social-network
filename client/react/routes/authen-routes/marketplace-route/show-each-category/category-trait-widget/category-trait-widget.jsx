@@ -66,7 +66,7 @@ export class CategoryTraitWidget extends Component {
   render() {
     const { radius, updateValue } = this.props;
     const { categoryDisplay } = this.state;
-    console.log(this.props);
+    // console.log(this.props);
     return (
       <ThemeContext.Consumer>
         {({ darkMode }) => (

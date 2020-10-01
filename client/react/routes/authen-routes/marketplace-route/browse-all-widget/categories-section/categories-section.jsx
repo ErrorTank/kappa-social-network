@@ -15,7 +15,6 @@ export class CategoriesSection extends Component {
         <h2 className='categories-section-title'>Danh muc</h2>
         {categoryDisplay &&
           categoryDisplay.map((each) => {
-            console.log(each._id);
             return (
               <MenuNavigationWithIcon
                 key={each.name}

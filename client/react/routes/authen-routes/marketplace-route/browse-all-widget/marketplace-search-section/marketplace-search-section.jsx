@@ -8,15 +8,29 @@ export class MarketplaceSearchSection extends Component {
     this.state = {
       mainCategoryInfo: '',
     };
+  }
+  componentDidUpdate(prevProps) {
+    if (prevProps.mainID !== this.props.mainID) {
+      this.getCategoryInfo();
+    }
+  }
+
+  componentDidMount() {
+    this.getCategoryInfo();
+  }
+
+  getCategoryInfo = () => {
     categoryApi
       .getCategoryByID(this.props.mainID)
       .then((e) => this.setState({ mainCategoryInfo: e }));
-  }
+  };
   render() {
     const { mainCategoryInfo } = this.state;
     return (
       <div className='market-search-section'>
-        <h1 className='market-search-title'>{mainCategoryInfo.name}</h1>
+        <h1 className='market-search-title'>
+          {mainCategoryInfo.name || 'Marketplace'}
+        </h1>
         <MarketplaceSearch />
         <div className='line-seperate'></div>
       </div>
