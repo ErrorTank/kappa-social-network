@@ -9,14 +9,12 @@ export class CategoriesSection extends Component {
   }
   render() {
     const { categoryDisplay, mainID } = this.props;
-    console.log(mainID);
     return (
       <div className='categories-section'>
         <div className='line-seperate'></div>
         <h2 className='categories-section-title'>Danh muc</h2>
         {categoryDisplay &&
           categoryDisplay.map((each) => {
-            console.log(each._id);
             return (
               <MenuNavigationWithIcon
                 key={each.name}

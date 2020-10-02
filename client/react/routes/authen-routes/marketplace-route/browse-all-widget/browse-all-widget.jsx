@@ -74,10 +74,7 @@ export class BrowseAllWidget extends Component {
       <ThemeContext.Consumer>
         {({ darkMode }) => (
           <div className={classnames('browse-all-widget', { darkMode })}>
-            <MarketplaceSearchSection
-              darkMode={darkMode}
-              title={'Marketplace'}
-            />
+            <MarketplaceSearchSection darkMode={darkMode} />
             <div className='browse-all-body'>
               <MarketplaceMenuSection
                 darkMode={darkMode}

@@ -11,10 +11,10 @@ import { CategoriesSection } from './../../browse-all-widget/categories-section/
 export class CategoryTraitWidget extends Component {
   constructor(props) {
     super(props);
-    this.state = {};
-    // listingApi
-    //   .getListingByCategoryID(this.props.match.params.categoryID)
-    //   .then((e) => this.setState({}));
+    this.state = {
+      categoryDisplay: [],
+    };
+
     categoryApi.getCategory({}).then((categories) => {
       let itemInfo = itemField.find((e) => e.englishName === 'category');
       let itemIcon = itemInfo.options.filter((e) => e.icon);
@@ -66,12 +66,15 @@ export class CategoryTraitWidget extends Component {
   render() {
     const { radius, updateValue } = this.props;
     const { categoryDisplay } = this.state;
-    console.log(this.props);
+    // console.log(this.props);
     return (
       <ThemeContext.Consumer>
         {({ darkMode }) => (
           <div className='category-trait-widget'>
-            <MarketplaceSearchSection darkMode={darkMode} title={'Test'} />
+            <MarketplaceSearchSection
+              darkMode={darkMode}
+              mainID={this.props.match.params.categoryID}
+            />
             <div className='category-trait-body'>
               <MarketplaceMenuSection darkMode={darkMode} />
               <MarketplaceFilterSection radius={radius}>
