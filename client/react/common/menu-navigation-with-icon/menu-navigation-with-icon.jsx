@@ -19,7 +19,8 @@ export class MenuNavigationWithIcon extends Component {
   }
   checkFocus = () => {
     const { mainID } = this.props;
-    if (this.props.mainID === this.props.id) {
+
+    if (mainID && this.props.mainID === this.props.id) {
       this.setState({ focus: 'main' });
     }
     if (this.props.options && !!this.props.options.length)
@@ -45,10 +46,12 @@ export class MenuNavigationWithIcon extends Component {
       ...other
     } = this.props;
     const { focus } = this.state;
-    console.log(options);
     return (
       <div
-        className={classnames('menu-navigation-with-icon', focus || `${type}`)}
+        className={classnames(
+          'menu-navigation-with-icon',
+          type || focus || `${type}`
+        )}
       >
         <div
           className='menu-navigation-wrapper'

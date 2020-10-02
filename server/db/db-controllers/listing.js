@@ -69,7 +69,6 @@ const getListingByCategoryID = (categoryID) => {
     .lean()
     .then((categories) => {
       return getCategoryByID(categoryID).then((categoryInfo) => {
-        console.log(categoryInfo);
         let chilrenArr = getRootCategories(categories, categoryID);
         return Listing.find({
           category: {

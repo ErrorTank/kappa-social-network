@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { PageTitle } from './../../../../common/page-title/page-title';
 import { CommonLayout } from './../../../../layout/common-layout/common-layout';
 import { CategoryTraitWidget } from './category-trait-widget/category-trait-widget';
+import { ListingByCategoryWidget } from './listing-by-category-widget/listing-by-category-widget';
 
 class ShowEachCategory extends Component {
   constructor(props) {
@@ -18,7 +19,7 @@ class ShowEachCategory extends Component {
       <PageTitle title={'Marketplace'}>
         <div className='marketplace-route'>
           <CommonLayout
-            mainRender={() => <div>ok</div>}
+            mainRender={() => <ListingByCategoryWidget {...this.props} />}
             haveRightRender={false}
             leftRender={() => (
               <CategoryTraitWidget
