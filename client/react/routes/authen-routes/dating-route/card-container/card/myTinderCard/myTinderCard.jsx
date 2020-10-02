@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import classnames from "classnames";
 import { datingApi } from "./../../../../../../../api/common/dating";
 import { getAge } from "../../../../../../../common/utils/date-utils";
+import { Tooltip } from "./../../../../../../common/tooltip/tooltip";
 export class MyTinderCard extends Component {
   constructor(props) {
     super(props);
@@ -77,13 +78,63 @@ export class MyTinderCard extends Component {
           {this.state.current === 0 && (
             <div className="dating-card-bio">{info.bio}</div>
           )}
-          {info.bio !== ""
-            ? this.state.current === 1 && (
-                <div className="dating-card-location">
-                  {info.location.city.name}
+          {info.bio ? (
+            this.state.current > 0 && (
+              <>
+                {info.university ? (
+                  <div className="dating-card-info-detail">
+                    <i className="fal fa-university"> </i>{" "}
+                    <span>{info.university}</span>
+                  </div>
+                ) : (
+                  info.secondarySchool && (
+                    <div className="dating-card-info-detail">
+                      <i className="fal fa-school"> </i>{" "}
+                      <span>{info.secondarySchool}</span>
+                    </div>
+                  )
+                )}
+
+                <div className="dating-card-info-detail">
+                  <i className="fal fa-home"> </i>{" "}
+                  <span>Đang sống tại {info.location.city.name}</span>
                 </div>
-              )
-            : đá}
+                <div className="dating-card-info-detail">
+                  <i className="fal fa-map-marker-alt"> </i>{" "}
+                  <span>Cách xa 2 kilômét</span>
+                </div>
+              </>
+            )
+          ) : (
+            <>
+              {info.university ? (
+                <div className="dating-card-info-detail">
+                  <i className="fal fa-university"></i>
+                  <span>{info.university}</span>
+                </div>
+              ) : (
+                info.secondarySchool && (
+                  <div className="dating-card-info-detail">
+                    <i className="fal fa-school"> </i>{" "}
+                    <span>{info.secondarySchool}</span>
+                  </div>
+                )
+              )}
+              <div className="dating-card-info-detail">
+                <i className="fal fa-home"></i>{" "}
+                <span>Đang sống tại {info.location.city.name}</span>
+              </div>
+              <div className="dating-card-info-detail">
+                <i className="fal fa-map-marker-alt"> </i>
+                <span> Cách xa 2 kilômét </span>
+              </div>
+            </>
+          )}
+        </div>
+        <div className="dating-card-show-detail">
+          <Tooltip position="top" text={() => "Mở hồ sơ"}>
+            <i className="fal fa-info-circle"></i>
+          </Tooltip>
         </div>
       </div>
     );

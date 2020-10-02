@@ -4,8 +4,9 @@
     max-width: 25vw;
     height: 70vh;
     border-radius: 20px;
-    overflow: hidden;
+    // overflow: hidden;
     background-color: #fff;
+    cursor: pointer;
 
     .my-tinder-card-filter {
         position: absolute;
@@ -13,6 +14,7 @@
         height: 100%;
         background-color: black;
         opacity: 0.2;
+        border-radius: 20px;
     }
 
     &>img {
@@ -20,6 +22,7 @@
         height: 100%;
         position: absolute;
         object-fit: cover;
+        border-radius: 20px;
     }
 
     box-shadow: 0px 18px 53px rgba(0, 0, 0, 0.3);
@@ -100,13 +103,35 @@
 
             .dating-card-age {
                 display: inline;
+                font-weight: 400;
             }
         }
 
         .dating-card-bio {
             display: block;
             font-weight: 400;
-            font-size: 20px;
+            font-size: 1.8rem;
+            max-width: 20vw;
         }
+
+        .dating-card-info-detail {
+            i {
+                font-size: 14px;
+                font-weight: 300;
+                margin-right: 2px;
+            }
+
+            font-weight: 400;
+            font-size: 17px;
+        }
+    }
+
+    .dating-card-show-detail {
+        position: absolute;
+        bottom: 40px;
+        right: 20px;
+        font-size: 25px;
+        font-weight: 300;
+        color: white;
     }
 }

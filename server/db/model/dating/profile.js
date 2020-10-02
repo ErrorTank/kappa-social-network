@@ -5,6 +5,7 @@ const Schema = mongoose.Schema;
 const profileSchema = new Schema({
   bio: {
     type: String,
+    default: "",
   },
   name: {
     type: String,
