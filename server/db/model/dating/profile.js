@@ -180,5 +180,70 @@ const profileSchema = new Schema({
     ref: "User",
   },
 });
-
+const autoPopulateParent = function (next) {
+  this.populate([
+    {
+      path: "location.city",
+      model: "City",
+    },
+    {
+      path: "location.district",
+      model: "District",
+    },
+    {
+      path: "location.ward",
+      model: "Ward",
+    },
+    {
+      path: "homeTown.city",
+      model: "City",
+    },
+    {
+      path: "homwTown.district",
+      model: "District",
+    },
+    {
+      path: "homeTown.ward",
+      model: "Ward",
+    },
+  ]);
+  next();
+};
+profileSchema
+  .pre("find", autoPopulateParent)
+  .pre("findOne", autoPopulateParent)
+  .pre("findOneAndUpdate", autoPopulateParent);
+profileSchema.post("save", function (doc, next) {
+  doc
+    .populate([
+      {
+        path: "location.city",
+        model: "City",
+      },
+      {
+        path: "location.district",
+        model: "District",
+      },
+      {
+        path: "location.ward",
+        model: "Ward",
+      },
+      {
+        path: "homeTown.city",
+        model: "City",
+      },
+      {
+        path: "homwTown.district",
+        model: "District",
+      },
+      {
+        path: "homeTown.ward",
+        model: "Ward",
+      },
+    ])
+    .execPopulate()
+    .then(function () {
+      next();
+    });
+});
 module.exports = (db) => db.model("Profile", profileSchema);

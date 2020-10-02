@@ -11,6 +11,7 @@ const {
   getInitCardProfileInfo,
   getLikeProfile,
   getMatchProfile,
+  getLocationName,
 } = require("../db/db-controllers/dating");
 module.exports = (db, namespacesIO) => {
   router.get(
@@ -76,6 +77,15 @@ module.exports = (db, namespacesIO) => {
         .catch((err) => next(err));
     }
   );
+  router.get("/location-name"),
+    authorizationUserMiddleware,
+    (req, res, next) => {
+      return getLocationName()
+        .then((data) => {
+          return res.status(200).json(data);
+        })
+        .catch((err) => next(err));
+    };
 
   return router;
 };
