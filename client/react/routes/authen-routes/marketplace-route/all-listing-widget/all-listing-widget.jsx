@@ -14,35 +14,30 @@ export class AllListingWidget extends Component {
       listingByCategory: [],
       loading: true,
     };
+  }
+  componentDidMount() {
+    this.props.myPosition && this.getListingInRadius();
+  }
+  getListingInRadius = () => {
+    const { radius, myPosition } = this.props;
+    this.setState({ loading: true });
     listingApi
       .getListing({
-        radius: this.props.radius,
-        lat: this.props.myPosition.lat,
-        lon: this.props.myPosition.lon,
+        radius: radius,
+        lat: myPosition.lat,
+        lon: myPosition.lon,
       })
       .then((allListing) => {
         let listingByCategory = allListing.filter((e) => !!e.listingArr.length);
         this.setState({ listingByCategory, loading: false });
       });
-  }
+  };
   componentDidUpdate(prevProps) {
     if (
       prevProps.radius !== this.props.radius ||
       prevProps.myPosition !== this.props.myPosition
     ) {
-      this.setState({ loading: true });
-      listingApi
-        .getListing({
-          radius: this.props.radius,
-          lat: this.props.myPosition.lat,
-          lon: this.props.myPosition.lon,
-        })
-        .then((allListing) => {
-          let listingByCategory = allListing.filter(
-            (e) => !!e.listingArr.length
-          );
-          this.setState({ listingByCategory, loading: false });
-        });
+      this.getListingInRadius();
     }
   }
   render() {

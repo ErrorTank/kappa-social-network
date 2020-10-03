@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { listingApi } from './../../../../../../api/common/listing-api';
 import { ListingDisplay } from './../../all-listing-widget/listing-display/listing-display';
+import { insideCircle } from 'geolocation-utils';
 
 export class ListingByCategoryWidget extends Component {
   constructor(props) {
@@ -28,14 +29,16 @@ export class ListingByCategoryWidget extends Component {
   };
   render() {
     const { listingByCategory } = this.state;
-    console.log(listingByCategory);
     return (
       <div className='listing-by-category-widget'>
         {!!listingByCategory.listingArr.length ? (
           <div className='listing-by-category-wrapper'>
-            {listingByCategory.listingArr.map((listing) => (
-              <ListingDisplay listing={listing} key={listing._id} />
-            ))}
+            <div className='listing-suitable'>
+              {listingByCategory.listingArr.map((listing) => (
+                <ListingDisplay listing={listing} key={listing._id} />
+              ))}
+            </div>
+            <div className='listing-outside-search'></div>
           </div>
         ) : (
           <div className='category-empty-listing'>
