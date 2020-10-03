@@ -18,18 +18,22 @@ export class MenuNavigationWithIcon extends Component {
     }
   }
   checkFocus = () => {
-    const { mainID } = this.props;
+    const { mainID, id, options } = this.props;
 
-    if (mainID && this.props.mainID === this.props.id) {
-      this.setState({ focus: 'main' });
+    if (mainID) {
+      if (mainID === id) {
+        this.setState({ focus: 'main' });
+      } else if (!!options.length) {
+        options.forEach((e) => {
+          if (mainID === e._id) {
+            this.setState({ focus: 'sup' });
+          }
+        });
+        this.state.focus !== 'sup' && this.setState({ focus: '' });
+      } else {
+        this.setState({ focus: '' });
+      }
     }
-    if (this.props.options && !!this.props.options.length)
-      this.props.options.forEach((e) => {
-        if (this.props.mainID === e._id) {
-          console.log(e._id);
-          this.setState({ focus: 'sup' });
-        }
-      });
   };
   render() {
     let {
