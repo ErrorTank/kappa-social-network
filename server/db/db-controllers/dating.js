@@ -3,16 +3,16 @@ const appDb = dbManager.getConnections()[0];
 const User = require("../model/user")(appDb);
 const Profile = require("../model/dating/profile")(appDb);
 const mongoose = require("mongoose");
-const profile = require("../model/dating/profile");
-const { City } = require("../model/location")(appDb);
 
 const ObjectId = mongoose.Types.ObjectId;
 
 const checkDatingProfile = (arg) => {
-  const { userID } = arg;
+  const {
+    userID
+  } = arg;
   return Profile.findOne({
-    root_user: ObjectId(userID),
-  })
+      root_user: ObjectId(userID),
+    })
     .lean()
     .then((profile) => {
       if (profile) {
@@ -21,32 +21,38 @@ const checkDatingProfile = (arg) => {
       return null;
     });
 };
-const createProfile = (data, { userID }) => {
-  return new Profile({ ...data, root_user: ObjectId(userID) })
+const createProfile = (data, {
+  userID
+}) => {
+  return new Profile({
+      ...data,
+      root_user: ObjectId(userID)
+    })
     .save()
     .then((a) => {
       return a;
     });
 };
-const getCardProfileInfo = (userID, { seenID, action, exclude }) => {
-  return Profile.findOneAndUpdate(
-    { root_user: ObjectId(userID) },
-    {
+const getCardProfileInfo = (userID, {
+  seenID,
+  action,
+  exclude
+}) => {
+  return Profile.findOneAndUpdate({
+      root_user: ObjectId(userID)
+    }, {
       $push: {
         seen: {
           user: ObjectId(seenID),
           action,
         },
       },
-    },
-    {
+    }, {
       new: true,
-    }
-  )
+    })
     .lean()
     .then((user) => {
-      return Profile.aggregate([
-        {
+      return Profile.aggregate([{
           $match: {
             _id: {
               $nin: exclude
@@ -56,7 +62,11 @@ const getCardProfileInfo = (userID, { seenID, action, exclude }) => {
             },
           },
         },
-        { $sample: { size: 1 } },
+        {
+          $sample: {
+            size: 1
+          }
+        },
         {
           $lookup: {
             from: "cities",
@@ -134,12 +144,11 @@ const getCardProfileInfo = (userID, { seenID, action, exclude }) => {
 };
 const getInitCardProfileInfo = (userID) => {
   return Profile.findOne({
-    root_user: ObjectId(userID),
-  })
+      root_user: ObjectId(userID),
+    })
     .lean()
     .then((user) => {
-      return Profile.aggregate([
-        {
+      return Profile.aggregate([{
           $match: {
             _id: {
               $nin: user.seen
@@ -148,7 +157,11 @@ const getInitCardProfileInfo = (userID) => {
             },
           },
         },
-        { $sample: { size: 5 } },
+        {
+          $sample: {
+            size: 5
+          }
+        },
         {
           $lookup: {
             from: "cities",
@@ -250,6 +263,13 @@ const getMatchProfile = (userID) => {
     });
   });
 };
+const getUserProfile = (userID) => {
+  return Profile.findOne({
+    root_user: ObjectId(userID),
+  }).then((user) => {
+    return user
+  })
+}
 module.exports = {
   checkDatingProfile,
   createProfile,
@@ -257,4 +277,5 @@ module.exports = {
   getInitCardProfileInfo,
   getLikeProfile,
   getMatchProfile,
+  getUserProfile
 };

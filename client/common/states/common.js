@@ -1,4 +1,7 @@
-import { createStateHolder } from './state-holder';
+import {
+    createStateHolder
+} from "./state-holder";
+
 
 export const userInfo = createStateHolder();
 export const userSearchHistory = createStateHolder([]);
@@ -7,10 +10,9 @@ export const userFollowedPosts = createStateHolder([]);
 export const userSavedPosts = createStateHolder([]);
 export const userBlockedPosts = createStateHolder([]);
 export const userBlockedPersons = createStateHolder([]);
-export const datingProfile = createStateHolder({});
-export const marketplaceInfo = createStateHolder({});
+export const datingProfile = createStateHolder(null);
 
 userInfo.onChange((nextState) => {
-  clearAllData('user-info');
-  writeData('user-info', nextState);
+    clearAllData("user-info");
+    writeData("user-info", nextState);
 });

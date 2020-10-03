@@ -10,7 +10,11 @@ const initDbCollections = (appDb) => {
   const ChatRoom = require("../db/model/chat-room")(appDb);
   const ConfirmToken = require("../db/model/confirm-token")(appDb);
   const ResetPasswordToken = require("../db/model/reset-password-token")(appDb);
-  const { City, Ward, District } = require("../db/model/location")(appDb);
+  const {
+    City,
+    Ward,
+    District
+  } = require("../db/model/location")(appDb);
   const Listing = require("../db/model/marketplace/listing")(appDb);
   const Category = require("../db/model/marketplace/category")(appDb);
   const Comment = require("../db/model/comment")(appDb);
@@ -18,24 +22,18 @@ const initDbCollections = (appDb) => {
   const Mapping = require("../db/model/dating/mapping")(appDb);
   const ChatBox = require("../db/model/dating/chatbox")(appDb);
   const Match = require("../db/model/dating/match")(appDb);
-  // Profile.findOneAndUpdate(
-  //   {
-  //     _id: ObjectId("5f6c7d338e8e3639300b0207"),
+  // Profile.findOneAndUpdate({
+  //   _id: ObjectId("5f6c7d338e8e3639300b0207"),
+  // }, {
+  //   $set: {
+  //     seen: [],
   //   },
-  //   {
-  //     $set: {
-  //       seen: [],
-  //     },
-  //   }
-  // ).exec();
-  // Profile.updateMany(
-  //   {},
-  //   {
-  //     $set: {
-  //       seen: [],
-  //     },
-  //   }
-  // ).exec();
+  // }).exec();
+  // Profile.updateMany({}, {
+  //   $set: {
+  //     seen: [],
+  //   },
+  // }).exec();
   // Comment.updateMany({}, {$set: {replies: []}}).then(() => console.log("cac"))
   // ChatRoom.deleteMany({}).then(() => console.log("cac"))
   // User.updateMany({}, {$set: {"contact.address": {ward: ObjectId("5e92c7b6b4c8182784f5bcff"), city: ObjectId("5e92c7b4b4c8182784f59d4a"), district: ObjectId("5e92c7b4b4c8182784f5994b")}}}).then(() => console.log("cac"))

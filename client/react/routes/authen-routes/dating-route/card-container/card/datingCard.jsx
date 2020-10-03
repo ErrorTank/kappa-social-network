@@ -15,6 +15,8 @@ export class DatingCard extends Component {
     this.state = {
       profiles: [],
     };
+    this.canClick = true;
+    this.timeout = null;
     datingCardUtilities.pushProfile = (profile) => {
       this.setState({
         profiles: this.state.profiles
@@ -30,6 +32,9 @@ export class DatingCard extends Component {
       })
     );
   }
+  componentWillUnmount() {
+    clearTimeout(this.timeout);
+  }
 
   deteleCard = (seen, direction) => {
     let newProfiles = this.state.profiles.filter((e) => e._id !== seen._id);
@@ -43,7 +48,7 @@ export class DatingCard extends Component {
         seenID: seen._id,
       })
       .then((e) => {
-        datingLikeUtilities.removeLiked(seen._id);
+        datingLikeUtilities.removeLiked?.(seen._id);
         if (seen.isAccept) {
           datingLeftPanelUtilities.setTab("MATCHES");
         }
@@ -75,16 +80,24 @@ export class DatingCard extends Component {
         next();
       });
   };
-
+  checkClick = (fn, profile) => {
+    if (this.canClick) {
+      this.canClick = false;
+      this.timeout = setTimeout(() => {
+        this.canClick = true;
+        clearTimeout(this.timeout);
+      }, 500);
+      fn(profile);
+    }
+  };
   render() {
     let { profiles } = this.state;
-    console.log(profiles);
+
     return (
       <>
         <div
-          className="dating-card"
-          ref={(datingCard) => (this.datingCard = datingCard)}
-        >
+          className='dating-card'
+          ref={(datingCard) => (this.datingCard = datingCard)}>
           {!!profiles.length && (
             <>
               {profiles.map((each, i) => (
@@ -100,8 +113,7 @@ export class DatingCard extends Component {
 
                       direction
                     )
-                  }
-                >
+                  }>
                   <MyTinderCard info={each} />
                 </TinderCard>
               ))}
@@ -109,8 +121,12 @@ export class DatingCard extends Component {
           )}
         </div>
         <DatingCardActions
-          onDislike={() => this.dislike(profiles[profiles.length - 1])}
-          onLike={() => this.like(profiles[profiles.length - 1])}
+          onDislike={() =>
+            this.checkClick(this.dislike, profiles[profiles.length - 1])
+          }
+          onLike={() =>
+            this.checkClick(this.like, profiles[profiles.length - 1])
+          }
         />
       </>
     );
