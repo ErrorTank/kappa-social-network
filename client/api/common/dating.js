@@ -1,5 +1,10 @@
-import { authenApi, offlineApi } from "../api";
-import { urlUtils } from "../../common/utils/url-utils";
+import {
+  authenApi,
+  offlineApi
+} from "../api";
+import {
+  urlUtils
+} from "../../common/utils/url-utils";
 import user from "../../../server/db/model/user";
 
 export const datingApi = {
@@ -24,4 +29,7 @@ export const datingApi = {
   getMatchProfile() {
     return authenApi.get(`/dating/match-profile`);
   },
+  getUserProfile() {
+    return authenApi.get(`/dating/user-profile`)
+  }
 };

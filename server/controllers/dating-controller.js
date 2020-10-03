@@ -1,7 +1,11 @@
 const express = require("express");
 const router = express.Router();
-const { authorizationUserMiddleware } = require("../common/middlewares/common");
-const { asynchronized } = require("../utils/common-utils");
+const {
+  authorizationUserMiddleware
+} = require("../common/middlewares/common");
+const {
+  asynchronized
+} = require("../utils/common-utils");
 const mongoose = require("mongoose");
 const ObjectId = mongoose.Types.ObjectId;
 const {
@@ -11,7 +15,7 @@ const {
   getInitCardProfileInfo,
   getLikeProfile,
   getMatchProfile,
-  getLocationName,
+  getUserProfile
 } = require("../db/db-controllers/dating");
 module.exports = (db, namespacesIO) => {
   router.get(
@@ -77,15 +81,16 @@ module.exports = (db, namespacesIO) => {
         .catch((err) => next(err));
     }
   );
-  router.get("/location-name"),
+  router.get(
+    "/user-profile",
     authorizationUserMiddleware,
     (req, res, next) => {
-      return getLocationName()
+      return getUserProfile(req.user._id)
         .then((data) => {
           return res.status(200).json(data);
         })
         .catch((err) => next(err));
-    };
-
+    }
+  );
   return router;
 };

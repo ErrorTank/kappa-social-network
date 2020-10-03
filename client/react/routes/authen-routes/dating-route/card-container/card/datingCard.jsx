@@ -43,7 +43,7 @@ export class DatingCard extends Component {
         seenID: seen._id,
       })
       .then((e) => {
-        datingLikeUtilities.removeLiked(seen._id);
+        datingLikeUtilities.removeLiked?.(seen._id);
         if (seen.isAccept) {
           datingLeftPanelUtilities.setTab("MATCHES");
         }
@@ -82,9 +82,8 @@ export class DatingCard extends Component {
     return (
       <>
         <div
-          className="dating-card"
-          ref={(datingCard) => (this.datingCard = datingCard)}
-        >
+          className='dating-card'
+          ref={(datingCard) => (this.datingCard = datingCard)}>
           {!!profiles.length && (
             <>
               {profiles.map((each, i) => (
@@ -100,8 +99,7 @@ export class DatingCard extends Component {
 
                       direction
                     )
-                  }
-                >
+                  }>
                   <MyTinderCard info={each} />
                 </TinderCard>
               ))}
