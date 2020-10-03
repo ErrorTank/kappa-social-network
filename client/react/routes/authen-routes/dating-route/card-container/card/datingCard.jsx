@@ -32,6 +32,9 @@ export class DatingCard extends Component {
       })
     );
   }
+  componentWillUnmount() {
+    clearTimeout(this.timeout);
+  }
 
   deteleCard = (seen, direction) => {
     let newProfiles = this.state.profiles.filter((e) => e._id !== seen._id);
