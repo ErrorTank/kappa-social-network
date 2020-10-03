@@ -15,6 +15,8 @@ export class DatingCard extends Component {
     this.state = {
       profiles: [],
     };
+    this.canClick = true;
+    this.timeout = null;
     datingCardUtilities.pushProfile = (profile) => {
       this.setState({
         profiles: this.state.profiles
@@ -75,10 +77,19 @@ export class DatingCard extends Component {
         next();
       });
   };
-
+  checkClick = (fn, profile) => {
+    if (this.canClick) {
+      this.canClick = false;
+      this.timeout = setTimeout(() => {
+        this.canClick = true;
+        clearTimeout(this.timeout);
+      }, 500);
+      fn(profile);
+    }
+  };
   render() {
     let { profiles } = this.state;
-    console.log(profiles);
+
     return (
       <>
         <div
@@ -107,8 +118,12 @@ export class DatingCard extends Component {
           )}
         </div>
         <DatingCardActions
-          onDislike={() => this.dislike(profiles[profiles.length - 1])}
-          onLike={() => this.like(profiles[profiles.length - 1])}
+          onDislike={() =>
+            this.checkClick(this.dislike, profiles[profiles.length - 1])
+          }
+          onLike={() =>
+            this.checkClick(this.like, profiles[profiles.length - 1])
+          }
         />
       </>
     );

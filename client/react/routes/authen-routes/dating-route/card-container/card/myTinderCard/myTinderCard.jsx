@@ -4,19 +4,13 @@ import { datingApi } from "./../../../../../../../api/common/dating";
 import { getAge } from "../../../../../../../common/utils/date-utils";
 import { Tooltip } from "./../../../../../../common/tooltip/tooltip";
 import { distanceTo } from "geolocation-utils";
+import { datingProfile } from "../../../../../../../common/states/common";
 export class MyTinderCard extends Component {
   constructor(props) {
     super(props);
     this.state = {
       current: 0,
     };
-  }
-  componentDidMount() {
-    datingApi.getUserProfile().then((e) =>
-      this.setState({
-        userProfile: e,
-      })
-    );
   }
   onSwipeLeft = () => {
     this.setState({
@@ -41,34 +35,16 @@ export class MyTinderCard extends Component {
   };
   render() {
     let { info } = this.props;
-    let { current, userProfile } = this.state;
+    let { current } = this.state;
     let avatar = info.avatars[current].path;
-    userProfile &&
-      console
-        .log
-        // { lat: userProfile.location.lat, lon: userProfile.location.lng },
-        // { lat: info.location.lat, lon: info.location.lng }
-        // distanceTo({ lat: 21, lon: 105 }, { lat: 22, lon: 106 })
-        ();
-    let distance =
-      userProfile &&
-      distanceTo(
-        {
-          lat: Number(userProfile.location.lat),
-          lon: Number(userProfile.location.lng),
-        },
-        { lat: Number(info.location.lat), lon: Number(info.location.lng) }
-      );
-    userProfile &&
-      console.log(
-        distanceTo(
-          {
-            lat: Number(userProfile.location.lat),
-            lon: Number(userProfile.location.lng),
-          },
-          { lat: Number(info.location.lat), lon: Number(info.location.lng) }
-        )
-      );
+    let userProfile = datingProfile.getState();
+    let distance = distanceTo(
+      {
+        lat: Number(userProfile.location.lat),
+        lon: Number(userProfile.location.lng),
+      },
+      { lat: Number(info.location.lat), lon: Number(info.location.lng) }
+    );
     return (
       <div className={classnames("my-tinder-card")}>
         <div className='my-tinder-card-filter'></div>

@@ -11,42 +11,40 @@ export default class DatingRoute extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      profile: null,
       loading: true,
+      hasProfile: false,
     };
   }
 
   componentDidMount() {
-    datingApi.checkDatingProfile(userInfo.getState()._id).then((profile) => {
+    datingApi.getUserProfile().then((profile) => {
+      this.setState({
+        loading: false,
+      });
       if (profile) {
         this.setState({
-          profile,
-          loading: false,
+          hasProfile: true,
         });
-      } else {
-        this.setState({
-          profile: null,
-          loading: false,
-        });
+        datingProfile.setState(profile);
       }
     });
   }
 
   onCreateProfile = (profile) => {
-    this.setState({ profile });
+    datingProfile.setState(profile);
   };
 
   render() {
-    let { profile, loading } = this.state;
+    let { loading, hasProfile } = this.state;
     return (
-      <div className="dating-route">
+      <div className='dating-route'>
         {loading ? (
           <LoadingInline />
-        ) : profile ? (
+        ) : hasProfile ? (
           <PageTitle title={"Hẹn hò"}>
-            <div className="dating-home">
+            <div className='dating-home'>
               <DatingLeftPanel />
-              <div className="right-panel">
+              <div className='right-panel'>
                 <CardContainer />
               </div>
             </div>
