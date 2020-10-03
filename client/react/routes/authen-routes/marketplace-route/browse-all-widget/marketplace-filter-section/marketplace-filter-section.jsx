@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
+import { KComponent } from './../../../../../common/k-component';
 
-export class MarketplaceFilterSection extends Component {
+export class MarketplaceFilterSection extends KComponent {
   constructor(props) {
     super(props);
     this.state = {};

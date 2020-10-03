@@ -20,9 +20,10 @@ export class MarketplaceSearchSection extends Component {
   }
 
   getCategoryInfo = () => {
-    categoryApi
-      .getCategoryByID(this.props.mainID)
-      .then((e) => this.setState({ mainCategoryInfo: e }));
+    this.props.mainID &&
+      categoryApi
+        .getCategoryByID(this.props.mainID)
+        .then((e) => this.setState({ mainCategoryInfo: e }));
   };
   render() {
     const { mainCategoryInfo } = this.state;

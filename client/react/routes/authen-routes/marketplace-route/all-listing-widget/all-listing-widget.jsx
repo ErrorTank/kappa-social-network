@@ -6,8 +6,9 @@ import { listingApi } from './../../../../../api/common/listing-api';
 import { ListingDisplay } from './listing-display/listing-display';
 import { insideCircle } from 'geolocation-utils';
 import { LoadingInline } from './../../../../common/loading-inline/loading-inline';
+import { KComponent } from './../../../../common/k-component';
 
-export class AllListingWidget extends Component {
+export class AllListingWidget extends KComponent {
   constructor(props) {
     super(props);
     this.state = {

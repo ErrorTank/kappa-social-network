@@ -9,8 +9,9 @@ import { MarketplaceFilterSection } from './marketplace-filter-section/marketpla
 import { categoryApi } from './../../../../../api/common/category-api';
 import { itemField, radiusArr } from './../../../../../const/listing';
 import { ListingInfoSelect } from './../../../../common/listing-info-select/listing-info-select';
+import { KComponent } from './../../../../common/k-component';
 
-export class BrowseAllWidget extends Component {
+export class BrowseAllWidget extends KComponent {
   constructor(props) {
     super(props);
     this.state = {
