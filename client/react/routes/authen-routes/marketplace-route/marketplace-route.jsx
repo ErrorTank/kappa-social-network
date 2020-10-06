@@ -10,16 +10,21 @@ class MarketplaceRoute extends KComponent {
   constructor(props) {
     super(props);
     this.state = {};
-
+    console.log('cac');
     navigator.geolocation.getCurrentPosition((position) => {
+      console.log(position);
       const { latitude, longitude } = position.coords;
       let result = {
         lat: latitude,
         lon: longitude,
       };
-
       marketplaceInfo.setState({ radius: 10, myPosition: result });
     });
+    this.onUnmount(
+      marketplaceInfo.onChange((newState, oldState) => {
+        if (newState.radius !== oldState.radius) this.forceUpdate();
+      })
+    );
   }
 
   updateValue = (key, val) => {
@@ -30,7 +35,7 @@ class MarketplaceRoute extends KComponent {
   render() {
     let info = marketplaceInfo.getState();
     const { radius, myPosition } = info;
-    console.log(info);
+    console.log(marketplaceInfo.getState());
     return (
       <PageTitle title={'Marketplace'}>
         <div className='marketplace-route'>

@@ -71,6 +71,7 @@ export class BrowseAllWidget extends KComponent {
   render() {
     const { categoryDisplay } = this.state;
     const { updateValue, radius } = this.props;
+    console.log(this.props);
     return (
       <ThemeContext.Consumer>
         {({ darkMode }) => (
