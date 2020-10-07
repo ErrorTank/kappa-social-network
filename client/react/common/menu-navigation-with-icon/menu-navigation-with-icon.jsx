@@ -24,8 +24,11 @@ export class MenuNavigationWithIcon extends Component {
       if (mainID === id) {
         this.setState({ focus: 'main' });
       } else if (!!options.length) {
+        console.log(options);
         options.forEach((e) => {
+          // console.log(e._id);
           if (mainID === e._id) {
+            console.log('ok');
             this.setState({ focus: 'sup' });
           }
         });
@@ -50,6 +53,7 @@ export class MenuNavigationWithIcon extends Component {
       ...other
     } = this.props;
     const { focus } = this.state;
+    // console.log(focus);
     return (
       <div
         className={classnames(
