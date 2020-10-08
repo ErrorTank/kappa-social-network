@@ -2,8 +2,9 @@ import React, { Component } from 'react';
 import { listingApi } from './../../../../../../api/common/listing-api';
 import { ListingDisplay } from './../../all-listing-widget/listing-display/listing-display';
 import { insideCircle } from 'geolocation-utils';
+import { KComponent } from './../../../../../common/k-component';
 
-export class ListingByCategoryWidget extends Component {
+export class ListingByCategoryWidget extends KComponent {
   constructor(props) {
     super(props);
     this.state = {
