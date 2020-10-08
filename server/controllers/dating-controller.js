@@ -1,11 +1,7 @@
 const express = require("express");
 const router = express.Router();
-const {
-  authorizationUserMiddleware
-} = require("../common/middlewares/common");
-const {
-  asynchronized
-} = require("../utils/common-utils");
+const { authorizationUserMiddleware } = require("../common/middlewares/common");
+const { asynchronized } = require("../utils/common-utils");
 const mongoose = require("mongoose");
 const ObjectId = mongoose.Types.ObjectId;
 const {
@@ -15,7 +11,8 @@ const {
   getInitCardProfileInfo,
   getLikeProfile,
   getMatchProfile,
-  getUserProfile
+  getUserProfile,
+  getProfileByProfileID,
 } = require("../db/db-controllers/dating");
 module.exports = (db, namespacesIO) => {
   router.get(
@@ -46,7 +43,14 @@ module.exports = (db, namespacesIO) => {
     (req, res, next) => {
       console.log(1);
       return getCardProfileInfo(req.user._id, req.body)
-        .then((data) => {
+        .then(([user, data]) => {
+          if (req.body.action === "LIKE") {
+            getProfileByProfileID(req.body.seenID).then((profile) => {
+              namespacesIO.dating.io
+                .to(`/dating-room/profile/${profile._id}`)
+                .emit("be-liked", { profile: user });
+            });
+          }
           return res.status(200).json(data);
         })
         .catch((err) => next(err));
@@ -81,16 +85,12 @@ module.exports = (db, namespacesIO) => {
         .catch((err) => next(err));
     }
   );
-  router.get(
-    "/user-profile",
-    authorizationUserMiddleware,
-    (req, res, next) => {
-      return getUserProfile(req.user._id)
-        .then((data) => {
-          return res.status(200).json(data);
-        })
-        .catch((err) => next(err));
-    }
-  );
+  router.get("/user-profile", authorizationUserMiddleware, (req, res, next) => {
+    return getUserProfile(req.user._id)
+      .then((data) => {
+        return res.status(200).json(data);
+      })
+      .catch((err) => next(err));
+  });
   return router;
 };

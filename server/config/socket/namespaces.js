@@ -11,6 +11,12 @@ const socketNamespaces = [
     handlers: "./handlers/feed-post.js",
     authenticated: true,
   },
+  {
+    key: "dating",
+    path: "/dating",
+    handlers: "./handlers/dating.js",
+    authenticated: true,
+  },
 ];
 
 module.exports = { socketNamespaces };
