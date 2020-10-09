@@ -41,16 +41,38 @@ module.exports = (db, namespacesIO) => {
     "/card-profile-info",
     authorizationUserMiddleware,
     (req, res, next) => {
-      console.log(1);
       return getCardProfileInfo(req.user._id, req.body)
         .then(([user, data]) => {
-          if (req.body.action === "LIKE") {
-            getProfileByProfileID(req.body.seenID).then((profile) => {
-              namespacesIO.dating.io
-                .to(`/dating-room/profile/${profile._id}`)
-                .emit("be-liked", { profile: user });
-            });
-          }
+          getProfileByProfileID(req.body.seenID).then((profile) => {
+            if (req.body.action === "LIKE") {
+              let seen = profile.seen.map((each) => {
+                return {
+                  user: each.user.toString(),
+                  action: each.action,
+                };
+              });
+              console.log(seen);
+              let isLiked = !!seen.find((each) => {
+                return (
+                  each.action === "LIKE" && each.user === user._id.toString()
+                );
+              });
+              console.log(isLiked);
+              if (isLiked) {
+                namespacesIO.dating.io
+                  .to(`/dating-room/profile/${profile._id}`)
+                  .emit("matched", { profile: user });
+                namespacesIO.dating.io
+                  .to(`/dating-room/profile/${user._id}`)
+                  .emit("matched", { profile });
+              } else {
+                namespacesIO.dating.io
+                  .to(`/dating-room/profile/${profile._id}`)
+                  .emit("be-liked", { profile: user });
+              }
+            }
+          });
+
           return res.status(200).json(data);
         })
         .catch((err) => next(err));

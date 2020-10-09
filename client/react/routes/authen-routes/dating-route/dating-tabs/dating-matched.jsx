@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { datingApi } from "./../../../../../api/common/dating";
+import { datingIO } from "./../../../../../socket/sockets";
 
 export class DatingMatched extends Component {
   constructor(props) {
@@ -9,11 +10,22 @@ export class DatingMatched extends Component {
     };
   }
   componentDidMount() {
+    this.io = datingIO.getIOInstance();
+    this.io.on("matched", ({ profile }) => {
+      this.setState({
+        profiles: [profile].concat(this.state.profiles),
+      });
+    });
     datingApi.getMatchProfile().then((e) => {
       this.setState({
         profiles: e,
       });
     });
+  }
+  componentWillUnmount() {
+    if (this.io) {
+      this.io.off("matched");
+    }
   }
   render() {
     const { profiles } = this.state;
