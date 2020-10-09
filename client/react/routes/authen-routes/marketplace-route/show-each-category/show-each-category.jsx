@@ -10,24 +10,28 @@ class ShowEachCategory extends KComponent {
   constructor(props) {
     super(props);
     this.state = {};
-    const { radius, myPosition } = marketplaceInfo.getState();
-    radius &&
-      navigator.geolocation.getCurrentPosition((position) => {
-        const { latitude, longitude } = position.coords;
-        let result = {
-          lat: latitude,
-          lon: longitude,
-        };
-        marketplaceInfo.setState({ radius: 10, myPosition: result });
-      });
+
     this.onUnmount(
       marketplaceInfo.onChange((newState, oldState) => {
         if (newState.radius !== oldState.radius) this.forceUpdate();
       })
     );
   }
+
+  componentDidMount() {
+    const { radius, myPosition } = marketplaceInfo.getState();
+    radius === undefined &&
+      marketplaceInfo.setState({
+        radius: localStorage.radius,
+        myPosition: {
+          lat: Number(localStorage.lat),
+          lon: Number(localStorage.lon),
+        },
+      });
+  }
   updateValue = (key, val) => {
     let oldState = marketplaceInfo.getState();
+    localStorage.setItem([key], val);
     marketplaceInfo.setState({ ...oldState, [key]: val });
   };
   render() {
@@ -36,7 +40,9 @@ class ShowEachCategory extends KComponent {
       <PageTitle title={'Marketplace'}>
         <div className='marketplace-route'>
           <CommonLayout
-            mainRender={() => <ListingByCategoryWidget {...this.props} />}
+            mainRender={() => (
+              <ListingByCategoryWidget {...this.props} radius={radius} />
+            )}
             haveRightRender={false}
             leftRender={() => (
               <CategoryTraitWidget

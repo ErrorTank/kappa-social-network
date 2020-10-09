@@ -23,18 +23,15 @@ export class MenuNavigationWithIcon extends Component {
     if (mainID) {
       if (mainID === id) {
         this.setState({ focus: 'main' });
-      } else if (!!options.length) {
-        console.log(options);
+      } else {
+        this.setState({ focus: '' });
+      }
+      if (!!options.length) {
         options.forEach((e) => {
-          // console.log(e._id);
           if (mainID === e._id) {
-            console.log('ok');
             this.setState({ focus: 'sup' });
           }
         });
-        this.state.focus !== 'sup' && this.setState({ focus: '' });
-      } else {
-        this.setState({ focus: '' });
       }
     }
   };
@@ -53,7 +50,6 @@ export class MenuNavigationWithIcon extends Component {
       ...other
     } = this.props;
     const { focus } = this.state;
-    // console.log(focus);
     return (
       <div
         className={classnames(

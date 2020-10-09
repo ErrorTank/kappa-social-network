@@ -16,6 +16,9 @@ class MarketplaceRoute extends KComponent {
         lat: latitude,
         lon: longitude,
       };
+      localStorage.setItem('radius', 10);
+      localStorage.setItem('lat', result.lat);
+      localStorage.setItem('lon', result.lon);
       marketplaceInfo.setState({ radius: 10, myPosition: result });
     });
     this.onUnmount(
@@ -27,6 +30,7 @@ class MarketplaceRoute extends KComponent {
 
   updateValue = (key, val) => {
     let oldState = marketplaceInfo.getState();
+    localStorage.setItem([key], val);
     marketplaceInfo.setState({ ...oldState, [key]: val });
   };
 
