@@ -37,7 +37,7 @@ class ShowEachCategory extends KComponent {
   render() {
     const { radius, myPosition } = marketplaceInfo.getState();
     return (
-      <PageTitle title={'Marketplace'}>
+      <PageTitle title={'Marketplace Category'}>
         <div className='marketplace-route'>
           <CommonLayout
             mainRender={() => (
