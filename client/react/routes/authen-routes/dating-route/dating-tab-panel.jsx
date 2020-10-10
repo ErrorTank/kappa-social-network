@@ -3,25 +3,25 @@ import { Header } from "./header/header";
 import classnames from "classnames";
 import { DatingMatched } from "./dating-tabs/dating-matched";
 import { DatingLike } from "./dating-tabs/dating-like";
-import { DatingMessage } from "./dating-tabs/dating-message";
+import { DatingMessageTab } from "./dating-tabs/dating-message-tab";
 
-export const datingLeftPanelUtilities = {};
+export const datingTabPanelUtilities = {};
 
-const LEFT_PANEL_TABS = {
+export const TAB_PANEL_TABS = {
   MATCHES: "MATCHES",
   LIKE_YOU: "LIKE_YOU",
   MESSAGE: "MESSAGE",
 };
 
-export class DatingLeftPanel extends Component {
+export class DatingTabPanel extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      mode: LEFT_PANEL_TABS.MATCHES,
+      mode: props.defaultTab || TAB_PANEL_TABS.MATCHES,
     };
-    datingLeftPanelUtilities.setTab = (tab) => {
+    datingTabPanelUtilities.setTab = (tab) => {
       this.setState({
-        mode: LEFT_PANEL_TABS[tab],
+        mode: TAB_PANEL_TABS[tab],
       });
     };
   }
@@ -29,24 +29,27 @@ export class DatingLeftPanel extends Component {
     let tabNavigators = [
       {
         label: "Kết đôi",
-        mode: LEFT_PANEL_TABS.MATCHES,
+        mode: TAB_PANEL_TABS.MATCHES,
         component: DatingMatched,
+
       },
       {
         label: "Đã thích bạn",
-        mode: LEFT_PANEL_TABS.LIKE_YOU,
+        mode: TAB_PANEL_TABS.LIKE_YOU,
         component: DatingLike,
       },
       {
         label: "Tin nhắn",
-        mode: LEFT_PANEL_TABS.MESSAGE,
-        component: DatingMessage,
+        mode: TAB_PANEL_TABS.MESSAGE,
+        component: DatingMessageTab,
       },
     ];
     let { mode } = this.state;
+    console.log(mode);
+    let {onSwitch} = this.props
     let Comp = tabNavigators.find((each) => each.mode === mode).component;
     return (
-      <div className="dating-left-panel">
+      <div className="dating-tab-panel">
         <Header />
         <div className="dating-home-tab">
           {tabNavigators.map((each, i) => (
@@ -61,8 +64,8 @@ export class DatingLeftPanel extends Component {
             </div>
           ))}
         </div>
-        <div className="dating-left-body">
-          <Comp />
+        <div className="dating-tab-body">
+          <Comp onSwitch={onSwitch}/>
         </div>
       </div>
     );

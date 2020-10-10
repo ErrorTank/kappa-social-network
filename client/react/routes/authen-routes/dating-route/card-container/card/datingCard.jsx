@@ -7,7 +7,7 @@ import { DatingCardActions } from "./../action/action";
 import ReactDOM from "react-dom";
 import classnames from "classnames";
 import { datingLikeUtilities } from "./../../dating-tabs/dating-like";
-import { datingLeftPanelUtilities } from "./../../dating-left-panel";
+import { datingTabPanelUtilities } from "../../dating-tab-panel";
 export const datingCardUtilities = {};
 export class DatingCard extends Component {
   constructor(props) {
@@ -50,7 +50,7 @@ export class DatingCard extends Component {
       .then((e) => {
         datingLikeUtilities.removeLiked?.(seen._id);
         if (seen.isAccept) {
-          datingLeftPanelUtilities.setTab("MATCHES");
+          datingTabPanelUtilities.setTab("MATCHES");
         }
         this.setState({
           profiles: e.concat(this.state.profiles),

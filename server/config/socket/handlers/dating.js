@@ -8,10 +8,13 @@ module.exports = (io, socket, context) => {
   socket.on("disconnect", function () {
     socket.auth = false;
   });
-  socket.on("join-own-room", function (data) {
+  socket.on("join-own-room", function (data,ack) {
     if (data.profileID) {
       console.log("welcome to my room");
       socket.join(`/dating-room/profile/${data.profileID}`);
+      if(ack){
+        ack()
+      }
     }
   });
   return io;

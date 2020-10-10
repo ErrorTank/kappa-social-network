@@ -24,6 +24,7 @@ export class DatingMatched extends Component {
   }
   componentWillUnmount() {
     if (this.io) {
+      console.log(1);
       this.io.off("matched");
     }
   }
