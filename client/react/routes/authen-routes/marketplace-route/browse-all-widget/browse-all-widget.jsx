@@ -61,17 +61,19 @@ export class BrowseAllWidget extends KComponent {
     {
       icon: 'fas fa-tags',
       title: 'Đang bán',
+      link: '/marketplace/you/selling',
     },
     {
       icon: 'fas fa-user',
       title: 'Tài khoản của bạn',
+      link: '/marketplace/you',
     },
   ];
 
   render() {
     const { categoryDisplay } = this.state;
     const { updateValue, radius } = this.props;
-    console.log(this.props);
+    // console.log(this.props);
     return (
       <ThemeContext.Consumer>
         {({ darkMode }) => (

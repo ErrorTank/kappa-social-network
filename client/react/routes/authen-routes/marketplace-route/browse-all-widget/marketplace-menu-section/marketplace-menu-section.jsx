@@ -18,7 +18,7 @@ export class MarketplaceMenuSection extends Component {
               icon={each.icon}
               title={each.title}
               type={each.type}
-              onClick={() => customHistory.push(each.link)}
+              link={each.link}
             />
           ))}
         <div
