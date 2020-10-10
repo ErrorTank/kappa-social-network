@@ -5,9 +5,11 @@ import { userInfo, datingProfile } from "./../../../../common/states/common";
 import { DatingRegister } from "./datingRegister/datingRegister";
 import { LoadingInline } from "./../../../common/loading-inline/loading-inline";
 import { CardContainer } from "./card-container/card-container";
-import { DatingLeftPanel } from "./dating-left-panel";
 import { datingIO } from "./../../../../socket/sockets";
 import { authenCache } from "./../../../../common/cache/authen-cache";
+import { matchedModal } from './../../../common/modal/matched-modal/matched-modal';
+import { beLikedModal } from './../../../common/modal/be-liked-modal/be-like-modal';
+import { DatingLeftPanel } from "./dating-left-panel/dating-left-panel";
 
 export default class DatingRoute extends Component {
   constructor(props) {
@@ -18,12 +20,30 @@ export default class DatingRoute extends Component {
     };
   }
   connectDatingSocket = (id) => {
-    datingIO.connect({ token: authenCache.getAuthen() }).then((datingIO) => {
-      datingIO.emit("join-own-room", { profileID: id });
+    datingIO.connect({ token: authenCache.getAuthen() }).then((IO) => {
+   
+      IO.emit("join-own-room", { profileID: id }, ()=>{
+        this.io = datingIO.getIOInstance()
+        this.io.on("matched-modal", ({ profile }) => {
+          matchedModal.open({profile})
+        });
+        this.io.on("be-liked",({profile}) => {
+          beLikedModal.open({profile})
+        })
+      });
+     
     });
   };
   componentWillUnmount() {
     datingIO.disconnect();
+    if (this.io) {
+      console.log(2);
+      this.io.off("matched-modal");
+    }
+    if (this.io) {
+      this.io.off("be-liked");
+    }
+
   }
   componentDidMount() {
     datingApi.getUserProfile().then((profile) => {
@@ -38,6 +58,8 @@ export default class DatingRoute extends Component {
         datingProfile.setState(profile);
       }
     });
+
+    
   }
 
   onCreateProfile = (profile) => {

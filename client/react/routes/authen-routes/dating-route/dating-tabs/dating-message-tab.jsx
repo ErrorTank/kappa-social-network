@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { v4 as uuidv4 } from "uuid";
 import { userInfo } from "../../../../../common/states/common";
-export class DatingMessage extends Component {
+export class DatingMessageTab extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -44,10 +44,12 @@ export class DatingMessage extends Component {
   }
   render() {
     const { messages } = this.state;
+    const {onSwitch} = this.props
+    
     return (
-      <div className='dating-message'>
+      <div className='dating-message-tab'>
         {messages.map((each, i) => (
-          <div className='dating-chat-box' key={i}>
+          <div className='dating-chat-box' key={i} onClick={onSwitch}>
             <div className='dating-chat-avatar'>
               <div className='avatar-wrapper'>
                 <img src={each.from_person.avatar} />

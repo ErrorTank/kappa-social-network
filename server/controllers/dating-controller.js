@@ -65,6 +65,12 @@ module.exports = (db, namespacesIO) => {
                 namespacesIO.dating.io
                   .to(`/dating-room/profile/${user._id}`)
                   .emit("matched", { profile });
+                  namespacesIO.dating.io
+                  .to(`/dating-room/profile/${profile._id}`)
+                  .emit("matched-modal", { profile: user });
+                namespacesIO.dating.io
+                  .to(`/dating-room/profile/${user._id}`)
+                  .emit("matched-modal", { profile });
               } else {
                 namespacesIO.dating.io
                   .to(`/dating-room/profile/${profile._id}`)
