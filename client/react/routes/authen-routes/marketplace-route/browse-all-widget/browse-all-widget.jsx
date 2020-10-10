@@ -10,6 +10,7 @@ import { categoryApi } from './../../../../../api/common/category-api';
 import { itemField, radiusArr } from './../../../../../const/listing';
 import { ListingInfoSelect } from './../../../../common/listing-info-select/listing-info-select';
 import { KComponent } from './../../../../common/k-component';
+import { getCategoriesNavigation } from '../../../../../common/utils/listing-utils';
 
 export class BrowseAllWidget extends KComponent {
   constructor(props) {
@@ -19,37 +20,9 @@ export class BrowseAllWidget extends KComponent {
     };
 
     categoryApi.getCategory({}).then((categories) => {
-      let itemInfo = itemField.find((e) => e.englishName === 'category');
-      let itemIcon = itemInfo.options.filter((e) => e.icon);
-      let additionInfo = [...itemIcon, ...this.otherCategory];
-
-      let categoryWithIcon = categories.reduce((res, option) => {
-        let checkIcon = additionInfo.find((each) => each.name === option.name);
-        if (checkIcon) {
-          return [
-            ...res,
-            {
-              ...option,
-              icon: checkIcon.icon,
-              link: `/marketplace/${option._id}`,
-            },
-          ];
-        } else {
-          return res;
-        }
-      }, []);
-
-      this.setState({ categoryDisplay: categoryWithIcon });
+      this.setState({ categoryDisplay: getCategoriesNavigation(categories) });
     });
   }
-
-  otherCategory = [
-    { icon: 'fas fa-home', name: 'Bán nhà' },
-    {
-      icon: 'far fa-home-alt',
-      name: 'Cho thuê',
-    },
-  ];
 
   browseAllMenu = [
     {
@@ -73,7 +46,6 @@ export class BrowseAllWidget extends KComponent {
   render() {
     const { categoryDisplay } = this.state;
     const { updateValue, radius } = this.props;
-    // console.log(this.props);
     return (
       <ThemeContext.Consumer>
         {({ darkMode }) => (

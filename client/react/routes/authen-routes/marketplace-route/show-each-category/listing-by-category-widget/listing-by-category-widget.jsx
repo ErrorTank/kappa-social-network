@@ -30,14 +30,19 @@ export class ListingByCategoryWidget extends KComponent {
   };
   render() {
     const { listingByCategory } = this.state;
+    const { radius, myPosition } = this.props;
     return (
       <div className='listing-by-category-widget'>
         {!!listingByCategory.listingArr.length ? (
           <div className='listing-by-category-wrapper'>
             <div className='listing-suitable'>
-              {listingByCategory.listingArr.map((listing) => (
-                <ListingDisplay listing={listing} key={listing._id} />
-              ))}
+              {listingByCategory.listingArr.map((listing) => {
+                return (
+                  insideCircle(listing.position, myPosition, radius * 1000) && (
+                    <ListingDisplay listing={listing} key={listing._id} />
+                  )
+                );
+              })}
             </div>
             <div className='listing-outside-search'></div>
           </div>

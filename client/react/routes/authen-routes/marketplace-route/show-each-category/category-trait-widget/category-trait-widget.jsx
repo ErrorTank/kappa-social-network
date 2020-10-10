@@ -7,6 +7,7 @@ import { MarketplaceMenuSection } from './../../browse-all-widget/marketplace-me
 import { MarketplaceFilterSection } from '../../browse-all-widget/marketplace-filter-section/marketplace-filter-section';
 import { ListingInfoSelect } from './../../../../../common/listing-info-select/listing-info-select';
 import { CategoriesSection } from './../../browse-all-widget/categories-section/categories-section';
+import { getCategoriesNavigation } from '../../../../../../common/utils/listing-utils';
 
 export class CategoryTraitWidget extends Component {
   constructor(props) {
@@ -16,42 +17,7 @@ export class CategoryTraitWidget extends Component {
     };
 
     categoryApi.getCategory({}).then((categories) => {
-      let itemInfo = itemField.find((e) => e.englishName === 'category');
-      let itemIcon = itemInfo.options.filter((e) => e.icon);
-      let additionInfo = [...itemIcon, ...this.otherCategory];
-
-      let categoryWithIcon = categories.reduce((res, option) => {
-        let checkIcon = additionInfo.find((each) => each.name === option.name);
-
-        if (checkIcon) {
-          let fullOption;
-          if (!!option.children.length) {
-            fullOption = {
-              ...option,
-              children: option.children.map((e) => {
-                return {
-                  ...e,
-                  link: `/marketplace/${e._id}`,
-                };
-              }),
-            };
-          } else {
-            fullOption = option;
-          }
-          return [
-            ...res,
-            {
-              ...fullOption,
-              icon: checkIcon.icon,
-              link: `/marketplace/${option._id}`,
-            },
-          ];
-        } else {
-          return res;
-        }
-      }, []);
-
-      this.setState({ categoryDisplay: categoryWithIcon });
+      this.setState({ categoryDisplay: getCategoriesNavigation(categories) });
     });
   }
 

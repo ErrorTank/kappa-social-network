@@ -10,7 +10,7 @@ class ListingSelling extends Component {
   }
   render() {
     return (
-      <PageTitle title={'Selling'}>
+      <PageTitle title={'Listing Selling'}>
         <div className='listing-selling'>
           <CommonLayout
             mainRender={() => <div>ok</div>}

@@ -41,7 +41,11 @@ class ShowEachCategory extends KComponent {
         <div className='marketplace-route'>
           <CommonLayout
             mainRender={() => (
-              <ListingByCategoryWidget {...this.props} radius={radius} />
+              <ListingByCategoryWidget
+                {...this.props}
+                radius={radius}
+                myPosition={myPosition}
+              />
             )}
             haveRightRender={false}
             leftRender={() => (

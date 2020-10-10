@@ -1,4 +1,6 @@
 // import isNil from "lodash/isNil"
+import { categoryApi } from './../../api/common/category-api';
+import { itemField } from './../../const/listing';
 
 const checkNumber = (value) => {
   const re = /^[0-9\b]+$/;
@@ -27,4 +29,57 @@ const numberToMoney = (value) => {
   return `${money} ₫`;
 };
 
-export { checkNumber, cleanBlankProp, moneyToNumber, numberToMoney };
+const getCategoriesNavigation = (categories) => {
+  let otherCategory = [
+    { icon: 'fas fa-home', name: 'Bán nhà' },
+    {
+      icon: 'far fa-home-alt',
+      name: 'Cho thuê',
+    },
+  ];
+
+  let itemInfo = itemField.find((e) => e.englishName === 'category');
+  let itemIcon = itemInfo.options.filter((e) => e.icon);
+  let additionInfo = [...itemIcon, ...otherCategory];
+
+  let categoryWithIcon = categories.reduce((res, option) => {
+    let checkIcon = additionInfo.find((each) => each.name === option.name);
+
+    if (checkIcon) {
+      let fullOption;
+      if (!!option.children.length) {
+        fullOption = {
+          ...option,
+          children: option.children.map((e) => {
+            return {
+              ...e,
+              link: `/marketplace/${e._id}`,
+            };
+          }),
+        };
+      } else {
+        fullOption = option;
+      }
+      return [
+        ...res,
+        {
+          ...fullOption,
+          icon: checkIcon.icon,
+          link: `/marketplace/${option._id}`,
+        },
+      ];
+    } else {
+      return res;
+    }
+  }, []);
+
+  return categoryWithIcon;
+};
+
+export {
+  checkNumber,
+  cleanBlankProp,
+  moneyToNumber,
+  numberToMoney,
+  getCategoriesNavigation,
+};
