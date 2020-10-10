@@ -25,6 +25,7 @@ export class CreateListingInputWidget extends Component {
     };
   }
 
+  // default value
   createInfo = [
     {
       name: 'item',
@@ -56,7 +57,23 @@ export class CreateListingInputWidget extends Component {
     ],
   };
 
+  componentDidUpdate(prevProps) {
+    if (prevProps.state !== this.props.state) {
+      this.checkRequiredfield();
+    }
+    if (
+      prevProps.match.params.categoryName !==
+      this.props.match.params.categoryName
+    ) {
+      this.setDefaultValue();
+    }
+  }
+
   componentDidMount = () => {
+    this.setDefaultValue();
+  };
+
+  setDefaultValue = () => {
     let { state, updateValue, setValues } = this.props;
     this.createInfo.forEach((each) => {
       if (each.name === this.props.match.params.categoryName) {
@@ -82,7 +99,7 @@ export class CreateListingInputWidget extends Component {
       }
     });
   };
-
+  //upload file
   uploadSingleFile = (file) => {
     return postApi
       .preUploadMedia({ file: file.file }, 'file')
@@ -91,6 +108,7 @@ export class CreateListingInputWidget extends Component {
       }));
   };
 
+  // error function
   setError = (name, error) => {
     this.setState((prevState) => ({
       error: {
@@ -106,6 +124,7 @@ export class CreateListingInputWidget extends Component {
     }
   };
 
+  // check canCreate, true then filter result then call create api, false then set error on required input
   setNewListing = () => {
     const { state, updateValue, setValues } = this.props;
     const { files, type } = state;
@@ -155,8 +174,19 @@ export class CreateListingInputWidget extends Component {
         vehicle: vehicleField,
         home: homeField,
       };
+      
+      if (!files.length) {
+        let modifyError = {
+          type: 'required',
+          message: 'Vui lòng tải lên ít nhất 1 ảnh.',
+        };
+        this.setError('files', modifyError);
+      }
 
-      let inputNeeded = setField[type].filter((e) => e.error);
+      let inputNeeded = setField[type].filter((e) =>
+        requiredInput.includes(e.englishName)
+      );
+
       inputNeeded.forEach((e) => {
         let value = state[e.englishName];
         if (
@@ -170,6 +200,7 @@ export class CreateListingInputWidget extends Component {
     }
   };
 
+  // set needed field
   setRequiredInput = () => {
     const { state } = this.props;
     const { type } = state;
@@ -186,6 +217,7 @@ export class CreateListingInputWidget extends Component {
     return requiredInput;
   };
 
+  // check needed field
   checkRequiredfield = () => {
     const { state } = this.props;
     const { type, files } = state;
@@ -205,15 +237,9 @@ export class CreateListingInputWidget extends Component {
     canCreate !== checkBool && this.setState({ canCreate: checkBool });
   };
 
-  componentDidUpdate(prevProps) {
-    if (prevProps.state !== this.props.state) {
-      this.checkRequiredfield();
-    }
-  }
-
   render() {
     let user = userInfo.getState();
-    // console.log(this.props.state);
+    console.log(this.state.error);
     return (
       <div className='create-listing-input-widget'>
         <div className='cs-input-header'>

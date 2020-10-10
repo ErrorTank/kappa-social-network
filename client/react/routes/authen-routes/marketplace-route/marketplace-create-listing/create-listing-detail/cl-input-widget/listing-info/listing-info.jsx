@@ -210,6 +210,7 @@ export class ListingInfo extends Component {
     const { state, updateValue, error } = this.props;
     let { pictureLimit, type, category, files, ...other } = state;
     const { inputField, dependedInput } = this.state;
+    console.log(error.files);
     return (
       <div className='listing-info'>
         <div className='picture-input'>
@@ -272,7 +273,9 @@ export class ListingInfo extends Component {
             >
               {({ onClick }) => (
                 <div
-                  className='add-picture-section'
+                  className={classnames('add-picture-section', {
+                    invalid: error.files,
+                  })}
                   onClick={onClick}
                   onMouseEnter={() => this.mouse('image')}
                   onMouseLeave={() => this.mouseOut()}
@@ -287,13 +290,15 @@ export class ListingInfo extends Component {
           )}
         </div>
 
-        {files.length > pictureLimit && (
+        {(error.files || files.length > pictureLimit) && (
           <div
             className={classnames('error-alert', {
-              error: files.length > pictureLimit,
+              error: files.length > pictureLimit || error.files,
             })}
           >
-            Bạn chỉ có thể chọn tối đa {pictureLimit} ảnh
+            {error.files.message}
+            {files.length > pictureLimit &&
+              `Bạn chỉ có thể chọn tối đa ${pictureLimit} ảnh`}
           </div>
         )}
 

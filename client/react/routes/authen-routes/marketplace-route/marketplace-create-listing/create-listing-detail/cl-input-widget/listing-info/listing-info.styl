@@ -22,7 +22,6 @@
     .images-display {
       margin-top: 8px;
 
-      // padding: 4px
       .images-container {
         display: flex;
         justify-content: flex-start;
@@ -100,6 +99,10 @@
       border-radius: 4px;
       border: 1px solid lightgray;
 
+      &.invalid {
+        border-color: #d9534f;
+      }
+
       .add-picture-button {
         cursor: pointer;
         border-radius: 6px;
@@ -130,9 +133,13 @@
 }
 
 .error-alert {
+  display: block;
+  padding: 0;
+  margin: 0;
+  font-size: 12px;
+  color: #d9534f;
+  height: 15px;
   padding-left: 16px;
-  font-size: 13px;
-  font-weight: 400;
 }
 
 .error {
