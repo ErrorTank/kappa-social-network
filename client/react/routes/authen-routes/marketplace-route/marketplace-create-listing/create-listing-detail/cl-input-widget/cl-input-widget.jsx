@@ -174,12 +174,14 @@ export class CreateListingInputWidget extends Component {
         vehicle: vehicleField,
         home: homeField,
       };
-      
+
       if (!files.length) {
         let modifyError = {
           type: 'required',
           message: 'Vui lòng tải lên ít nhất 1 ảnh.',
         };
+        !this.state.error && console.log('ok');
+        !this.state.error && this.displayFirstError('files');
         this.setError('files', modifyError);
       }
 
@@ -194,10 +196,20 @@ export class CreateListingInputWidget extends Component {
           (!value || (value.includes('&nbsp;') && value.length === 7))
         ) {
           let modifyError = { type: 'required', message: e.error['required'] };
+          !this.state.error && this.displayFirstError(e.englishName);
           this.setError(e.englishName, modifyError);
         }
       });
     }
+  };
+
+  displayFirstError = (id) => {
+    let selectInputElem = ReactDOM.findDOMNode(this).querySelector(
+      'listing-info'
+    );
+    console.log(id);
+    let selectedTarget = selectInputElem.querySelector(`#${id}`);
+    if (selectedTarget) selectInputElem.scrollTop = selectedTarget.offsetTop;
   };
 
   // set needed field
@@ -239,7 +251,7 @@ export class CreateListingInputWidget extends Component {
 
   render() {
     let user = userInfo.getState();
-    console.log(this.state.error);
+    // console.log(this.state.error);
     return (
       <div className='create-listing-input-widget'>
         <div className='cs-input-header'>

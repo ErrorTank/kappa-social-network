@@ -42,7 +42,8 @@ export class ListingInfoSelect extends Component {
     } = this.props;
     return (
       <div
-        className={classnames('listing-info-select', className, {
+        id={id}
+        className={classnames(`listing-info-select`, className, {
           'is-invalid': error,
           focus: this.state.show,
         })}

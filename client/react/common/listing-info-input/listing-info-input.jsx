@@ -34,7 +34,8 @@ export class ListingInfoInput extends Component {
       <ThemeContext.Consumer>
         {(theme) => (
           <div
-            className={classnames('listing-info-input', className, {
+            id={id}
+            className={classnames(`listing-info-input `, className, {
               darkMode: theme?.darkMode,
               focus: this.state.focus,
             })}
