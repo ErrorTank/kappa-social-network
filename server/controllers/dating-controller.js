@@ -75,6 +75,9 @@ module.exports = (db, namespacesIO) => {
                 namespacesIO.dating.io
                   .to(`/dating-room/profile/${profile._id}`)
                   .emit("be-liked", { profile: user });
+                  namespacesIO.dating.io
+                  .to(`/dating-room/profile/${profile._id}`)
+                  .emit("be-liked-modal", { profile: user });
               }
             }
           });

@@ -103,7 +103,7 @@ export class MyTinderCard extends Component {
 
                 <div className='dating-card-info-detail'>
                   <i className='fal fa-home'> </i>{" "}
-                  <span>Đang sống tại {info.location.city.name}</span>
+                  <span>Đang sống tại {info.location.ward.name}, {info.location.district.name}, {info.location.city.name}</span>
                 </div>
                 <div className='dating-card-info-detail'>
                   <i className='fal fa-map-marker-alt'> </i>{" "}
@@ -128,7 +128,7 @@ export class MyTinderCard extends Component {
               )}
               <div className='dating-card-info-detail'>
                 <i className='fal fa-home'></i>{" "}
-                <span>Đang sống tại {info.location.city.name}</span>
+                <span>Đang sống tại {info.location.ward.name}, {info.location.district.name}, {info.location.city.name}  </span>
               </div>
               <div className='dating-card-info-detail'>
                 <i className='fal fa-map-marker-alt'> </i>

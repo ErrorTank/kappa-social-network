@@ -1,6 +1,6 @@
 import React, {Component} from "react";
 import { CommonModalLayout } from "../common-modal-layout";
-import { modals } from './../modals';
+import { modals } from '../modals';
 
 export const beLikedModal = {
     open(config) {
@@ -32,11 +32,9 @@ class BeLikedModal extends Component {
                 <CommonModalLayout
                 className = "be-liked-model" 
                 onClose={() => {
-                    if(!loading){
-                        onClose();
-                    }
+                    onClose();
                 }}
-                title ={"title"}
+                title ={""}
                 actions={[
                     {
                         className: "btn-common-primary",

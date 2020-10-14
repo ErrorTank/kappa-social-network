@@ -30,7 +30,7 @@ class MatchedModal extends Component {
                 onClose={() => {
                     onClose()
                 }}
-                title ={"title"}
+                title ={"It's a Match!"}
                 actions={[
                     {
                         className: "btn-common-primary",
