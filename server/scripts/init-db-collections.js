@@ -44,6 +44,7 @@ const initDbCollections = (appDb) => {
   // User.updateMany({}, {$set: {notifications: []}}).then(() => console.log("cac"))
   // Post.updateMany({}, {$set: {belonged_wall: null}}).then(() => console.log("cac"))
   // Post.deleteMany({}).then(() => console.log("cac"))
+  // User.findOneAndUpdate({"contact.login_username.email": "ncq998@gmail.com"}, {$set: {"user_about_privacy.relationship": "PUBLIC"}}, {new: true}).then((user) => console.log(user))
   // User.findOneAndUpdate({_id: ObjectId("5eccd70efc70863c7c5f9e0c")}, {$set: {"basic_info.dob": new Date(new Date().getTime() + 86400000)}}).then(() => console.log("cac"))
   console.log('Initialize Db collections successfully!');
   return feed({

@@ -1,23 +1,38 @@
 import React, {Component} from 'react';
 
 class ApField extends Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            isEdit: false
+        }
+    }
+
     render() {
-        let {label, getValue, editable, isExisted} = this.props;
+        let {isEdit} = this.state;
+        let {label, getValue, editable, isExisted, renderForm} = this.props;
         return (
             <div className={"ap-field"}>
                 <div className="ap-field-label">
                     {label}
                 </div>
                 <div className="ap-field-value">
-                    {isExisted() ? getValue() : "Chưa cập nhật"}
-                </div>
-                <div className="ap-field-action">
-                    {editable && (
-                        <div className="edit-btn">
-                            <i className="far fa-pen"></i> Chỉnh sửa
+                    {isEdit ? renderForm({onClose: () => this.setState({isEdit: false})}) : (
+                        <div className="value">
+                            {isExisted() ? getValue() : "Chưa cập nhật"}
                         </div>
                     )}
                 </div>
+                {!isEdit && (
+                    <div className="ap-field-action">
+                        {editable && (
+                            <div className="edit-btn" onClick={() => this.setState({isEdit: true})}>
+                                <i className="far fa-pen"></i> Chỉnh sửa
+                            </div>
+                        )}
+                    </div>
+                )}
+
             </div>
         )
     }

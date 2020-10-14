@@ -173,11 +173,11 @@ class PostFilesPreviewModal extends Component {
                         </div>
                         <div className="post-meta-data">
                             <div className="upper">
-                                <Link className="link" to={`/user/${post.belonged_person._id}`}>{post.belonged_person.basic_info.username}</Link>
+                                <Link className="link" to={`/user/${post.belonged_person.basic_info.profile_link || post.belonged_person._id}`}>{post.belonged_person.basic_info.username}</Link>
                                 {post.belonged_wall && (
                                     <>
                                         <i className="fas fa-caret-right ml-2 mr-2"></i>
-                                        <Link className="link" to={`/user/${post.belonged_wall._id}`}>{post.belonged_wall.basic_info.username}</Link>
+                                        <Link className="link" to={`/user/${post.belonged_wall.basic_info.profile_link || post.belonged_wall._id}`}>{post.belonged_wall.basic_info.username}</Link>
                                     </>
                                 )}
                             </div>

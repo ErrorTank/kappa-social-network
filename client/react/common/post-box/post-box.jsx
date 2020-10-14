@@ -265,7 +265,7 @@ export class PostBox extends PureComponent {
             <div className="post-box white-box">
                 <div className="post-header">
                     <div className="avatar-wrapper">
-                        <Link to={`/user/${post.belonged_person._id}`}>
+                        <Link to={`/user/${post.belonged_person.basic_info.profile_link || post.belonged_person._id}`}>
                             <Avatar
                                 user={post.belonged_person}
                             />
@@ -277,9 +277,9 @@ export class PostBox extends PureComponent {
                                 <>
                                 {!post.belonged_wall ? <Link className="link" to={`/user/${post.belonged_person._id}`}>{post.belonged_person.basic_info.username}</Link> : (
                                     <div>
-                                        <Link className="link" to={`/user/${post.belonged_person._id}`}>{post.belonged_person.basic_info.username}</Link>
+                                        <Link className="link" to={`/user/${post.belonged_person.basic_info.profile_link || post.belonged_person._id}`}>{post.belonged_person.basic_info.username}</Link>
                                         <i className="fas fa-caret-right ml-2 mr-2"></i>
-                                        <Link className="link" to={`/user/${post.belonged_wall._id}`}>{post.belonged_wall.basic_info.username}</Link>
+                                        <Link className="link" to={`/user/${post.belonged_person.basic_info.profile_link || post.belonged_wall._id}`}>{post.belonged_wall.basic_info.username}</Link>
                                     </div>
                                 )}
                                     {!post.belonged_group && !!post.tagged.length && (

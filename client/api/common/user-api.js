@@ -24,6 +24,9 @@ export const userApi = {
     updateUser(userID, data){
         return authenApi.put(`/user/${userID}/simple-update`, data)
     },
+    updateUserAbout(userID, data){
+        return authenApi.put(`/user/${userID}/update-about`, data)
+    },
     sendChangePasswordToken(payload){
         return offlineApi.post("/user/send-change-password-token", payload);
     },

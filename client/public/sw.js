@@ -67,6 +67,10 @@ var exceptionRequestsDev = [{
     method: "PUT",
   },
   {
+    endpoint: /https:\/\/localhost:4000\/api\/user\/\w+\/update-about/,
+    method: "PUT",
+  },
+  {
     endpoint: /https:\/\/localhost:4000\/api\/user\/\w+\/is-friend\/\w+/,
     method: "GET",
   },

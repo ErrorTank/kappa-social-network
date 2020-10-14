@@ -91,7 +91,7 @@ export class PostNotification extends Component {
                     </span>
                 ),
                 getTime: () => data.published_time,
-                toLink: () => `/user/${data.person._id}`
+                toLink: () => `/user/${person.basic_info.profile_link || data.person._id}`
 
             },
             "friend_request": {

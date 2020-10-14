@@ -4,6 +4,7 @@ import {AboutPanel} from "./about-panel";
 import {userApi} from "../../../../../../api/common/user-api";
 import {LoadingInline} from "../../../../../common/loading-inline/loading-inline";
 import {userInfo} from "../../../../../../common/states/common";
+import {topFloatNotifications} from "../../../../../common/float-top-notification/float-top-notification";
 
 export default class ProfileAbout extends Component {
     constructor(props) {
@@ -21,11 +22,27 @@ export default class ProfileAbout extends Component {
 
     };
 
+    updateUser = (data) => {
+        return userApi.updateUserAbout(this.props.user._id, data)
+            .then(userBrief => {
+                topFloatNotifications.actions.push({
+                    content: (
+                        <p className="common-noti-layout success">
+                            <i className="fal fa-check"></i>
+                            <span>Cập nhật thông tin thành công</span>
+                        </p>
+                    )
+                });
+                this.setState({userBrief});
+            })
+    };
+
     render() {
         let {userBrief, loading} = this.state;
         let aboutPanels = loading ? null: createAboutPanels({
             isOwner: this.props.user._id === userInfo.getState()._id,
-            user: userBrief
+            user: userBrief,
+            onSave: this.updateUser,
         });
         return (
             <div className="profile-about-route">
