@@ -140,6 +140,13 @@ module.exports = (db, namespacesIO) => {
             return getUserBasicInfo(req.user._id)
                 .then(user => res.status(200).json(user))
         }).catch(err => next(err));
+    });
+    router.put("/:userID/update-about",authorizationUserMiddleware, checkAuthorizeUser ,(req, res, next) => {
+
+        return simpleUpdateUser(req.user._id, omit(req.body, "_id")).then((data) => {
+            return getUserAboutBrief(req.user._id)
+                .then(user => res.status(200).json(user))
+        }).catch(err => next(err));
 
     });
     router.get("/unseen-notifications-count",authorizationUserMiddleware, (req, res, next) => {

@@ -99,7 +99,7 @@ export class UserBox extends Component {
                     <>
                         <div className="info">
                             <div className="username">
-                                <Link to={`/user/${user._id}`}>
+                                <Link to={`/user/${user.basic_info.profile_link || user._id}`}>
                                     {user.basic_info.username}
                                 </Link>
                             </div>
@@ -152,7 +152,7 @@ export class UserBox extends Component {
                     <>
                         <div className="info">
                             <div className="username">
-                                <Link to={`/user/${user._id}`}>
+                                <Link to={`/user/${user.basic_info.profile_link || user._id}`}>
                                     {user.basic_info.username}
                                 </Link>
                             </div>

@@ -25,7 +25,10 @@ export class BirthdayPicker extends Component {
         let days = getDaysInMonth(month, year);
         return (
             <div className="birthday-picker">
-                <p className="birthday-picker-label">{label}</p>
+                {label && (
+                    <p className="birthday-picker-label">{label}</p>
+                )}
+
                 <div className="pickers">
                     <Select
                         className={"birthday-picker-picker day-picker"}

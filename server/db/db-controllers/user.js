@@ -312,7 +312,7 @@ const updateSearchHistory = (userID, historyID, data) => {
 };
 
 const simpleUpdateUser = (userID, data) => {
-    return User.findOneAndUpdate({_id: ObjectId(userID)}, data, {
+    return User.findOneAndUpdate({_id: ObjectId(userID)}, {$set: data}, {
         new: true,
         select: "followed_posts saved_posts blocked_posts person_blocked _id contact basic_info joined_at isVerify last_active_at dark_mode private_info search_history avatar"
     }).lean()
@@ -320,7 +320,11 @@ const simpleUpdateUser = (userID, data) => {
 
 const getUserBasicInfo = (userID, query = {}) => {
 
-    return User.findOne({_id: ObjectId(userID)}, query.full === 'true' ? "_id basic_info avatar contact cover_photo bio" : "_id basic_info avatar cover_photo bio").lean()
+    return User.findOne(ObjectId.isValid(userID) ? {
+        _id: ObjectId(userID)
+    } : {
+        "basic_info.profile_link": userID
+    }, query.full === 'true' ? "_id basic_info avatar contact cover_photo bio" : "_id basic_info avatar cover_photo bio").lean()
 }
 
 const toggleFollowPost = ({postID, userID}) => {

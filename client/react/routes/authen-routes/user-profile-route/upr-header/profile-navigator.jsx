@@ -71,14 +71,14 @@ export class ProfileNavigator extends Component {
         let navigators = [
             {
                 label: "Dòng thời gian",
-                url: `/user/${this.props.user._id}`,
+                url: `/user/${this.props.user.basic_info.profile_link || this.props.user._id}`,
 
             }, {
                 label: "Giới thiệu",
-                url: `/user/${this.props.user._id}/about`,
+                url: `/user/${this.props.user.basic_info.profile_link || this.props.user._id}/about`,
             }, {
                 label: <span>Bạn bè <span className="sub">{friendsCount}</span></span>,
-                url: `/user/${this.props.user._id}/friends`,
+                url: `/user/${this.props.user.basic_info.profile_link || this.props.user._id}/friends`,
             },
             // {
             //     label: "Ảnh",

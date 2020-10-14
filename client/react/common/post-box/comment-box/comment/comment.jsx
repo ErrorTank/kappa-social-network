@@ -229,14 +229,14 @@ export class Comment extends Component {
                     <>
                         <div className="comment-main">
                             <div className="avatar-wrapper">
-                                <Link to={`/user/${comment.from_person._id}`}>
+                                <Link to={`/user/${comment.from_person.basic_info.profile_link || comment.from_person._id}`}>
                                     <Avatar
                                         user={comment.from_person}
                                     />
                                 </Link>
                             </div>
                             <div className={classnames("comment-content", {"no-content": !comment.content})}>
-                                <Link  to={`/user/${comment.from_person._id}`} className="username">{comment.from_person.basic_info.username}</Link>
+                                <Link  to={`/user/${comment.from_person.basic_info.profile_link || comment.from_person._id}`} className="username">{comment.from_person.basic_info.username}</Link>
                                 {comment.content && (
                                     <div  className="content">{getRenderableContentFromMessage(comment)}</div>
                                 )}

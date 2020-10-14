@@ -394,15 +394,24 @@ const userSchema = new Schema({
             type: Date,
             default: Date.now
         },
-        profile_link: String
+        profile_link: {
+            type: String,
+            unique: true
+        }
     },
     isVerify: {type: Boolean, default: false, required: true},
     contact: {
         address: AddressSchema,
         login_username: {
             type: {
-                phone: String,
-                email: String
+                phone: {
+                    type: String,
+                    unique: true
+                },
+                email: {
+                    type: String,
+                    unique: true
+                },
             },
             required: true
         },
@@ -494,6 +503,7 @@ const userSchema = new Schema({
                 email: privacySchema
             },
         },
+        relationship: privacySchema
 
     },
     chat_settings: {

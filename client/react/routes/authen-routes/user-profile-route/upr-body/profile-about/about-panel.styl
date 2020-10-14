@@ -7,20 +7,22 @@
         padding 8px 0
         border-top 1px solid #f2f2f2
         display flex
-        align-items center
+        align-items flex-start
         .ap-field-label{
           flex 0 0 33%
           font-size 1.6rem
           color commonTextLight
         }
         .ap-field-value{
-          flex 0 0 52%
-          font-size 1.6rem
-          font-weight 500
-          color commonTextLight
-          white-space nowrap
-          overflow hidden
-          text-overflow ellipsis
+          flex-grow 1
+          .value{
+            font-size 1.6rem
+            font-weight 500
+            color commonTextLight
+            white-space nowrap
+            overflow hidden
+            text-overflow ellipsis
+          }
         }
         .ap-field-action{
           flex 0 0 15%
@@ -52,6 +54,7 @@
       font-size 1.4rem
       cursor pointer
       font-weight 500
+
       &:hover{
         color darken(primaryButton, 10%)
       }

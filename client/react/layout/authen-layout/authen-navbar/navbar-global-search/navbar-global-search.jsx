@@ -96,7 +96,7 @@ export class NavbarGlobalSearch extends KComponent {
     onClickResultRow = (rowData, isRecentSearch = false) => {
         let url = null;
         if(rowData?.related_person){
-            url = `/user/${rowData.related_person._id}`
+            url = `/user/${rowData.related_person.basic_info.profile_link || rowData.related_person._id}`
         }else if(rowData?.related_page){
             url = `/page/${rowData.related_page._id}`
         }else if(rowData?.related_group){

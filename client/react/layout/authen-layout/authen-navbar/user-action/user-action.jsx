@@ -101,7 +101,7 @@ export class UserAction extends KComponent {
                 <div className="user-action-dropdownable">
                     <div className="toggle">
                         <div className="avatar-wrapper">
-                            <Link to={`/user/${user._id}`}>
+                            <Link to={`/user/${user.basic_info.profile_link || user._id}`}>
                                 <WithUserInfo
                                     neededUpdate={(oldState, newState) => {
                                         return oldState.avatar !== newState.avatar

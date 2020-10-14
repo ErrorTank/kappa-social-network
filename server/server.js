@@ -44,7 +44,6 @@ dbManager
       },
       app
     );
-
     const nampespacesIO = createSocketNamespaces(server, { db: appDb });
     app.use("/", createRoutes(appDb, nampespacesIO));
     app.use(createErrorHandlersMiddleware);
