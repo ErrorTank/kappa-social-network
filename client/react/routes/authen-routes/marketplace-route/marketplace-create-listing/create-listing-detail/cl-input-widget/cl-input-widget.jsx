@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { userInfo } from '../../../../../../../common/states/common';
 import { ListingInfo } from './listing-info/listing-info';
 import { Avatar } from './../../../../../../common/avatar/avatar';
-import { omit, flatMap } from 'lodash';
 import {
   itemField,
   vehicleField,
@@ -15,6 +14,9 @@ import {
 } from '../../../../../../../common/utils/listing-utils';
 import { listingApi } from './../../../../../../../api/common/listing-api';
 import { postApi } from './../../../../../../../api/common/post-api';
+import ReactDOM from 'react-dom';
+import { isEmpty } from 'lodash/isEmpty';
+import { customHistory } from '../../../../../routes';
 
 export class CreateListingInputWidget extends Component {
   constructor(props) {
@@ -128,7 +130,8 @@ export class CreateListingInputWidget extends Component {
   setNewListing = () => {
     const { state, updateValue, setValues } = this.props;
     const { files, type } = state;
-    if (this.state.canCreate) {
+    const { canCreate, error } = this.state;
+    if (canCreate) {
       let newListing = cleanBlankProp(state);
 
       for (let ele in newListing) {
@@ -163,6 +166,7 @@ export class CreateListingInputWidget extends Component {
             let submitListing = { ...newListing, ...moreInfo };
             listingApi.createListing(submitListing).then((e) => {
               console.log(e);
+              customHistory.push('/marketplace/you/selling');
             });
           });
         }
@@ -180,8 +184,7 @@ export class CreateListingInputWidget extends Component {
           type: 'required',
           message: 'Vui lòng tải lên ít nhất 1 ảnh.',
         };
-        !this.state.error && console.log('ok');
-        !this.state.error && this.displayFirstError('files');
+
         this.setError('files', modifyError);
       }
 
@@ -196,19 +199,19 @@ export class CreateListingInputWidget extends Component {
           (!value || (value.includes('&nbsp;') && value.length === 7))
         ) {
           let modifyError = { type: 'required', message: e.error['required'] };
-          !this.state.error && this.displayFirstError(e.englishName);
           this.setError(e.englishName, modifyError);
         }
       });
+      this.displayFirstError();
     }
   };
 
-  displayFirstError = (id) => {
+  displayFirstError = () => {
     let selectInputElem = ReactDOM.findDOMNode(this).querySelector(
-      'listing-info'
+      '.cs-input-body'
     );
-    console.log(id);
-    let selectedTarget = selectInputElem.querySelector(`#${id}`);
+    let firstErrorIndex = Object.keys(this.state.error)[0];
+    let selectedTarget = selectInputElem.querySelector(`#${firstErrorIndex}`);
     if (selectedTarget) selectInputElem.scrollTop = selectedTarget.offsetTop;
   };
 

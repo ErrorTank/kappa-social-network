@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { categoryApi } from '../../../../../../api/common/category-api';
 import { MarketplaceSearch } from './marketplace-search/marketplace-search';
+import { Breadcrumbs } from './../../../../../common/breabcrumbs/breadcrumbs';
 
 export class MarketplaceSearchSection extends Component {
   constructor(props) {
@@ -29,6 +30,7 @@ export class MarketplaceSearchSection extends Component {
     const { mainCategoryInfo } = this.state;
     return (
       <div className='market-search-section'>
+        {this.props.mainID && <Breadcrumbs />}
         <h1 className='market-search-title'>
           {mainCategoryInfo.name || 'Marketplace'}
         </h1>

@@ -22,6 +22,7 @@ import {
   moneyToNumber,
   numberToMoney,
 } from '../../../../../../../../common/utils/listing-utils';
+import ReactDOM from 'react-dom';
 
 export class ListingInfo extends Component {
   constructor(props) {
@@ -206,6 +207,7 @@ export class ListingInfo extends Component {
       this.props.state.files.filter((file) => file.fileID !== fileID)
     );
   };
+
   render() {
     const { state, updateValue, error } = this.props;
     let { pictureLimit, type, category, files, ...other } = state;
