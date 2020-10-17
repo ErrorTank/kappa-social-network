@@ -44,7 +44,22 @@ export class ListingByCategoryWidget extends KComponent {
                 );
               })}
             </div>
-            <div className='listing-outside-search'></div>
+            <div className='listing-outside-search'>
+              <div className='outside-search-header'>
+                Kết quả ngoài phạm vi bạn tìm kiếm
+              </div>
+              <div className='outside-search-wrapper'>
+                {listingByCategory.listingArr.map((listing) => {
+                  return (
+                    !insideCircle(
+                      listing.position,
+                      myPosition,
+                      radius * 1000
+                    ) && <ListingDisplay listing={listing} key={listing._id} />
+                  );
+                })}
+              </div>
+            </div>
           </div>
         ) : (
           <div className='category-empty-listing'>
