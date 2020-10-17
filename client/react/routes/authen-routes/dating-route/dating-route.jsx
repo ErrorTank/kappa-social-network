@@ -7,9 +7,9 @@ import { LoadingInline } from "./../../../common/loading-inline/loading-inline";
 import { CardContainer } from "./card-container/card-container";
 import { datingIO } from "./../../../../socket/sockets";
 import { authenCache } from "./../../../../common/cache/authen-cache";
-import { matchedModal } from './../../../common/modal/matched-modal/matched-modal';
+import { matchedModal } from "./../../../common/modal/matched-modal/matched-modal";
 import { DatingLeftPanel } from "./dating-left-panel/dating-left-panel";
-import { beLikedModal } from './../../../common/modal/be-liked-modal/be-liked-modal';
+import { beLikedModal } from "./../../../common/modal/be-liked-modal/be-liked-modal";
 
 export default class DatingRoute extends Component {
   constructor(props) {
@@ -21,17 +21,15 @@ export default class DatingRoute extends Component {
   }
   connectDatingSocket = (id) => {
     datingIO.connect({ token: authenCache.getAuthen() }).then((IO) => {
-   
-      IO.emit("join-own-room", { profileID: id }, ()=>{
-        this.io = datingIO.getIOInstance()
+      IO.emit("join-own-room", { profileID: id }, () => {
+        this.io = datingIO.getIOInstance();
         this.io.on("matched-modal", ({ profile }) => {
-          matchedModal.open({profile})
+          matchedModal.open({ profile });
         });
-        this.io.on("be-liked-modal",({profile}) => {
-          beLikedModal.open({profile})
-        })
+        this.io.on("be-liked-modal", ({ profile }) => {
+          beLikedModal.open({ profile });
+        });
       });
-     
     });
   };
   componentWillUnmount() {
@@ -40,25 +38,27 @@ export default class DatingRoute extends Component {
       this.io.off("matched-modal");
     }
     if (this.io) {
-      this.io.off("be-liked-modal");  
+      this.io.off("be-liked-modal");
     }
-
   }
   componentDidMount() {
-    datingApi.getUserProfile().then((profile) => {
-      this.setState({
-        loading: false,
-      });
-      if (profile) {
-        this.connectDatingSocket(profile._id);
-        this.setState({
-          hasProfile: true,
-        });
-        datingProfile.setState(profile);
-      }
-    });
+    datingApi
+      .getUserProfile()
+      .then((profile) => {
+       
+        if (profile) {
+          this.connectDatingSocket(profile._id);
 
-    
+          return datingProfile.setState(profile).then(() => true);
+        }
+        return null;
+      })
+      .then((r) => {
+        this.setState({
+          loading: false,
+          hasProfile: r ? true : false,
+        });
+      });
   }
 
   onCreateProfile = (profile) => {

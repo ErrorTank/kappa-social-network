@@ -12,7 +12,6 @@ const createAppIO = (namespace) => {
         appIO.on("connect", () => {
           isConnected = true;
           if (token) {
-            console.log("dit");
             appIO.emit("authenticate", { token });
           }
           res(appIO);

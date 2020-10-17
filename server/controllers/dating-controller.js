@@ -13,6 +13,9 @@ const {
   getMatchProfile,
   getUserProfile,
   getProfileByProfileID,
+  getBasicChatBoxInfo,
+  createChatBox,
+  getChatBoxes,
 } = require("../db/db-controllers/dating");
 module.exports = (db, namespacesIO) => {
   router.get(
@@ -59,23 +62,25 @@ module.exports = (db, namespacesIO) => {
               });
               console.log(isLiked);
               if (isLiked) {
-                namespacesIO.dating.io
-                  .to(`/dating-room/profile/${profile._id}`)
-                  .emit("matched", { profile: user });
-                namespacesIO.dating.io
-                  .to(`/dating-room/profile/${user._id}`)
-                  .emit("matched", { profile });
+                createChatBox(user._id, profile._id).then(() => {
                   namespacesIO.dating.io
-                  .to(`/dating-room/profile/${profile._id}`)
-                  .emit("matched-modal", { profile: user });
-                namespacesIO.dating.io
-                  .to(`/dating-room/profile/${user._id}`)
-                  .emit("matched-modal", { profile });
+                    .to(`/dating-room/profile/${profile._id}`)
+                    .emit("matched", { profile: user });
+                  namespacesIO.dating.io
+                    .to(`/dating-room/profile/${user._id}`)
+                    .emit("matched", { profile });
+                  namespacesIO.dating.io
+                    .to(`/dating-room/profile/${profile._id}`)
+                    .emit("matched-modal", { profile: user });
+                  namespacesIO.dating.io
+                    .to(`/dating-room/profile/${user._id}`)
+                    .emit("matched-modal", { profile });
+                });
               } else {
                 namespacesIO.dating.io
                   .to(`/dating-room/profile/${profile._id}`)
                   .emit("be-liked", { profile: user });
-                  namespacesIO.dating.io
+                namespacesIO.dating.io
                   .to(`/dating-room/profile/${profile._id}`)
                   .emit("be-liked-modal", { profile: user });
               }
@@ -123,5 +128,28 @@ module.exports = (db, namespacesIO) => {
       })
       .catch((err) => next(err));
   });
+  router.get(
+    "/basic-chatBox/user1/:user1/user2/:user2",
+    authorizationUserMiddleware,
+    (req, res, next) => {
+      return getBasicChatBoxInfo(req.params.user1, req.params.user2)
+        .then((data) => {
+          return res.status(200).json(data);
+        })
+        .catch((err) => next(err));
+    }
+  );
+  router.get(
+    "/chatBoxes/profileId/:profileId/",
+    authorizationUserMiddleware,
+    (req, res, next) => {
+      return getChatBoxes(req.params.profileId)
+        .then((data) => {
+          return res.status(200).json(data);
+        })
+        .catch((err) => next(err));
+    }
+  );
+
   return router;
 };

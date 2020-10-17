@@ -17,7 +17,7 @@ export class DatingTabPanel extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      mode: props.defaultTab || TAB_PANEL_TABS.MATCHES,
+      mode: props.defaultTab || TAB_PANEL_TABS.MESSAGE,
     };
     datingTabPanelUtilities.setTab = (tab) => {
       this.setState({
@@ -45,7 +45,6 @@ export class DatingTabPanel extends Component {
       },
     ];
     let { mode } = this.state;
-    console.log(mode);
     let {onSwitch} = this.props
     let Comp = tabNavigators.find((each) => each.mode === mode).component;
     return (
