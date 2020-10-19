@@ -1,73 +1,62 @@
 import React, { Component } from "react";
 import { v4 as uuidv4 } from "uuid";
-import { userInfo } from "../../../../../common/states/common";
+import { datingProfile, userInfo } from "../../../../../common/states/common";
+import { getReceiveFromChatBox } from "../../../../../common/utils/dating-utils";
+import { datingApi } from "./../../../../../api/common/dating";
 export class DatingMessageTab extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      messages: [
-        {
-          _id: uuidv4(),
-          from_person: {
-            name: "Minh Thu",
-            avatar:
-              "https://scontent.fhan2-3.fna.fbcdn.net/v/t1.0-9/117767151_2829892620445685_156533284534524570_o.jpg?_nc_cat=108&_nc_sid=8bfeb9&_nc_ohc=voMqIMbQZLkAX9jreoc&_nc_ht=scontent.fhan2-3.fna&oh=1b3a87b15b8228decb349312ae01be56&oe=5F81307C",
-          },
-          message: {
-            from_person: {
-              name: "Minh Thu",
-              avatar:
-                "https://scontent.fhan2-3.fna.fbcdn.net/v/t1.0-9/117767151_2829892620445685_156533284534524570_o.jpg?_nc_cat=108&_nc_sid=8bfeb9&_nc_ohc=voMqIMbQZLkAX9jreoc&_nc_ht=scontent.fhan2-3.fna&oh=1b3a87b15b8228decb349312ae01be56&oe=5F81307C",
-            },
-            content: "I love tuan anh",
-          },
-        },
-        {
-          _id: uuidv4(),
-          from_person: {
-            name: "Minh Thu",
-            avatar:
-              "https://scontent.fhan2-3.fna.fbcdn.net/v/t1.0-9/117767151_2829892620445685_156533284534524570_o.jpg?_nc_cat=108&_nc_sid=8bfeb9&_nc_ohc=voMqIMbQZLkAX9jreoc&_nc_ht=scontent.fhan2-3.fna&oh=1b3a87b15b8228decb349312ae01be56&oe=5F81307C",
-          },
-          message: {
-            from_person: {
-              _id: userInfo.getState()._id,
-              name: "Minh Thu",
-              avatar:
-                "https://scontent.fhan2-3.fna.fbcdn.net/v/t1.0-9/117767151_2829892620445685_156533284534524570_o.jpg?_nc_cat=108&_nc_sid=8bfeb9&_nc_ohc=voMqIMbQZLkAX9jreoc&_nc_ht=scontent.fhan2-3.fna&oh=1b3a87b15b8228decb349312ae01be56&oe=5F81307C",
-            },
-            content: "I love tuan anh",
-          },
-        },
-      ],
+      chatBoxes: [],
     };
+    datingApi.getChatBoxesByProfileId(datingProfile.getState()._id).then((cb) =>
+      this.setState({
+        chatBoxes: cb,
+      })
+    );
   }
   render() {
-    const { messages } = this.state;
-    const {onSwitch} = this.props
-    
+    const { chatBoxes } = this.state;
+    const { onSwitch } = this.props;
     return (
-      <div className='dating-message-tab'>
-        {messages.map((each, i) => (
-          <div className='dating-chat-box' key={i} onClick={onSwitch}>
-            <div className='dating-chat-avatar'>
-              <div className='avatar-wrapper'>
-                <img src={each.from_person.avatar} />
+      <div className="dating-message-tab">
+        {chatBoxes.map((each, i) => {
+          let receiver = getReceiveFromChatBox(
+            each,
+            datingProfile.getState()._id
+          );
+          return (
+            <div
+              className="dating-chat-box"
+              key={i}
+              onClick={() =>
+                onSwitch(
+                  each.user1._id === datingProfile.getState()._id
+                    ? each.user1._id
+                    : each.user2._id
+                )
+              }
+            >
+              <div className="dating-chat-avatar">
+                <div className="avatar-wrapper">
+                  <img src={receiver.avatars[0].path} />
+                </div>
+              </div>
+              <div className="dating-wapper-content">
+                <div className="dating-chat-name">{receiver.name}</div>
+                <div className="dating-last-message">
+                  {each.lastestMessage.user._id ===
+                  datingProfile.getState()._id ? (
+                    <span className="highlight dark">Bạn : </span>
+                  ) : (
+                    `${receiver.name} :  `
+                  )}
+                  <span>{each.lastestMessage.message}</span>
+                </div>
               </div>
             </div>
-            <div className='dating-wapper-content'>
-              <div className='dating-chat-name'>{each.from_person.name}</div>
-              <div className='dating-last-message'>
-                {each.message.from_person._id === userInfo.getState()._id ? (
-                  <span className='highlight dark'>Bạn : </span>
-                ) : (
-                  `${each.message.from_person.name} :  `
-                )}
-                {each.message.content}
-              </div>
-            </div>
-          </div>
-        ))}
+          );
+        })}
       </div>
     );
   }

@@ -1,9 +1,10 @@
 const dbManager = require("../../config/db");
+const omit = require("lodash/omit");
 const appDb = dbManager.getConnections()[0];
 const User = require("../model/user")(appDb);
 const Profile = require("../model/dating/profile")(appDb);
 const mongoose = require("mongoose");
-
+const ChatBox = require("../model/dating/chatbox")(appDb);
 const ObjectId = mongoose.Types.ObjectId;
 
 const checkDatingProfile = (arg) => {
@@ -279,6 +280,50 @@ const getProfileByProfileID = (profileID) => {
       return user;
     });
 };
+const getBasicChatBoxInfo = (user1, user2) => {
+  return ChatBox.findOne({
+    $or: [
+      {
+        user1: ObjectId(user1),
+        user2: ObjectId(user2),
+      },
+      {
+        user1: ObjectId(user2),
+        user2: ObjectId(user1),
+      },
+    ],
+  })
+    .lean()
+    .then((cb) => omit(cb, ["messages"]));
+};
+const createChatBox = (user1, user2) => {
+  return new ChatBox({ user1: ObjectId(user1), user2: ObjectId(user2) }).save();
+};
+const getChatBoxes = (profileId) => {
+  return ChatBox.find({
+    $or: [
+      { user1: ObjectId(profileId) },
+      {
+        user2: ObjectId(profileId),
+      },
+    ],
+  })
+    .lean()
+    .then((cbs) => {
+      return cbs.map((cb) => {
+        let sortedMessages = cb.messages.sort(
+          (a, b) =>
+            new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime()
+        );
+        return {
+          user1: cb.user1,
+          user2: cb.user2,
+          _id: cb._id,
+          lastestMessage: sortedMessages[0] || null,
+        };
+      });
+    });
+};
 module.exports = {
   checkDatingProfile,
   createProfile,
@@ -288,4 +333,7 @@ module.exports = {
   getMatchProfile,
   getUserProfile,
   getProfileByProfileID,
+  getBasicChatBoxInfo,
+  createChatBox,
+  getChatBoxes,
 };
