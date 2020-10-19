@@ -7,6 +7,7 @@ import { ListingDisplay } from './listing-display/listing-display';
 import { insideCircle } from 'geolocation-utils';
 import { LoadingInline } from './../../../../common/loading-inline/loading-inline';
 import { KComponent } from './../../../../common/k-component';
+import { customHistory } from './../../../routes';
 
 export class AllListingWidget extends KComponent {
   constructor(props) {
@@ -57,7 +58,14 @@ export class AllListingWidget extends KComponent {
                   <div className='category-with-listing' key={e._id}>
                     <div className='category-header'>
                       <div className='category-name'>{e.name}</div>
-                      <div className='see-category-listing'>Xem tất cả</div>
+                      <div
+                        className='see-category-listing'
+                        onClick={() =>
+                          customHistory.push(`/marketplace/${e._id}`)
+                        }
+                      >
+                        Xem tất cả
+                      </div>
                     </div>
                     <div className='listing-list-display'>
                       {e.listingArr.map((listing) => {
