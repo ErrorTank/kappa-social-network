@@ -1,26 +1,28 @@
-import React, {Component} from 'react';
+import React from 'react';
 import {KComponent} from "../../../../../../common/k-component";
 import {createSimpleForm} from "../../../../../../common/form-validator/form-validator";
 import * as yup from "yup";
-import {CommonInput} from "../../../../../../common/common-input/common-input";
 import {Select} from "../../../../../../common/select/select";
 import {PostPolicies} from "../../../../../../common/create-post-modal/create-post-modal";
 import {Button} from "../../../../../../common/button/button";
-import {BirthdayPicker} from "../../../../../../common/birthday-picker/birthday-picker";
+import {addressApi} from "../../../../../../../api/common/address-api";
 
 export class LocationForm extends KComponent {
     constructor(props) {
         super(props);
         this.state = {
             saving: false,
-            policy: PostPolicies.find(each => each.value === props.user.user_about_privacy.contact[props.type])
+            policy: PostPolicies.find(each => each.value === props.user.user_about_privacy.contact[props.type]),
+            wards: [],
+            districts: [],
+            cities: []
         };
 
 
         this.form = createSimpleForm(yup.object().shape({
-            ward: yup.string().nullable(),
-            district: yup.string().nullable(),
-            city: yup.string().nullable()
+            ward: yup.object().nullable(),
+            district: yup.object().nullable(),
+            city: yup.object().nullable()
         }), {
             initData: {
                 ward: props.user.contact[props.type].ward || null,
@@ -32,31 +34,85 @@ export class LocationForm extends KComponent {
             this.forceUpdate();
         }));
         this.form.validateData();
+        let promises = [addressApi.getAddress({})];
+        if(props.user.contact[props.type].city){
+            promises.push(addressApi.getAddress({cityCode: props.user.contact[props.type].city.code}))
+        }
+        if(props.user.contact[props.type].district){
+            promises.push(addressApi.getAddress({districtCode: props.user.contact[props.type].district.code}))
+        }
+        Promise.all(promises).then(([cities, districts, wards]) => {
+            this.setState({cities, districts, wards})
+        })
+
     }
 
     save = () => {
         this.setState({saving: true});
-        let data = this.form.getPathData("dob");
-        this.props.onSave({"basic_info.dob": new Date(data.year, data.month - 1, data.day), "user_about_privacy.basic_info.dob": this.state.policy.value})
+        let {city, district, ward} = this.form.getData();
+        this.props.onSave({[`contact.${this.props.type}`]: {city: city?._id || null, district: district?._id || null, ward: ward?._id || null}, [`user_about_privacy.contact.${this.props.type}`]: this.state.policy.value})
             .then(() => this.props.onClose());
     };
 
     render() {
-        let {saving, policy} = this.state;
+        let {saving, policy, cities, wards, districts} = this.state;
         let {onClose} = this.props;
+        console.log(this.form.getData())
         return (
             <div className="about-field-form">
                 <div className="form-body">
                     <div className="form-content">
-                        {this.form.enhanceComponent("dob", ({error, onChange, onEnter, ...others}) => (
-                            <BirthdayPicker
-                                label={null}
-                                className="pt-0"
-                                error={error}
-                                onChange={onChange}
-                                {...others}
-                            />
-                        ), true)}
+                        <div className="location-pickers">
+                            {this.form.enhanceComponent("city", ({error, onChange, onEnter, ...others}) => (
+                                <Select
+                                    className={"location-picker"}
+                                    value={others.value}
+                                    options={cities}
+                                    onChange={value => {
+                                        this.form.updateData({
+                                            city:  value,
+                                            ward: null,
+                                            district: null
+                                        })
+                                        addressApi.getAddress({cityCode: value.code}).then(districts => this.setState({districts}))
+                                    }}
+                                    displayAs={each => each.name_with_type}
+                                    placeholder={"Tỉnh/Thành phố"}
+                                    clearable={true}
+                                />
+                            ), true)}
+                            {this.form.getPathData("city") && this.form.enhanceComponent("district", ({error, onChange, onEnter, ...others}) => (
+                                <Select
+                                    className={"location-picker"}
+                                    value={others.value}
+                                    options={districts}
+                                    onChange={value => {
+                                        this.form.updateData({
+                                            ward: null,
+                                            district: value
+                                        })
+                                        addressApi.getAddress({districtCode: value.code}).then(wards => this.setState({wards}))
+                                    }}
+
+                                    displayAs={each => each.name_with_type}
+                                    clearable={true}
+                                    placeholder={"Quận/Huyện"}
+                                />
+                            ), true)}
+                            {this.form.getPathData("district") && this.form.enhanceComponent("ward", ({error, onChange, onEnter, ...others}) => (
+                                <Select
+                                    className={"location-picker"}
+                                    value={others.value}
+                                    options={wards}
+                                    onChange={value => {
+                                        onChange(value);
+                                    }}
+                                    clearable={true}
+                                    displayAs={each => each.name_with_type}
+                                    placeholder={"Xã/Phường"}
+                                />
+                            ), true)}
+                        </div>
                     </div>
                     <div className="form-share">
 

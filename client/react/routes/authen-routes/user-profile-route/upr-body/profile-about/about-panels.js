@@ -11,6 +11,7 @@ import {EmailForm} from "./forms/email-form";
 import {PhoneForm} from "./forms/phone-form";
 import {Link} from "react-router-dom";
 import {userInfo} from "../../../../../../common/states/common";
+import {LocationForm} from "./forms/location-form";
 
 
 export const createAboutPanels = ({isOwner, user, onSave, }) =>  [
@@ -141,17 +142,49 @@ export const createAboutPanels = ({isOwner, user, onSave, }) =>  [
             }, {
                 label: "Quê quán",
                 getValue: () => {
-                    return user.contact.home_town.ward.path_with_type
+                    return  (user.contact.home_town.ward ? `${user.contact.home_town.ward.name}, ` : "")
+                        +  (user.contact.home_town.district ? `${user.contact.home_town.district.name}, ` : "")
+                        + (user.contact.home_town.city ? `${user.contact.home_town.city.name} ` : "");
                 },
                 editable: isOwner,
-                isExisted: () => Object.keys(user.contact.home_town).length
+                isExisted: () => user.contact.home_town.city || user.contact.home_town.district || user.contact.home_town.ward,
+                renderForm: ({onClose}) => (
+                    <LocationForm
+                        user={user}
+                        type={"home_town"}
+                        onSave={(data) => {
+
+                            return onSave(data);
+
+                        }}
+                        onClose={() => {
+                            onClose();
+                        }}
+                    />
+                )
             },{
                 label: "Tỉnh/Thành phố hiện tại",
                 getValue: () => {
-                    return user.contact.address.ward.path_with_type
+                    return  (user.contact.address.ward ? `${user.contact.address.ward.name}, ` : "")
+                        +  (user.contact.address.district ? `${user.contact.address.district.name}, ` : "")
+                        + (user.contact.address.city ? `${user.contact.address.city.name} ` : "");
                 },
                 editable: isOwner,
-                isExisted: () => Object.keys(user.contact.address).length
+                isExisted: () => user.contact.address.city || user.contact.address.district || user.contact.address.ward,
+                renderForm: ({onClose}) => (
+                    <LocationForm
+                        user={user}
+                        type={"address"}
+                        onSave={(data) => {
+
+                            return onSave(data);
+
+                        }}
+                        onClose={() => {
+                            onClose();
+                        }}
+                    />
+                )
             },
         ]
     },{

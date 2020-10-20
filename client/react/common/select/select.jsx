@@ -34,7 +34,9 @@ export class Select extends React.Component {
       error,
       placeholder,
       isSelected = (option) => false,
+      clearable = false,
       getOptionKey = (each, index) => index,
+      defaultValue = null
     } = this.props;
     return (
       <div
@@ -47,10 +49,16 @@ export class Select extends React.Component {
         <ClickOutside onClickOut={() => this.setState({ show: false })}>
           <div className='select-wrapper'>
             <div
-              className={classnames('select-toggle', { disabled: disabled })}
+              className={classnames('select-toggle', { disabled: disabled, clearable })}
               onClick={() => this.setState({ show: !this.state.show })}
             >
               {value ? displayAs(value) : placeholder ? placeholder : 'Chọn'}
+              {clearable && value && (
+                  <i className="fal fa-times clear-value" onClick={(e) => {
+                    e.stopPropagation();
+                    onChange(defaultValue)
+                  }}></i>
+              )}
             </div>
             {this.state.show && (
               <div className='select-dropdown'>

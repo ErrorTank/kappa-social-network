@@ -6,9 +6,22 @@
     justify-content space-between
     .form-content{
       flex-grow 1
-      padding-right 50px
+      padding-right 20px
       .relation-relate{
         font-size 1.3rem !important
+      }
+      .location-pickers{
+        display flex
+        align-items center
+
+        .location-picker{
+          margin-bottom 8px !important
+          flex 0 0 32%
+          &:not(:last-of-type){
+            margin-right 2% !important
+          }
+
+        }
       }
     }
 
