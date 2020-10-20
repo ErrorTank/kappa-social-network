@@ -193,6 +193,7 @@ export const createAboutPanels = ({isOwner, user, onSave, }) =>  [
         createConfig: {
             creatable: isOwner,
             createBtn: "Thêm công việc",
+            list: user.works
         }
     },{
         label: "Trường học",
@@ -200,6 +201,7 @@ export const createAboutPanels = ({isOwner, user, onSave, }) =>  [
         createConfig: {
             creatable: isOwner,
             createBtn: "Thêm trường học",
+            list: user.schools
         }
     },{
         label: "Sở thích",

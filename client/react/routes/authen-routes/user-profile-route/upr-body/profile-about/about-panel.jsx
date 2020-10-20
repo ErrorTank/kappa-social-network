@@ -47,7 +47,7 @@ export class AboutPanel extends Component {
                     <div className="ap-label">
                         {icon} {label}
                     </div>
-                    {createConfig && createConfig.creatable &&  (
+                    {createConfig && createConfig.creatable && (
                         <div className="ap-create-btn">
                             {createConfig.createBtn}
                         </div>
@@ -57,6 +57,12 @@ export class AboutPanel extends Component {
                 <div className="ap-body">
                     <div className="ap-fields">
                         {fields.map((each, i) => (
+                            <ApField
+                                {...each}
+                                key={i}
+                            />
+                        ))}
+                        {createConfig.list.map((each, i) => (
                             <ApField
                                 {...each}
                                 key={i}
