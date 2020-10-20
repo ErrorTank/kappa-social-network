@@ -6,7 +6,7 @@ export const relationships = [
 
         label: "Đang hẹn hò",
         value: "DATING",
-        canWith: true
+        canRelated: true
     }, {
 
         label: "Có mối quan hệ phức tạp",
@@ -15,7 +15,7 @@ export const relationships = [
 
         label: "Đã kết hôn",
         value: "MARRIED",
-        canWith: true
+        canRelated: true
     },
 ];
 

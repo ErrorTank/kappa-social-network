@@ -47,7 +47,7 @@ export class AboutPanel extends Component {
                     <div className="ap-label">
                         {icon} {label}
                     </div>
-                    {createConfig && (
+                    {createConfig && createConfig.creatable &&  (
                         <div className="ap-create-btn">
                             {createConfig.createBtn}
                         </div>

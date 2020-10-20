@@ -22,6 +22,12 @@ export default class ProfileAbout extends Component {
 
     };
 
+    componentDidUpdate(prevProps, prevState, snapshot) {
+        if(this.props.user._id !== prevProps.user._id){
+            this.fetchUserBrief(this.props.user._id)
+        }
+    }
+
     updateUser = (data) => {
         return userApi.updateUserAbout(this.props.user._id, data)
             .then(userBrief => {

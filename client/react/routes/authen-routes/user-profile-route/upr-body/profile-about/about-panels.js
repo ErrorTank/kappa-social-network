@@ -9,6 +9,8 @@ import {ProfileLinkForm} from "./forms/profile-link";
 import {customHistory} from "../../../../routes";
 import {EmailForm} from "./forms/email-form";
 import {PhoneForm} from "./forms/phone-form";
+import {Link} from "react-router-dom";
+import {userInfo} from "../../../../../../common/states/common";
 
 
 export const createAboutPanels = ({isOwner, user, onSave, }) =>  [
@@ -59,8 +61,10 @@ export const createAboutPanels = ({isOwner, user, onSave, }) =>  [
                 label: "Tình trạng",
                 getValue: () => {
                     let relationshipConfig = relationships.find(each => each.value === user.relationship.status);
-                    // return `${relationshipConfig.label}${relationshipConfig.canWith ? ` ${user.relationship.related_person.basic_info.username}` : ""}`
-                    return `${relationshipConfig.label}`
+                    return (
+                        <span>{relationshipConfig.label} {(relationshipConfig.canRelated && user.relationship.related) && <span> với <Link to={`/user/${user.relationship.related.basic_info.profile_link || user.relationship.related._id}`}>{user.relationship.related._id === userInfo.getState()._id ? "Bạn" :user.relationship.related.basic_info.username}</Link></span>}</span>
+                    )
+                    // return `${relationshipConfig.label}`
                 },
                 editable: isOwner,
                 isExisted: () => user.relationship.status,
@@ -154,18 +158,21 @@ export const createAboutPanels = ({isOwner, user, onSave, }) =>  [
         label: "Công việc",
         icon: <i className="fad fa-briefcase"></i>,
         createConfig: {
+            creatable: isOwner,
             createBtn: "Thêm công việc",
         }
     },{
         label: "Trường học",
         icon: <i className="fad fa-graduation-cap"></i>,
         createConfig: {
+            creatable: isOwner,
             createBtn: "Thêm trường học",
         }
     },{
         label: "Sở thích",
         icon: <i className="fad fa-star"></i>,
         createConfig: {
+            creatable: isOwner,
             createBtn: "Thêm/sửa sở thích",
         }
     },
