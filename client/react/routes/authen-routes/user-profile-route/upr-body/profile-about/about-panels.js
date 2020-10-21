@@ -12,9 +12,10 @@ import {PhoneForm} from "./forms/phone-form";
 import {Link} from "react-router-dom";
 import {userInfo} from "../../../../../../common/states/common";
 import {LocationForm} from "./forms/location-form";
+import {WorkForm} from "./forms/work-form";
 
 
-export const createAboutPanels = ({isOwner, user, onSave, }) =>  [
+export const createAboutPanels = ({isOwner, user, onSave, onSaveList}) =>  [
     {
         label: "Thông tin cá nhân",
         icon: <i className="fad fa-user"></i>,
@@ -193,7 +194,22 @@ export const createAboutPanels = ({isOwner, user, onSave, }) =>  [
         createConfig: {
             creatable: isOwner,
             createBtn: "Thêm công việc",
-            list: user.works
+            list: user.works,
+            renderForm: ({onClose, work = {}, isCreate = true}) => (
+                <WorkForm
+                    user={user}
+                    work={work}
+                    isCreate={isCreate}
+                    onSave={() => {
+
+                        return onSaveList();
+
+                    }}
+                    onClose={() => {
+                        onClose();
+                    }}
+                />
+            )
         }
     },{
         label: "Trường học",
@@ -209,6 +225,7 @@ export const createAboutPanels = ({isOwner, user, onSave, }) =>  [
         createConfig: {
             creatable: isOwner,
             createBtn: "Thêm/sửa sở thích",
+            list: user.favorites
         }
     },
 ];

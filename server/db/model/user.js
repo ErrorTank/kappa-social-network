@@ -474,6 +474,13 @@ const userSchema = new Schema({
                     type: Boolean,
                     default: true
                 },
+                specialization: {
+                    related: {
+                        type: ObjectId,
+                        ref: "Page"
+                    },
+                    text: String
+                },
                 last_updated: {
                     type: Date,
                     default: Date.now

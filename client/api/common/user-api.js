@@ -88,5 +88,11 @@ export const userApi = {
     getUserFriendInvitations(userID, config){
         let queryStr = urlUtils.buildParams(config)
         return authenApi.get(`/user/${userID}/friend-invitations${queryStr}`)
-    }
+    },
+    upsertUserWork(userID, payload){
+        return authenApi.post(`/user/${userID}/upsert-work`, payload)
+    },
+    upsertUserSchool(userID, payload){
+        return authenApi.post(`/user/${userID}/upsert-school`, payload)
+    },
 };

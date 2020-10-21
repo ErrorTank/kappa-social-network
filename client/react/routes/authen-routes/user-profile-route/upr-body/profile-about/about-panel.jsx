@@ -39,7 +39,14 @@ class ApField extends Component {
 }
 
 export class AboutPanel extends Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            showCreate: false
+        }
+    }
     render() {
+        let {showCreate} = this.state;
         let {label, icon, createConfig, fields = []} = this.props;
         return (
             <div className="about-panel">
@@ -48,7 +55,7 @@ export class AboutPanel extends Component {
                         {icon} {label}
                     </div>
                     {createConfig && createConfig.creatable && (
-                        <div className="ap-create-btn">
+                        <div className="ap-create-btn" onClick={() => this.setState({showCreate: true})}>
                             {createConfig.createBtn}
                         </div>
                     )}
@@ -56,13 +63,13 @@ export class AboutPanel extends Component {
                 </div>
                 <div className="ap-body">
                     <div className="ap-fields">
-                        {fields.map((each, i) => (
+                        {showCreate && createConfig.renderForm({onClose: () => this.setState({showCreate: false})})}
+                        {createConfig ? createConfig.list.map((each, i) => (
                             <ApField
                                 {...each}
                                 key={i}
                             />
-                        ))}
-                        {createConfig.list.map((each, i) => (
+                        )) : fields.map((each, i) => (
                             <ApField
                                 {...each}
                                 key={i}

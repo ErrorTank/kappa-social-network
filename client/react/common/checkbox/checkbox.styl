@@ -2,7 +2,7 @@
   display: block;
   position: relative;
   cursor: pointer;
-  font-size: 22px;
+  font-size: 1.5rem;
   -webkit-user-select: none;
   -moz-user-select: none;
   -ms-user-select: none;
@@ -23,11 +23,15 @@
       display: block;
     }
   }
+  .checkbox-label{
+    display inline-block
+    vertical-align middle
+    padding-left 8px
+  }
   .check-mark {
-    position: absolute;
-    top 50%
-    left 50%
-    transform translate(-50%, -50%)
+    vertical-align middle
+    position: relative;
+    display inline-block
     height: 25px;
     width: 25px;
     background-color: #eee;

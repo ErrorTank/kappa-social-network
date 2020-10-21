@@ -17,7 +17,7 @@ export default class ProfileAbout extends Component {
     }
 
     fetchUserBrief = (userID) => {
-        userApi.getUserAboutBrief(userID)
+        return userApi.getUserAboutBrief(userID)
             .then(userBrief => this.setState({userBrief, loading: false}))
 
     };
@@ -49,6 +49,7 @@ export default class ProfileAbout extends Component {
             isOwner: this.props.user._id === userInfo.getState()._id,
             user: userBrief,
             onSave: this.updateUser,
+            onSaveList: this.fetchUserBrief(this.props.user._id)
         });
         return (
             <div className="profile-about-route">
