@@ -782,7 +782,7 @@ const getUserFriends = (callerID, userID, config) => {
             }
         },
     ];
-    if(keyword){
+    if (keyword) {
         pipelines.push({
             $match: {
                 "friends.info.basic_info.username": {$regex: keyword, $options: "i"}
@@ -815,10 +815,10 @@ const getUserFriends = (callerID, userID, config) => {
         let list = [...data];
         let total = data.length;
         if (mode === "birthday") {
-            let now= new Date();
+            let now = new Date();
             list = list.map(each => {
                 let birthday = new Date(each.friends.info.basic_info.dob);
-                let currentYear= new Date().getFullYear();
+                let currentYear = new Date().getFullYear();
 
                 let thisYearBirthday = new Date(currentYear, birthday.getMonth(), birthday.getDate());
 
@@ -873,9 +873,9 @@ const getUserFriendInvitations = (userID, {totalOnly = false, skip = 0, limit = 
                 list: user.friend_requests
                     .map(each => ({
 
-                    same_friends_count: getSameFriends(each.friends.map(each => each.info.toString()), user.friends.map(each => each.info.toString())).length,
-                    ...omit(each.toObject(), "friends")
-                })).slice(Number(skip), Number(skip) + Number(limit)),
+                        same_friends_count: getSameFriends(each.friends.map(each => each.info.toString()), user.friends.map(each => each.info.toString())).length,
+                        ...omit(each.toObject(), "friends")
+                    })).slice(Number(skip), Number(skip) + Number(limit)),
                 total: user.friend_requests.length
             }
         })
@@ -890,40 +890,122 @@ const getUserAboutBrief = (userID) => {
             path: "relationship.related",
             model: "User",
             select: "_id basic_info avatar"
-        },{
+        }, {
             path: "works.company.related",
             model: "Page",
             select: "_id basic_info avatar"
-        },{
+        }, {
             path: "schools.school.related",
             model: "Page",
             select: "_id basic_info avatar"
-        },{
+        }, {
             path: "contact.address.city",
             model: "City",
-        },{
+        }, {
             path: "contact.address.ward",
             model: "Ward",
-        },{
+        }, {
             path: "contact.address.district",
             model: "District",
-        },{
+        }, {
             path: "contact.home_town.city",
             model: "City",
-        },{
+        }, {
             path: "contact.home_town.ward",
             model: "Ward",
-        },{
+        }, {
             path: "contact.home_town.district",
             model: "District",
         },
     ])
         .then((data) => {
-            return pick(data, ["_id", "basic_info", "relationship", "contact","works", "schools", "favorites", "user_about_privacy"])
+            return pick(data, ["_id", "basic_info", "relationship", "contact", "works", "schools", "favorites", "user_about_privacy"])
         });
 }
 
+const upsertUserWork = (userID, payload) => {
+
+    if (!payload.workID) {
+
+
+        return User.findOneAndUpdate({
+            _id: ObjectId(userID)
+        }, {
+            $push: {
+                works: payload.work
+            }
+        }, {new: true}).lean().exec()
+    }
+    return User.findOneAndUpdate({
+        _id: ObjectId(userID)
+    }, {
+        "$set": {
+            "works.$[elem]": {
+                ...payload.work,
+                last_updated: Date.now()
+            }
+        }
+    }, {
+        "arrayFilters": [{"elem._id": ObjectId(payload.workID)}],
+        new: true
+    }).lean().exec()
+}
+
+const upsertUserSchool = (userID, payload) => {
+    if (!payload.schoolID) {
+
+        return User.findOneAndUpdate({
+            _id: ObjectId(userID)
+        }, {
+            $push: {
+                works: payload.school
+            }
+        }, {new: true}).lean().exec()
+    }
+    return User.findOneAndUpdate({
+        _id: ObjectId(userID)
+    }, {
+        "$set": {
+            "schools.$[elem]": {
+                ...payload.school,
+                last_updated: Date.now()
+            }
+        }
+    }, {
+        "arrayFilters": [{"elem._id": ObjectId(payload.workID)}],
+        new: true
+    }).lean().exec()
+}
+
+const deleteWork = ({userID, workID}) => {
+    return User.findOneAndUpdate({
+        _id: ObjectId(userID)
+    }, {
+        $pull: {
+            works: {
+                _id: ObjectId(workID)
+            }
+        }
+    },  {new: true}).lean().exec()
+}
+
+const deleteSchool = ({userID, schoolID}) => {
+    return User.findOneAndUpdate({
+        _id: ObjectId(userID)
+    }, {
+        $pull: {
+            schools: {
+                _id: ObjectId(schoolID)
+            }
+        }
+    },  {new: true}).lean().exec()
+}
+
 module.exports = {
+    deleteWork,
+    deleteSchool,
+    upsertUserWork,
+    upsertUserSchool,
     getUserAboutBrief,
     getUserFriendInvitations,
     getUserFriends,

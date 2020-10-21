@@ -8,7 +8,7 @@ const {getAuthenticateUserInitCredentials, getUserBasicInfo, login, sendChangePa
     verifyChangePasswordToken, getChangePasswordUserBrief, changePassword, addNewSearchHistory, deleteSearchHistory,
     updateSearchHistory, shortLogin, simpleUpdateUser, getUnseenNotificationsCount, getUserNotifications,
     seenNotifications, getUserFriendsCount, checkIsFriend, unfriend, sendFriendRequest, cancelFriendRequest, deleteNotificationByType
-,acceptFriendRequest, getUserFriends, getUserFriendInvitations, getUserAboutBrief} = require("../db/db-controllers/user");
+,acceptFriendRequest, getUserFriends, getUserFriendInvitations, getUserAboutBrief, upsertUserWork, upsertUserSchool, deleteWork, deleteSchool} = require("../db/db-controllers/user");
 
 module.exports = (db, namespacesIO) => {
     router.get("/init-credentials", authorizationUserMiddleware, (req, res, next) => {
@@ -28,6 +28,34 @@ module.exports = (db, namespacesIO) => {
     router.get("/:userID/basic-info", (req, res, next) => {
 
         return getUserBasicInfo(req.params.userID, req.query).then((data) => {
+            return res.status(200).json(data);
+        }).catch(err => next(err));
+
+    });
+    router.post("/:userID/upsert-work",authorizationUserMiddleware, (req, res, next) => {
+
+        return upsertUserWork(req.params.userID, req.body).then((data) => {
+            return res.status(200).json(data);
+        }).catch(err => next(err));
+
+    });
+    router.post("/:userID/upsert-school",authorizationUserMiddleware, (req, res, next) => {
+
+        return upsertUserSchool(req.params.userID, req.body).then((data) => {
+            return res.status(200).json(data);
+        }).catch(err => next(err));
+
+    });
+    router.delete("/:userID/work/:workID",authorizationUserMiddleware, (req, res, next) => {
+
+        return deleteWork(req.params).then((data) => {
+            return res.status(200).json(data);
+        }).catch(err => next(err));
+
+    });
+    router.delete("/:userID/school/:schoolID",authorizationUserMiddleware, (req, res, next) => {
+
+        return deleteSchool(req.params).then((data) => {
             return res.status(200).json(data);
         }).catch(err => next(err));
 

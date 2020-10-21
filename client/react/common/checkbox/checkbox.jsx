@@ -20,8 +20,12 @@ export class Checkbox extends React.Component {
                    return onChange && onChange(!value)
                }}
         />
-        {label && label}
-        <span className="check-mark"/>
+        <div className="check-mark"/>
+        <div className="checkbox-label">
+            {label && label}
+        </div>
+
+
       </label>
     )
   }

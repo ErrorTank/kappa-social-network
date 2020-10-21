@@ -49,7 +49,7 @@ const initDbCollections = (appDb) => {
   // ChatRoom.deleteMany({}).then(() => console.log("cac"))
   // User.updateMany({}, {$set: {"contact.address": {ward: ObjectId("5e92c7b6b4c8182784f5bcff"), city: ObjectId("5e92c7b4b4c8182784f59d4a"), district: ObjectId("5e92c7b4b4c8182784f5994b")}}}).then(() => console.log("cac"))
   // User.updateMany({}, {$set: {followed_posts: []}}).then(() => console.log("cac"))
-  // User.updateMany({}, {$set: {favorites: []}}).then(() => console.log("cac"))
+  // User.updateMany({}, {$set: {favorites: [], schools: [], works: []}}).then(() => console.log("cac"))
   // User.updateMany({}, {$set: {notifications: []}}).then(() => console.log("cac"))
   // Post.updateMany({}, {$set: {belonged_wall: null}}).then(() => console.log("cac"))
   // Post.deleteMany({}).then(() => console.log("cac"))
