@@ -1,45 +1,62 @@
 .dating-message-bar {
     display: flex;
     .dmb-input-wrapper{
-        width 100%
         position relative
-        border-radius 20px
-        background-color bgLight
-        padding 6px 12px
-        font-size 1.4rem
+        flex 0 0 calc(100% - 34px)
         .picker-wrapper{
             position absolute
             bottom : 100%
             right : 0 ;
         }
-        input{
+        .dating-chat-input{
+            border-radius 20px
+            padding 6px 12px
+            padding-right: 30px
+            font-size 1.4rem
+            cursor text
             width : 100%
             border : none 
             outline : none
+            background-color: bgLight
+            max-width 350px
+           
+            
         }
         .dmb-emoji-picker{
             position absolute
-            right 0
-            bottom 0
-            height 34px
-            width 34px
+            right 5px
+            bottom -3px
             line-height 3
             text-align center
             border-radius 50%
             cursor pointer
             transition background-color 0.1s ease
-
-    i {
-      font-size 2.2rem
-      color lightIcon
-    }        
+            >i {
+                font-size 2.2rem
+                color lightIcon
+            }      
+      
         }
     }
     
     .dmb-action{
+        flex 0 0 34px
         .action-wrapper{
-            margin-right : 5px
+            margin : 5px
             align-self: center
+            cursor: pointer
+            > i{
+                display block
+                font-size: 24px
+            }
+            > span{
+                display block
+            }
         }
     }
+}
+[contenteditable=true]:empty:before {
+  content: attr(placeholder);
+  display: block;
+  color: #aaa;
 }

@@ -29,7 +29,7 @@ export class DatingLeftPanel extends Component {
       />
     ) : (
       <DatingMessage
-        selectedProfile={selectedProfile}
+        selectedProfile={this.state.selectedProfile}
         onSwitch={(defaultTab) => this.onSwitch({ mode: "TABS", defaultTab })}
       />
     );

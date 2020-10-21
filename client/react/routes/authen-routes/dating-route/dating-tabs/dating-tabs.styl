@@ -75,8 +75,9 @@
         }
 
         .dating-wapper-content {
-            flex: 0 0 calc(100% -50px);
+            flex 0 0 calc(100% - 50px)
             padding-left: 10px;
+            overflow hidden
 
             .dating-chat-name {
                 font-size: 16px;
@@ -88,6 +89,8 @@
                 font-size: 1.4rem;
                 color: commonTextLight;
                 white-space: nowrap;
+                overflow hidden
+                text-overflow: ellipsis
             }
         }
     }

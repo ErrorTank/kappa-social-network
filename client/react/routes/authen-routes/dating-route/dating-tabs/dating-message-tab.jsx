@@ -29,13 +29,7 @@ export class DatingMessageTab extends Component {
             <div
               className="dating-chat-box"
               key={i}
-              onClick={() =>
-                onSwitch(
-                  each.user1._id === datingProfile.getState()._id
-                    ? each.user1._id
-                    : each.user2._id
-                )
-              }
+              onClick={() => onSwitch(receiver._id)}
             >
               <div className="dating-chat-avatar">
                 <div className="avatar-wrapper">
@@ -44,15 +38,21 @@ export class DatingMessageTab extends Component {
               </div>
               <div className="dating-wapper-content">
                 <div className="dating-chat-name">{receiver.name}</div>
-                <div className="dating-last-message">
-                  {each.lastestMessage.user._id ===
-                  datingProfile.getState()._id ? (
-                    <span className="highlight dark">Bạn : </span>
-                  ) : (
-                    `${receiver.name} :  `
-                  )}
-                  <span>{each.lastestMessage.message}</span>
-                </div>
+                {each.lastestMessage ? (
+                  <div className="dating-last-message">
+                    {each.lastestMessage.user._id ===
+                    datingProfile.getState()._id ? (
+                      <span className="highlight dark">Bạn : </span>
+                    ) : (
+                      `${receiver.name} :  `
+                    )}
+                    <span className="lastest-message">
+                      {each.lastestMessage.message}
+                    </span>
+                  </div>
+                ) : (
+                  <span>Nhấn để bắt đầu trò chuyện</span>
+                )}
               </div>
             </div>
           );

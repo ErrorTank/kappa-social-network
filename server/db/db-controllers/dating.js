@@ -313,7 +313,7 @@ const getChatBoxes = (profileId) => {
       return cbs.map((cb) => {
         let sortedMessages = cb.messages.sort(
           (a, b) =>
-            new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime()
+            new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
         );
         return {
           user1: cb.user1,

@@ -2,24 +2,33 @@ import React, { Component } from "react";
 import { Emoji } from "emoji-mart";
 import { Picker } from "emoji-mart";
 import { datingProfile } from "../../../../../../../common/states/common";
-
+import { datingIO } from "./../../../../../../../socket/sockets";
+import ContentEditable from "react-contenteditable";
 export class DatingMessageBar extends Component {
   constructor(props) {
     super(props);
+    this.contentEditable = React.createRef();
     this.state = {
-      text: "",
+      html: "",
       showPicker: false,
     };
     this.io = datingIO.getIOInstance();
   }
+
   onClick = (e) => {
-    //   s
+    let data = {
+      message: this.state.html,
+      user: datingProfile.getState()._id,
+    };
+    const { receiver, chatBoxId } = this.props;
+
+    this.io.emit("chat-room", { data, receiver, chatBoxId });
   };
   addEmoji = (e) => {
     // console.log(e.native);
     let emoji = e.native;
     this.setState({
-      text: this.state.text + emoji,
+      html: this.state.html + emoji,
     });
   };
   render() {
@@ -35,16 +44,16 @@ export class DatingMessageBar extends Component {
               />
             </span>
           )}
-          <input
-            type="text"
-            value={this.state.text}
+          <ContentEditable
+            className="dating-chat-input"
+            html={this.state.html}
             onChange={(e) => {
               this.setState({
-                text: e.target.value,
+                html: e.target.value,
               });
             }}
-            placeholder="Nhập tin nhắn..."
-          ></input>
+            placeholder={"Nhập tin nhắn..."}
+          ></ContentEditable>
           <div
             onClick={() => {
               this.setState({
@@ -57,16 +66,16 @@ export class DatingMessageBar extends Component {
           </div>
         </div>
         <div className="dmb-action">
-          {this.state.text.length ? (
+          {this.state.html.length ? (
             <div className="action-wrapper">
-              <i className="fas fa-paper-plane"></i>
+              <i className="fas fa-paper-plane" onClick={this.onClick}></i>
             </div>
           ) : (
             <div className="action-wrapper">
               <Emoji
                 perLine={4}
                 set={"facebook"}
-                emoji={{ id: "santa" }}
+                emoji={{ id: "+1" }}
                 size={24}
               />
             </div>

@@ -33,6 +33,15 @@ const initDbCollections = (appDb) => {
   //   {
   //     $set: {
   //       seen: [],
+  //       messages: [],
+  //     },
+  //   }
+  // ).exec();
+  // ChatBox.updateMany(
+  //   {},
+  //   {
+  //     $set: {
+  //       messages: [],
   //     },
   //   }
   // ).exec();

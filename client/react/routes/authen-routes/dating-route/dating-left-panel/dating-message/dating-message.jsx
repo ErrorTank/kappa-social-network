@@ -3,8 +3,9 @@ import { datingProfile } from "../../../../../../common/states/common";
 import { Avatar } from "../../../../../common/avatar/avatar";
 import { TAB_PANEL_TABS } from "../../dating-tab-panel";
 import { DatingMessageBar } from "./dating-message-bar/dating-message-bar";
-import DatingMessageContent from "./dating-message-content/dating-message-content";
+import { DatingMessageContent } from "./dating-message-content/dating-message-content";
 import { datingApi } from "./../../../../../../api/common/dating";
+import { datingIO } from "./../../../../../../socket/sockets";
 
 export class DatingMessage extends Component {
   constructor(props) {
@@ -12,13 +13,20 @@ export class DatingMessage extends Component {
     this.state = {
       chatBox: null,
     };
+    this.io = datingIO.getIOInstance();
     datingApi
       .getBasicChatboxInfor(datingProfile.getState()._id, props.selectedProfile)
-      .then((chatBox) => this.setState({ chatBox }));
+      .then((chatBox) => {
+        this.io.emit("join-dating-chatbox", { chatBoxId: chatBox._id });
+        this.setState({ chatBox });
+      });
+  }
+  componentWillUnmount() {
+    this.io.emit("out-dating-chatbox", { chatBoxId: this.state.chatBox._id });
   }
 
   render() {
-    const { onSwitch } = this.props;
+    const { onSwitch, selectedProfile } = this.props;
     return (
       <div className="dating-chat-box-container">
         <div className="dating-chat-header">
@@ -36,7 +44,12 @@ export class DatingMessage extends Component {
           <p>Minh Thu</p>
         </div>
         <DatingMessageContent />
-        <DatingMessageBar />
+        {this.state.chatBox && (
+          <DatingMessageBar
+            receiver={selectedProfile}
+            chatBoxId={this.state.chatBox._id}
+          />
+        )}
       </div>
     );
   }
