@@ -439,13 +439,13 @@ const userSchema = new Schema({
         type: [
             {
                 company: {
-                    related: {
-                        type: ObjectId,
-                        ref: "Page"
-                    },
-                    text: String
+                    type: String,
+                    default:""
                 },
-                position: String,
+                position: {
+                    type: String,
+                    default:""
+                },
                 currently_working: {
                     type: Boolean,
                     default: true
@@ -464,22 +464,16 @@ const userSchema = new Schema({
         type: [
             {
                 school: {
-                    related: {
-                        type: ObjectId,
-                        ref: "Page"
-                    },
-                    text: String
+                    type: String,
+                    default:""
                 },
                 graduated: {
                     type: Boolean,
                     default: true
                 },
                 specialization: {
-                    related: {
-                        type: ObjectId,
-                        ref: "Page"
-                    },
-                    text: String
+                    type: String,
+                    default:""
                 },
                 last_updated: {
                     type: Date,

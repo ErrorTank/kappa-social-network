@@ -143,9 +143,9 @@ export const createAboutPanels = ({isOwner, user, onSave, onSaveList}) =>  [
             }, {
                 label: "Quê quán",
                 getValue: () => {
-                    return  (user.contact.home_town.ward ? `${user.contact.home_town.ward.name}, ` : "")
-                        +  (user.contact.home_town.district ? `${user.contact.home_town.district.name}, ` : "")
-                        + (user.contact.home_town.city ? `${user.contact.home_town.city.name} ` : "");
+                    return  (user.contact.home_town.ward ? `${user.contact.home_town.ward.name_with_type}, ` : "")
+                        +  (user.contact.home_town.district ? `${user.contact.home_town.district.name_with_type}, ` : "")
+                        + (user.contact.home_town.city ? `${user.contact.home_town.city.name_with_type} ` : "");
                 },
                 editable: isOwner,
                 isExisted: () => user.contact.home_town.city || user.contact.home_town.district || user.contact.home_town.ward,
@@ -166,9 +166,9 @@ export const createAboutPanels = ({isOwner, user, onSave, onSaveList}) =>  [
             },{
                 label: "Tỉnh/Thành phố hiện tại",
                 getValue: () => {
-                    return  (user.contact.address.ward ? `${user.contact.address.ward.name}, ` : "")
-                        +  (user.contact.address.district ? `${user.contact.address.district.name}, ` : "")
-                        + (user.contact.address.city ? `${user.contact.address.city.name} ` : "");
+                    return  (user.contact.address.ward ? `${user.contact.address.ward.name_with_type}, ` : "")
+                        +  (user.contact.address.district ? `${user.contact.address.district.name_with_type}, ` : "")
+                        + (user.contact.address.city ? `${user.contact.address.city.name_with_type} ` : "");
                 },
                 editable: isOwner,
                 isExisted: () => user.contact.address.city || user.contact.address.district || user.contact.address.ward,
@@ -195,21 +195,27 @@ export const createAboutPanels = ({isOwner, user, onSave, onSaveList}) =>  [
             creatable: isOwner,
             createBtn: "Thêm công việc",
             list: user.works,
-            renderForm: ({onClose, work = {}, isCreate = true}) => (
-                <WorkForm
-                    user={user}
-                    work={work}
-                    isCreate={isCreate}
-                    onSave={() => {
+            itemConfig: {
+                renderForm: ({onClose, work = {}, isCreate = true}) => (
+                    <WorkForm
+                        user={user}
+                        work={work}
+                        isCreate={isCreate}
+                        onSave={() => {
 
-                        return onSaveList();
+                            return onSaveList();
 
-                    }}
-                    onClose={() => {
-                        onClose();
-                    }}
-                />
-            )
+                        }}
+                        onClose={() => {
+                            onClose();
+                        }}
+                    />
+                ),
+                label: "Công ty",
+                getValue:  (item) => `${item.currently_working ? item.position || "Làm việc" : `Từng làm ${item.position || "việc"}`} tại ${item.company}`,
+                editable: isOwner,
+                isExisted: () => true,
+            }
         }
     },{
         label: "Trường học",

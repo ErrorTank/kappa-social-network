@@ -926,18 +926,13 @@ const getUserAboutBrief = (userID) => {
 const upsertUserWork = (userID, payload) => {
 
     if (!payload.workID) {
+
+
         return User.findOneAndUpdate({
             _id: ObjectId(userID)
         }, {
             $push: {
-                works: {
-                    company: {
-                        text: payload.company,
-
-                    },
-                    position: payload.position,
-                    currently_working: payload.currently_working
-                }
+                works: payload.work
             }
         }, {new: true}).lean().exec()
     }
@@ -945,11 +940,10 @@ const upsertUserWork = (userID, payload) => {
         _id: ObjectId(userID)
     }, {
         "$set": {
-            "works.$[elem].company.text": payload.company,
-            "works.$[elem].position": payload.position,
-            "works.$[elem].currently_working": payload.currently_working,
-            "works.$[elem].last_updated": Date.now(),
-            "works.$[elem].privacy": payload.privacy,
+            "works.$[elem]": {
+                ...payload.work,
+                last_updated: Date.now()
+            }
         }
     }, {
         "arrayFilters": [{"elem._id": ObjectId(payload.workID)}],
@@ -959,18 +953,12 @@ const upsertUserWork = (userID, payload) => {
 
 const upsertUserSchool = (userID, payload) => {
     if (!payload.schoolID) {
+
         return User.findOneAndUpdate({
             _id: ObjectId(userID)
         }, {
             $push: {
-                works: {
-                    school: {
-                        text: payload.school,
-
-                    },
-                    specialization: payload.specialization,
-                    graduated: payload.graduated
-                }
+                works: payload.school
             }
         }, {new: true}).lean().exec()
     }
@@ -978,11 +966,10 @@ const upsertUserSchool = (userID, payload) => {
         _id: ObjectId(userID)
     }, {
         "$set": {
-            "works.$[elem].school.text": payload.school,
-            "works.$[elem].specialization": payload.specialization,
-            "works.$[elem].graduated": payload.graduated,
-            "works.$[elem].last_updated": Date.now(),
-            "works.$[elem].privacy": payload.privacy,
+            "schools.$[elem]": {
+                ...payload.school,
+                last_updated: Date.now()
+            }
         }
     }, {
         "arrayFilters": [{"elem._id": ObjectId(payload.workID)}],
@@ -990,7 +977,33 @@ const upsertUserSchool = (userID, payload) => {
     }).lean().exec()
 }
 
+const deleteWork = ({userID, workID}) => {
+    return User.findOneAndUpdate({
+        _id: ObjectId(userID)
+    }, {
+        $pull: {
+            works: {
+                _id: ObjectId(workID)
+            }
+        }
+    },  {new: true}).lean().exec()
+}
+
+const deleteSchool = ({userID, schoolID}) => {
+    return User.findOneAndUpdate({
+        _id: ObjectId(userID)
+    }, {
+        $pull: {
+            schools: {
+                _id: ObjectId(schoolID)
+            }
+        }
+    },  {new: true}).lean().exec()
+}
+
 module.exports = {
+    deleteWork,
+    deleteSchool,
     upsertUserWork,
     upsertUserSchool,
     getUserAboutBrief,

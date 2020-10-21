@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import {NameForm} from "./forms/name-form";
 
 class ApField extends Component {
     constructor(props) {
@@ -10,14 +11,17 @@ class ApField extends Component {
 
     render() {
         let {isEdit} = this.state;
-        let {label, getValue, editable, isExisted, renderForm} = this.props;
+        let {label, getValue, editable, isExisted, renderForm, isList = false} = this.props;
         return (
             <div className={"ap-field"}>
-                <div className="ap-field-label">
-                    {label}
-                </div>
+                {((isList && !isEdit) || !isList) && (
+                    <div className="ap-field-label">
+                        {label}
+                    </div>
+                ) }
+
                 <div className="ap-field-value">
-                    {isEdit ? renderForm({onClose: () => this.setState({isEdit: false})}) : (
+                    {isEdit ? renderForm({onClose: () => this.setState({isEdit: false}), isCreate: false}) : (
                         <div className="value">
                             {isExisted() ? getValue() : "Chưa cập nhật"}
                         </div>
@@ -45,6 +49,7 @@ export class AboutPanel extends Component {
             showCreate: false
         }
     }
+
     render() {
         let {showCreate} = this.state;
         let {label, icon, createConfig, fields = []} = this.props;
@@ -63,11 +68,14 @@ export class AboutPanel extends Component {
                 </div>
                 <div className="ap-body">
                     <div className="ap-fields">
-                        {showCreate && createConfig.renderForm({onClose: () => this.setState({showCreate: false})})}
+                        {showCreate && createConfig.itemConfig.renderForm({onClose: () => this.setState({showCreate: false})})}
                         {createConfig ? createConfig.list.map((each, i) => (
                             <ApField
-                                {...each}
                                 key={i}
+                                {...createConfig.itemConfig}
+                                isList={true}
+                                getValue={() => createConfig.itemConfig.getValue(each)}
+                                renderForm={config => createConfig.itemConfig.renderForm({...config, work: each})}
                             />
                         )) : fields.map((each, i) => (
                             <ApField

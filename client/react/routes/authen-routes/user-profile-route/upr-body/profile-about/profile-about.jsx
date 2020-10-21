@@ -13,10 +13,12 @@ export default class ProfileAbout extends Component {
             userBrief: null,
             loading: true
         }
+
         this.fetchUserBrief(props.user._id)
     }
 
     fetchUserBrief = (userID) => {
+
         return userApi.getUserAboutBrief(userID)
             .then(userBrief => this.setState({userBrief, loading: false}))
 
@@ -24,6 +26,7 @@ export default class ProfileAbout extends Component {
 
     componentDidUpdate(prevProps, prevState, snapshot) {
         if(this.props.user._id !== prevProps.user._id){
+
             this.fetchUserBrief(this.props.user._id)
         }
     }
@@ -45,11 +48,14 @@ export default class ProfileAbout extends Component {
 
     render() {
         let {userBrief, loading} = this.state;
+        let isOwner = this.props.user._id === userInfo.getState()._id;
         let aboutPanels = loading ? null: createAboutPanels({
             isOwner: this.props.user._id === userInfo.getState()._id,
             user: userBrief,
             onSave: this.updateUser,
-            onSaveList: this.fetchUserBrief(this.props.user._id)
+            onSaveList: () => {
+                return this.fetchUserBrief(this.props.user._id)
+            }
         });
         return (
             <div className="profile-about-route">

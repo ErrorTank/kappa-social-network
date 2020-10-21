@@ -92,7 +92,13 @@ export const userApi = {
     upsertUserWork(userID, payload){
         return authenApi.post(`/user/${userID}/upsert-work`, payload)
     },
+    deleteWork(userID, workID){
+        return authenApi.delete(`/user/${userID}/work/${workID}`)
+    },
     upsertUserSchool(userID, payload){
         return authenApi.post(`/user/${userID}/upsert-school`, payload)
+    },
+    deleteSchool(userID, schoolID){
+        return authenApi.delete(`/user/${userID}/school/${schoolID}`)
     },
 };

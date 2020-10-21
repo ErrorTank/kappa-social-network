@@ -14,7 +14,8 @@ export class WorkForm extends KComponent {
         super(props);
         this.state = {
             saving: false,
-            policy: PostPolicies.find(each => each.value === (props.work?.privacy || "PUBLIC"))
+            policy: PostPolicies.find(each => each.value === (props.work?.privacy || "PUBLIC")),
+            deleting: false
         };
 
 
@@ -27,7 +28,7 @@ export class WorkForm extends KComponent {
             initData: {
                 company: props.work?.company || "",
                 position: props.work?.position || "",
-                currently_working: props.work?.currently_working || true,
+                currently_working: !!props.work?.currently_working,
             }
         });
         this.onUnmount(this.form.on("change", () => {
@@ -39,12 +40,14 @@ export class WorkForm extends KComponent {
     save = () => {
         this.setState({saving: true});
         let {user, onSave, onClose} = this.props;
-        let work = {...this.form.getData(), privacy: this.state.privacy.value};
+
+        let work = {...this.form.getData(), privacy: this.state.policy.value};
         let payload = {
             work,
             workID: this.props.work?._id,
 
         }
+
         userApi.upsertUserWork(user._id, payload)
             .then(() => {
                 onSave()
@@ -53,8 +56,18 @@ export class WorkForm extends KComponent {
 
     };
 
+    delete = () => {
+        this.setState({deleting: true});
+        let {user, onSave, onClose} = this.props;
+        userApi.deleteWork(user._id, this.props.work?._id)
+            .then(() => {
+                onSave()
+                    .then(() => onClose())
+            })
+    }
+
     render() {
-        let {saving, policy} = this.state;
+        let {saving, policy, deleting} = this.state;
         let {onClose} = this.props;
         return (
             <div className="about-field-form">
@@ -145,10 +158,16 @@ export class WorkForm extends KComponent {
                     </div>
                 </div>
                 <div className="form-actions aff-form-actions">
-                    <div style={{flex: "0 0 28%"}}/>
+                    <div style={{flex: "0 0 280px"}}/>
                     <div className={"actions mt-4"}>
-                        <Button className="btn btn-common-primary" onClick={this.save} loading={saving} disabled={!this.form.isValid()}>Lưu thay đổi</Button>
+                        <Button className="btn btn-common-primary" onClick={this.save} loading={saving}
+                                disabled={!this.form.isValid()}>Lưu thay đổi</Button>
                         <Button className="btn btn-grey ml-2" onClick={onClose}>Hủy</Button>
+                        {!this.props.isCreate && (
+                            <Button className="btn btn-cancel ml-2" loading={deleting} onClick={this.delete}>
+                                <i className="fas fa-trash"></i> Xóa công việc</Button>
+                        )}
+
                     </div>
                 </div>
             </div>
