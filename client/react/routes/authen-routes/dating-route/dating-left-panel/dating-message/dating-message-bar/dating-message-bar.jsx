@@ -21,6 +21,9 @@ export class DatingMessageBar extends Component {
       user: datingProfile.getState()._id,
     };
     const { chatBoxId } = this.props;
+    this.setState({
+      html: "",
+    });
 
     this.io.emit("chat-room", { data, chatBoxId });
   };
