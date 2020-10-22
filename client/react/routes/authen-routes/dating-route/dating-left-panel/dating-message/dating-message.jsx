@@ -15,7 +15,10 @@ export class DatingMessage extends Component {
     };
     this.io = datingIO.getIOInstance();
     datingApi
-      .getBasicChatboxInfor(datingProfile.getState()._id, props.selectedProfile)
+      .getBasicChatboxInfor(
+        datingProfile.getState()._id,
+        props.selectedProfile._id
+      )
       .then((chatBox) => {
         this.io.emit("join-dating-chatbox", { chatBoxId: chatBox._id });
         this.setState({ chatBox });
@@ -34,21 +37,16 @@ export class DatingMessage extends Component {
             className="fal fa-long-arrow-left"
             onClick={() => onSwitch(TAB_PANEL_TABS.MESSAGE)}
           ></i>
-          <Avatar
-            className="dating-chat-avatar"
-            user={{
-              avatar:
-                "https://localhost:2000/assets/images/MinhThu/minhthu1.jpg",
-            }}
-          />
-          <p>Minh Thu</p>
+          <div className="dating-chat-avatar">
+            <div className="avatar-wrapper">
+              <img src={selectedProfile.avatars[0].path} />
+            </div>
+          </div>
+          <p>{selectedProfile.name}</p>
         </div>
         <DatingMessageContent />
         {this.state.chatBox && (
-          <DatingMessageBar
-            receiver={selectedProfile}
-            chatBoxId={this.state.chatBox._id}
-          />
+          <DatingMessageBar chatBoxId={this.state.chatBox._id} />
         )}
       </div>
     );

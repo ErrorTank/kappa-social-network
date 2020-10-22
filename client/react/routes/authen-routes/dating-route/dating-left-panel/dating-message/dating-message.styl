@@ -3,7 +3,7 @@
     background-color: white;
     border-right: 1px solid common-border;
     display: flex;
-    height: 100%;
+    height: calc(100vh - 56px)
     flex-direction: column;
 
     .dating-chat-header {
@@ -22,6 +22,20 @@
 
         .dating-chat-avatar {
             margin: 10px;
+            flex: 0 0 40px;
+            height: 40px;
+            .avatar-wrapper{
+                width: 100%;
+                height: 100%;
+                overflow: hidden;
+                border-radius: 50%;
+                >img{
+                    width: 100%;
+                    height: 100%;
+                    object-fit: cover;
+
+                }
+            }
         }
 
         p {

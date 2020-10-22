@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { datingApi } from "./../../../../../api/common/dating";
 import { datingIO } from "./../../../../../socket/sockets";
+import uniqBy from "lodash/uniqBy";
 
 export class DatingMatched extends Component {
   constructor(props) {
@@ -13,18 +14,17 @@ export class DatingMatched extends Component {
     this.io = datingIO.getIOInstance();
     this.io.on("matched", ({ profile }) => {
       this.setState({
-        profiles: [profile].concat(this.state.profiles),
+        profiles: uniqBy([profile].concat(this.state.profiles), "_id"),
       });
     });
     datingApi.getMatchProfile().then((e) => {
       this.setState({
-        profiles: e,
+        profiles: uniqBy(this.state.profiles.concat(e), "_id"),
       });
     });
   }
   componentWillUnmount() {
     if (this.io) {
-      console.log(1);
       this.io.off("matched");
     }
   }
