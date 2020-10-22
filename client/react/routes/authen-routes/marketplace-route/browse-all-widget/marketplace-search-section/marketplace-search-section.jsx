@@ -31,7 +31,7 @@ export class MarketplaceSearchSection extends Component {
     return (
       <div className='market-search-section'>
         <h1 className='market-search-title'>
-          {/* {this.props.mainID && <Breadcrumbs />} */}
+          {this.props.mainID && <Breadcrumbs />}
           {mainCategoryInfo.name || 'Marketplace'}
         </h1>
         <MarketplaceSearch />

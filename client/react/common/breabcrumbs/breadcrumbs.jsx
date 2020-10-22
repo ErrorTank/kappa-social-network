@@ -10,7 +10,9 @@ export class Breadcrumbs extends Component {
   }
   render() {
     let { location } = customHistory;
+    console.log(location.pathname);
     const breadcrumbsArray = createBreadcrumbBuilder(location.pathname);
+
     return (
       <div className='breadcrumbs-container'>
         {breadcrumbsArray.length > 1 && (

@@ -33,7 +33,7 @@ export class BrowseAllWidget extends KComponent {
     },
     {
       icon: 'fas fa-tags',
-      title: 'Đang bán',
+      title: 'Bài niêm yết của bạn',
       link: '/marketplace/you/selling',
     },
     {
