@@ -20,9 +20,9 @@ export class DatingMessageBar extends Component {
       message: this.state.html,
       user: datingProfile.getState()._id,
     };
-    const { receiver, chatBoxId } = this.props;
+    const { chatBoxId } = this.props;
 
-    this.io.emit("chat-room", { data, receiver, chatBoxId });
+    this.io.emit("chat-room", { data, chatBoxId });
   };
   addEmoji = (e) => {
     // console.log(e.native);

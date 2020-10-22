@@ -33,7 +33,6 @@ const initDbCollections = (appDb) => {
   //   {
   //     $set: {
   //       seen: [],
-  //       messages: [],
   //     },
   //   }
   // ).exec();

@@ -96,8 +96,9 @@ export class DatingCard extends Component {
     return (
       <>
         <div
-          className='dating-card'
-          ref={(datingCard) => (this.datingCard = datingCard)}>
+          className="dating-card"
+          ref={(datingCard) => (this.datingCard = datingCard)}
+        >
           {!!profiles.length && (
             <>
               {profiles.map((each, i) => (
@@ -113,7 +114,8 @@ export class DatingCard extends Component {
 
                       direction
                     )
-                  }>
+                  }
+                >
                   <MyTinderCard info={each} />
                 </TinderCard>
               ))}

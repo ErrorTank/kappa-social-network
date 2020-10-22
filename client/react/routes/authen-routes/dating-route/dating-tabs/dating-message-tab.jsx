@@ -29,7 +29,7 @@ export class DatingMessageTab extends Component {
             <div
               className="dating-chat-box"
               key={i}
-              onClick={() => onSwitch(receiver._id)}
+              onClick={() => onSwitch(receiver)}
             >
               <div className="dating-chat-avatar">
                 <div className="avatar-wrapper">
