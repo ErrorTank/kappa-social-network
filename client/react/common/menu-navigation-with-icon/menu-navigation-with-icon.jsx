@@ -18,7 +18,7 @@ export class MenuNavigationWithIcon extends Component {
     }
   }
   checkFocus = () => {
-    const { mainID, id, options } = this.props;
+    const { mainID, id, options, link } = this.props;
 
     if (mainID) {
       if (mainID === id) {
@@ -32,6 +32,10 @@ export class MenuNavigationWithIcon extends Component {
             this.setState({ focus: 'sup' });
           }
         });
+      }
+    } else {
+      if (link === customHistory.location.pathname) {
+        this.setState({ focus: 'main' });
       }
     }
   };
@@ -52,10 +56,7 @@ export class MenuNavigationWithIcon extends Component {
     const { focus } = this.state;
     return (
       <div
-        className={classnames(
-          'menu-navigation-with-icon',
-          type || focus || `${type}`
-        )}
+        className={classnames('menu-navigation-with-icon', focus || `${type}`)}
       >
         <div
           className='menu-navigation-wrapper'

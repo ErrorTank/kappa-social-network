@@ -11,12 +11,14 @@ import { itemField, radiusArr } from './../../../../../const/listing';
 import { ListingInfoSelect } from './../../../../common/listing-info-select/listing-info-select';
 import { KComponent } from './../../../../common/k-component';
 import { getCategoriesNavigation } from '../../../../../common/utils/listing-utils';
+import { customHistory } from '../../../routes';
 
 export class BrowseAllWidget extends KComponent {
   constructor(props) {
     super(props);
     this.state = {
       categoryDisplay: [],
+      radius: this.props.radius || localStorage.radius,
     };
 
     categoryApi.getCategory({}).then((categories) => {
@@ -24,11 +26,16 @@ export class BrowseAllWidget extends KComponent {
     });
   }
 
+  updateValue = (key, val) => {
+    let oldState = marketplaceInfo.getState();
+    localStorage.setItem([key], val);
+    marketplaceInfo.setState({ ...oldState, [key]: val });
+  };
+
   browseAllMenu = [
     {
       icon: 'fas fa-store',
       title: 'Lướt xem tất cả',
-      type: 'main',
       link: '/marketplace',
     },
     {
@@ -44,8 +51,8 @@ export class BrowseAllWidget extends KComponent {
   ];
 
   render() {
-    const { categoryDisplay } = this.state;
-    const { updateValue, radius } = this.props;
+    const { categoryDisplay, radius } = this.state;
+    const { updateValue } = this.props;
     return (
       <ThemeContext.Consumer>
         {({ darkMode }) => (
@@ -64,13 +71,13 @@ export class BrowseAllWidget extends KComponent {
                   value={{ value: radius }}
                   isSelected={(option) => option.value === radius}
                   onChange={(e) => {
-                    updateValue(`radius`, e.value);
+                    this.updateValue(`radius`, e.value);
                   }}
                 />
               </MarketplaceFilterSection>
               <CategoriesSection
                 darkMode={darkMode}
-                categoryDisplay={this.state.categoryDisplay}
+                categoryDisplay={categoryDisplay}
               />
             </div>
           </div>

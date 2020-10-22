@@ -28,12 +28,6 @@ class MarketplaceRoute extends KComponent {
     );
   }
 
-  updateValue = (key, val) => {
-    let oldState = marketplaceInfo.getState();
-    localStorage.setItem([key], val);
-    marketplaceInfo.setState({ ...oldState, [key]: val });
-  };
-
   render() {
     let info = marketplaceInfo.getState();
     const { radius, myPosition } = info;
@@ -45,9 +39,7 @@ class MarketplaceRoute extends KComponent {
               <AllListingWidget myPosition={myPosition} radius={radius} />
             )}
             haveRightRender={false}
-            leftRender={() => (
-              <BrowseAllWidget updateValue={this.updateValue} radius={radius} />
-            )}
+            leftRender={() => <BrowseAllWidget radius={radius} />}
           />
         </div>
       </PageTitle>
