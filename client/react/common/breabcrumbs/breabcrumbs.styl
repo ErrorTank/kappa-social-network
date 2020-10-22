@@ -1,13 +1,13 @@
 .breadcrumbs-container {
   .breadcrumbs {
-    margin-bottom: 1.5rem;
     display: flex;
 
     .breadcrumbs-item {
-      font-size: 2rem;
-      color: breadcrumbs;
+      font-size: 13px;
       cursor: pointer;
       transition: color 0.1s ease;
+      color: greyTextLight;
+      font-weight: 400;
 
       &:hover {
         color: info;
@@ -15,13 +15,13 @@
 
       &:not(:last-child)::after {
         content: '\003e';
-        font-size: 1.5rem;
-        line-height: 1.5rem;
-        padding: 0 0.8rem;
+        font-size: 13px;
+        line-height: 13px;
+        padding: 0 0.4rem;
       }
 
       .label {
-        font-size: 1.5rem;
+        font-size: 13px;
       }
     }
   }
