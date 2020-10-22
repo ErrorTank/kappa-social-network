@@ -75,7 +75,7 @@ export class AboutPanel extends Component {
                                 {...createConfig.itemConfig}
                                 isList={true}
                                 getValue={() => createConfig.itemConfig.getValue(each)}
-                                renderForm={config => createConfig.itemConfig.renderForm({...config, work: each})}
+                                renderForm={config => createConfig.itemConfig.renderForm({...config, item: each})}
                             />
                         )) : fields.map((each, i) => (
                             <ApField

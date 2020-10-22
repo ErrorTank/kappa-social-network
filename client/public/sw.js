@@ -79,6 +79,10 @@ var exceptionRequestsDev = [
     method: "POST",
   },
   {
+    endpoint: /https:\/\/localhost:4000\/api\/user\/\w+\/upsert-favorites/,
+    method: "POST",
+  },
+  {
     endpoint: /https:\/\/localhost:4000\/api\/user\/\w+\/work\/\w+/,
     method: "DELETE",
   },

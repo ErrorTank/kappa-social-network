@@ -8,7 +8,7 @@ const {getAuthenticateUserInitCredentials, getUserBasicInfo, login, sendChangePa
     verifyChangePasswordToken, getChangePasswordUserBrief, changePassword, addNewSearchHistory, deleteSearchHistory,
     updateSearchHistory, shortLogin, simpleUpdateUser, getUnseenNotificationsCount, getUserNotifications,
     seenNotifications, getUserFriendsCount, checkIsFriend, unfriend, sendFriendRequest, cancelFriendRequest, deleteNotificationByType
-,acceptFriendRequest, getUserFriends, getUserFriendInvitations, getUserAboutBrief, upsertUserWork, upsertUserSchool, deleteWork, deleteSchool} = require("../db/db-controllers/user");
+,acceptFriendRequest, getUserFriends, getUserFriendInvitations, getUserAboutBrief, upsertUserWork, upsertUserSchool, deleteWork, deleteSchool, upsertUserFavorites} = require("../db/db-controllers/user");
 
 module.exports = (db, namespacesIO) => {
     router.get("/init-credentials", authorizationUserMiddleware, (req, res, next) => {
@@ -42,6 +42,13 @@ module.exports = (db, namespacesIO) => {
     router.post("/:userID/upsert-school",authorizationUserMiddleware, (req, res, next) => {
 
         return upsertUserSchool(req.params.userID, req.body).then((data) => {
+            return res.status(200).json(data);
+        }).catch(err => next(err));
+
+    });
+    router.post("/:userID/upsert-favorites",authorizationUserMiddleware, (req, res, next) => {
+
+        return upsertUserFavorites(req.params.userID, req.body).then((data) => {
             return res.status(200).json(data);
         }).catch(err => next(err));
 

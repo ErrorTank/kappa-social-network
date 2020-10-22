@@ -13,6 +13,7 @@ import {Link} from "react-router-dom";
 import {userInfo} from "../../../../../../common/states/common";
 import {LocationForm} from "./forms/location-form";
 import {WorkForm} from "./forms/work-form";
+import {SchoolForm} from "./forms/school-form";
 
 
 export const createAboutPanels = ({isOwner, user, onSave, onSaveList}) =>  [
@@ -196,10 +197,10 @@ export const createAboutPanels = ({isOwner, user, onSave, onSaveList}) =>  [
             createBtn: "Thêm công việc",
             list: user.works,
             itemConfig: {
-                renderForm: ({onClose, work = {}, isCreate = true}) => (
+                renderForm: ({onClose, item = {}, isCreate = true}) => (
                     <WorkForm
                         user={user}
-                        work={work}
+                        work={item}
                         isCreate={isCreate}
                         onSave={() => {
 
@@ -223,15 +224,28 @@ export const createAboutPanels = ({isOwner, user, onSave, onSaveList}) =>  [
         createConfig: {
             creatable: isOwner,
             createBtn: "Thêm trường học",
-            list: user.schools
-        }
-    },{
-        label: "Sở thích",
-        icon: <i className="fad fa-star"></i>,
-        createConfig: {
-            creatable: isOwner,
-            createBtn: "Thêm/sửa sở thích",
-            list: user.favorites
+            list: user.schools,
+            itemConfig: {
+                renderForm: ({onClose, item = {}, isCreate = true}) => (
+                    <SchoolForm
+                        user={user}
+                        school={item}
+                        isCreate={isCreate}
+                        onSave={() => {
+
+                            return onSaveList();
+
+                        }}
+                        onClose={() => {
+                            onClose();
+                        }}
+                    />
+                ),
+                label: "Trường học",
+                getValue:  (item) => `${!item.graduated ? `Học` : `Tốt nghiệp`} ${item.specialization || ""} tại ${item.school}`,
+                editable: isOwner,
+                isExisted: () => true,
+            }
         }
     },
 ];

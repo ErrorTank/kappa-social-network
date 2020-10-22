@@ -5,6 +5,7 @@ import {userApi} from "../../../../../../api/common/user-api";
 import {LoadingInline} from "../../../../../common/loading-inline/loading-inline";
 import {userInfo} from "../../../../../../common/states/common";
 import {topFloatNotifications} from "../../../../../common/float-top-notification/float-top-notification";
+import {FavoritesPanel} from "./favorites-panel";
 
 export default class ProfileAbout extends Component {
     constructor(props) {
@@ -25,7 +26,7 @@ export default class ProfileAbout extends Component {
     };
 
     componentDidUpdate(prevProps, prevState, snapshot) {
-        if(this.props.user._id !== prevProps.user._id){
+        if (this.props.user._id !== prevProps.user._id) {
 
             this.fetchUserBrief(this.props.user._id)
         }
@@ -49,13 +50,14 @@ export default class ProfileAbout extends Component {
     render() {
         let {userBrief, loading} = this.state;
         let isOwner = this.props.user._id === userInfo.getState()._id;
-        let aboutPanels = loading ? null: createAboutPanels({
-            isOwner: this.props.user._id === userInfo.getState()._id,
+        let onSaveList = () => {
+            return this.fetchUserBrief(this.props.user._id)
+        };
+        let aboutPanels = loading ? null : createAboutPanels({
+            isOwner,
             user: userBrief,
             onSave: this.updateUser,
-            onSaveList: () => {
-                return this.fetchUserBrief(this.props.user._id)
-            }
+            onSaveList
         });
         return (
             <div className="profile-about-route">
@@ -70,12 +72,22 @@ export default class ProfileAbout extends Component {
                             <div style={{height: "200px", position: "relative"}}>
                                 <LoadingInline/>
                             </div>
-                        ) : aboutPanels.map((each, i) => (
-                            <AboutPanel
-                                key={i}
-                                {...each}
-                            />
-                        ))}
+                        ) : (
+                            <>
+                                {aboutPanels.map((each, i) => (
+                                    <AboutPanel
+                                        key={i}
+                                        {...each}
+                                    />
+                                ))}
+                                <FavoritesPanel
+                                    list={userBrief.favorites}
+                                    isOwner={isOwner}
+                                    onSaveList={onSaveList}
+                                />
+                            </>
+                        )}
+
                     </div>
                 </div>
             </div>

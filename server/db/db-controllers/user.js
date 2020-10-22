@@ -958,7 +958,7 @@ const upsertUserSchool = (userID, payload) => {
             _id: ObjectId(userID)
         }, {
             $push: {
-                works: payload.school
+                schools: payload.school
             }
         }, {new: true}).lean().exec()
     }
@@ -972,7 +972,7 @@ const upsertUserSchool = (userID, payload) => {
             }
         }
     }, {
-        "arrayFilters": [{"elem._id": ObjectId(payload.workID)}],
+        "arrayFilters": [{"elem._id": ObjectId(payload.schoolID)}],
         new: true
     }).lean().exec()
 }
@@ -1000,8 +1000,20 @@ const deleteSchool = ({userID, schoolID}) => {
         }
     },  {new: true}).lean().exec()
 }
+const upsertUserFavorites = (userID, payload) => {
+    return User.findOneAndUpdate({
+        _id: ObjectId(userID)
+    }, {
+        "$set": {
+            "favorites": payload.favorites
+        }
+    }, {
+        new: true
+    }).lean().exec()
+}
 
 module.exports = {
+    upsertUserFavorites,
     deleteWork,
     deleteSchool,
     upsertUserWork,

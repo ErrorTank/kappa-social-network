@@ -101,4 +101,7 @@ export const userApi = {
     deleteSchool(userID, schoolID){
         return authenApi.delete(`/user/${userID}/school/${schoolID}`)
     },
+    upsertFavorites(userID, payload){
+        return authenApi.post(`/user/${userID}/upsert-favorites`, payload)
+    },
 };
