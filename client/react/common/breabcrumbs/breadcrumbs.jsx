@@ -11,12 +11,11 @@ export class Breadcrumbs extends Component {
   render() {
     let { location } = customHistory;
     const breadcrumbsArray = createBreadcrumbBuilder(location.pathname);
-    console.log(breadcrumbsArray);
     return (
       <div className='breadcrumbs-container'>
         {breadcrumbsArray.length > 1 && (
           <div className='breadcrumbs'>
-            {breadcrumbsArray.map((e) => (
+            {breadcrumbsArray.map((each) => (
               <div
                 className='breadcrumbs-item'
                 key={each.url}

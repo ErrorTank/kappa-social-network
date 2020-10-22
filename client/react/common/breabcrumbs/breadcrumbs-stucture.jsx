@@ -18,8 +18,24 @@ const marketplaceStucture = {
             },
 
             {
-              url: '/marketplace/112344455778999abbccdfff',
-              label: <span className='label'>Xe máy</span>,
+              url: '/marketplace/5f49371859bac41b24d97fd0',
+              label: <span className='label'>Xe mô tô thể thao</span>,
+            },
+            {
+              url: '/marketplace/5f49371859bac41b24d97fd1',
+              label: <span className='label'>RV/Nhà xe lưu động</span>,
+            },
+            {
+              url: '/marketplace/5f49371859bac41b24d97fd2',
+              label: <span className='label'>Thuyền</span>,
+            },
+            {
+              url: '/marketplace/5f49371859bac41b24d97fd3',
+              label: <span className='label'>Xe moóc</span>,
+            },
+            {
+              url: '/marketplace/5f49371859bac41b24d97fd4',
+              label: <span className='label'>Thương mại/Công nghiệp</span>,
             },
           ],
         },
