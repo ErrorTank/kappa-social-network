@@ -7,6 +7,7 @@ import {chatApi} from "../../../../../api/common/chat-api";
 import {KComponent} from "../../../../common/k-component";
 import {userInfo} from "../../../../../common/states/common";
 import {callServices} from "../../../../../common/call-services/call-services";
+import {customHistory} from "../../../../routes/routes";
 
 const moment = require("moment");
 
@@ -69,7 +70,10 @@ export class ChatBoxHeaderUserInfo extends KComponent {
 
 
                         )}
-                        <div className={"avatar-wrapper"}>
+                        <div className={"avatar-wrapper"} onClick={(e) => {
+                            e.stopPropagation();
+                            customHistory.push(`/user/${userInfo.basic_info.profile_link || userInfo._id}`);
+                        }}>
                             <StatusAvatar
                                 active={userStatus.active}
                                 user={userInfo}
