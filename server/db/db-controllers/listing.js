@@ -64,12 +64,12 @@ const getListing = (query) => {
     });
 };
 
-const getListingByCategoryID = (categoryID) => {
+const getListingByCategoryID = (userID) => {
   return Category.find({})
     .lean()
     .then((categories) => {
-      return getCategoryByID(categoryID).then((categoryInfo) => {
-        let chilrenArr = getRootCategories(categories, categoryID);
+      return getCategoryByID(userID).then((categoryInfo) => {
+        let chilrenArr = getRootCategories(categories, userID);
         return Listing.find({
           category: {
             $in: chilrenArr.map((e) => ObjectId(e)),
@@ -87,8 +87,34 @@ const getListingByCategoryID = (categoryID) => {
       });
     });
 };
+// multi-select: ctrl + shift + l
+const getListingByUserID = (userID) => {
+  // return Category.find({})
+  //   .lean()
+  //   .then((categories) => {
+  //     return getCategoryByID(userID).then((categoryInfo) => {
+  //       let chilrenArr = getRootCategories(categories, userID);
+  //       return Listing.find({
+  //         category: {
+  //           $in: chilrenArr.map((e) => ObjectId(e)),
+  //         },
+  //       })
+  //         .lean()
+  //         .sort('-postTime')
+  //         .then((products) => {
+  //           return {
+  //             _id: categoryInfo._id,
+  //             name: categoryInfo.name,
+  //             listingArr: [...products],
+  //           };
+  //         });
+  //     });
+  //   });
+  console.log('ok');
+};
 module.exports = {
   createListing,
   getListing,
   getListingByCategoryID,
+  getListingByUserID,
 };

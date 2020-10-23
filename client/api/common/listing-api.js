@@ -12,4 +12,7 @@ export const listingApi = {
   getListingByCategoryID(categoryID) {
     return authenApi.get(`/listing/get-listing-by-categoryID/${categoryID}`);
   },
+  getListingByUserID(userID) {
+    return authenApi.get(`/listing/get-listing-by-userID/${userID}`);
+  },
 };

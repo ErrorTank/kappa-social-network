@@ -7,6 +7,7 @@ const {
   createListing,
   getListing,
   getListingByCategoryID,
+  getListingByUserID,
 } = require('../db/db-controllers/listing');
 const ObjectId = mongoose.Types.ObjectId;
 
@@ -35,6 +36,17 @@ module.exports = (db, namespacesIO) => {
     authorizationUserMiddleware,
     (req, res, next) => {
       return getListingByCategoryID(req.params.categoryID)
+        .then((data) => {
+          return res.status(200).json(data);
+        })
+        .catch((err) => next(err));
+    }
+  );
+  router.get(
+    '/get-listing-by-userID/:userID',
+    authorizationUserMiddleware,
+    (req, res, next) => {
+      return getListingByUserID(req.params.userID)
         .then((data) => {
           return res.status(200).json(data);
         })

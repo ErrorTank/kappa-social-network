@@ -3,6 +3,7 @@ import { KComponent } from '../../../../common/k-component';
 import { CommonLayout } from '../../../../layout/common-layout/common-layout';
 import { PageTitle } from '../../../../common/page-title/page-title';
 import { BrowseAllWidget } from './../browse-all-widget/browse-all-widget';
+import { YourListing } from './your-listing/your-listing';
 
 class ListingSelling extends Component {
   constructor(props) {
@@ -14,7 +15,7 @@ class ListingSelling extends Component {
       <PageTitle title={'Listing Selling'}>
         <div className='listing-selling'>
           <CommonLayout
-            mainRender={() => <div>ok</div>}
+            mainRender={() => <YourListing />}
             haveRightRender={false}
             leftRender={() => <BrowseAllWidget />}
           />
