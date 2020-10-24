@@ -4,6 +4,7 @@ import { CommonLayout } from '../../../../layout/common-layout/common-layout';
 import { PageTitle } from '../../../../common/page-title/page-title';
 import { BrowseAllWidget } from './../browse-all-widget/browse-all-widget';
 import { YourListing } from './your-listing/your-listing';
+import { userInfo } from './../../../../../common/states/common';
 
 class ListingSelling extends Component {
   constructor(props) {
@@ -11,11 +12,12 @@ class ListingSelling extends Component {
     this.state = {};
   }
   render() {
+    let user = userInfo.getState();
     return (
       <PageTitle title={'Listing Selling'}>
         <div className='listing-selling'>
           <CommonLayout
-            mainRender={() => <YourListing />}
+            mainRender={() => <YourListing user={user} />}
             haveRightRender={false}
             leftRender={() => <BrowseAllWidget />}
           />

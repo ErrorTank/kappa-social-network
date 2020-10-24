@@ -72,6 +72,7 @@ export class CreateListingInputWidget extends Component {
   }
 
   componentDidMount = () => {
+    this.forceUpdate();
     this.setDefaultValue();
   };
 

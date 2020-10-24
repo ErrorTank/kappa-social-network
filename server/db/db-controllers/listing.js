@@ -89,28 +89,12 @@ const getListingByCategoryID = (userID) => {
 };
 // multi-select: ctrl + shift + l
 const getListingByUserID = (userID) => {
-  // return Category.find({})
-  //   .lean()
-  //   .then((categories) => {
-  //     return getCategoryByID(userID).then((categoryInfo) => {
-  //       let chilrenArr = getRootCategories(categories, userID);
-  //       return Listing.find({
-  //         category: {
-  //           $in: chilrenArr.map((e) => ObjectId(e)),
-  //         },
-  //       })
-  //         .lean()
-  //         .sort('-postTime')
-  //         .then((products) => {
-  //           return {
-  //             _id: categoryInfo._id,
-  //             name: categoryInfo.name,
-  //             listingArr: [...products],
-  //           };
-  //         });
-  //     });
-  //   });
-  console.log('ok');
+  return Listing.find({ user: userID })
+    .lean()
+    .then((listing) => {
+      // console.log(listing);
+      return listing;
+    });
 };
 module.exports = {
   createListing,
