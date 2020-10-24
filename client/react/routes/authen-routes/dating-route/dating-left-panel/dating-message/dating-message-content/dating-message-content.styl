@@ -1,4 +1,20 @@
 .dating-message-content {
-   flex-grow 1
-   flex-basis: 550px
+   flex-grow: 1;
+   flex-basis: 550px;
+   overflow-y: auto;
+
+   .dm-content {
+      font-size: 1.5rem;
+      font-weight: 400;
+      text-align: left;
+      white-space: pre-wrap;
+      padding: 8px 12px;
+      word-break: break-word;
+      vertical-align: bottom;
+   }
+}
+
+.dating-message-loading {
+   position: relative;
+   height: 100%;
 }

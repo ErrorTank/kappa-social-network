@@ -1,65 +1,77 @@
 .dating-message-bar {
     display: flex;
-    flex-grow 1
-    align-items: center
-    padding 8px
-    .dmb-input-wrapper{
-        position relative
-        flex 0 0 calc(100% - 34px)
-        .picker-wrapper{
-            position absolute
-            bottom : 100%
-            right : 0 ;
+    flex-grow: 1;
+    align-items: center;
+    padding: 8px;
+
+    .dmb-input-wrapper {
+        position: relative;
+        flex: 0 0 calc(100% - 34px);
+        max-width: 520px;
+
+        .picker-wrapper {
+            position: absolute;
+            bottom: 100%;
+            right: 0;
         }
-        .dating-chat-input{
-            border-radius 20px
-            padding 6px 12px
-            padding-right: 30px
-            font-size 1.4rem
-            cursor text
-            width : 100%
-            border : none 
-            outline : none
-            background-color: bgLight
-            max-width 350px
-           
-            
+
+        .dating-chat-input {
+            border-radius: 20px;
+            padding: 6px 12px;
+            padding-right: 30px;
+            font-size: 1.4rem;
+            cursor: text;
+            width: 100%;
+            border: none;
+            outline: none;
+            background-color: bgLight;
         }
-        .dmb-emoji-picker{
-            position absolute
-            right 5px
-            bottom -3px
-            line-height 3
-            text-align center
-            border-radius 50%
-            cursor pointer
-            transition background-color 0.1s ease
+
+        .dmb-emoji-picker {
+            position: absolute;
+            right: 5px;
+            bottom: -3px;
+            line-height: 3;
+            text-align: center;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: background-color 0.1s ease;
+
             >i {
-                font-size 2.2rem
-                color lightIcon
-            }      
-      
+                font-size: 2.2rem;
+                color: lightIcon;
+            }
         }
     }
-    
-    .dmb-action{
-        flex 0 0 34px
-        .action-wrapper{
-            margin : 5px
-            align-self: center
-            cursor: pointer
-            > i{
-                display block
-                font-size: 24px
+
+    .dmb-action {
+        flex: 0 0 34px;
+
+        .action-wrapper {
+            margin: 5px;
+            align-self: center;
+            cursor: pointer;
+
+            > i {
+                display: block;
+                font-size: 24px;
             }
-            > span{
-                display block
+
+            > span {
+                display: block;
+            }
+
+            > button {
+                display: block;
+                padding: 0 !important;
+                margin: 0 !important;
             }
         }
     }
 }
+
 [contenteditable=true]:empty:before {
-  content: attr(placeholder);
-  display: block;
-  color: #aaa;
+    content: attr(placeholder);
+    display: block;
+    color: #aaa;
 }

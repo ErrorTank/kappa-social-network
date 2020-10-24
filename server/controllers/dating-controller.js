@@ -1,7 +1,11 @@
 const express = require("express");
 const router = express.Router();
-const { authorizationUserMiddleware } = require("../common/middlewares/common");
-const { asynchronized } = require("../utils/common-utils");
+const {
+  authorizationUserMiddleware
+} = require("../common/middlewares/common");
+const {
+  asynchronized
+} = require("../utils/common-utils");
 const mongoose = require("mongoose");
 const ObjectId = mongoose.Types.ObjectId;
 const {
@@ -16,6 +20,7 @@ const {
   getBasicChatBoxInfo,
   createChatBox,
   getChatBoxes,
+  getMessages,
 } = require("../db/db-controllers/dating");
 module.exports = (db, namespacesIO) => {
   router.get(
@@ -65,24 +70,36 @@ module.exports = (db, namespacesIO) => {
                 createChatBox(user._id, profile._id).then(() => {
                   namespacesIO.dating.io
                     .to(`/dating-room/profile/${profile._id}`)
-                    .emit("matched", { profile: user });
+                    .emit("matched", {
+                      profile: user
+                    });
                   namespacesIO.dating.io
                     .to(`/dating-room/profile/${user._id}`)
-                    .emit("matched", { profile });
+                    .emit("matched", {
+                      profile
+                    });
                   namespacesIO.dating.io
                     .to(`/dating-room/profile/${profile._id}`)
-                    .emit("matched-modal", { profile: user });
+                    .emit("matched-modal", {
+                      profile: user
+                    });
                   namespacesIO.dating.io
                     .to(`/dating-room/profile/${user._id}`)
-                    .emit("matched-modal", { profile });
+                    .emit("matched-modal", {
+                      profile
+                    });
                 });
               } else {
                 namespacesIO.dating.io
                   .to(`/dating-room/profile/${profile._id}`)
-                  .emit("be-liked", { profile: user });
+                  .emit("be-liked", {
+                    profile: user
+                  });
                 namespacesIO.dating.io
                   .to(`/dating-room/profile/${profile._id}`)
-                  .emit("be-liked-modal", { profile: user });
+                  .emit("be-liked-modal", {
+                    profile: user
+                  });
               }
             }
           });
@@ -150,6 +167,18 @@ module.exports = (db, namespacesIO) => {
         .catch((err) => next(err));
     }
   );
+  router.get(
+    "/chatbox/chatBoxId/:chatBoxId/",
+    authorizationUserMiddleware,
+    (req, res, next) => {
+      return getMessages(req.params.chatBoxId, req.query.skip)
+        .then((data) => {
+          return res.status(200).json(data);
+        })
+        .catch((err) => next(err));
+    }
+  );
+
 
   return router;
 };

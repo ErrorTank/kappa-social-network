@@ -35,47 +35,54 @@ export class DatingMessageBar extends Component {
     });
   };
   render() {
+    const { chatBoxId } = this.props;
     return (
-      <div className="dating-message-bar">
-        <div className="dmb-input-wrapper">
+      <div className='dating-message-bar'>
+        <div className='dmb-input-wrapper'>
           {this.state.showPicker && (
-            <span className="picker-wrapper">
+            <span className='picker-wrapper'>
               <Picker
                 onSelect={this.addEmoji}
                 emojiTooltip={true}
-                title="HongSonStyle"
+                title='HongSonStyle'
               />
             </span>
           )}
           <ContentEditable
-            className="dating-chat-input"
+            className='dating-chat-input'
             html={this.state.html}
             onChange={(e) => {
               this.setState({
                 html: e.target.value,
               });
             }}
-            placeholder={"Nhập tin nhắn..."}
-          ></ContentEditable>
+            placeholder={"Nhập tin nhắn..."}></ContentEditable>
           <div
             onClick={() => {
               this.setState({
                 showPicker: !this.state.showPicker,
               });
             }}
-            className="dmb-emoji-picker"
-          >
-            <i className="fal fa-smile"></i>
+            className='dmb-emoji-picker'>
+            <i className='fal fa-smile'></i>
           </div>
         </div>
-        <div className="dmb-action">
+        <div className='dmb-action'>
           {this.state.html.length ? (
-            <div className="action-wrapper">
-              <i className="fas fa-paper-plane" onClick={this.onClick}></i>
+            <div className='action-wrapper'>
+              <i className='fas fa-paper-plane' onClick={this.onClick}></i>
             </div>
           ) : (
-            <div className="action-wrapper">
+            <div className='action-wrapper'>
               <Emoji
+                onClick={(emoji) => {
+                  let data = {
+                    message: emoji.native,
+                    user: datingProfile.getState()._id,
+                  };
+                  console.log(data);
+                  this.io.emit("chat-room", { data, chatBoxId });
+                }}
                 perLine={4}
                 set={"facebook"}
                 emoji={{ id: "+1" }}
