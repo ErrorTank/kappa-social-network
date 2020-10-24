@@ -3,6 +3,7 @@ import { datingApi } from "../../../../../../../api/common/dating";
 import { datingIO } from "./../../../../../../../socket/sockets";
 import { LoadingInline } from "./../../../../../../common/loading-inline/loading-inline";
 import { reverseArr } from "../../../../../../../common/utils/array-utils";
+import { InfiniteScrollWrapper } from "./../../../../../../common/infinite-scroll-wrapper/infinite-scroll-wrapper";
 export class DatingMessageContent extends Component {
   constructor(props) {
     super(props);
@@ -42,15 +43,20 @@ export class DatingMessageContent extends Component {
         <LoadingInline />
       </div>
     ) : (
-      <div className='dating-message-content'>
-        {reverseArr(messages).map((each) => {
-          return (
-            <div key={each._id}>
-              {each.user.name} : {each.message}
-            </div>
-          );
-        })}
-      </div>
+      <InfiniteScrollWrapper
+        className={"dating-message-content"}
+        onScrollTop={() => {}}
+        onScrollBottom={() => null}>
+        {() => {
+          return reverseArr(messages).map((each) => {
+            return (
+              <div key={each._id} className='dm-content'>
+                {each.user.name} : {each.message}
+              </div>
+            );
+          });
+        }}
+      </InfiniteScrollWrapper>
     );
   }
 }
