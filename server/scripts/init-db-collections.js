@@ -10,7 +10,11 @@ const initDbCollections = (appDb) => {
   const ChatRoom = require("../db/model/chat-room")(appDb);
   const ConfirmToken = require("../db/model/confirm-token")(appDb);
   const ResetPasswordToken = require("../db/model/reset-password-token")(appDb);
-  const { City, Ward, District } = require("../db/model/location")(appDb);
+  const {
+    City,
+    Ward,
+    District
+  } = require("../db/model/location")(appDb);
   const Listing = require("../db/model/marketplace/listing")(appDb);
   const Category = require("../db/model/marketplace/category")(appDb);
   const Comment = require("../db/model/comment")(appDb);
@@ -36,14 +40,11 @@ const initDbCollections = (appDb) => {
   //     },
   //   }
   // ).exec();
-  // ChatBox.updateMany(
-  //   {},
-  //   {
-  //     $set: {
-  //       messages: [],
-  //     },
-  //   }
-  // ).exec();
+  ChatBox.updateMany({}, {
+    $set: {
+      messages: [],
+    },
+  }).exec();
   // Comment.updateMany({}, {$set: {replies: []}}).then(() => console.log("cac"))
   // ChatRoom.deleteMany({}).then(() => console.log("cac"))
   // User.updateMany({}, {$set: {"contact.address": {ward: ObjectId("5e92c7b6b4c8182784f5bcff"), city: ObjectId("5e92c7b4b4c8182784f59d4a"), district: ObjectId("5e92c7b4b4c8182784f5994b")}}}).then(() => console.log("cac"))

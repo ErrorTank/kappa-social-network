@@ -8,10 +8,12 @@ const ChatBox = require("../model/dating/chatbox")(appDb);
 const ObjectId = mongoose.Types.ObjectId;
 
 const checkDatingProfile = (arg) => {
-  const { userID } = arg;
+  const {
+    userID
+  } = arg;
   return Profile.findOne({
-    root_user: ObjectId(userID),
-  })
+      root_user: ObjectId(userID),
+    })
     .lean()
     .then((profile) => {
       if (profile) {
@@ -20,37 +22,38 @@ const checkDatingProfile = (arg) => {
       return null;
     });
 };
-const createProfile = (data, { userID }) => {
+const createProfile = (data, {
+  userID
+}) => {
   return new Profile({
-    ...data,
-    root_user: ObjectId(userID),
-  })
+      ...data,
+      root_user: ObjectId(userID),
+    })
     .save()
     .then((a) => {
       return a;
     });
 };
-const getCardProfileInfo = (userID, { seenID, action, exclude }) => {
-  return Profile.findOneAndUpdate(
-    {
+const getCardProfileInfo = (userID, {
+  seenID,
+  action,
+  exclude
+}) => {
+  return Profile.findOneAndUpdate({
       root_user: ObjectId(userID),
-    },
-    {
+    }, {
       $push: {
         seen: {
           user: ObjectId(seenID),
           action,
         },
       },
-    },
-    {
+    }, {
       new: true,
-    }
-  )
+    })
     .lean()
     .then((user) => {
-      return Profile.aggregate([
-        {
+      return Profile.aggregate([{
           $match: {
             _id: {
               $nin: exclude
@@ -144,12 +147,11 @@ const getCardProfileInfo = (userID, { seenID, action, exclude }) => {
 };
 const getInitCardProfileInfo = (userID) => {
   return Profile.findOne({
-    root_user: ObjectId(userID),
-  })
+      root_user: ObjectId(userID),
+    })
     .lean()
     .then((user) => {
-      return Profile.aggregate([
-        {
+      return Profile.aggregate([{
           $match: {
             _id: {
               $nin: user.seen
@@ -273,8 +275,8 @@ const getUserProfile = (userID) => {
 };
 const getProfileByProfileID = (profileID) => {
   return Profile.findOne({
-    _id: ObjectId(profileID),
-  })
+      _id: ObjectId(profileID),
+    })
     .lean()
     .then((user) => {
       return user;
@@ -282,38 +284,41 @@ const getProfileByProfileID = (profileID) => {
 };
 const getBasicChatBoxInfo = (user1, user2) => {
   return ChatBox.findOne({
-    $or: [
-      {
-        user1: ObjectId(user1),
-        user2: ObjectId(user2),
-      },
-      {
-        user1: ObjectId(user2),
-        user2: ObjectId(user1),
-      },
-    ],
-  })
+      $or: [{
+          user1: ObjectId(user1),
+          user2: ObjectId(user2),
+        },
+        {
+          user1: ObjectId(user2),
+          user2: ObjectId(user1),
+        },
+      ],
+    })
     .lean()
     .then((cb) => omit(cb, ["messages"]));
 };
 const createChatBox = (user1, user2) => {
-  return new ChatBox({ user1: ObjectId(user1), user2: ObjectId(user2) }).save();
+  return new ChatBox({
+    user1: ObjectId(user1),
+    user2: ObjectId(user2)
+  }).save();
 };
 const getChatBoxes = (profileId) => {
   return ChatBox.find({
-    $or: [
-      { user1: ObjectId(profileId) },
-      {
-        user2: ObjectId(profileId),
-      },
-    ],
-  })
+      $or: [{
+          user1: ObjectId(profileId)
+        },
+        {
+          user2: ObjectId(profileId),
+        },
+      ],
+    })
     .lean()
     .then((cbs) => {
       return cbs.map((cb) => {
         let sortedMessages = cb.messages.sort(
           (a, b) =>
-            new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+          new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
         );
         return {
           user1: cb.user1,
@@ -324,6 +329,19 @@ const getChatBoxes = (profileId) => {
       });
     });
 };
+const getMessages = (chatBoxId, skip) => {
+  const skipToNumber = Number(skip)
+  return ChatBox.findOne({
+      _id: chatBoxId
+    })
+    .lean()
+    .then((cb) => {
+      return cb.messages.sort(
+        (a, b) =>
+        new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+      ).slice(skipToNumber, skipToNumber + 10)
+    })
+}
 module.exports = {
   checkDatingProfile,
   createProfile,
@@ -336,4 +354,5 @@ module.exports = {
   getBasicChatBoxInfo,
   createChatBox,
   getChatBoxes,
+  getMessages,
 };
