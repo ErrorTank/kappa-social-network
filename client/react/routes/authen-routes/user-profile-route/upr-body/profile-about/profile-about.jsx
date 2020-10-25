@@ -57,7 +57,8 @@ export default class ProfileAbout extends Component {
             isOwner,
             user: userBrief,
             onSave: this.updateUser,
-            onSaveList
+            onSaveList,
+            friendStatus: this.props.friendStatus
         });
         return (
             <div className="profile-about-route">

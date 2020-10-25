@@ -40,7 +40,7 @@ export class ProfileAboutWidget extends Component {
         let {friendStatus} = this.props;
         let relationshipConfig = relationships.find(each => each.value === userAbout?.relationship?.status);
         let isOwner = userAbout?._id === userInfo.getState()._id;
-        console.log(friendStatus)
+
         let canRender = (privacy) => {
             return isOwner || privacy === PostPoliciesMAP.PUBLIC || (privacy === PostPoliciesMAP.FRIENDS && friendStatus === USER_FRIEND_RELATION.FRIEND)
         }
