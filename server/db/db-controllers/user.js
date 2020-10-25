@@ -609,16 +609,19 @@ const checkIsFriend = (userID, friendID) => {
             _id: ObjectId(userID)
         })
             .lean(),
-        User.findOne({
+        User.findOne(ObjectId.isValid(friendID) ? {
             _id: ObjectId(friendID)
+        } : {
+            "basic_info.profile_link": friendID
         })
             .lean()
     ])
         .then(([user, friend]) => {
+            console.log(friend)
             return {
                 value: friend.friend_requests.find(each => each.toString() === userID) ?
                     USER_FRIEND_RELATION.PENDING :
-                    user.friends.find(each => each.info.toString() === friendID) ?
+                    user.friends.find(each => each.info.toString() === friend._id.toString()) ?
                         USER_FRIEND_RELATION.FRIEND : USER_FRIEND_RELATION.NOT_FRIEND
             }
         })

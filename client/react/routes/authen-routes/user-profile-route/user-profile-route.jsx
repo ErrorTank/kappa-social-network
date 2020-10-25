@@ -4,19 +4,29 @@ import {CommonLayout} from "../../../layout/common-layout/common-layout";
 import {userApi} from "../../../../api/common/user-api";
 import {UprHeader} from "./upr-header/upr-header";
 import {UprBody} from "./upr-body/upr-body";
+import {userInfo} from "../../../../common/states/common";
+import {USER_FRIEND_RELATION} from "./upr-header/profile-navigator";
 
 class UserProfileRoute extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            user: null
+            user: null,
+            friendStatus: null,
         }
         this.fetchUser(props.match.params.userID);
     }
 
     fetchUser = userID => {
-        userApi.getUserBasicInfo(userID)
-            .then(user => this.setState({user}))
+        let promises = [
+            userApi.getUserBasicInfo(userID)
+        ]
+        let user = userInfo.getState();
+        if(userID !== user._id && userID !== user.basic_info.profile_link){
+            promises.push(userApi.checkIsFriend(userInfo.getState()._id, userID));
+        }
+        Promise.all(promises)
+            .then(([user, friendStatus]) => this.setState({user, friendStatus: friendStatus?.value || null}))
     }
 
     componentDidUpdate(prevProps, prevState, snapshot) {
@@ -26,7 +36,7 @@ class UserProfileRoute extends Component {
     }
 
     render() {
-        let {user} = this.state;
+        let {user, friendStatus} = this.state;
 
         return (
             <PageTitle
@@ -41,10 +51,13 @@ class UserProfileRoute extends Component {
                             <div className="upr-wrapper">
                                 <UprHeader
                                     user={user}
+                                    friendStatus={friendStatus}
+                                    onChangeStatus={(friendStatus) => this.setState({friendStatus})}
                                 />
                                 <UprBody
                                     user={user}
                                     renderChildRoute={this.props.children}
+                                    friendStatus={friendStatus}
                                 />
                             </div>
                         ) : null}

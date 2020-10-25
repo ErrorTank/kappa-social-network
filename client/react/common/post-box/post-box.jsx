@@ -259,6 +259,7 @@ export class PostBox extends PureComponent {
         let user = userInfo.getState();
         let activeReaction = getActiveReaction(user._id, post.reactions);
         let reactionsLength = reactions.countReactions();
+        console.log(post)
         // console.log(getRenderableContentFromMessage(post))
         // let activeReaction = reactions.reduce((total, cur) => [...total, ...Object.values(cur)[0].map(each => ({key: Object.keys(cur)[0], value: each}))],[]).find(each => each.value === user._id);
         return (
@@ -275,7 +276,7 @@ export class PostBox extends PureComponent {
                         <div className="upper">
                             {post.belonged_person && (
                                 <>
-                                {!post.belonged_wall ? <Link className="link" to={`/user/${post.belonged_person._id}`}>{post.belonged_person.basic_info.username}</Link> : (
+                                {!post.belonged_wall ? <Link className="link" to={`/user/${post.belonged_person.basic_info.profile_link || post.belonged_person._id}`}>{post.belonged_person.basic_info.username}</Link> : (
                                     <div>
                                         <Link className="link" to={`/user/${post.belonged_person.basic_info.profile_link || post.belonged_person._id}`}>{post.belonged_person.basic_info.username}</Link>
                                         <i className="fas fa-caret-right ml-2 mr-2"></i>

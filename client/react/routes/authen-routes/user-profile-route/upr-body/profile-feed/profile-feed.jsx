@@ -14,17 +14,19 @@ export default class ProfileFeed extends Component {
 
 
     render() {
-        let {user} = this.props;
+        let {user, friendStatus} = this.props;
         return (
             <div className="profile-feed-route">
                 <div className="pfr-left-panel">
                     <ProfileAboutWidget
                         user={user}
+                        friendStatus={friendStatus}
                     />
                 </div>
                 <div className='pfr-right-panel'>
                     <ProfileFeedWidget
                         user={user}
+
                     />
                 </div>
             </div>

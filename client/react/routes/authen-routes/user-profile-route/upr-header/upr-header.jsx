@@ -11,35 +11,15 @@ import {userApi} from "../../../../../api/common/user-api";
 export class UprHeader extends React.Component {
     constructor(props) {
         super(props);
-        let isOwner = props.user._id === userInfo.getState()._id;
-        this.state = {
-            friendStatus: null,
-            loadIsFriend: !isOwner
-        }
-        if (!isOwner) {
-            this.checkIsFriend(props.user._id)
-        }
+
     }
 
-    checkIsFriend = (friendID) => {
-        userApi.checkIsFriend(userInfo.getState()._id, friendID)
-            .then(({value}) => {
-                this.setState({loadIsFriend: false, friendStatus: value})
-            })
-    }
 
-    componentDidUpdate(prevProps, prevState, snapshot) {
-        if (prevProps.user._id !== this.props.user._id) {
-            if (!this.props.isOwner) {
-                this.checkIsFriend(this.props.user._id)
-            }
-        }
-    }
+
 
 
     render() {
-        let { friendStatus, loadIsFriend} = this.state;
-        let {user} = this.props;
+        let {user, friendStatus, onChangeStatus} = this.props;
         let { _id} = user;
         let isOwner = _id === userInfo.getState()._id;
         return (
@@ -61,16 +41,15 @@ export class UprHeader extends React.Component {
                         user={user}
                         isOwner={isOwner}
                     />
-                    {!loadIsFriend && (
-                        <ProfileNavigator
-                            user={user}
-                            isOwner={isOwner}
-                            friendStatus={friendStatus}
-                            onUnfriend={() => this.setState({friendStatus: USER_FRIEND_RELATION.NOT_FRIEND})}
-                            onSentFriendRequest={() =>  this.setState({friendStatus: USER_FRIEND_RELATION.PENDING})}
-                            onCancelRequest={() =>  this.setState({friendStatus: USER_FRIEND_RELATION.NOT_FRIEND})}
-                        />
-                    )}
+                    <ProfileNavigator
+                        user={user}
+                        isOwner={isOwner}
+                        friendStatus={friendStatus}
+                        onUnfriend={() => onChangeStatus(USER_FRIEND_RELATION.NOT_FRIEND)}
+                        onSentFriendRequest={() =>  onChangeStatus( USER_FRIEND_RELATION.PENDING)}
+                        onCancelRequest={() =>  onChangeStatus(USER_FRIEND_RELATION.NOT_FRIEND)}
+                    />
+
 
                 </div>
             </div>
