@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { numberToMoney } from '../../../../../../common/utils/listing-utils';
+import { FacebookButton } from '../../../../../common/facebook-button/facebook-button';
 import { listingApi } from './../../../../../../api/common/listing-api';
 
 export class YourListing extends Component {
@@ -40,7 +41,19 @@ export class YourListing extends Component {
                     </div>
                   </div>
                 </div>
-                <div className='sl-funtion'></div>
+                <div className='sl-function'>
+                  <FacebookButton>
+                    <i className='fas fa-check'></i>
+                    <span>Đánh dấu là còn hàng</span>
+                  </FacebookButton>
+                  <FacebookButton>
+                    <i className='fas fa-share'></i>
+                    <span>Chia sẻ</span>
+                  </FacebookButton>
+                  <FacebookButton>
+                    <i className='fas fa-ellipsis-h'></i>
+                  </FacebookButton>
+                </div>
               </div>
             ))}
         </div>
