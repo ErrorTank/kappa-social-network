@@ -33,7 +33,7 @@ const DatingShowProfile = lazy(
 const FeedRoute = lazy(
   delayLoad(() => import('./authen-routes/feed-route/feed-route'))
 );
-
+import LoginRoute from './guest-routes/login-route/login-route';
 const ForgotPasswordRoute = lazy(
   delayLoad(() =>
     import('./guest-routes/forgot-password-route/forgot-password-route')
