@@ -92,7 +92,6 @@ const getListingByUserID = (userID) => {
   return Listing.find({ user: userID })
     .lean()
     .then((listing) => {
-      // console.log(listing);
       return listing;
     });
 };

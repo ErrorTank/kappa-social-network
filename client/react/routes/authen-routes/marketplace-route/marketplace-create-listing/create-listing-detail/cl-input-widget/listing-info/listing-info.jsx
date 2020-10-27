@@ -121,17 +121,8 @@ export class ListingInfo extends Component {
 
   // change number->money display
   handlePriceDisplay = (name, value) => {
-    console.log(value, 'raw');
     let newValue = moneyToNumber(sanitizeHtml(value, this.sanitizeConf));
-    console.log(newValue);
-    // this.props.updateValue([name], newValue);
-    if (!newValue.includes('₫')) {
-      this.props.updateValue(
-        [name],
-        numberToMoney(newValue.slice(newValue.length - 1))
-      );
-    }
-
+    if (newValue === '') this.props.updateValue([name], '');
     if (checkNumber(newValue)) {
       if (newValue.length > 10) {
         this.props.updateValue([name], '');
@@ -144,6 +135,7 @@ export class ListingInfo extends Component {
   // check error, only check needed input now
   handleCheckError = (item, value) => {
     const { state, updateValue, setError, resetError } = this.props;
+    console.log(value);
     let check = true,
       name = item.englishName,
       error = item.error;
