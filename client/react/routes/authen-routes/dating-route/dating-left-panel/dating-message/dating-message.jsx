@@ -31,20 +31,24 @@ export class DatingMessage extends Component {
   render() {
     const { onSwitch, selectedProfile } = this.props;
     return (
-      <div className='dating-chat-box-container'>
-        <div className='dating-chat-header'>
+      <div className="dating-chat-box-container">
+        <div className="dating-chat-header">
           <i
-            className='fal fa-long-arrow-left'
-            onClick={() => onSwitch(TAB_PANEL_TABS.MESSAGE)}></i>
-          <div className='dating-chat-avatar'>
-            <div className='avatar-wrapper'>
+            className="fal fa-long-arrow-left"
+            onClick={() => onSwitch(TAB_PANEL_TABS.MESSAGE)}
+          ></i>
+          <div className="dating-chat-avatar">
+            <div className="avatar-wrapper">
               <img src={selectedProfile.avatars[0].path} />
             </div>
           </div>
           <p>{selectedProfile.name}</p>
         </div>
         {this.state.chatBox && (
-          <DatingMessageContent chatBoxId={this.state.chatBox._id} />
+          <DatingMessageContent
+            chatBoxId={this.state.chatBox._id}
+            myRef={(scrollElem) => (this.scrollElem = scrollElem)}
+          />
         )}
         {this.state.chatBox && (
           <DatingMessageBar chatBoxId={this.state.chatBox._id} />
