@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { numberToMoney } from '../../../../../../common/utils/listing-utils';
-import { FacebookButton } from '../../../../../common/facebook-button/facebook-button';
 import { listingApi } from './../../../../../../api/common/listing-api';
 import { Button } from './../../../../../common/button/button';
 import classnames from 'classnames';
@@ -44,17 +43,17 @@ export class YourListing extends Component {
                   </div>
                 </div>
                 <div className='sl-function'>
-                  <Button className={classnames('facebook-button')}>
+                  <Button className={classnames('facebook-button long')}>
                     <i className='fas fa-check'></i>
                     <span>Đánh dấu là còn hàng</span>
                   </Button>
-                  <FacebookButton>
+                  <Button className={classnames('facebook-button long')}>
                     <i className='fas fa-share'></i>
                     <span>Chia sẻ</span>
-                  </FacebookButton>
-                  <FacebookButton>
+                  </Button>
+                  <Button className={classnames('facebook-button')}>
                     <i className='fas fa-ellipsis-h'></i>
-                  </FacebookButton>
+                  </Button>
                 </div>
               </div>
             ))}

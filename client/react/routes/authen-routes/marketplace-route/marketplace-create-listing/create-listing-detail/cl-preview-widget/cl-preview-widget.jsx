@@ -3,7 +3,7 @@ import classnames from 'classnames';
 import { userInfo } from './../../../../../../../common/states/common';
 import { ImageSlider } from './image-slider/image-slider';
 import { Avatar } from './../../../../../../common/avatar/avatar';
-import { FacebookButton } from './../../../../../../common/facebook-button/facebook-button';
+import { Button } from './../../../../../../common/button/button';
 
 export class CreateListingPreviewWidget extends Component {
   constructor(props) {
@@ -110,22 +110,31 @@ export class CreateListingPreviewWidget extends Component {
               </div>
 
               <div className='button-section-wrapper'>
-                <FacebookButton
+                <Button
                   disabled={true}
-                  className={classnames('send-text')}
+                  className={classnames('facebook-button long')}
                 >
                   <i className='fab fa-facebook-messenger'></i>
                   <span>Nhắn tin</span>
-                </FacebookButton>
-                <FacebookButton disabled={true}>
+                </Button>
+                <Button
+                  disabled={true}
+                  className={classnames('facebook-button')}
+                >
                   <i className='fas fa-bookmark'></i>
-                </FacebookButton>
-                <FacebookButton disabled={true}>
+                </Button>
+                <Button
+                  disabled={true}
+                  className={classnames('facebook-button')}
+                >
                   <i className='fas fa-share'></i>
-                </FacebookButton>
-                <FacebookButton disabled={true}>
+                </Button>
+                <Button
+                  disabled={true}
+                  className={classnames('facebook-button')}
+                >
                   <i className='fas fa-ellipsis-h'></i>
-                </FacebookButton>
+                </Button>
               </div>
 
               <div className='addition-info-wrapper'>
