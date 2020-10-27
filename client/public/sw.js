@@ -1,6 +1,7 @@
 importScripts('/assets/vendor/idb.js');
 importScripts('/assets/vendor/sw-utilities.js');
-var exceptionRequestsDev = [{
+var exceptionRequestsDev = [
+  {
     endpoint: 'https://localhost:4000/api/register',
     method: 'POST',
   },
@@ -379,6 +380,10 @@ var exceptionRequestsDev = [{
     method: 'GET',
   },
   {
+    endpoint: /https:\/\/localhost:4000\/api\/listing\/get-listing-by-listingID\/\w+/,
+    method: 'GET',
+  },
+  {
     endpoint: /https:\/\/localhost:4000\/api\/category\/get-category-by-ID\/\w+/,
     method: 'GET',
   },
@@ -388,7 +393,8 @@ var exceptionRequestsDev = [{
   },
 ];
 
-var notGetRequests = [{
+var notGetRequests = [
+  {
     endpoint: 'https://localhost:4000/api/utility/login-sessions/brief',
     method: 'POST',
     dbCollectionName: 'login-sessions',
@@ -497,12 +503,12 @@ function isExceptionRequest(request) {
   return isInArray(
     request.url,
     exceptionRequestsDev
-    .filter(function (each) {
-      return each.method == request.method;
-    })
-    .map(function (each) {
-      return each.endpoint;
-    })
+      .filter(function (each) {
+        return each.method == request.method;
+      })
+      .map(function (each) {
+        return each.endpoint;
+      })
   );
 }
 
@@ -510,12 +516,12 @@ function isNotGetRequest(request) {
   return isInArray(
     request.url,
     notGetRequests
-    .filter(function (each) {
-      return each.method == request.method;
-    })
-    .map(function (each) {
-      return each.endpoint;
-    })
+      .filter(function (each) {
+        return each.method == request.method;
+      })
+      .map(function (each) {
+        return each.endpoint;
+      })
   );
 }
 

@@ -95,9 +95,17 @@ const getListingByUserID = (userID) => {
       return listing;
     });
 };
+const getListingByListingID = (listingID) => {
+  return Listing.findOne({ _id: listingID })
+    .lean()
+    .then((listing) => {
+      return listing;
+    });
+};
 module.exports = {
   createListing,
   getListing,
   getListingByCategoryID,
   getListingByUserID,
+  getListingByListingID,
 };

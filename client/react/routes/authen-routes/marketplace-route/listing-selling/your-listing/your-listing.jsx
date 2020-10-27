@@ -14,7 +14,7 @@ export class YourListing extends Component {
   }
   render() {
     const { sellingList } = this.state;
-    console.log(sellingList);
+    // console.log(sellingList);
     return (
       <div className='your-listing'>
         <div className='sold-listing-wrapper'>

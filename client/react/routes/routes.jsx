@@ -33,7 +33,6 @@ const DatingShowProfile = lazy(
 const FeedRoute = lazy(
   delayLoad(() => import('./authen-routes/feed-route/feed-route'))
 );
-import LoginRoute from './guest-routes/login-route/login-route';
 
 const ForgotPasswordRoute = lazy(
   delayLoad(() =>
@@ -105,6 +104,13 @@ const ShowEachCategory = lazy(
   delayLoad(() =>
     import(
       './authen-routes/marketplace-route/show-each-category/show-each-category'
+    )
+  )
+);
+const ListingFullDisplay = lazy(
+  delayLoad(() =>
+    import(
+      './authen-routes/marketplace-route/listing-full-display/listing-full-display'
     )
   )
 );
@@ -189,6 +195,12 @@ class MainRoute extends React.Component {
                     path={'/marketplace/:categoryID'}
                     exact
                     render={(props) => <ShowEachCategory {...props} />}
+                  />
+                  <AuthenRoute
+                    {...layoutProps}
+                    path={'/marketplace/listing/:listingID'}
+                    exact
+                    render={(props) => <ListingFullDisplay {...props} />}
                   />
                   <AuthenRoute
                     {...layoutProps}
