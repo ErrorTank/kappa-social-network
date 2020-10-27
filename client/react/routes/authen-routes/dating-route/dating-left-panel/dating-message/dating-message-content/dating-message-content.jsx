@@ -4,6 +4,8 @@ import { datingIO } from "./../../../../../../../socket/sockets";
 import { LoadingInline } from "./../../../../../../common/loading-inline/loading-inline";
 import { reverseArr } from "../../../../../../../common/utils/array-utils";
 import { InfiniteScrollWrapper } from "./../../../../../../common/infinite-scroll-wrapper/infinite-scroll-wrapper";
+import classnames from "classnames";
+import { datingProfile } from "../../../../../../../common/states/common";
 export class DatingMessageContent extends Component {
   constructor(props) {
     super(props);
@@ -38,20 +40,32 @@ export class DatingMessageContent extends Component {
   render() {
     console.log(this.state);
     let { messages, loading } = this.state;
+    console.log(messages);
     return loading ? (
-      <div className='dating-message-loading'>
+      <div className="dating-message-loading">
         <LoadingInline />
       </div>
     ) : (
       <InfiniteScrollWrapper
-        className={"dating-message-content"}
+        className={"dating-message-container"}
         onScrollTop={() => {}}
-        onScrollBottom={() => null}>
+        onScrollBottom={() => null}
+      >
         {() => {
           return reverseArr(messages).map((each) => {
             return (
-              <div key={each._id} className='dm-content'>
-                {each.user.name} : {each.message}
+              <div
+                key={each._id}
+                className={classnames("dm-content-wrapper", {
+                  "dm-user": each.user._id === datingProfile.getState()._id,
+                })}
+              >
+                {each.user._id != datingProfile.getState()._id && (
+                  <div className="dm-avatar">
+                    <img src={each.user.avatars[0].path} />
+                  </div>
+                )}
+                <div className="dm-content">{each.message}</div>
               </div>
             );
           });
