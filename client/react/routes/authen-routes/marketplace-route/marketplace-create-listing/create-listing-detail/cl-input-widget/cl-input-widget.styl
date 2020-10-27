@@ -1,11 +1,12 @@
-.create-listing-input-widget{
-  background-color white
-  height 100%;
+.create-listing-input-widget {
+  background-color: white;
+  height: 100%;
   border-top: 1px solid transparent;
-  box-shadow: 0 0 15px 1px rgba(69,65,78,0.2)
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
-  position relative
-  .cs-input-header{
+  box-shadow: 0 0 15px 1px rgba(69, 65, 78, 0.2);
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  position: relative;
+
+  .cs-input-header {
     margin: 20px 16px 5px 16px;
     box-sizing: border-box;
     flex-shrink: 0;
@@ -13,19 +14,22 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    .header-info{
-      flex-basis: calc(100% * (2/3));
+
+    .header-info {
+      flex-basis: calc(100% * (2 / 3));
       flex-shrink: 1;
       max-width: 100%;
       flex-grow: 1;
-      .fake-breadcrumb{
+
+      .fake-breadcrumb {
         color: secondaryTextLight;
         font-size: 13px;
         text-align: left;
         font-weight: 400;
         line-height: 16px;
       }
-      .header-title{
+
+      .header-title {
         font-size: 24px;
         font-family: inherit;
         color: normalTextLight;
@@ -33,50 +37,53 @@
         line-height: 28px;
       }
     }
-    .save-draft-button{
-      flex-basis: calc(100% /3);
+
+    .save-draft-button {
+      flex-basis: calc((100% / 3));
       display: flex;
-      width: 100%
-      height 36px;
+      width: 100%;
+      height: 36px;
       box-sizing: border-box;
       justify-content: flex-end;
       align-items: center;
-      
-      .save-draft-title{
-        padding: 7px 12px;   
+
+      .save-draft-title {
+        padding: 7px 12px;
         border-radius: 6px;
-        color: blueTextLight
-        cursor pointer
+        color: blueTextLight;
+        cursor: pointer;
         font-size: 15px;
         line-height: 20px;
-        height inherit 
+        height: inherit;
         font-weight: 500;
-        &:hover{
+
+        &:hover {
           background-color: hover;
         }
       }
     }
   }
 
-  .line-seperater{
+  .line-seperater {
     border-bottom: 1px solid lightgray;
     margin: 0 16px;
   }
 }
 
-.cs-input-body{
-  margin-top: 8px; 
+.cs-input-body {
+  margin-top: 8px;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   overflow: auto;
   height: 76%;
-  margin-bottom: 8px
-  .user-info-display{
+  margin-bottom: 8px;
+
+  .user-info-display {
     padding: 0 16px;
     min-height: 44px;
     display: flex;
     align-items: center;
 
-    .user-avatar-wrapper{
+    .user-avatar-wrapper {
       display: inline-block;
       vertical-align: middle;
       width: 40px;
@@ -86,32 +93,34 @@
       margin: auto;
       position: relative;
       margin: 8px 12px 8px 0;
-      justify-content: space-between
-      img{
+      justify-content: space-between;
+
+      img {
         position: absolute;
         left: 50%;
         top: 50%;
-        transform: translate(-50%,-50%);
+        transform: translate(-50%, -50%);
         height: 41px;
       }
     }
 
-    .user-info-wrapper{
+    .user-info-wrapper {
       padding: 12px 0;
       display: flex;
       box-sizing: border-box;
       justify-content: space-between;
       align-items: stretch;
       flex-direction: column;
-      .user-name{
+
+      .user-name {
         // margin: 5px 0;
         color: normalTextLight;
         font-size: 15px;
         font-weight: 600;
         font-family: inherit;
-        
-      }  
-      .user-marketplace-info{
+      }
+
+      .user-marketplace-info {
         display: flex;
         align-items: center;
         font-size: 13px;
@@ -120,10 +129,11 @@
         font-family: inherit;
         font-weight: 400;
         justify-content: space-between;
-        
-        .icon{
+
+        .icon {
           margin-right: 3px;
-          i{
+
+          i {
             color: iconColorLight;
           }
         }
@@ -132,39 +142,42 @@
   }
 }
 
-.dot{
+.dot {
   padding: 0 4px;
 }
 
-.cs-input-footer{
+.cs-input-footer {
   padding: 16px;
-  border-top: 1px solid lightgray
-  position: absolute
-  width: 100%
-  height: 73px
-  bottom: 0%
-  background-color: white
-  .cl-button{
+  border-top: 1px solid lightgray;
+  position: absolute;
+  width: 100%;
+  height: 73px;
+  bottom: 0%;
+  background-color: white;
+
+  .cl-button {
     box-sizing: border-box;
-    height 40px;
+    height: 40px;
     background-color: activeIcon;
     border-radius: 6px;
     display: flex;
     justify-content: center;
-    align-self center;
+    align-self: center;
     width: 100%;
-    font-size: 17px
-    font-weight: 600
-    color: white
-    padding-top:5px;
-    &:hover{
+    font-size: 17px;
+    font-weight: 600;
+    color: white;
+    padding-top: 5px;
+
+    &:hover {
       background-color: darken(activeIcon, 10%);
-      cursor pointer
+      cursor: pointer;
     }
-    &.disabled{
-      cursor not-allowed
-      background-color btnCancelLight
-      color textCancelLight
+
+    &.disabled {
+      cursor: not-allowed;
+      background-color: btnCancelLight;
+      color: textCancelLight;
     }
   }
 }

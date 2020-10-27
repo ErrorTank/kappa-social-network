@@ -114,7 +114,7 @@ export class CreateListingPreviewWidget extends Component {
                   disabled={true}
                   className={classnames('send-text')}
                 >
-                  <i className='fas fa-bookmark'></i>
+                  <i className='fab fa-facebook-messenger'></i>
                   <span>Nhắn tin</span>
                 </FacebookButton>
                 <FacebookButton disabled={true}>
