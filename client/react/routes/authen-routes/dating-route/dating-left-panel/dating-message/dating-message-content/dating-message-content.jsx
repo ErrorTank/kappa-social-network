@@ -65,7 +65,10 @@ export class DatingMessageContent extends Component {
                     <img src={each.user.avatars[0].path} />
                   </div>
                 )}
-                <div className="dm-content">{each.message}</div>
+                <div
+                  className="dm-content"
+                  dangerouslySetInnerHTML={{ __html: each.message }}
+                ></div>
               </div>
             );
           });

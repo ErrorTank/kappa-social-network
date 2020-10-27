@@ -4,6 +4,8 @@ import { Picker } from "emoji-mart";
 import { datingProfile } from "../../../../../../../common/states/common";
 import { datingIO } from "./../../../../../../../socket/sockets";
 import ContentEditable from "react-contenteditable";
+import sanitizeHtml from "sanitize-html";
+
 export class DatingMessageBar extends Component {
   constructor(props) {
     super(props);
@@ -14,6 +16,11 @@ export class DatingMessageBar extends Component {
     };
     this.io = datingIO.getIOInstance();
   }
+
+  sanitizeConf = {
+    allowedTags: ["b", "i", "em", "strong", "a", "p", "h1", "br"],
+    allowedAttributes: { a: ["href"] },
+  };
 
   onClick = (e) => {
     let data = {
@@ -35,6 +42,7 @@ export class DatingMessageBar extends Component {
     });
   };
   render() {
+    console.log(this.state.html);
     const { chatBoxId } = this.props;
     return (
       <div className="dating-message-bar">
@@ -53,7 +61,7 @@ export class DatingMessageBar extends Component {
             html={this.state.html}
             onChange={(e) => {
               this.setState({
-                html: e.target.value,
+                html: sanitizeHtml(e.target.value, this.sanitizeConf),
               });
             }}
             placeholder={"Nhập tin nhắn..."}
