@@ -23,6 +23,7 @@ import {
   numberToMoney,
 } from '../../../../../../../../common/utils/listing-utils';
 import ReactDOM from 'react-dom';
+import sanitizeHtml from 'sanitize-html';
 
 export class ListingInfo extends Component {
   constructor(props) {
@@ -53,6 +54,12 @@ export class ListingInfo extends Component {
       });
     });
   }
+
+  sanitizeConf = {
+    allowedTags: ['b', 'i', 'em', 'strong', 'a', 'p', 'h1'],
+    allowedAttributes: { a: ['href'] },
+  };
+
   // display function
   handleInputDisplay = () => {
     const { state, updateValue } = this.props;
@@ -114,13 +121,15 @@ export class ListingInfo extends Component {
 
   // change number->money display
   handlePriceDisplay = (name, value) => {
-    let newValue = moneyToNumber(value);
-
-    if (newValue.includes('&nbsp;')) {
-      newValue = newValue.slice(0, newValue.length - 7);
-      if (newValue === '') {
-        this.props.updateValue([name], '');
-      }
+    console.log(value, 'raw');
+    let newValue = moneyToNumber(sanitizeHtml(value, this.sanitizeConf));
+    console.log(newValue);
+    // this.props.updateValue([name], newValue);
+    if (!newValue.includes('₫')) {
+      this.props.updateValue(
+        [name],
+        numberToMoney(newValue.slice(newValue.length - 1))
+      );
     }
 
     if (checkNumber(newValue)) {
