@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import { numberToMoney } from '../../../../../../common/utils/listing-utils';
 import { listingApi } from './../../../../../../api/common/listing-api';
+import { Button } from './../../../../../common/button/button';
+import classnames from 'classnames';
 
 export class YourListing extends Component {
   constructor(props) {
@@ -12,7 +14,7 @@ export class YourListing extends Component {
   }
   render() {
     const { sellingList } = this.state;
-    console.log(sellingList);
+    // console.log(sellingList);
     return (
       <div className='your-listing'>
         <div className='sold-listing-wrapper'>
@@ -40,7 +42,19 @@ export class YourListing extends Component {
                     </div>
                   </div>
                 </div>
-                <div className='sl-funtion'></div>
+                <div className='sl-function'>
+                  <Button className={classnames('facebook-button long')}>
+                    <i className='fas fa-check'></i>
+                    <span>Đánh dấu là còn hàng</span>
+                  </Button>
+                  <Button className={classnames('facebook-button long')}>
+                    <i className='fas fa-share'></i>
+                    <span>Chia sẻ</span>
+                  </Button>
+                  <Button className={classnames('facebook-button')}>
+                    <i className='fas fa-ellipsis-h'></i>
+                  </Button>
+                </div>
               </div>
             ))}
         </div>

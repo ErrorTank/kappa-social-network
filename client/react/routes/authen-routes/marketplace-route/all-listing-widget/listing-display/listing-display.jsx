@@ -3,6 +3,7 @@ import classnames from 'classnames';
 import { getBase64Image } from '../../../../../../common/utils/file-upload-utils';
 import { numberToMoney } from '../../../../../../common/utils/listing-utils';
 import { Tooltip } from './../../../../../common/tooltip/tooltip';
+import { customHistory } from '../../../../routes';
 
 export class ListingDisplay extends Component {
   constructor(props) {
@@ -37,7 +38,12 @@ export class ListingDisplay extends Component {
         onMouseLeave={this.handleMouseHover}
       >
         {this.state.isHovering && (
-          <div className='hover-display'>
+          <div
+            className='hover-display'
+            onClick={() =>
+              customHistory.push(`/marketplace/listing/${listing._id}`)
+            }
+          >
             <div className='addition-button-wrapper'>
               {this.buttonList.map((each) => (
                 <Tooltip

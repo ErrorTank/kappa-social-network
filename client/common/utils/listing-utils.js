@@ -20,8 +20,13 @@ const cleanBlankProp = (obj) => {
 };
 
 const moneyToNumber = (value) => {
-  value = value.replace(' ₫', '');
-  return value.split('.').join('');
+  if (!value.includes('₫') && value.length > 1) {
+    value = value.slice(0, value.length - 2);
+    return value.split('.').join('');
+  } else {
+    value = value.replace(' ₫', '');
+    return value.split('.').join('');
+  }
 };
 
 const numberToMoney = (value) => {

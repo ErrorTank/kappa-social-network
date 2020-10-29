@@ -11,8 +11,8 @@ class ApField extends Component {
 
     render() {
         let {isEdit} = this.state;
-        let {label, getValue, editable, isExisted, renderForm, isList = false} = this.props;
-        return (
+        let {label, getValue, editable, isExisted, renderForm, isList = false, isVisible = () => true} = this.props;
+        return isVisible() ? (
             <div className={"ap-field"}>
                 {((isList && !isEdit) || !isList) && (
                     <div className="ap-field-label">
@@ -38,7 +38,7 @@ class ApField extends Component {
                 )}
 
             </div>
-        )
+        ) : null
     }
 }
 
@@ -76,6 +76,7 @@ export class AboutPanel extends Component {
                                 isList={true}
                                 getValue={() => createConfig.itemConfig.getValue(each)}
                                 renderForm={config => createConfig.itemConfig.renderForm({...config, item: each})}
+                                isVisible={() => createConfig.itemConfig.isVisible(each)}
                             />
                         )) : fields.map((each, i) => (
                             <ApField

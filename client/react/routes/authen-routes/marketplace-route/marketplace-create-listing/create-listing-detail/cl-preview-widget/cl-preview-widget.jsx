@@ -3,6 +3,7 @@ import classnames from 'classnames';
 import { userInfo } from './../../../../../../../common/states/common';
 import { ImageSlider } from './image-slider/image-slider';
 import { Avatar } from './../../../../../../common/avatar/avatar';
+import { Button } from './../../../../../../common/button/button';
 
 export class CreateListingPreviewWidget extends Component {
   constructor(props) {
@@ -108,20 +109,32 @@ export class CreateListingPreviewWidget extends Component {
                 </div>
               </div>
 
-              <div className='button-section-wrapper gray-filter'>
-                <div className='button-display send-text'>
+              <div className='button-section-wrapper'>
+                <Button
+                  disabled={true}
+                  className={classnames('facebook-button long')}
+                >
                   <i className='fab fa-facebook-messenger'></i>
                   <span>Nhắn tin</span>
-                </div>
-                <div className='button-display'>
+                </Button>
+                <Button
+                  disabled={true}
+                  className={classnames('facebook-button')}
+                >
                   <i className='fas fa-bookmark'></i>
-                </div>
-                <div className='button-display'>
+                </Button>
+                <Button
+                  disabled={true}
+                  className={classnames('facebook-button')}
+                >
                   <i className='fas fa-share'></i>
-                </div>
-                <div className='button-display'>
+                </Button>
+                <Button
+                  disabled={true}
+                  className={classnames('facebook-button')}
+                >
                   <i className='fas fa-ellipsis-h'></i>
-                </div>
+                </Button>
               </div>
 
               <div className='addition-info-wrapper'>

@@ -92,7 +92,13 @@ const getListingByUserID = (userID) => {
   return Listing.find({ user: userID })
     .lean()
     .then((listing) => {
-      // console.log(listing);
+      return listing;
+    });
+};
+const getListingByListingID = (listingID) => {
+  return Listing.findOne({ _id: listingID })
+    .lean()
+    .then((listing) => {
       return listing;
     });
 };
@@ -101,4 +107,5 @@ module.exports = {
   getListing,
   getListingByCategoryID,
   getListingByUserID,
+  getListingByListingID,
 };

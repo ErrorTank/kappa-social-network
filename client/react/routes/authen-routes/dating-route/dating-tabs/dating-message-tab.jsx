@@ -19,7 +19,7 @@ export class DatingMessageTab extends Component {
     const { chatBoxes } = this.state;
     const { onSwitch } = this.props;
     return (
-      <div className='dating-message-tab'>
+      <div className="dating-message-tab">
         {chatBoxes.map((each, i) => {
           let receiver = getReceiveFromChatBox(
             each,
@@ -27,27 +27,31 @@ export class DatingMessageTab extends Component {
           );
           return (
             <div
-              className='dating-chat-box'
+              className="dating-chat-box"
               key={i}
-              onClick={() => onSwitch(receiver)}>
-              <div className='dating-chat-avatar'>
-                <div className='avatar-wrapper'>
+              onClick={() => onSwitch(receiver)}
+            >
+              <div className="dating-chat-avatar">
+                <div className="avatar-wrapper">
                   <img src={receiver.avatars[0].path} />
                 </div>
               </div>
-              <div className='dating-wapper-content'>
-                <div className='dating-chat-name'>{receiver.name}</div>
+              <div className="dating-wapper-content">
+                <div className="dating-chat-name">{receiver.name}</div>
                 {each.lastestMessage ? (
-                  <div className='dating-last-message'>
+                  <div className="dating-last-message">
                     {each.lastestMessage.user._id ===
                     datingProfile.getState()._id ? (
-                      <span className='highlight dark'>Bạn : </span>
+                      <span className="highlight dark">Bạn : </span>
                     ) : (
                       `${receiver.name} :  `
                     )}
-                    <span className='lastest-message'>
-                      {each.lastestMessage.message}
-                    </span>
+                    <span
+                      className="lastest-message"
+                      dangerouslySetInnerHTML={{
+                        __html: each.lastestMessage.message,
+                      }}
+                    ></span>
                   </div>
                 ) : (
                   <span>Nhấn để bắt đầu trò chuyện</span>
