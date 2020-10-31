@@ -260,6 +260,40 @@ class MainRoute extends React.Component {
                       </UserProfileRoute>
                     )}
                   />
+                  <AuthenRoute
+                      {...layoutProps}
+                      path={'/settings'}
+                      // exact
+                      render={(props) => (
+                          <UserProfileRoute {...props}>
+                            {(uprProps) => (
+                                <>
+                                  <Route
+                                      exact
+                                      path={'/settings/general'}
+                                      render={(props) => (
+                                          <ProfileFeed {...props} {...uprProps} />
+                                      )}
+                                  />
+                                  <Route
+                                      exact
+                                      path={'/settings/security'}
+                                      render={(props) => (
+                                          <ProfileFeed {...props} {...uprProps} />
+                                      )}
+                                  />
+                                  <Route
+                                      exact
+                                      path={'/settings/general'}
+                                      render={(props) => (
+                                          <ProfileFeed {...props} {...uprProps} />
+                                      )}
+                                  />
+                                </>
+                            )}
+                          </UserProfileRoute>
+                      )}
+                  />
                 </CustomSwitch>
               )}
             </WithRouterKappaLayout>
