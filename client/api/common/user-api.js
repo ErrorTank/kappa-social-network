@@ -15,6 +15,9 @@ export const userApi = {
 
             });
     },
+    changeUserPassword(userID, payload){
+        return authenApi.put(`/user/${userID}/change-password`, payload)
+    },
     getUserSettings(userID){
         return authenApi.get(`/user/${userID}/settings`)
     },

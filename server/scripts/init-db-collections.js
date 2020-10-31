@@ -49,7 +49,10 @@ const initDbCollections = (appDb) => {
   // User.updateMany({}, {$set: {"contact.address": {ward: ObjectId("5e92c7b6b4c8182784f5bcff"), city: ObjectId("5e92c7b4b4c8182784f59d4a"), district: ObjectId("5e92c7b4b4c8182784f5994b")}}}).then(() => console.log("cac"))
   // User.updateMany({}, {$set: {followed_posts: []}}).then(() => console.log("cac"))
   // User.updateMany({}, {$set: {favorites: [], schools: [], works: []}}).then(() => console.log("cac"))
-  // User.updateMany({}, {$set: {notifications: []}}).then(() => console.log("cac"))
+  // User.updateMany({}, {$set: {notification_settings: [
+  //       "comment_on_followed_post", "mentioned_in_comment", "reply_on_comment", "mentioned_in_reply", "react_comment",
+  //       "react_post", "tagged_on_post",  "post_on_wall"
+  //     ]}}).then(() => console.log("cac"))
   // Post.updateMany({}, {$set: {belonged_wall: null}}).then(() => console.log("cac"))
   // Post.deleteMany({}).then(() => console.log("cac"))
   // User.findOneAndUpdate({"contact.login_username.email": "ncq998@gmail.com"}, {$set: {"user_about_privacy.relationship": "PUBLIC"}}, {new: true}).then((user) => console.log(user))

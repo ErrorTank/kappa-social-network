@@ -115,44 +115,17 @@ const userSchema = new Schema({
         default: []
     },
     notification_settings: {
-        friend_request: {
-            type: Boolean,
-            default: true
-        },
-        followed_friend_post: {
-            type: Boolean,
-            default: true
-        },
-        post_comment_been_reacted: {
-            type: Boolean,
-            default: true
-        },
-        post_comment_been_replied: {
-            type: Boolean,
-            default: true
-        },
-        tagged_in: {
-            type: Boolean,
-            default: true
-        },
-        blocked_notification_groups: {
-            type: [
-                {
-                    type: ObjectId,
-                    ref: "Group"
-                }
-            ],
-            default: []
-        },
-        blocked_notification_pages: {
-            type: [
-                {
-                    type: ObjectId,
-                    ref: "Group"
-                }
-            ],
-            default: []
-        },
+        type: [{
+            type: String,
+            enum: [
+                "comment_on_followed_post", "mentioned_in_comment", "reply_on_comment", "mentioned_in_reply", "react_comment",
+                "react_post", "tagged_on_post","post_on_wall"
+            ]
+        }],
+        default: [
+            "comment_on_followed_post", "mentioned_in_comment", "reply_on_comment", "mentioned_in_reply", "react_comment",
+            "react_post", "tagged_on_post",  "post_on_wall"
+        ]
     },
     notifications: {
 
@@ -165,7 +138,7 @@ const userSchema = new Schema({
                 notification_type: {
                     type: String,
                     enum: [
-                       "comment_on_followed_post", "mentioned_in_comment", "reply_on_comment", "mentioned_in_reply", "react_comment",
+                        "comment_on_followed_post", "mentioned_in_comment", "reply_on_comment", "mentioned_in_reply", "react_comment",
                         "react_post", "tagged_on_post", "tagged_on_post_file", "friend_request", "post_on_wall"
                     ]
 
@@ -440,11 +413,11 @@ const userSchema = new Schema({
             {
                 company: {
                     type: String,
-                    default:""
+                    default: ""
                 },
                 position: {
                     type: String,
-                    default:""
+                    default: ""
                 },
                 currently_working: {
                     type: Boolean,
@@ -465,7 +438,7 @@ const userSchema = new Schema({
             {
                 school: {
                     type: String,
-                    default:""
+                    default: ""
                 },
                 graduated: {
                     type: Boolean,
@@ -473,7 +446,7 @@ const userSchema = new Schema({
                 },
                 specialization: {
                     type: String,
-                    default:""
+                    default: ""
                 },
                 last_updated: {
                     type: Date,

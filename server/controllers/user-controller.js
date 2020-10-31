@@ -8,7 +8,8 @@ const {getAuthenticateUserInitCredentials, getUserBasicInfo, login, sendChangePa
     verifyChangePasswordToken, getChangePasswordUserBrief, changePassword, addNewSearchHistory, deleteSearchHistory,
     updateSearchHistory, shortLogin, simpleUpdateUser, getUnseenNotificationsCount, getUserNotifications,
     seenNotifications, getUserFriendsCount, checkIsFriend, unfriend, sendFriendRequest, cancelFriendRequest, deleteNotificationByType
-,acceptFriendRequest, getUserFriends, getUserFriendInvitations, getUserAboutBrief, upsertUserWork, upsertUserSchool, deleteWork, deleteSchool, upsertUserFavorites} = require("../db/db-controllers/user");
+,acceptFriendRequest, getUserFriends, getUserFriendInvitations, getUserAboutBrief, upsertUserWork, upsertUserSchool, deleteWork, deleteSchool,
+    upsertUserFavorites, updateUserPassword, getUserSettings, updateUserSettings} = require("../db/db-controllers/user");
 
 module.exports = (db, namespacesIO) => {
     router.get("/init-credentials", authorizationUserMiddleware, (req, res, next) => {
@@ -28,6 +29,20 @@ module.exports = (db, namespacesIO) => {
     router.get("/:userID/basic-info", (req, res, next) => {
 
         return getUserBasicInfo(req.params.userID, req.query).then((data) => {
+            return res.status(200).json(data);
+        }).catch(err => next(err));
+
+    });
+    router.get("/:userID/settings",authorizationUserMiddleware, (req, res, next) => {
+
+        return getUserSettings(req.params.userID).then((data) => {
+            return res.status(200).json(data);
+        }).catch(err => next(err));
+
+    });
+    router.put("/:userID/settings",authorizationUserMiddleware, (req, res, next) => {
+
+        return updateUserSettings(req.params.userID, req.body).then((data) => {
             return res.status(200).json(data);
         }).catch(err => next(err));
 
@@ -91,6 +106,13 @@ module.exports = (db, namespacesIO) => {
     router.put("/:userID/unfriend/:friendID", authorizationUserMiddleware, (req, res, next) => {
 
         return unfriend(req.params.userID, req.params.friendID).then((data) => {
+            return res.status(200).json(data);
+        }).catch(err => next(err));
+
+    });
+    router.put("/:userID/change-password", authorizationUserMiddleware, (req, res, next) => {
+
+        return updateUserPassword(req.params.userID, req.body).then((data) => {
             return res.status(200).json(data);
         }).catch(err => next(err));
 
