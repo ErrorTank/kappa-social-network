@@ -20,6 +20,9 @@ export class UserSpecificAction extends Component {
             {
                 icon: <i className="fas fa-cog"></i>,
                 label: "Cài đặt",
+                onClick: () => {
+                    customHistory.push("/settings/general")
+                }
 
             }, {
                 icon: <i className="far fa-window"></i>,

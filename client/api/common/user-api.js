@@ -15,6 +15,12 @@ export const userApi = {
 
             });
     },
+    getUserSettings(userID){
+        return authenApi.get(`/user/${userID}/settings`)
+    },
+    updateUserSettings(userID, changes){
+        return authenApi.put(`/user/${userID}/settings`, changes)
+    },
     checkIsFriend(userID, friendID){
         return authenApi.get(`/user/${userID}/is-friend/${friendID}`)
     },

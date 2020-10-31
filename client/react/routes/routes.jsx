@@ -34,10 +34,32 @@ const FeedRoute = lazy(
   delayLoad(() => import('./authen-routes/feed-route/feed-route'))
 );
 import LoginRoute from './guest-routes/login-route/login-route';
+import {SettingsLayout} from "../layout/settings-layout/settings-layout";
 const ForgotPasswordRoute = lazy(
   delayLoad(() =>
     import('./guest-routes/forgot-password-route/forgot-password-route')
   )
+);
+const SettingsSecurityRoute = lazy(
+    delayLoad(() =>
+        import(
+            './authen-routes/settings-route/settings-security-route/settings-security-route'
+            )
+    )
+);
+const SettingsBlockRoute = lazy(
+    delayLoad(() =>
+        import(
+            './authen-routes/settings-route/settings-block-route/settings-block-route'
+            )
+    )
+);
+const SettingsGeneralRoute = lazy(
+    delayLoad(() =>
+        import(
+            './authen-routes/settings-route/settings-general-route/settings-general-route'
+            )
+    )
 );
 const ProfileFeed = lazy(
   delayLoad(() =>
@@ -265,33 +287,33 @@ class MainRoute extends React.Component {
                       path={'/settings'}
                       // exact
                       render={(props) => (
-                          <UserProfileRoute {...props}>
+                          <SettingsLayout {...props}>
                             {(uprProps) => (
                                 <>
                                   <Route
                                       exact
                                       path={'/settings/general'}
                                       render={(props) => (
-                                          <ProfileFeed {...props} {...uprProps} />
+                                          <SettingsGeneralRoute {...props} {...uprProps} />
                                       )}
                                   />
                                   <Route
                                       exact
                                       path={'/settings/security'}
                                       render={(props) => (
-                                          <ProfileFeed {...props} {...uprProps} />
+                                          <SettingsSecurityRoute {...props} {...uprProps} />
                                       )}
                                   />
                                   <Route
                                       exact
-                                      path={'/settings/general'}
+                                      path={'/settings/blocked'}
                                       render={(props) => (
-                                          <ProfileFeed {...props} {...uprProps} />
+                                          <SettingsBlockRoute {...props} {...uprProps} />
                                       )}
                                   />
                                 </>
                             )}
-                          </UserProfileRoute>
+                          </SettingsLayout>
                       )}
                   />
                 </CustomSwitch>

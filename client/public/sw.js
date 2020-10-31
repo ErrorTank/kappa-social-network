@@ -79,6 +79,14 @@ var exceptionRequestsDev = [
     method: 'PUT',
   },
   {
+    endpoint: /https:\/\/localhost:4000\/api\/user\/\w+\/settings/,
+    method: 'GET',
+  },
+  {
+    endpoint: /https:\/\/localhost:4000\/api\/user\/\w+\/settings/,
+    method: 'PUT',
+  },
+  {
     endpoint: /https:\/\/localhost:4000\/api\/user\/\w+\/upsert-work/,
     method: 'POST',
   },

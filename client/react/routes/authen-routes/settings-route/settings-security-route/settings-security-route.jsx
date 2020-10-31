@@ -1,15 +1,15 @@
 import React, {Component} from 'react';
 import {PageTitle} from "../../../../common/page-title/page-title";
 
-class SettingsBlockRoute extends Component {
+class SettingsSecurityRoute extends Component {
     render() {
         return (
             <PageTitle
-                title={`Cài đặt chặn`}
+                title={`Cài đặt bảo mật`}
             >
-                <div className="settings-block-route settings-route white-box">
+                <div className="settings-security-route settings-route white-box">
                     <div className="sr-title">
-                        Cài đặt chặn
+                        Cài đặt bảo mật
                     </div>
                     <div className="sr-body">
 
@@ -20,4 +20,4 @@ class SettingsBlockRoute extends Component {
     }
 }
 
-export default SettingsBlockRoute;
+export default SettingsSecurityRoute;
