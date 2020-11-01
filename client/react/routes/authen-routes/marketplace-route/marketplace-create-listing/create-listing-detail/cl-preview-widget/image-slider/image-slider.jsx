@@ -39,37 +39,47 @@ export class ImageSlider extends Component {
   render() {
     const { files } = this.props;
     const { currentSlide } = this.state;
-    // console.log(this.props.files);
+    console.log(this.props.files);
     // console.log(currentSlide);
     return (
       <div className='image-slider'>
         <div className='slider-background'>
-          {!!files.length && (
-            <ImageDisplay
-              key={files[currentSlide].file.fileID}
-              file={files[currentSlide]}
-            />
-          )}
+          {!!files.length &&
+            (!files.fileID ? (
+              <img src={files[currentSlide].path} alt='' />
+            ) : (
+              <ImageDisplay
+                key={files[currentSlide].file.fileID}
+                file={files[currentSlide]}
+              />
+            ))}
         </div>
         <div className='current-slide'>
-          {!!files.length && (
-            <ImageDisplay
-              key={files[currentSlide].fileID}
-              file={files[currentSlide]}
-            />
-          )}
+          {!!files.length &&
+            (!files.fileID ? (
+              <img src={files[currentSlide].path} alt='' />
+            ) : (
+              <ImageDisplay
+                key={files[currentSlide].fileID}
+                file={files[currentSlide]}
+              />
+            ))}
         </div>
         {files.length > 1 && (
           <>
             <div className='image-arr'>
               {!!files.length &&
-                files.map((file) => (
-                  <ImageDisplay
-                    key={file.fileID}
-                    file={file}
-                    currentID={files[currentSlide].fileID}
-                  />
-                ))}
+                files.map((file) =>
+                  !file.fileID ? (
+                    <img src={file.path} alt='' />
+                  ) : (
+                    <ImageDisplay
+                      key={file.fileID}
+                      file={file}
+                      currentID={files[currentSlide].fileID}
+                    />
+                  )
+                )}
             </div>
             <div className='next-button' onClick={() => this.next()}>
               <i className='fas fa-angle-right'></i>
