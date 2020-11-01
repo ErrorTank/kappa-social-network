@@ -9,7 +9,7 @@ const {getAuthenticateUserInitCredentials, getUserBasicInfo, login, sendChangePa
     updateSearchHistory, shortLogin, simpleUpdateUser, getUnseenNotificationsCount, getUserNotifications,
     seenNotifications, getUserFriendsCount, checkIsFriend, unfriend, sendFriendRequest, cancelFriendRequest, deleteNotificationByType
 ,acceptFriendRequest, getUserFriends, getUserFriendInvitations, getUserAboutBrief, upsertUserWork, upsertUserSchool, deleteWork, deleteSchool,
-    upsertUserFavorites, updateUserPassword, getUserSettings, updateUserSettings} = require("../db/db-controllers/user");
+    upsertUserFavorites, updateUserPassword, getUserSettings, updateUserSettings, blockPerson} = require("../db/db-controllers/user");
 
 module.exports = (db, namespacesIO) => {
     router.get("/init-credentials", authorizationUserMiddleware, (req, res, next) => {
@@ -33,6 +33,7 @@ module.exports = (db, namespacesIO) => {
         }).catch(err => next(err));
 
     });
+
     router.get("/:userID/settings",authorizationUserMiddleware, (req, res, next) => {
 
         return getUserSettings(req.params.userID).then((data) => {
@@ -106,6 +107,13 @@ module.exports = (db, namespacesIO) => {
     router.put("/:userID/unfriend/:friendID", authorizationUserMiddleware, (req, res, next) => {
 
         return unfriend(req.params.userID, req.params.friendID).then((data) => {
+            return res.status(200).json(data);
+        }).catch(err => next(err));
+
+    });
+    router.put("/:userID/block-person/:friendID", authorizationUserMiddleware, (req, res, next) => {
+
+        return blockPerson(req.params.userID, req.params.friendID).then((data) => {
             return res.status(200).json(data);
         }).catch(err => next(err));
 

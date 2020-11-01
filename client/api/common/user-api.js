@@ -81,6 +81,9 @@ export const userApi = {
     unfriend(userID, friendID){
         return authenApi.put(`/user/${userID}/unfriend/${friendID}`)
     },
+    blockPerson(userID, friendID){
+        return authenApi.put(`/user/${userID}/block-person/${friendID}`)
+    },
     sendFriendRequest(userID, friendID){
         return authenApi.put(`/user/${userID}/send-friend-request/${friendID}`)
     },

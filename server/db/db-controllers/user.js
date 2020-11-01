@@ -1298,7 +1298,12 @@ const updateUserSettings = (userID, {settings}) => {
     }).lean()
 }
 
+const blockPerson = (userID, friendID) => {
+
+}
+
 module.exports = {
+    blockPerson,
     updateUserSettings,
     getUserSettings,
     updateUserPassword,
