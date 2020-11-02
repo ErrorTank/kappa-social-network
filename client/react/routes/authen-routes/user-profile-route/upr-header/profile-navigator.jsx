@@ -53,6 +53,19 @@ export class ProfileNavigator extends Component {
             })
     }
 
+    handleBlock = () => {
+        userApi.blockPerson(userInfo.getState()._id, this.props.user._id)
+            .then(() => {
+                if(this.props.friendStatus === USER_FRIEND_RELATION.FRIEND){
+                    this.props.onUnfriend();
+                }
+                if(this.props.friendStatus === USER_FRIEND_RELATION.PENDING){
+                    this.props.onCancelRequest()
+                }
+
+            })
+    }
+
     cancelFriendRequest = () => {
 
         userApi.cancelFriendRequest(userInfo.getState()._id, this.props.user._id)
@@ -148,7 +161,8 @@ export class ProfileNavigator extends Component {
                         <i className="fas fa-user-lock"></i> Chặn
                     </span>
             ),
-            condition: !isOwner
+            condition: !isOwner,
+            onClick: this.handleBlock
         }
         ]
 

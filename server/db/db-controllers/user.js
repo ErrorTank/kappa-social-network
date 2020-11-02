@@ -175,7 +175,7 @@ const sendChangePasswordToken = ({email = '', phone = ''}) => {
             if (!data) {
                 return Promise.reject(new ApplicationError('account_not_existed'));
             }
-            console.log(data);
+
             return createNewConfirmToken(
                 {
                     userID: data._id,
@@ -247,14 +247,14 @@ const verifyChangePasswordToken = ({token, sessionID}) => {
 };
 
 const getChangePasswordUserBrief = (sessionID) => {
-    console.log(sessionID);
+
     return ResetPasswordToken.findOne({
         _id: ObjectId(sessionID),
         isVerify: true,
     })
         .populate('user', '_id')
         .then((data) => {
-            console.log(data);
+
             if (!data) {
                 return Promise.reject();
             }
@@ -279,7 +279,7 @@ const changePassword = ({sessionID, newPassword}) => {
 };
 
 const addNewSearchHistory = (userID, data) => {
-    console.log(data);
+
     if (!data) {
         return Promise.reject(new ApplicationError());
     }
@@ -346,7 +346,7 @@ const deleteSearchHistory = (userID, historyID) => {
 };
 
 const updateSearchHistory = (userID, historyID, data) => {
-    console.log(data);
+
     let updatedQuery = {
         'search_history.$.search_at': Date.now(),
     };
@@ -758,7 +758,7 @@ const checkIsFriend = (userID, friendID) => {
                 }
         ).exec(),
     ]).then(([user, friend]) => {
-        console.log(friend);
+
         return {
             value: friend.friend_requests.find((each) => each.toString() === userID)
                 ? USER_FRIEND_RELATION.PENDING
@@ -1294,11 +1294,120 @@ const updateUserSettings = (userID, {settings}) => {
         }
     }, {
         new: true,
-        "fields": { "_id":1, "notification_settings": 1 }
+        "fields": {"_id": 1, "notification_settings": 1}
     }).lean()
 }
 
+const blockPerson = (userID, friendID) => {
+    return Promise.all([
+        Post.find({
+            belonged_person: ObjectId(userID),
+            policy: {
+                $ne: 'PUBLIC',
+            },
+        }).lean(),
+        Post.find({
+            belonged_person: ObjectId(friendID),
+            policy: {
+                $ne: 'PUBLIC',
+            },
+        }).lean(),
+    ]).then(([friend_non_public_from_user, user_non_public_from_friend]) => {
+        return Promise.all([
+            User.findOneAndUpdate(
+                {
+                    _id: ObjectId(userID),
+                },
+                {
+                    $pull: {
+                        friends: {
+                            info: ObjectId(friendID),
+                        },
+                        followed_posts: {
+                            post: {
+                                $in: user_non_public_from_friend,
+                            },
+                        },
+                        saved_posts: {
+                            $in: friend_non_public_from_user,
+                        },
+                        friend_requests: ObjectId(friendID)
+                    },
+                }
+            ).exec(),
+            User.findOneAndUpdate(
+                {
+                    _id: ObjectId(friendID),
+                },
+                {
+                    $pull: {
+                        friends: {
+                            info: ObjectId(userID),
+                        },
+                        followed_posts: {
+                            post: {
+                                $in: friend_non_public_from_user,
+                            },
+                        },
+                        saved_posts: {
+                            $in: friend_non_public_from_user,
+                        },
+                        friend_requests: ObjectId(userID)
+                    },
+                }
+            ).exec(),
+        ])
+            .then(() => User.findOneAndUpdate({
+                _id: ObjectId(userID)
+            }, {
+                $push: {
+                    person_blocked: ObjectId(friendID)
+                }
+            }, {
+                new: true
+            }).exec())
+            .then(() => true);
+    })
+}
+const checkTargetIsBlocked = (userID,targetID) => {
+
+    return Promise.all([User.findOne(ObjectId.isValid(userID) ? {
+        _id: ObjectId(userID)
+    } : {
+        "basic_info.profile_link": userID
+    }).lean(), User.findOne(ObjectId.isValid(targetID) ? {
+        _id: ObjectId(targetID)
+    } : {
+        "basic_info.profile_link": targetID
+    }).lean()])
+        .then(([user, target]) => {
+
+            return !!user.person_blocked.find(each => each.toString() === target._id.toString())
+        })
+}
+
+const getUserBlockedPersons = (userID) => {
+    return User.findOne({
+        _id: ObjectId(userID)
+    }).populate("person_blocked")
+        .then(data => data.person_blocked.map(each => pick(each, ["_id", "basic_info", "avatar"])))
+}
+
+const unblockPerson = (userID, targetID) => {
+    return User.findOneAndUpdate({
+        _id: ObjectId(userID)
+    }, {
+        $pull: {
+            person_blocked: ObjectId(targetID)
+        }
+    }).exec().then(() => true)
+}
+
 module.exports = {
+    unblockPerson,
+    getUserBlockedPersons,
+    checkTargetIsBlocked,
+    blockPerson,
     updateUserSettings,
     getUserSettings,
     updateUserPassword,

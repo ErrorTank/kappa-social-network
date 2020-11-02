@@ -15,6 +15,9 @@ export const userApi = {
 
             });
     },
+    unblock(userID, targetID){
+        return authenApi.put(`/user/${userID}/unblock/${targetID}`)
+    },
     changeUserPassword(userID, payload){
         return authenApi.put(`/user/${userID}/change-password`, payload)
     },
@@ -69,6 +72,9 @@ export const userApi = {
     getUserNotifications(skip){
         return authenApi.get(`/user/notifications?skip=${skip}`)
     },
+    getUserBlocks(userID){
+        return authenApi.get(`/user/${userID}/blocked-persons`)
+    },
     seenNotifications(ids){
         return authenApi.put(`/user/seen-notifications`, {notifications: ids})
     },
@@ -80,6 +86,9 @@ export const userApi = {
     },
     unfriend(userID, friendID){
         return authenApi.put(`/user/${userID}/unfriend/${friendID}`)
+    },
+    blockPerson(userID, friendID){
+        return authenApi.put(`/user/${userID}/block-person/${friendID}`)
     },
     sendFriendRequest(userID, friendID){
         return authenApi.put(`/user/${userID}/send-friend-request/${friendID}`)
@@ -113,4 +122,7 @@ export const userApi = {
     upsertFavorites(userID, payload){
         return authenApi.post(`/user/${userID}/upsert-favorites`, payload)
     },
+    checkUserIsBlock(userID, targetID){
+        return authenApi.get(`/user/${userID}/check-block/${targetID}`)
+    }
 };

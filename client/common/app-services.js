@@ -147,7 +147,6 @@ const clearAuthenticateUserSession = () => {
     authenCache.clearAuthen();
     messengerIO.disconnect();
     feedPostIO.disconnect();
-    datingIO.disconnect();
     return Promise.all([
       userInfo.setState(null),
       userSearchHistory.setState([]),

@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const {authorizationUserMiddleware, checkAuthorizeUser} = require("../common/middlewares/common");
+const {authorizationUserMiddleware, checkAuthorizeUser, checkBlockUser, checkUserIsBlocked} = require("../common/middlewares/common");
 const omit = require("lodash/omit");
 const mongoose = require("mongoose");
 const ObjectId = mongoose.Types.ObjectId;
@@ -9,7 +9,7 @@ const {getAuthenticateUserInitCredentials, getUserBasicInfo, login, sendChangePa
     updateSearchHistory, shortLogin, simpleUpdateUser, getUnseenNotificationsCount, getUserNotifications,
     seenNotifications, getUserFriendsCount, checkIsFriend, unfriend, sendFriendRequest, cancelFriendRequest, deleteNotificationByType
 ,acceptFriendRequest, getUserFriends, getUserFriendInvitations, getUserAboutBrief, upsertUserWork, upsertUserSchool, deleteWork, deleteSchool,
-    upsertUserFavorites, updateUserPassword, getUserSettings, updateUserSettings} = require("../db/db-controllers/user");
+    upsertUserFavorites, updateUserPassword, getUserSettings, updateUserSettings, blockPerson, checkTargetIsBlocked, getUserBlockedPersons, unblockPerson} = require("../db/db-controllers/user");
 
 module.exports = (db, namespacesIO) => {
     router.get("/init-credentials", authorizationUserMiddleware, (req, res, next) => {
@@ -26,13 +26,14 @@ module.exports = (db, namespacesIO) => {
         }).catch(err => next(err));
 
     });
-    router.get("/:userID/basic-info", (req, res, next) => {
+    router.get("/:userID/basic-info",authorizationUserMiddleware, checkBlockUser("userID"), checkUserIsBlocked("userID") , (req, res, next) => {
 
         return getUserBasicInfo(req.params.userID, req.query).then((data) => {
             return res.status(200).json(data);
         }).catch(err => next(err));
 
     });
+
     router.get("/:userID/settings",authorizationUserMiddleware, (req, res, next) => {
 
         return getUserSettings(req.params.userID).then((data) => {
@@ -50,6 +51,13 @@ module.exports = (db, namespacesIO) => {
     router.post("/:userID/upsert-work",authorizationUserMiddleware, (req, res, next) => {
 
         return upsertUserWork(req.params.userID, req.body).then((data) => {
+            return res.status(200).json(data);
+        }).catch(err => next(err));
+
+    });
+    router.get("/:userID/blocked-persons",authorizationUserMiddleware, (req, res, next) => {
+
+        return getUserBlockedPersons(req.params.userID).then((data) => {
             return res.status(200).json(data);
         }).catch(err => next(err));
 
@@ -110,6 +118,13 @@ module.exports = (db, namespacesIO) => {
         }).catch(err => next(err));
 
     });
+    router.put("/:userID/block-person/:friendID", authorizationUserMiddleware, (req, res, next) => {
+
+        return blockPerson(req.params.userID, req.params.friendID).then((data) => {
+            return res.status(200).json(data);
+        }).catch(err => next(err));
+
+    });
     router.put("/:userID/change-password", authorizationUserMiddleware, (req, res, next) => {
 
         return updateUserPassword(req.params.userID, req.body).then((data) => {
@@ -122,6 +137,20 @@ module.exports = (db, namespacesIO) => {
         return cancelFriendRequest(req.params.userID, req.params.friendID).then((data) => {
             deleteNotificationByType(req.params.friendID, "friend_request", {person: ObjectId(req.params.userID)});
 
+            return res.status(200).json(data);
+        }).catch(err => next(err));
+
+    });
+    router.get("/:userID/check-block/:targetID", authorizationUserMiddleware, (req, res, next) => {
+
+        return checkTargetIsBlocked(req.params.userID, req.params.targetID).then((data) => {
+            return res.status(200).json(data);
+        }).catch(err => next(err));
+
+    });
+    router.put("/:userID/unblock/:targetID", authorizationUserMiddleware, (req, res, next) => {
+
+        return unblockPerson(req.params.userID, req.params.targetID).then((data) => {
             return res.status(200).json(data);
         }).catch(err => next(err));
 
