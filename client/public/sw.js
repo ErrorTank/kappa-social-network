@@ -367,6 +367,10 @@ var exceptionRequestsDev = [
     method: 'GET',
   },
   {
+    endpoint: /https:\/\/localhost:4000\/api\/user\/\w+\/check-block\/\w+/,
+    method: 'GET',
+  },
+  {
     endpoint: /https:\/\/localhost:4000\/api\/user\/\w+\/about-brief/,
     method: 'GET',
   },

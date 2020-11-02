@@ -6,6 +6,9 @@ import {UprHeader} from "./upr-header/upr-header";
 import {UprBody} from "./upr-body/upr-body";
 import {userInfo} from "../../../../common/states/common";
 import {USER_FRIEND_RELATION} from "./upr-header/profile-navigator";
+import {topFloatNotifications} from "../../../common/float-top-notification/float-top-notification";
+import {customHistory} from "../../routes";
+import {Link} from "react-router-dom";
 
 class UserProfileRoute extends Component {
     constructor(props) {
@@ -15,11 +18,26 @@ class UserProfileRoute extends Component {
             friendStatus: null,
         }
         this.fetchUser(props.match.params.userID);
+
     }
 
     fetchUser = userID => {
+
         let promises = [
             userApi.getUserBasicInfo(userID)
+                .catch(() => {
+
+                    topFloatNotifications.actions.push({
+                        content: (
+                            <p className="common-noti-layout danger">
+                                <i className="far fa-exclamation-circle"></i>
+                                <span>Người dùng này không tồn tại hoặc đã bị chặn. Xem <Link to={"/settings/blocked"}>danh sách chặn</Link>.</span>
+                            </p>
+                        )
+                    });
+                    customHistory.push("/")
+                    return Promise.reject()
+            })
         ]
         let user = userInfo.getState();
         if(userID !== user._id && userID !== user.basic_info.profile_link){
@@ -27,6 +45,7 @@ class UserProfileRoute extends Component {
         }
         Promise.all(promises)
             .then(([user, friendStatus]) => this.setState({user, friendStatus: friendStatus?.value || null}))
+
     }
 
     componentDidUpdate(prevProps, prevState, snapshot) {

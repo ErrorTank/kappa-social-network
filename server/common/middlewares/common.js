@@ -1,5 +1,6 @@
 const {authorization, decodeAuthRequest, decodeAuthDownloadRequest} = require("../../authorization/auth");
 const {getPublicKey, getPrivateKey} = require("../../authorization/keys/keys");
+const {checkTargetIsBlocked} = require("../../db/db-controllers/user")
 const {ApplicationError} = require("../../utils/error/error-types");
 const authorizationUserMiddleware = authorization(getPublicKey(), {algorithm: ["RS256"]}, decodeAuthRequest);
 const authorizationDownloadMiddleware = authorization(getPublicKey(), {algorithm: ["RS256"]}, decodeAuthDownloadRequest);
@@ -15,8 +16,22 @@ const checkAuthorizeUser = (req, res, next) => {
 
 }
 
+const checkBlockUser = paramName => (req, res, next) => {
+
+    return checkTargetIsBlocked(req.user._id, req.params[paramName])
+        .then(r => !r ? next() : next(new ApplicationError()))
+}
+
+const checkUserIsBlocked = paramName => (req, res, next) => {
+
+    return checkTargetIsBlocked(req.params[paramName], req.user._id)
+        .then(r => !r ? next() : next(new ApplicationError()))
+}
+
 module.exports = {
     authorizationUserMiddleware,
     authorizationDownloadMiddleware,
-    checkAuthorizeUser
+    checkAuthorizeUser,
+    checkBlockUser,
+    checkUserIsBlocked
 };

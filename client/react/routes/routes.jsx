@@ -391,8 +391,7 @@ export class App extends React.Component {
                 }
               />
               <div id='main-route'>
-                <TopFloatNotificationRegistry />
-                <BottomNotificationRegistry />
+
                 <Router history={customHistory}>
                   <NotificationStateContext.Provider
                     value={this.state.showNotificationPrompt}
@@ -400,6 +399,8 @@ export class App extends React.Component {
                     <MainRoute />
                   </NotificationStateContext.Provider>
                   <ModalsRegistry />
+                  <TopFloatNotificationRegistry />
+                  <BottomNotificationRegistry />
                 </Router>
               </div>
             </>

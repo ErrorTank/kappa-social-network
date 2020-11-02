@@ -116,4 +116,7 @@ export const userApi = {
     upsertFavorites(userID, payload){
         return authenApi.post(`/user/${userID}/upsert-favorites`, payload)
     },
+    checkUserIsBlock(userID, targetID){
+        return authenApi.get(`/user/${userID}/check-block/${targetID}`)
+    }
 };
