@@ -9,7 +9,7 @@ const {getAuthenticateUserInitCredentials, getUserBasicInfo, login, sendChangePa
     updateSearchHistory, shortLogin, simpleUpdateUser, getUnseenNotificationsCount, getUserNotifications,
     seenNotifications, getUserFriendsCount, checkIsFriend, unfriend, sendFriendRequest, cancelFriendRequest, deleteNotificationByType
 ,acceptFriendRequest, getUserFriends, getUserFriendInvitations, getUserAboutBrief, upsertUserWork, upsertUserSchool, deleteWork, deleteSchool,
-    upsertUserFavorites, updateUserPassword, getUserSettings, updateUserSettings, blockPerson, checkTargetIsBlocked} = require("../db/db-controllers/user");
+    upsertUserFavorites, updateUserPassword, getUserSettings, updateUserSettings, blockPerson, checkTargetIsBlocked, getUserBlockedPersons, unblockPerson} = require("../db/db-controllers/user");
 
 module.exports = (db, namespacesIO) => {
     router.get("/init-credentials", authorizationUserMiddleware, (req, res, next) => {
@@ -51,6 +51,13 @@ module.exports = (db, namespacesIO) => {
     router.post("/:userID/upsert-work",authorizationUserMiddleware, (req, res, next) => {
 
         return upsertUserWork(req.params.userID, req.body).then((data) => {
+            return res.status(200).json(data);
+        }).catch(err => next(err));
+
+    });
+    router.get("/:userID/blocked-persons",authorizationUserMiddleware, (req, res, next) => {
+
+        return getUserBlockedPersons(req.params.userID).then((data) => {
             return res.status(200).json(data);
         }).catch(err => next(err));
 
@@ -137,8 +144,13 @@ module.exports = (db, namespacesIO) => {
     router.get("/:userID/check-block/:targetID", authorizationUserMiddleware, (req, res, next) => {
 
         return checkTargetIsBlocked(req.params.userID, req.params.targetID).then((data) => {
-            deleteNotificationByType(req.params.friendID, "friend_request", {person: ObjectId(req.params.userID)});
+            return res.status(200).json(data);
+        }).catch(err => next(err));
 
+    });
+    router.put("/:userID/unblock/:targetID", authorizationUserMiddleware, (req, res, next) => {
+
+        return unblockPerson(req.params.userID, req.params.targetID).then((data) => {
             return res.status(200).json(data);
         }).catch(err => next(err));
 

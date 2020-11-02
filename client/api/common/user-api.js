@@ -15,6 +15,9 @@ export const userApi = {
 
             });
     },
+    unblock(userID, targetID){
+        return authenApi.put(`/user/${userID}/unblock/${targetID}`)
+    },
     changeUserPassword(userID, payload){
         return authenApi.put(`/user/${userID}/change-password`, payload)
     },
@@ -68,6 +71,9 @@ export const userApi = {
     },
     getUserNotifications(skip){
         return authenApi.get(`/user/notifications?skip=${skip}`)
+    },
+    getUserBlocks(userID){
+        return authenApi.get(`/user/${userID}/blocked-persons`)
     },
     seenNotifications(ids){
         return authenApi.put(`/user/seen-notifications`, {notifications: ids})

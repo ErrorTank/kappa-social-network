@@ -1386,7 +1386,26 @@ const checkTargetIsBlocked = (userID,targetID) => {
         })
 }
 
+const getUserBlockedPersons = (userID) => {
+    return User.findOne({
+        _id: ObjectId(userID)
+    }).populate("person_blocked")
+        .then(data => data.person_blocked.map(each => pick(each, ["_id", "basic_info", "avatar"])))
+}
+
+const unblockPerson = (userID, targetID) => {
+    return User.findOneAndUpdate({
+        _id: ObjectId(userID)
+    }, {
+        $pull: {
+            person_blocked: ObjectId(targetID)
+        }
+    }).exec().then(() => true)
+}
+
 module.exports = {
+    unblockPerson,
+    getUserBlockedPersons,
     checkTargetIsBlocked,
     blockPerson,
     updateUserSettings,
