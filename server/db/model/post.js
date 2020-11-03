@@ -123,28 +123,28 @@ const autoPopulateParent = function(next){
         {
             path: "belonged_wall",
             model: "User",
-            select: "_id basic_info avatar last_active_at active"
+            select: "_id basic_info avatar last_active_at active notification_settings"
         },
         {
             path: "belonged_person",
             model: "User",
-            select: "_id basic_info avatar last_active_at active"
+            select: "_id basic_info avatar last_active_at active notification_settings"
         }, {
             path: "tagged",
             model: "User",
-            select: "_id basic_info avatar last_active_at active"
+            select: "_id basic_info avatar last_active_at active notification_settings"
 
         }, {
             path: "mentions.related",
             model: "User",
-            select: "_id basic_info avatar last_active_at active"
+            select: "_id basic_info avatar last_active_at active notification_settings"
         },{
             path: "shared_page",
             model: "Page",
         },{
             path: "files.tagged.related",
             model: "User",
-            select: "_id basic_info avatar last_active_at active"
+            select: "_id basic_info avatar last_active_at active notification_settings"
         },
     ]);
     next();
@@ -155,25 +155,25 @@ postSchema.post('save', function(doc, next) {
         {
             path: "belonged_wall",
             model: "User",
-            select: "_id basic_info avatar last_active_at active"
+            select: "_id basic_info avatar last_active_at active notification_settings"
         },
         {
             path: "belonged_person",
             model: "User",
-            select: "_id basic_info avatar last_active_at active"
+            select: "_id basic_info avatar last_active_at active notification_settings"
         }, {
             path: "tagged",
             model: "User",
-            select: "_id basic_info avatar last_active_at active"
+            select: "_id basic_info avatar last_active_at active notification_settings"
 
         }, {
             path: "mentions.related",
             model: "User",
-            select: "_id basic_info avatar last_active_at active"
+            select: "_id basic_info avatar last_active_at active notification_settings"
         },{
             path: "files.tagged.related",
             model: "User",
-            select: "_id basic_info avatar last_active_at active"
+            select: "_id basic_info avatar last_active_at active notification_settings"
         },{
             path: "shared_page",
             model: "Page",

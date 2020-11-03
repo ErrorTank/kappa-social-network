@@ -32,7 +32,7 @@ module.exports = (db, namespacesIO) => {
 
 
             if(data.policy !== "PERSONAL"){
-                if(data.belonged_wall){
+                if(data.belonged_wall && data.belonged_wall.notification_settings.includes("post_on_wall")){
                     createUserNotification({
                         type: "post_on_wall",
                         data: {post: data},
@@ -40,7 +40,7 @@ module.exports = (db, namespacesIO) => {
                     })
                         .then(notification => namespacesIO.feedPost.io.to(`/feed-post-room/user/${data.belonged_wall._id.toString()}`).emit("notify-user", {notification}));
                 }
-                let filesTagged = uniq(data.files.reduce((total, cur) => [...total, ...cur.tagged.map(each => ({
+                let filesTagged = uniq(data.files.reduce((total, cur) => [...total, ...cur.tagged.filter(each => each.related.notification_settings.includes("tagged_on_post")).map(each => ({
                     userID: each.related._id.toString(),
                     file: {...pick(cur, ["origin_path", "caption", "path", "name"]), rootFileID: cur._id}
                 }))], []));
@@ -57,7 +57,7 @@ module.exports = (db, namespacesIO) => {
                     }
 
                 }
-                let postTagged = data.tagged.map(each => each._id.toString()).filter(each => !filesTagged.find(t => t.userID === each)).filter(each => each !== req.user._id);
+                let postTagged = data.tagged.filter(each => each.notification_settings.includes("tagged_on_post")).map(each => each._id.toString()).filter(each => !filesTagged.find(t => t.userID === each)).filter(each => each !== req.user._id);
 
                 if (postTagged.length) {
                     for (let u1 of postTagged) {
@@ -127,8 +127,8 @@ module.exports = (db, namespacesIO) => {
                 getFollowedUserByPost(data.post),
                 getMentionsUserByComment(data)
             ]).then(([followedUsers, mentionedUsers]) => {
-                let fuIds = followedUsers.map(each => each._id.toString()).filter(each => each !== req.user._id);
-                let mIds = mentionedUsers.map(each => each._id.toString()).filter(each => each !== req.user._id);
+                let fuIds = followedUsers.filter(each => each.notification_settings.includes("comment_on_followed_post")).map(each => each._id.toString()).filter(each => each !== req.user._id);
+                let mIds = mentionedUsers.filter(each => each.notification_settings.includes("mentioned_in_comment")).map(each => each._id.toString()).filter(each => each !== req.user._id);
 
 
                 for (let u1 of fuIds.filter(each => !mIds.find(f => f === each))) {
@@ -183,8 +183,8 @@ module.exports = (db, namespacesIO) => {
                         getPostByID({postID: data.post}),
                         getMentionsUserByComment(data)
                     ]).then(([post, mentionedUsers]) => {
-                        let mentioned = mentionedUsers.map(each => each._id.toString()).filter(each => each !== req.user._id.toString());
-                        let receivers = uniq(comment.replies.map(each => each.from_person._id.toString())
+                        let mentioned = mentionedUsers.filter(each => each.notification_settings.includes("mentioned_in_reply")).map(each => each._id.toString()).filter(each => each !== req.user._id.toString());
+                        let receivers = uniq(comment.replies.filter(each => each.from_person.notification_settings.includes("reply_on_comment")).map(each => each.from_person._id.toString())
                             .concat(post.belonged_person._id.toString())
                             .filter(each => each !== req.user._id.toString())
                             .filter(each => !mentioned.find(u => u === each)));
@@ -338,7 +338,8 @@ module.exports = (db, namespacesIO) => {
             ...req.body
         }).then((data) => {
             let reaction = req.body.reactionConfig;
-            if (data.belonged_person._id.toString() !== req.user._id && reaction.on) {
+            console.log(data)
+            if (data.belonged_person._id.toString() !== req.user._id && reaction.on && data.belonged_person.notification_settings.includes("react_post")) {
                 createUserNotification({
                     type: "react_post",
                     data: {post: data, reacted_by: req.user._id, reaction: reaction.on},
@@ -367,12 +368,15 @@ module.exports = (db, namespacesIO) => {
                     getPostByID({postID: req.params.postID}),
                 ])
                     .then(([post]) => {
-                        createUserNotification({
-                            type: "react_comment",
-                            data: {comment: data.is_reply ? null : data, reply: data.is_reply ? data : null, post, reacted_by: req.user._id, reaction: reaction.on},
-                            userID: data.from_person._id
-                        })
-                            .then(notification => namespacesIO.feedPost.io.to(`/feed-post-room/user/${data.from_person._id}`).emit("notify-user", {notification}));
+                        if(data.from_person.notification_settings.includes("react_comment")){
+                            createUserNotification({
+                                type: "react_comment",
+                                data: {comment: data.is_reply ? null : data, reply: data.is_reply ? data : null, post, reacted_by: req.user._id, reaction: reaction.on},
+                                userID: data.from_person._id
+                            })
+                                .then(notification => namespacesIO.feedPost.io.to(`/feed-post-room/user/${data.from_person._id}`).emit("notify-user", {notification}));
+                        }
+
                     })
 
             }

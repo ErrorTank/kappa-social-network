@@ -63,11 +63,11 @@ const autoPopulateParent = function(next){
         {
             path: "from_person",
             model: "User",
-            select: "_id basic_info avatar last_active_at active"
+            select: "_id basic_info avatar last_active_at active notification_settings"
         }, {
             path: "mentions.related",
             model: "User",
-            select: "_id basic_info avatar last_active_at active"
+            select: "_id basic_info avatar last_active_at active notification_settings"
 
         }, {
             path: "from_page",
@@ -87,11 +87,11 @@ commentSchema.post('save', function(doc, next) {
         {
             path: "from_person",
             model: "User",
-            select: "_id basic_info avatar last_active_at active"
+            select: "_id basic_info avatar last_active_at active notification_settings"
         }, {
             path: "mentions.related",
             model: "User",
-            select: "_id basic_info avatar last_active_at active"
+            select: "_id basic_info avatar last_active_at active notification_settings"
 
         }, {
             path: "from_page",
