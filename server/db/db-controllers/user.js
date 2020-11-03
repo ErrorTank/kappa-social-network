@@ -1034,7 +1034,8 @@ const getUserFriends = (callerID, userID, config) => {
                     each.friends.info.friends.map((each) => each.info.toString()),
                     caller.friends.map((each) => each.info.toString())
                 ).length,
-                caller_friend_status: !!caller.friends.find(
+                caller_friend_status: (caller.person_blocked.find(f => f.toString() === each.friends.info._id.toString()) || each.friends.info.person_blocked.find(f => f.toString() === caller._id.toString())) ? "BLOCKED" :
+        !!caller.friends.find(
                     (f) => f.info.toString() === each.friends.info._id.toString()
                 )
                     ? 'FRIEND'

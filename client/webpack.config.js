@@ -46,10 +46,6 @@ module.exports = {
 
     new EventHooksPlugin({
       watchRun: () => {
-        // let ls = spawn("node", ["./scripts/update-sw.js"], {stdio: "inherit"});
-        // ls.on('close', (code) => {
-
-        // });
         spawn("node", ["./scripts/copy-assets.js", "dev"], {
           stdio: "inherit",
         });
