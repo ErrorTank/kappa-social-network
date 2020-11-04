@@ -10,11 +10,6 @@ export class ImageSlider extends Component {
       currentSlide: 0,
     };
   }
-  // getImageSrc = (file) => {
-  //   getBase64Image(file.file).then((base64Image) => {
-  //     return base64Image;
-  //   });
-  // };
   previous = () => {
     const { currentSlide } = this.state;
     const { files } = this.props;
@@ -41,11 +36,12 @@ export class ImageSlider extends Component {
     const { currentSlide } = this.state;
     console.log(this.props.files);
     // console.log(currentSlide);
+
     return (
       <div className='image-slider'>
         <div className='slider-background'>
           {!!files.length &&
-            (files.path ? (
+            (files[currentSlide].path ? (
               <img src={files[currentSlide].path} alt='' />
             ) : (
               <ImageDisplay
@@ -56,7 +52,7 @@ export class ImageSlider extends Component {
         </div>
         <div className='current-slide'>
           {!!files.length &&
-            (files.path ? (
+            (files[currentSlide].path ? (
               <img src={files[currentSlide].path} alt='' />
             ) : (
               <ImageDisplay
