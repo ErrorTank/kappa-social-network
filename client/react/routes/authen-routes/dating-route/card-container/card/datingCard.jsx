@@ -92,6 +92,7 @@ export class DatingCard extends Component {
   };
   render() {
     let { profiles } = this.state;
+    console.log(profiles);
 
     return (
       <>
