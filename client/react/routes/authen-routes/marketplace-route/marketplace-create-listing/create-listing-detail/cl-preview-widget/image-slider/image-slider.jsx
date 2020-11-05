@@ -42,7 +42,11 @@ export class ImageSlider extends Component {
         <div className='slider-background'>
           {!!files.length &&
             (files[currentSlide].path ? (
-              <img src={files[currentSlide].path} alt='' />
+              <div className='img-display'>
+                <div className='img-wrapper'>
+                  <img src={files[currentSlide].path} alt='' />
+                </div>
+              </div>
             ) : (
               <ImageDisplay
                 key={files[currentSlide].file.fileID}
@@ -53,7 +57,11 @@ export class ImageSlider extends Component {
         <div className='current-slide'>
           {!!files.length &&
             (files[currentSlide].path ? (
-              <img src={files[currentSlide].path} alt='' />
+              <div className='img-display'>
+                <div className='img-wrapper'>
+                  <img src={files[currentSlide].path} alt='' />
+                </div>
+              </div>
             ) : (
               <ImageDisplay
                 key={files[currentSlide].fileID}
@@ -67,7 +75,11 @@ export class ImageSlider extends Component {
               {!!files.length &&
                 files.map((file) =>
                   file.path ? (
-                    <img src={file.path} alt='' />
+                    <div className='img-display'>
+                      <div className='img-wrapper'>
+                        <img src={file.path} alt='' />
+                      </div>
+                    </div>
                   ) : (
                     <ImageDisplay
                       key={file.fileID}

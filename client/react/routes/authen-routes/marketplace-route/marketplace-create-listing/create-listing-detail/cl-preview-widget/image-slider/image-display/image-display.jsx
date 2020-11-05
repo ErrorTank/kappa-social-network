@@ -32,14 +32,12 @@ export class ImageDisplay extends Component {
           main: currentID === file.fileID,
         })}
       >
-        <div className='img-info'>
-          {loading && <LoadingInline />}
-          {base64Image && (
-            <div className='img-wrapper'>
-              <img src={base64Image} />
-            </div>
-          )}
-        </div>
+        {loading && <LoadingInline />}
+        {base64Image && (
+          <div className='img-wrapper'>
+            <img src={base64Image} />
+          </div>
+        )}
       </div>
     );
   }
