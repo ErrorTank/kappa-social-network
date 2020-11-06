@@ -109,8 +109,7 @@ export class MyTinderCard extends Component {
                   <i className="fal fa-home"> </i>{" "}
                   <span>
                     Đang sống tại{" "}
-                    {info.location.ward && info.location.ward.name}
-                    {""}
+                    {info.location.ward && info.location.ward.name}{" "}
                     {info.location.district.name}, {info.location.city.name}
                   </span>
                 </div>

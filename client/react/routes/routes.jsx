@@ -139,6 +139,7 @@ const ListingFullDisplay = lazy(
 );
 import { RequireProfileRoute } from "./route-types/require-profile-route";
 import { NotRequireProfileRoute } from "./route-types/not-require-profile-route";
+import { DatingProfile } from "./authen-routes/dating-route/dating-profile/dating-profile";
 
 const GlobalSearchResult = lazy(
   delayLoad(() =>
@@ -253,9 +254,7 @@ class MainRoute extends React.Component {
                                 {...datingProps}
                                 exact
                                 path={"/dating/profile"}
-                                render={(props) => (
-                                  <MarketplaceCreateListing {...props} />
-                                )}
+                                render={(props) => <DatingProfile {...props} />}
                               />
                               <NotRequireProfileRoute
                                 {...datingProps}
