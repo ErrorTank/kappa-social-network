@@ -1,12 +1,31 @@
 .listing-full-display {
   display: flex;
-  height: 100vh;
-  overflow: hidden;
+  height: calc(100vh - 56px);
+  overflow-y: hidden;
 
   .picture-display-section {
     background-color: btnCancelLight;
     flex-grow: 1;
     height: 100%;
+
+    .image-slider {
+      .current-slide {
+        .img-display {
+          .img-wrapper {
+            max-height: 100%;
+            max-width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            img {
+              max-height: 80%;
+              max-width: 80%;
+            }
+          }
+        }
+      }
+    }
   }
 
   .listing-all-info-section {
