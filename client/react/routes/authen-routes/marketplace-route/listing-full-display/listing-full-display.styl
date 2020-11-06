@@ -30,6 +30,211 @@
 
   .listing-all-info-section {
     flex-basis: 370px;
+    width: 100%;
+    border-left: 0.5px solid lightgray;
+    position: relative;
+
+    .info-display-wrapper {
+      display: flex;
+      flex-direction: column;
+      overflow-y: auto;
+      max-height: 75%;
+
+      .main-info-wrapper {
+        padding: 16px;
+        padding-bottom: 0;
+
+        .info-title {
+          font-size: 24px;
+          font-weight: 700;
+          line-height: 20px;
+        }
+
+        .info-price {
+          margin-top: 8px;
+          font-size: 17px;
+          font-weight: 500;
+          line-height: 20px;
+        }
+
+        .info-time-position {
+          margin: 8px 0 13px 0;
+          color: secondaryTextLight;
+          font-size: 13px;
+          font-weight: 400;
+          line-height: 16px;
+        }
+      }
+
+      .button-section-wrapper {
+        margin: 8px 8px 4px 16px;
+        display: flex;
+      }
+
+      .addition-info-wrapper {
+        margin-bottom: 12px;
+        display: flex;
+        flex-direction: column;
+
+        .addition-info-header {
+          padding: 15px 16px 4px 16px;
+          box-sizing: border-box;
+          font-size: 17px;
+          font-weight: 600;
+        }
+
+        .addition-info-body {
+          padding: 0 16px;
+          font-size: 15px;
+          color: normalTextLight;
+
+          .addition-info {
+            padding: 5px 0;
+            border-top: 0.8px solid lightgray;
+            display: flex;
+
+            .addition-info-type {
+              flex-basis: 50%;
+              font-weight: 600;
+            }
+
+            .addition-info-content {
+              flex-basis: 50%;
+              font-weight: 400;
+            }
+          }
+
+          .decription-wrapper {
+            font-weight: 400;
+          }
+
+          .location-wrapper {
+            margin: 12px 0px;
+
+            .example-map {
+              img {
+                height: 120px;
+                width: 328px;
+                border-radius: 8px;
+                display: block;
+                margin: auto;
+              }
+            }
+
+            .location-info {
+              font-weight: 600;
+            }
+
+            .addition-text {
+              font-weight: 400;
+              font-size: 13px;
+              color: secondaryTextLight;
+            }
+          }
+        }
+      }
+
+      .seller-info-wrapper {
+        margin-bottom: 12px;
+        padding: 0 8px;
+
+        .seller-info-header {
+          border-top: 1px solid lightgray;
+          margin: 0 8px;
+          padding: 15px 0 4px 0;
+          font-size: 17px;
+          font-weight: 600;
+        }
+
+        .seller-info-body {
+          display: flex;
+          align-items: center;
+
+          .seller-avatar-wrapper {
+            display: inline-block;
+            vertical-align: middle;
+            width: 40px;
+            height: 40px;
+            overflow: hidden;
+            border-radius: 50%;
+            margin: auto;
+            position: relative;
+            margin: 8px 12px 8px 0;
+
+            img {
+              position: absolute;
+              left: 50%;
+              top: 50%;
+              transform: translate(-50%, -50%);
+              height: 41px;
+            }
+          }
+
+          .seller-name-wrapper {
+            .user-name {
+              font-size: 15px;
+              font-weight: 600;
+            }
+          }
+        }
+      }
+    }
+
+    .send-message-wrapper {
+      border-top: 0.8px solid lightgray;
+      padding: 10px 16px;
+      width: 100%;
+      position: absolute;
+      bottom: 0;
+      background-color: white;
+
+      .send-message-header {
+        display: flex;
+        align-items: center;
+
+        i {
+          font-size: 16px;
+          margin-right: 8px;
+        }
+
+        .send-message-title {
+          font-size: 15px;
+          font-weight: 400;
+        }
+      }
+
+      .message-example {
+        border: 1px solid lightgray;
+        padding: 8px 12px;
+        cursor: not-allowed;
+        box-sizing: border-box;
+        color: normalTextLight;
+        font-weight: 500;
+        border-radius: 6px;
+        font-weight: 500;
+        font-size: 15px;
+        background-color: btnCancelLight;
+
+        &:hover {
+          background-color: grayBackgroundLight;
+        }
+      }
+
+      .send-message-demo {
+        margin-top: 12px;
+        height: 36px;
+        cursor: not-allowed;
+        display: flex;
+        justify-content: center;
+        width: 100%;
+        padding: 0 12px;
+        align-items: center;
+        font-size: 15px;
+        font-weight: 500;
+        background-color: btnCancelLight;
+        border-radius: 6px;
+      }
+    }
   }
 
   .blank-section {
