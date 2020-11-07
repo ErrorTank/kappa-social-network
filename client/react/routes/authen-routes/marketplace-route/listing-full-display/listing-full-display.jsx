@@ -8,6 +8,7 @@ import { numberToMoney } from '../../../../../common/utils/listing-utils';
 import { Breadcrumbs } from '../../../../common/breabcrumbs/breadcrumbs';
 import moment from 'moment';
 import { userApi } from './../../../../../api/common/user-api';
+import { Avatar } from './../../../../common/avatar/avatar';
 
 class ListingFullDisplay extends Component {
   constructor(props) {
@@ -16,11 +17,14 @@ class ListingFullDisplay extends Component {
       listing: {
         files: {},
       },
+      user: '',
     };
     listingApi
       .getListingByListingID(this.props.match.params.listingID)
-      .then((e) => this.setState({ listing: e }));
-    // userApi.getUserBasicInfo()
+      .then((e) => {
+        this.getSellerInfo(e.user);
+        this.setState({ listing: e });
+      });
   }
   buttonArr = [
     {
@@ -42,6 +46,10 @@ class ListingFullDisplay extends Component {
     },
   ];
   additionInfo = [
+    {
+      name: 'condition',
+      title: 'Tình trạng',
+    },
     {
       name: 'brand',
       title: 'Thương hiệu',
@@ -66,9 +74,31 @@ class ListingFullDisplay extends Component {
       name: 'material',
       title: 'Chất liệu',
     },
+    {
+      name: 'vehicleCondition',
+      title: 'Trạng thái xe',
+    },
+    {
+      name: 'mileage',
+      title: 'Số dặm đã đi',
+    },
+    // {
+    //   name: 'vehicleCondition',
+    //   title: 'Trạng thái xe',
+    // },
+    // {
+    //   name: 'vehicleCondition',
+    //   title: 'Trạng thái xe',
+    // },
   ];
+  getSellerInfo = (userID) => {
+    userApi.getUserBasicInfo(userID).then((e) => {
+      console.log(e);
+      this.setState({ user: e });
+    });
+  };
   render() {
-    const { listing } = this.state;
+    const { listing, user } = this.state;
     const {
       title,
       make,
@@ -82,6 +112,7 @@ class ListingFullDisplay extends Component {
       decription,
     } = listing;
     console.log(listing);
+    console.log(user);
     return (
       <PageTitle title={'Listing'}>
         <div className='listing-full-display'>
@@ -105,8 +136,8 @@ class ListingFullDisplay extends Component {
               </div>
 
               <div className='button-section-wrapper'>
-                {this.buttonArr.map((e) => (
-                  <Button className={classnames(e.className)} key={e.icon}>
+                {this.buttonArr.map((e, i) => (
+                  <Button className={classnames(e.className)} key={i}>
                     {e.icon}
                     {e.text && <span>{e.text}</span>}
                   </Button>
@@ -117,14 +148,6 @@ class ListingFullDisplay extends Component {
                 <div className='addition-info-header'>Chi tiết</div>
                 <div className='addition-info-body'>
                   <div className={classnames('addition-wrapper')}>
-                    {category && (
-                      <div className='addition-info'>
-                        <div className='addition-info-type'>Tình trạng</div>
-                        <div className='addition-info-content'>
-                          {condition ? condition : '___'}
-                        </div>
-                      </div>
-                    )}
                     {this.additionInfo.map((each) => {
                       return (
                         listing[each.name] && (
@@ -140,7 +163,9 @@ class ListingFullDisplay extends Component {
                       );
                     })}
                   </div>
-
+                  <div className='addition-info-header'>
+                    Mô tả của người bán
+                  </div>
                   <div className={classnames('decription-wrapper')}>
                     {decription && decription}
                   </div>
@@ -163,20 +188,23 @@ class ListingFullDisplay extends Component {
                 </div>
               </div>
 
-              {/* <div className='seller-info-wrapper'>
+              <div className='seller-info-wrapper'>
                 <div className='seller-info-header'>Thông tin về người bán</div>
-                <div className='seller-info-body'>
-                  <div className='seller-avatar-wrapper'>
-                    <Avatar user={user} />
+                {/* {user !== '' && (
+                  <div className='seller-info-body'>
+                    <div className='seller-avatar-wrapper'>
+                      <Avatar user={user.avatar} />
+                    </div>
+                    <div className='seller-name-wrapper'>
+                      <div className='user-name'>{user.username}</div>
+                      {moment(user.joined_at).fromNow()}
+                    </div>
                   </div>
-                  <div className='seller-name-wrapper'>
-                    <div className='user-name'>{user.basic_info.username}</div>
-                  </div>
-                </div>
-              </div> */}
+                )} */}
+              </div>
             </div>
 
-            {/* <div className='send-message-wrapper'>
+            <div className='send-message-wrapper'>
               <div className='send-message-header gray-filter'>
                 <i className='fab fa-facebook-messenger'></i>
                 <div className='send-message-title'>
@@ -185,7 +213,7 @@ class ListingFullDisplay extends Component {
               </div>
               <div className='message-example'>Mặt hàng này còn chứ</div>
               <div className='send-message-demo gray-filter'>Gửi</div>
-            </div> */}
+            </div>
           </div>
           <div className='blank-section'></div>
         </div>
