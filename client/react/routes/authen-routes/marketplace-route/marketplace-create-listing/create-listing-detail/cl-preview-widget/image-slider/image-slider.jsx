@@ -34,7 +34,7 @@ export class ImageSlider extends Component {
   render() {
     const { files } = this.props;
     const { currentSlide } = this.state;
-    console.log(this.props.files);
+    // console.log(this.props.files);
     // console.log(currentSlide);
 
     return (

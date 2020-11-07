@@ -4,6 +4,9 @@ import { PageTitle } from './../../../../common/page-title/page-title';
 import { ImageSlider } from './../marketplace-create-listing/create-listing-detail/cl-preview-widget/image-slider/image-slider';
 import { Button } from './../../../../common/button/button';
 import classnames from 'classnames';
+import { numberToMoney } from '../../../../../common/utils/listing-utils';
+import { Breadcrumbs } from '../../../../common/breabcrumbs/breadcrumbs';
+
 class ListingFullDisplay extends Component {
   constructor(props) {
     super(props);
@@ -18,6 +21,8 @@ class ListingFullDisplay extends Component {
   }
   render() {
     const { listing } = this.state;
+    const { title, make, year, model, price, location, category } = listing;
+    let priceMoney = '';
     console.log(listing);
     return (
       <PageTitle title={'Listing'}>
@@ -27,32 +32,19 @@ class ListingFullDisplay extends Component {
           </div>
           <div className='listing-all-info-section'>
             <div className='info-display-wrapper'>
-              {/* <div className='main-info-wrapper'>
+              <div className='main-info-wrapper'>
                 <div className={classnames('info-title')}>
-                  {type === 'item'
-                    ? title
-                      ? title
-                      : 'Tiêu đề'
-                    : type === 'vehicle'
-                    ? state.make || state.year || state.model
-                      ? `${state.year} ${state.make} ${state.model}`
-                      : 'Tiêu đề'
-                    : state.homeType
-                    ? state.homeType
-                    : 'Tiêu đề'}
+                  {title ? title : make ? `${make} ${model} ${year}` : 'nhaf'}
                 </div>
-                <div
-                  className={classnames('info-price', {
-                    'on-mouse': hoverArr === 'price',
-                  })}
-                >
-                  {price ? price : 'Giá'}
+                <div className={classnames('info-price')}>
+                  {price ? numberToMoney(price.toString()) : 'Giá'}
                 </div>
+                <Breadcrumbs categoryID={category} />
                 <div className='info-time-position'>
-                  Đã niêm yết vài giây trước tại {state.location || '...'}{' '}
+                  Đã niêm yết vài giây trước tại {location || '...'}
                 </div>
               </div>
-
+              {/*
               <div className='button-section-wrapper'>
                 <Button
                   disabled={true}
