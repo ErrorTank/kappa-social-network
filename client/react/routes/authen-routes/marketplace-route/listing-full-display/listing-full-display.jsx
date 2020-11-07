@@ -6,6 +6,8 @@ import { Button } from './../../../../common/button/button';
 import classnames from 'classnames';
 import { numberToMoney } from '../../../../../common/utils/listing-utils';
 import { Breadcrumbs } from '../../../../common/breabcrumbs/breadcrumbs';
+import moment from 'moment';
+import { userApi } from './../../../../../api/common/user-api';
 
 class ListingFullDisplay extends Component {
   constructor(props) {
@@ -18,11 +20,67 @@ class ListingFullDisplay extends Component {
     listingApi
       .getListingByListingID(this.props.match.params.listingID)
       .then((e) => this.setState({ listing: e }));
+    // userApi.getUserBasicInfo()
   }
+  buttonArr = [
+    {
+      icon: <i className='fab fa-facebook-messenger'></i>,
+      className: 'facebook-button long',
+      text: 'Nhắn tin',
+    },
+    {
+      icon: <i className='fas fa-bookmark'></i>,
+      className: 'facebook-button',
+    },
+    {
+      icon: <i className='fas fa-share'></i>,
+      className: 'facebook-button',
+    },
+    {
+      icon: <i className='fas fa-ellipsis-h'></i>,
+      className: 'facebook-button',
+    },
+  ];
+  additionInfo = [
+    {
+      name: 'brand',
+      title: 'Thương hiệu',
+    },
+    {
+      name: 'platform',
+      title: 'Nền tảng',
+    },
+    {
+      name: 'size',
+      title: 'Kích thước',
+    },
+    {
+      name: 'carrie',
+      title: 'Nhà mạng',
+    },
+    {
+      name: 'deviceName',
+      title: 'Tên thiết bị',
+    },
+    {
+      name: 'material',
+      title: 'Chất liệu',
+    },
+  ];
   render() {
     const { listing } = this.state;
-    const { title, make, year, model, price, location, category } = listing;
-    let priceMoney = '';
+    const {
+      title,
+      make,
+      year,
+      model,
+      price,
+      location,
+      category,
+      postTime,
+      condition,
+      decription,
+    } = listing;
     console.log(listing);
     return (
       <PageTitle title={'Listing'}>
@@ -39,48 +97,26 @@ class ListingFullDisplay extends Component {
                 <div className={classnames('info-price')}>
                   {price ? numberToMoney(price.toString()) : 'Giá'}
                 </div>
-                <Breadcrumbs categoryID={category} />
+                <Breadcrumbs categoryID={category} isListing={true} />
                 <div className='info-time-position'>
-                  Đã niêm yết vài giây trước tại {location || '...'}
+                  Đã niêm yết {moment(postTime).fromNow()} trước tại{' '}
+                  {location || '...'}
                 </div>
               </div>
-              {/*
+
               <div className='button-section-wrapper'>
-                <Button
-                  disabled={true}
-                  className={classnames('facebook-button long')}
-                >
-                  <i className='fab fa-facebook-messenger'></i>
-                  <span>Nhắn tin</span>
-                </Button>
-                <Button
-                  disabled={true}
-                  className={classnames('facebook-button')}
-                >
-                  <i className='fas fa-bookmark'></i>
-                </Button>
-                <Button
-                  disabled={true}
-                  className={classnames('facebook-button')}
-                >
-                  <i className='fas fa-share'></i>
-                </Button>
-                <Button
-                  disabled={true}
-                  className={classnames('facebook-button')}
-                >
-                  <i className='fas fa-ellipsis-h'></i>
-                </Button>
+                {this.buttonArr.map((e) => (
+                  <Button className={classnames(e.className)} key={e.icon}>
+                    {e.icon}
+                    {e.text && <span>{e.text}</span>}
+                  </Button>
+                ))}
               </div>
 
               <div className='addition-info-wrapper'>
                 <div className='addition-info-header'>Chi tiết</div>
                 <div className='addition-info-body'>
-                  <div
-                    className={classnames('addition-wrapper', {
-                      'on-mouse': hoverArr === 'category',
-                    })}
-                  >
+                  <div className={classnames('addition-wrapper')}>
                     {category && (
                       <div className='addition-info'>
                         <div className='addition-info-type'>Tình trạng</div>
@@ -91,33 +127,24 @@ class ListingFullDisplay extends Component {
                     )}
                     {this.additionInfo.map((each) => {
                       return (
-                        state[each.name] && (
+                        listing[each.name] && (
                           <div className='addition-info'>
                             <div className='addition-info-type'>
                               {each.title}
                             </div>
                             <div className='addition-info-content'>
-                              {state[each.name]}
+                              {listing[each.name]}
                             </div>
                           </div>
                         )
                       );
                     })}
                   </div>
-                  <div
-                    className={classnames('decription-wrapper', {
-                      'on-mouse': hoverArr === 'decription',
-                    })}
-                  >
-                    {state.decription
-                      ? state.decription
-                      : 'Phần mô tả sẽ hiển thị tại đây'}
+
+                  <div className={classnames('decription-wrapper')}>
+                    {decription && decription}
                   </div>
-                  <div
-                    className={classnames('location-wrapper', {
-                      'on-mouse': hoverArr === 'location',
-                    })}
-                  >
+                  <div className={classnames('location-wrapper')}>
                     <div className='example-map'>
                       <img
                         src={
@@ -127,7 +154,7 @@ class ListingFullDisplay extends Component {
                       />
                     </div>
                     <div className='location-info'>
-                      {state.location ? state.location : 'Vị trí...'}
+                      {location ? location : 'Vị trí...'}
                     </div>
                     <div className='addition-text'>
                       Đây là chỉ vị trí gần đúng
@@ -136,7 +163,7 @@ class ListingFullDisplay extends Component {
                 </div>
               </div>
 
-              <div className='seller-info-wrapper gray-filter'>
+              {/* <div className='seller-info-wrapper'>
                 <div className='seller-info-header'>Thông tin về người bán</div>
                 <div className='seller-info-body'>
                   <div className='seller-avatar-wrapper'>

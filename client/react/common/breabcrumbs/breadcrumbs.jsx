@@ -10,13 +10,13 @@ export class Breadcrumbs extends Component {
   }
   render() {
     let { location } = customHistory;
-    const { categoryID } = this.props;
+    const { categoryID, isListing } = this.props;
     // console.log(location.pathname);
-
-    const breadcrumbsArray = categoryID
-      ? createBreadcrumbBuilder(categoryID)
+    // console.log(categoryID);
+    const breadcrumbsArray = isListing
+      ? createBreadcrumbBuilder(`/marketplace/${categoryID}`)
       : createBreadcrumbBuilder(location.pathname);
-
+    console.log(breadcrumbsArray);
     return (
       <div className='breadcrumbs-container'>
         {breadcrumbsArray.length > 1 && (
