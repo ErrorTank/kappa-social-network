@@ -17,12 +17,10 @@ class ListingFullDisplay extends Component {
       listing: {
         files: {},
       },
-      user: '',
     };
     listingApi
       .getListingByListingID(this.props.match.params.listingID)
       .then((e) => {
-        this.getSellerInfo(e.user);
         this.setState({ listing: e });
       });
   }
@@ -91,14 +89,8 @@ class ListingFullDisplay extends Component {
     //   title: 'Trạng thái xe',
     // },
   ];
-  getSellerInfo = (userID) => {
-    userApi.getUserBasicInfo(userID).then((e) => {
-      console.log(e);
-      this.setState({ user: e });
-    });
-  };
   render() {
-    const { listing, user } = this.state;
+    const { listing } = this.state;
     const {
       title,
       make,
@@ -110,6 +102,7 @@ class ListingFullDisplay extends Component {
       postTime,
       condition,
       decription,
+      user,
     } = listing;
     console.log(listing);
     console.log(user);
@@ -151,7 +144,7 @@ class ListingFullDisplay extends Component {
                     {this.additionInfo.map((each) => {
                       return (
                         listing[each.name] && (
-                          <div className='addition-info'>
+                          <div className='addition-info' key={each.title}>
                             <div className='addition-info-type'>
                               {each.title}
                             </div>
@@ -163,10 +156,9 @@ class ListingFullDisplay extends Component {
                       );
                     })}
                   </div>
-                  <div className='addition-info-header'>
-                    Mô tả của người bán
-                  </div>
+
                   <div className={classnames('decription-wrapper')}>
+                    <div className='decription-header'>Mô tả của người bán</div>
                     {decription && decription}
                   </div>
                   <div className={classnames('location-wrapper')}>
@@ -188,24 +180,28 @@ class ListingFullDisplay extends Component {
                 </div>
               </div>
 
-              <div className='seller-info-wrapper'>
-                <div className='seller-info-header'>Thông tin về người bán</div>
-                {/* {user !== '' && (
+              {user && (
+                <div className='seller-info-wrapper'>
+                  <div className='seller-info-header'>
+                    Thông tin về người bán
+                  </div>
                   <div className='seller-info-body'>
                     <div className='seller-avatar-wrapper'>
-                      <Avatar user={user.avatar} />
+                      <Avatar user={user && user} />
                     </div>
                     <div className='seller-name-wrapper'>
-                      <div className='user-name'>{user.username}</div>
+                      <div className='user-name'>
+                        {user && user.basic_info.username}
+                      </div>
                       {moment(user.joined_at).fromNow()}
                     </div>
                   </div>
-                )} */}
-              </div>
+                </div>
+              )}
             </div>
 
             <div className='send-message-wrapper'>
-              <div className='send-message-header gray-filter'>
+              <div className='send-message-header'>
                 <i className='fab fa-facebook-messenger'></i>
                 <div className='send-message-title'>
                   Gửi tin nhắn cho người bán
