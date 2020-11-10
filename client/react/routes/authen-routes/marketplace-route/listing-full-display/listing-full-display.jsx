@@ -193,7 +193,9 @@ class ListingFullDisplay extends Component {
                       <div className='user-name'>
                         {user && user.basic_info.username}
                       </div>
-                      {moment(user.joined_at).fromNow()}
+                      <div className='join-time'>
+                        Tham gia vào {moment(user.joined_at).format('YYYY')}
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -208,7 +210,7 @@ class ListingFullDisplay extends Component {
                 </div>
               </div>
               <div className='message-example'>Mặt hàng này còn chứ</div>
-              <div className='send-message-demo gray-filter'>Gửi</div>
+              <div className='send-message-demo'>Gửi</div>
             </div>
           </div>
           <div className='blank-section'></div>
