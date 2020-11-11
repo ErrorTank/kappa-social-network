@@ -1,0 +1,39 @@
+.dating-layout {
+    position: relative;
+
+    .dating-route {
+        display: flex;
+        height: 100 vh;
+
+        .right-panel {
+            flex: 0 0 70%;
+        }
+    }
+}
+
+.dating-tab-panel {
+    flex: 0 0 30%;
+    background-color: bgLight;
+    border-right: 1px solid common-border;
+
+    .dating-home-tab {
+        display: flex;
+        align-items: center;
+        padding: 12px 20px;
+        background-color: white;
+
+        .tab-button {
+            flex-grow: 1;
+            font-weight: 600;
+            font-size: 13px;
+            text-align: center;
+            cursor: pointer;
+            padding: 8px;
+            border-bottom: 3px solid transparent;
+
+            &.active {
+                border-bottom-color: tinderPink;
+            }
+        }
+    }
+}

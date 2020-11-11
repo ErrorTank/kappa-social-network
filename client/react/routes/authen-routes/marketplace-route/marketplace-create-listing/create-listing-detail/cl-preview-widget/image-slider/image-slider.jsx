@@ -10,11 +10,6 @@ export class ImageSlider extends Component {
       currentSlide: 0,
     };
   }
-  // getImageSrc = (file) => {
-  //   getBase64Image(file.file).then((base64Image) => {
-  //     return base64Image;
-  //   });
-  // };
   previous = () => {
     const { currentSlide } = this.state;
     const { files } = this.props;
@@ -39,14 +34,19 @@ export class ImageSlider extends Component {
   render() {
     const { files } = this.props;
     const { currentSlide } = this.state;
-    console.log(this.props.files);
+    // console.log(this.props.files);
     // console.log(currentSlide);
+
     return (
       <div className='image-slider'>
         <div className='slider-background'>
           {!!files.length &&
-            (files.path ? (
-              <img src={files[currentSlide].path} alt='' />
+            (files[currentSlide].path ? (
+              <div className='img-display'>
+                <div className='img-wrapper'>
+                  <img src={files[currentSlide].path} alt='' />
+                </div>
+              </div>
             ) : (
               <ImageDisplay
                 key={files[currentSlide].file.fileID}
@@ -56,8 +56,12 @@ export class ImageSlider extends Component {
         </div>
         <div className='current-slide'>
           {!!files.length &&
-            (files.path ? (
-              <img src={files[currentSlide].path} alt='' />
+            (files[currentSlide].path ? (
+              <div className='img-display'>
+                <div className='img-wrapper'>
+                  <img src={files[currentSlide].path} alt='' />
+                </div>
+              </div>
             ) : (
               <ImageDisplay
                 key={files[currentSlide].fileID}
@@ -71,7 +75,11 @@ export class ImageSlider extends Component {
               {!!files.length &&
                 files.map((file) =>
                   file.path ? (
-                    <img src={file.path} alt='' />
+                    <div className='img-display'>
+                      <div className='img-wrapper'>
+                        <img src={file.path} alt='' />
+                      </div>
+                    </div>
                   ) : (
                     <ImageDisplay
                       key={file.fileID}

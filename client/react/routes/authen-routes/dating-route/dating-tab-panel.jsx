@@ -4,6 +4,7 @@ import classnames from "classnames";
 import { DatingMatched } from "./dating-tabs/dating-matched";
 import { DatingLike } from "./dating-tabs/dating-like";
 import { DatingMessageTab } from "./dating-tabs/dating-message-tab";
+import { customHistory } from "./../../routes";
 
 export const datingTabPanelUtilities = {};
 
@@ -17,7 +18,7 @@ export class DatingTabPanel extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      mode: props.defaultTab || TAB_PANEL_TABS.MESSAGE,
+      mode: props.defaultTab || TAB_PANEL_TABS.MATCHES,
     };
     datingTabPanelUtilities.setTab = (tab) => {
       this.setState({
@@ -31,7 +32,6 @@ export class DatingTabPanel extends Component {
         label: "Kết đôi",
         mode: TAB_PANEL_TABS.MATCHES,
         component: DatingMatched,
-
       },
       {
         label: "Đã thích bạn",
@@ -45,7 +45,7 @@ export class DatingTabPanel extends Component {
       },
     ];
     let { mode } = this.state;
-    let {onSwitch} = this.props
+    let { onSwitch } = this.props;
     let Comp = tabNavigators.find((each) => each.mode === mode).component;
     return (
       <div className="dating-tab-panel">
@@ -64,7 +64,7 @@ export class DatingTabPanel extends Component {
           ))}
         </div>
         <div className="dating-tab-body">
-          <Comp onSwitch={onSwitch}/>
+          <Comp onSwitch={onSwitch} />
         </div>
       </div>
     );

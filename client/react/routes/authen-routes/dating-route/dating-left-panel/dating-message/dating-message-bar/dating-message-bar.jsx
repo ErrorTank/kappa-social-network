@@ -13,7 +13,7 @@ export class DatingMessageBar extends Component {
     super(props);
     this.contentEditable = React.createRef();
     this.state = {
-      html: "<br/>",
+      html: "",
       showPicker: false,
     };
     this.io = datingIO.getIOInstance();
