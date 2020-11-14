@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { LoadingInline } from './../../../../../../../common/loading-inline/loading-inline';
 import { getBase64Image } from '../../../../../../../../common/utils/file-upload-utils';
 import { ImageDisplay } from './image-display/image-display';
-
+import classnames from 'classnames';
 export class ImageSlider extends Component {
   constructor(props) {
     super(props);
@@ -30,6 +30,9 @@ export class ImageSlider extends Component {
     } else {
       this.setState({ currentSlide: currentSlide + 1 });
     }
+  };
+  getTo = (newSlideIndex) => {
+    this.setState({ currentSlide: newSlideIndex });
   };
   render() {
     const { files } = this.props;
@@ -73,9 +76,14 @@ export class ImageSlider extends Component {
           <>
             <div className='image-arr'>
               {!!files.length &&
-                files.map((file) =>
+                files.map((file, i) =>
                   file.path ? (
-                    <div className='img-display'>
+                    <div
+                      className={classnames('img-display', {
+                        main: file.path === files[currentSlide].path,
+                      })}
+                      onClick={() => this.getTo(i)}
+                    >
                       <div className='img-wrapper'>
                         <img src={file.path} alt='' />
                       </div>
@@ -85,6 +93,7 @@ export class ImageSlider extends Component {
                       key={file.fileID}
                       file={file}
                       currentID={files[currentSlide].fileID}
+                      onClick={() => this.getTo(i)}
                     />
                   )
                 )}

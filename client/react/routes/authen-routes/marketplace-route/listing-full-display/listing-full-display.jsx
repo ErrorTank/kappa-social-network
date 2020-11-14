@@ -79,6 +79,14 @@ class ListingFullDisplay extends Component {
       name: 'mileage',
       title: 'Số dặm đã đi',
     },
+    {
+      name: 'numberOfBedrooms',
+      title: 'Số phòng ngủ',
+    },
+    {
+      name: 'numberOfBathrooms',
+      title: 'Số phòng tắm',
+    },
     // {
     //   name: 'vehicleCondition',
     //   title: 'Trạng thái xe',
@@ -103,6 +111,7 @@ class ListingFullDisplay extends Component {
       decription,
       user,
       homeType,
+      address,
     } = listing;
     // console.log(listing);
     // console.log(user);
@@ -171,7 +180,7 @@ class ListingFullDisplay extends Component {
                       />
                     </div>
                     <div className='location-info'>
-                      {location ? location : 'Vị trí...'}
+                      {location ? location : address ? address : 'Vị trí...'}
                     </div>
                     <div className='addition-text'>
                       Đây là chỉ vị trí gần đúng

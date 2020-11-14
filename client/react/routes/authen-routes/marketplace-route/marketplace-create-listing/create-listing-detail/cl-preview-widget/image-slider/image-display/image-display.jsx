@@ -23,7 +23,7 @@ export class ImageDisplay extends Component {
     }
   }
   render() {
-    let { file, currentID } = this.props;
+    let { file, currentID, onClick } = this.props;
     let { base64Image, loading } = this.state;
     // console.log(currentID);
     return (
@@ -31,6 +31,7 @@ export class ImageDisplay extends Component {
         className={classnames('img-display', {
           main: currentID === file.fileID,
         })}
+        onClick={onClick}
       >
         {loading && <LoadingInline />}
         {base64Image && (

@@ -12,7 +12,7 @@ export class CategoriesSection extends Component {
     return (
       <div className='categories-section'>
         <div className='line-seperate'></div>
-        <h2 className='categories-section-title'>Danh muc</h2>
+        <h2 className='categories-section-title'>Danh mục</h2>
         {categoryDisplay &&
           categoryDisplay.map((each) => {
             return (
