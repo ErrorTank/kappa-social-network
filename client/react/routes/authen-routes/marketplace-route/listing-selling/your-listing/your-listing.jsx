@@ -31,7 +31,11 @@ export class YourListing extends Component {
                   <div className='sl-display-info'>
                     <div className='sl-basic-info'>
                       <div className='sl-title'>
-                        {e.title ? e.title : `${e.make} ${e.model} ${e.year}`}
+                        {e.title
+                          ? e.title
+                          : e.model || e.year || e.model
+                          ? `${e.make} ${e.model} ${e.year}`
+                          : e.homeType}
                       </div>
                       <div className='sl-price'>
                         {numberToMoney(e.price.toString())}

@@ -65,8 +65,16 @@ export class ListingDisplay extends Component {
           <div className='listing-price'>
             {numberToMoney(listing.price.toString())}
           </div>
-          <div className='listing-title'>{listing.title}</div>
-          <div className='listing-location'>{listing.location}</div>
+          <div className='listing-title'>
+            {listing.title
+              ? listing.title
+              : listing.model || listing.year || listing.model
+              ? `${listing.make} ${listing.model} ${listing.year}`
+              : listing.homeType}
+          </div>
+          <div className='listing-location'>
+            {listing.location || listing.address}
+          </div>
         </div>
       </div>
     );

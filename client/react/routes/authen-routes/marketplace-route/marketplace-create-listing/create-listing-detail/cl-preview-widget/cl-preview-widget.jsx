@@ -13,6 +13,10 @@ export class CreateListingPreviewWidget extends Component {
 
   additionInfo = [
     {
+      name: 'condition',
+      title: 'Tình trạng',
+    },
+    {
       name: 'brand',
       title: 'Thương hiệu',
     },
@@ -36,6 +40,22 @@ export class CreateListingPreviewWidget extends Component {
       name: 'material',
       title: 'Chất liệu',
     },
+    {
+      name: 'vehicleCondition',
+      title: 'Trạng thái xe',
+    },
+    {
+      name: 'mileage',
+      title: 'Số dặm đã đi',
+    },
+    {
+      name: 'numberOfBedrooms',
+      title: 'Số phòng ngủ',
+    },
+    {
+      name: 'numberOfBathrooms',
+      title: 'Số phòng tắm',
+    },
   ];
   render() {
     let user = userInfo.getState();
@@ -48,9 +68,16 @@ export class CreateListingPreviewWidget extends Component {
       type,
       hoverArr,
       files,
+      make,
+      year,
+      model,
+      homeType,
+      decription,
+      location,
+      address,
       ...other
     } = state;
-    // console.log(state.files);
+    // console.log(.files);
 
     return (
       <div className='create-listing-preview-widget'>
@@ -85,16 +112,12 @@ export class CreateListingPreviewWidget extends Component {
                     'on-mouse': hoverArr === 'title',
                   })}
                 >
-                  {type === 'item'
+                  {title
                     ? title
-                      ? title
-                      : 'Tiêu đề'
-                    : type === 'vehicle'
-                    ? state.make || state.year || state.model
-                      ? `${state.year} ${state.make} ${state.model}`
-                      : 'Tiêu đề'
-                    : state.homeType
-                    ? state.homeType
+                    : model || year || model
+                    ? `${year} ${make} ${model}`
+                    : homeType
+                    ? homeType
                     : 'Tiêu đề'}
                 </div>
                 <div
@@ -103,9 +126,11 @@ export class CreateListingPreviewWidget extends Component {
                   })}
                 >
                   {price ? price : 'Giá'}
+                  {category === 'Cho thuê' && '/tháng'}
                 </div>
                 <div className='info-time-position'>
-                  Đã niêm yết vài giây trước tại {state.location || '...'}{' '}
+                  Đã niêm yết vài giây trước tại{' '}
+                  {location ? location : address ? address : '...'}
                 </div>
               </div>
 
@@ -145,14 +170,6 @@ export class CreateListingPreviewWidget extends Component {
                       'on-mouse': hoverArr === 'category',
                     })}
                   >
-                    {category && (
-                      <div className='addition-info'>
-                        <div className='addition-info-type'>Tình trạng</div>
-                        <div className='addition-info-content'>
-                          {condition ? condition : '___'}
-                        </div>
-                      </div>
-                    )}
                     {this.additionInfo.map((each) => {
                       return (
                         state[each.name] && (
@@ -173,9 +190,7 @@ export class CreateListingPreviewWidget extends Component {
                       'on-mouse': hoverArr === 'decription',
                     })}
                   >
-                    {state.decription
-                      ? state.decription
-                      : 'Phần mô tả sẽ hiển thị tại đây'}
+                    {decription ? decription : 'Phần mô tả sẽ hiển thị tại đây'}
                   </div>
                   <div
                     className={classnames('location-wrapper', {
@@ -191,7 +206,7 @@ export class CreateListingPreviewWidget extends Component {
                       />
                     </div>
                     <div className='location-info'>
-                      {state.location ? state.location : 'Vị trí...'}
+                      {location ? location : address}
                     </div>
                     <div className='addition-text'>
                       Đây là chỉ vị trí gần đúng

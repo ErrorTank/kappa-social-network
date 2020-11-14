@@ -114,7 +114,8 @@ export class ListingInfo extends Component {
         vehicle: fieldByVehicleType,
         home: fieldByHomeFor,
       };
-
+      console.log(newState.type);
+      console.log(newState.category);
       this.handleSetDependent(fieldOfType[newState.type], newState.category);
     }
   }

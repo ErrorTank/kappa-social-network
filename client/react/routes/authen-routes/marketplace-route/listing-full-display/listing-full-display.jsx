@@ -102,9 +102,10 @@ class ListingFullDisplay extends Component {
       condition,
       decription,
       user,
+      homeType,
     } = listing;
-    console.log(listing);
-    console.log(user);
+    // console.log(listing);
+    // console.log(user);
     return (
       <PageTitle title={'Listing'}>
         <div className='listing-full-display'>
@@ -115,7 +116,7 @@ class ListingFullDisplay extends Component {
             <div className='info-display-wrapper'>
               <div className='main-info-wrapper'>
                 <div className={classnames('info-title')}>
-                  {title ? title : make ? `${make} ${model} ${year}` : 'nhaf'}
+                  {title ? title : make ? `${make} ${model} ${year}` : homeType}
                 </div>
                 <div className={classnames('info-price')}>
                   {price ? numberToMoney(price.toString()) : 'Giá'}

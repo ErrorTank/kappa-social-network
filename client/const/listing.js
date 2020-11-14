@@ -738,26 +738,26 @@ export const homeField = [
       required: 'Vui lòng nhập số phòng tắm.',
     },
   },
-  {
-    name: 'Giá mỗi tháng',
-    englishName: 'pricePerMonth',
-    isDepended: true,
-    contentEditable: true,
-    numberOnly: true,
-    isMoney: true,
-    error: {
-      required: 'Vui lòng nhập giá tài sản cho thuê.',
-    },
-  },
+  // {
+  //   name: 'Giá mỗi tháng',
+  //   englishName: 'pricePerMonth',
+  //   isDepended: true,
+  //   contentEditable: true,
+  //   numberOnly: true,
+  //   isMoney: true,
+  //   error: {
+  //     required: 'Vui lòng nhập giá tài sản cho thuê.',
+  //   },
+  // },
   {
     name: 'Giá',
     englishName: 'price',
-    isDepended: true,
+    // isDepended: true,
     contentEditable: true,
     numberOnly: true,
     isMoney: true,
     error: {
-      required: 'Vui lòng nhập giá tài sản muốn bán.',
+      required: 'Vui lòng nhập giá tài sản',
     },
   },
   //special, need to build later
@@ -791,20 +791,20 @@ export const homeField = [
 ];
 
 export const fieldByHomeFor = [
-  {
-    _id: 'Sell',
-    name: 'Bán',
-    //must
-    price: true,
-    //option
-  },
-  {
-    _id: 'Rent',
-    name: 'Thuê',
-    //must
-    pricePerMonth: true,
-    //option
-  },
+  // {
+  //   _id: 'Sell',
+  //   name: 'Bán nhà',
+  //   //must
+  //   price: true,
+  //   //option
+  // },
+  // {
+  //   _id: 'Rent',
+  //   name: 'Cho thuê',
+  //   //must
+  //   pricePerMonth: true,
+  //   //option
+  // },
 ];
 
 export const radiusArr = [
