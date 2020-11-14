@@ -46,7 +46,8 @@ const getCategoriesNavigation = (categories) => {
   let itemInfo = itemField.find((e) => e.englishName === 'category');
   let itemIcon = itemInfo.options.filter((e) => e.icon);
   let additionInfo = [...itemIcon, ...otherCategory];
-
+  console.log(additionInfo);
+  console.log(categories);
   let categoryWithIcon = categories.reduce((res, option) => {
     let checkIcon = additionInfo.find((each) => each.name === option.name);
 

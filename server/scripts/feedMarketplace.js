@@ -56,6 +56,7 @@ let categories = [
   //   parent: null,
   //   requiredField: [],
   // },
+  // addition parent
   // {
   //   _id: new ObjectId(),
   //   name: 'Công việc',
@@ -166,29 +167,87 @@ let categories = [
   //   parent: '5f4934c330b2b231185a53af',
   //   requiredField: ['title', 'price', 'category', 'location', 'availability'],
   // },
+  // {
+  //   _id: new ObjectId(),
+  //   name: 'Túi & hành lý',
+  //   parent: '5f4934c330b2b231185a53aa',
+  //   requiredField: ['title', 'price', 'category', 'location', 'availability'],
+  // },
+  // {
+  //   _id: new ObjectId(),
+  //   name: 'Quần áo & giầy dép nữ',
+  //   parent: '5f4934c330b2b231185a53aa',
+  //   requiredField: ['title', 'price', 'category', 'location', 'availability'],
+  // },
+  // //more
+  // {
+  //   _id: new ObjectId(),
+  //   name: 'Đồ chơi & trò chơi',
+  //   parent: '5f4934c330b2b231185a53ac',
+  //   requiredField: ['title', 'price', 'category', 'location', 'availability'],
+  // },
+  // {
+  //   _id: new ObjectId(),
+  //   name: 'Sức khỏe & làm đẹp',
+  //   parent: '5f4934c330b2b231185a53ac',
+  //   requiredField: ['title', 'price', 'category', 'location', 'availability'],
+  // },
+  // //more
+  // {
+  //   _id: new ObjectId(),
+  //   name: 'Xe đạp',
+  //   parent: '5f4934c330b2b231185a53ae',
+  //   requiredField: ['title', 'price', 'category', 'location', 'availability'],
+  // },
+  // {
+  //   _id: new ObjectId(),
+  //   name: 'Nhạc cụ',
+  //   parent: '5f4934c330b2b231185a53ae',
+  //   requiredField: ['title', 'price', 'category', 'location', 'availability'],
+  // },
+  // //more
+  // {
+  //   _id: new ObjectId(),
+  //   name: 'Thanh lý đồ cũ',
+  //   parent: '5f4934c330b2b231185a53ad',
+  //   requiredField: ['title', 'price', 'category', 'location', 'availability'],
+  // },
+  // {
+  //   _id: new ObjectId(),
+  //   name: 'Hỗn hợp',
+  //   parent: '5f4934c330b2b231185a53ad',
+  //   requiredField: ['title', 'price', 'category', 'location', 'availability'],
+  // },
+  //more
+  {
+    _id: new ObjectId(),
+    name: 'Điện tử & máy tính',
+    parent: '5f4934c330b2b231185a53ab',
+    requiredField: ['title', 'price', 'category', 'location', 'availability'],
+  },
+  {
+    _id: new ObjectId(),
+    name: 'Điện thoại di động',
+    parent: '5f4934c330b2b231185a53ab',
+    requiredField: ['title', 'price', 'category', 'location', 'availability'],
+  },
+  //more
+  {
+    _id: new ObjectId(),
+    name: 'Nhà',
+    parent: '5f4934c330b2b231185a53b2',
+    requiredField: ['title', 'price', 'category', 'location', 'availability'],
+  },
+  // {
+  //   _id: new ObjectId(),
+  //   name: 'Điện thoại di động',
+  //   parent: '5f4934c330b2b231185a53ab',
+  //   requiredField: ['title', 'price', 'category', 'location', 'availability'],
+  // },
+  //more
 ];
 
-// Category.insertMany(categories)
-//   .then((data) => console.log(data))
-//   .catch((err) => console.log(err));
+Category.insertMany(categories)
+  .then((data) => console.log(data))
+  .catch((err) => console.log(err));
 // Category.deleteMany({}).then(() => console.log('ok'));
-
-let listing = [
-  // {
-  //   photo: ['9568.jpg'],
-  //   title: 'Xe Honda airblade 2017',
-  //   price: 31000000,
-  //   category: ObjectId('5f4934c330b2b231185a53a8'),
-  // },
-  // {
-  //   photo: ['9911.jpg'],
-  //   title: 'Yamaha Exciter 135-150 2018',
-  //   price: 15000000,
-  //   category: ObjectId('5f4934c330b2b231185a53a8'),
-  // },
-];
-
-// Listing.insertMany(listing)
-//   .then((data) => console.log(data))
-//   .catch((err) => console.log(err));
-// Listing.deleteMany({}).then(() => console.log('ok'));

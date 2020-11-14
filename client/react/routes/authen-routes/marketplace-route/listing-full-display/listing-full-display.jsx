@@ -7,7 +7,6 @@ import classnames from 'classnames';
 import { numberToMoney } from '../../../../../common/utils/listing-utils';
 import { Breadcrumbs } from '../../../../common/breabcrumbs/breadcrumbs';
 import moment from 'moment';
-import { userApi } from './../../../../../api/common/user-api';
 import { Avatar } from './../../../../common/avatar/avatar';
 
 class ListingFullDisplay extends Component {
