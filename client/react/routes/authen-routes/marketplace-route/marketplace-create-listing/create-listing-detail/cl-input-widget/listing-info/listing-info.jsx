@@ -135,7 +135,7 @@ export class ListingInfo extends Component {
   // check error, only check needed input now
   handleCheckError = (item, value) => {
     const { state, updateValue, setError, resetError } = this.props;
-    console.log(value);
+    // console.log(value);
     let check = true,
       name = item.englishName,
       error = item.error;

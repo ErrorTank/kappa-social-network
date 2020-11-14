@@ -28,7 +28,7 @@ const getCategories = (query) => {
       return Promise.all(
         categories.map((e) => {
           let childrenArr = getRootCategories(categories, e._id);
-          if (childrenArr.length > 1) {
+          if (childrenArr.length > 0 && childrenArr[0] !== e._id) {
             return Category.find({
               _id: {
                 $in: childrenArr.map((e) => ObjectId(e)),

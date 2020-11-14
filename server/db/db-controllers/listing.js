@@ -9,6 +9,7 @@ const { getRootCategories, getCategoryByID } = require('./category');
 
 const createListing = (value) => {
   let categoryName = findSubCategory(value);
+  console.log(categoryName);
   return Category.findOne({ name: categoryName }).then((category) => {
     let newListing = {
       ...value,
@@ -24,7 +25,7 @@ const findSubCategory = (value) => {
   const { category } = value;
   const subCategoryName = {
     'Xe hơi/Xe tải': value.bodyType,
-    'Cho thuê': value.homeType,
+    'Cho thuê': `${value.homeType} cho thuê`,
   };
   return subCategoryName[category] ? subCategoryName[category] : category;
 };

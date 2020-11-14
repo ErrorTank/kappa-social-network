@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import classnames from 'classnames';
 import { ThemeContext } from '../../context/theme-context';
 import ContentEditable from 'react-contenteditable';
+import ReactDOM from 'react-dom';
 
 export class ListingInfoInput extends Component {
   constructor(props) {
@@ -95,7 +96,9 @@ export class ListingInfoInput extends Component {
                 <span
                   className='listing-info-label'
                   onClick={() =>
-                    contentEditable && this.contentEditable.current.focus()
+                    contentEditable
+                      ? this.contentEditable.current.focus()
+                      : this.input.focus()
                   }
                 >
                   {label}
