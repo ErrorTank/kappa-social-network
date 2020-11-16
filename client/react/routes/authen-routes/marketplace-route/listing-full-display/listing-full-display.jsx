@@ -8,6 +8,7 @@ import { numberToMoney } from '../../../../../common/utils/listing-utils';
 import { Breadcrumbs } from '../../../../common/breabcrumbs/breadcrumbs';
 import moment from 'moment';
 import { Avatar } from './../../../../common/avatar/avatar';
+import { sellMessengerModal } from './../../../../common/modal/sell-messenger-modal/sell-messenger-modal';
 
 class ListingFullDisplay extends Component {
   constructor(props) {
@@ -28,6 +29,7 @@ class ListingFullDisplay extends Component {
       icon: <i className='fab fa-facebook-messenger'></i>,
       className: 'facebook-button long',
       text: 'Nhắn tin',
+      click: () => sellMessengerModal.open(),
     },
     {
       icon: <i className='fas fa-bookmark'></i>,
@@ -139,7 +141,11 @@ class ListingFullDisplay extends Component {
 
               <div className='button-section-wrapper'>
                 {this.buttonArr.map((e, i) => (
-                  <Button className={classnames(e.className)} key={i}>
+                  <Button
+                    className={classnames(e.className)}
+                    key={i}
+                    onClick={e.click}
+                  >
                     {e.icon}
                     {e.text && <span>{e.text}</span>}
                   </Button>
