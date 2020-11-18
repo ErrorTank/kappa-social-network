@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
-import { CommonModalLayout } from '../common-modal-layout';
 import { modals } from './../modals';
-
+import { CommonModalLayout } from './../common-modal-layout';
 export const sellMessengerModal = {
   open(config) {
     const modal = modals.openModal({
@@ -21,26 +20,24 @@ class SellMessengerModal extends Component {
   render() {
     let { onClose, profile } = this.props;
     return (
-      <div>
-        <CommonModalLayout
-          className='sell-messenger-model'
-          onClose={() => {
-            onClose();
-          }}
-          title={'Nhắn tin cho ...'}
-          actions={[
-            {
-              className: 'btn-common-primary',
-              onClick: () => {
-                onClose();
-              },
-              content: `Trò truyện với ...`,
+      <CommonModalLayout
+        className='sell-messenger-model'
+        onClose={() => {
+          onClose();
+        }}
+        title={'Nhắn tin cho ...'}
+        actions={[
+          {
+            className: 'btn-common-primary',
+            onClick: () => {
+              onClose();
             },
-          ]}
-        >
-          <div>Testing</div>
-        </CommonModalLayout>
-      </div>
+            content: `Trò truyện với ...`,
+          },
+        ]}
+      >
+        <div>Testing</div>
+      </CommonModalLayout>
     );
   }
 }
