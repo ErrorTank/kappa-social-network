@@ -44,7 +44,7 @@ export class ListingDisplay extends Component {
               customHistory.push(`/marketplace/listing/${listing._id}`)
             }
           >
-            <div className='addition-button-wrapper'>
+            {/* <div className='addition-button-wrapper'>
               {this.buttonList.map((each) => (
                 <Tooltip
                   key={each.tooltipText}
@@ -55,7 +55,7 @@ export class ListingDisplay extends Component {
                   <div className='addition-button'>{each.icon}</div>
                 </Tooltip>
               ))}
-            </div>
+            </div> */}
           </div>
         )}
         <div className='listing-picture'>

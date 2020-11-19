@@ -1,0 +1,58 @@
+.sell-messenger-body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+
+  .listing-brief-info {
+    display: flex;
+    gap: 16px;
+
+    .brief-picture {
+      height: 64px;
+      width: 64px;
+
+      img {
+        height: 100%;
+        width: 100%;
+        object-fit: cover;
+        border-radius: 12px;
+      }
+    }
+
+    .brief-info {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+
+      .bi-title {
+        color: normalTextLight;
+        font-weight: 600;
+        font-size: 15px;
+        line-height: 1.3333;
+      }
+
+      .bi-price {
+        color: secondaryTextLight;
+        font-weight: normal;
+        line-height: 1.2308;
+        font-size: 13px;
+        width: 100%;
+      }
+    }
+
+    .suggest-question {
+      margin: 16px 0;
+      display: flex;
+      gap: 8px;
+
+      .each-question {
+        height: 36px;
+        background-color: btnCancelLight;
+        box-sizing: border-box;
+        border-radius: 18px;
+        cursor: pointer;
+        font-weight: 600;
+        font-size: 15px;
+      }
+    }
+  }
+}

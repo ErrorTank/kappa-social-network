@@ -24,12 +24,13 @@ class ListingFullDisplay extends Component {
         this.setState({ listing: e });
       });
   }
+
   buttonArr = [
     {
       icon: <i className='fab fa-facebook-messenger'></i>,
       className: 'facebook-button long',
       text: 'Nhắn tin',
-      click: () => sellMessengerModal.open(),
+      click: () => sellMessengerModal.open({ listing: this.state.listing }),
     },
     {
       icon: <i className='fas fa-bookmark'></i>,
@@ -114,6 +115,7 @@ class ListingFullDisplay extends Component {
       user,
       homeType,
       address,
+      files,
     } = listing;
     // console.log(listing);
     // console.log(user);
@@ -121,7 +123,7 @@ class ListingFullDisplay extends Component {
       <PageTitle title={'Listing'}>
         <div className='listing-full-display'>
           <div className='picture-display-section'>
-            <ImageSlider files={listing.files} />
+            <ImageSlider files={files} />
           </div>
           <div className='listing-all-info-section'>
             <div className='info-display-wrapper'>
@@ -130,12 +132,11 @@ class ListingFullDisplay extends Component {
                   {title ? title : make ? `${make} ${model} ${year}` : homeType}
                 </div>
                 <div className={classnames('info-price')}>
-                  {price ? numberToMoney(price.toString()) : 'Giá'}
+                  {price && numberToMoney(price.toString())}
                 </div>
                 <Breadcrumbs categoryID={category} isListing={true} />
                 <div className='info-time-position'>
-                  Đã niêm yết {moment(postTime).fromNow()} trước tại{' '}
-                  {location || '...'}
+                  Đã niêm yết {moment(postTime).fromNow()} trước tại {location}
                 </div>
               </div>
 
