@@ -22,6 +22,7 @@
       flex-direction: column;
       align-items: center;
       justify-content: center;
+      flex-wrap: wrap;
 
       .bi-title {
         color: normalTextLight;
@@ -38,20 +39,37 @@
         width: 100%;
       }
     }
+  }
 
-    .suggest-question {
-      margin: 16px 0;
+  .suggest-question {
+    margin: 16px 0;
+    display: flex;
+    gap: 8px;
+    width: 100%;
+    flex-wrap: wrap;
+
+    .each-question {
+      height: 36px;
+      background-color: btnCancelLight;
+      box-sizing: border-box;
+      border-radius: 18px;
+      padding: 0 12px;
+      white-space: nowrap;
+      max-width: 100%;
       display: flex;
-      gap: 8px;
+      justify-content: center;
 
-      .each-question {
-        height: 36px;
-        background-color: btnCancelLight;
-        box-sizing: border-box;
-        border-radius: 18px;
+      &:hover {
         cursor: pointer;
+        background-color: darken(btnCancelLight, 10%);
+      }
+
+      span {
         font-weight: 600;
         font-size: 15px;
+        max-width: 100%;
+        font-family: inherit;
+        word-break: break-word;
       }
     }
   }

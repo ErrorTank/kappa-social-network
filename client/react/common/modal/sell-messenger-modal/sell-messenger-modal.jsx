@@ -93,7 +93,9 @@ class SellMessengerModal extends Component {
                 title &&
                 e.type === 'item' &&
                 e.question.map((each) => (
-                  <div className='each-question'>{each}</div>
+                  <div className='each-question'>
+                    <span>{each}</span>
+                  </div>
                 ))
               );
             })}
