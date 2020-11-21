@@ -21,57 +21,14 @@ class SellMessengerModal extends Component {
     super(props);
     this.state = {
       message: '',
-      questionArr: null,
     };
-    this.setQuestionArr();
   }
-
-  suggestQuestion = [
-    {
-      type: 'item',
-      question: [
-        'Tôi quan tâm đến mặt hàng này.',
-        'Mặt hàng này còn chứ?',
-        'Mặt hàng ở tình trạng như thế nào?',
-        'Bạn có giao hàng không?',
-      ],
-    },
-    {
-      type: 'rent',
-      question: [
-        'Ngày bắt đầu cho thuê có linh hoạt không?',
-        'Có phí đặt cọc hay phí nào khắc không?',
-        'Có bao gồm điện, nước, điện thoại và Internet không?',
-      ],
-    },
-  ];
-
-  setQuestionArr = () => {
-    let { onClose, listing } = this.props;
-    const {
-      title,
-      make,
-      year,
-      model,
-      price,
-      user,
-      homeType,
-      address,
-      files,
-    } = listing;
-    console.log(listing);
-
-    this.suggestQuestion.map((e) => {
-      if (title && e.type === 'item') {
-        this.setState({ questionArr: e.question });
-      }
-      if (homeType && e.type === 'rent') {
-        this.setState({ questionArr: e.question });
-      }
-    });
+  handleMessageChange = (value) => {
+    this.setState({ message: value });
   };
   render() {
-    let { onClose, listing } = this.props;
+    let { onClose, listing, questionArr, handleMessageChange } = this.props;
+    const { message } = this.state;
     const {
       title,
       make,
@@ -83,8 +40,7 @@ class SellMessengerModal extends Component {
       address,
       files,
     } = listing;
-    const { message, questionArr } = this.state;
-    console.log(questionArr);
+    console.log(message);
     return (
       <CommonModalLayout
         className='sell-messenger-model'
@@ -123,24 +79,20 @@ class SellMessengerModal extends Component {
             </div>
           </div>
           <div className='suggest-question'>
-            <div className='question-wrapper'>
-              {questionArr &&
-                questionArr.map((each, i) => (
-                  <div className='each-question' key={i}>
-                    <span>{each}</span>
-                  </div>
-                ))}
-            </div>
+            {questionArr &&
+              questionArr.map((each, i) => (
+                <div className='each-question' key={i}>
+                  <span>{each}</span>
+                </div>
+              ))}
           </div>
           <div className='direct-chat'>
             <ListingInfoInput
               label={'Vui lòng nhập tin nhắn cho người bán'}
               textArea={true}
               id={'sell-direct-chat'}
-              value={this.state.message}
-              onChange={(e) => {
-                this.setState({ message: e });
-              }}
+              value={message}
+              onChange={(e) => this.handleMessageChange(e.target.value)}
             />
           </div>
         </div>

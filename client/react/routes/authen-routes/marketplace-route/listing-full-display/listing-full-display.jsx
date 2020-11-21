@@ -17,20 +17,70 @@ class ListingFullDisplay extends Component {
       listing: {
         files: {},
       },
+      message: '',
+      questionArr: null,
     };
     listingApi
       .getListingByListingID(this.props.match.params.listingID)
       .then((e) => {
+        this.setQuestionArr(e);
         this.setState({ listing: e });
       });
   }
+
+  suggestQuestion = [
+    {
+      type: 'item',
+      question: [
+        'Tôi quan tâm đến mặt hàng này.',
+        'Mặt hàng này còn chứ?',
+        'Mặt hàng ở tình trạng như thế nào?',
+        'Bạn có giao hàng không?',
+      ],
+    },
+    {
+      type: 'rent',
+      question: [
+        'Ngày bắt đầu cho thuê có linh hoạt không?',
+        'Có phí đặt cọc hay phí nào khắc không?',
+        'Có bao gồm điện, nước, điện thoại và Internet không?',
+      ],
+    },
+  ];
+
+  setQuestionArr = (listing) => {
+    const {
+      title,
+      make,
+      year,
+      model,
+      price,
+      user,
+      homeType,
+      address,
+      files,
+    } = listing;
+
+    this.suggestQuestion.map((e) => {
+      if ((title || make) && e.type === 'item') {
+        this.setState({ questionArr: e.question });
+      }
+      if (homeType && e.type === 'rent') {
+        this.setState({ questionArr: e.question });
+      }
+    });
+  };
 
   buttonArr = [
     {
       icon: <i className='fab fa-facebook-messenger'></i>,
       className: 'facebook-button long',
       text: 'Nhắn tin',
-      click: () => sellMessengerModal.open({ listing: this.state.listing }),
+      click: () =>
+        sellMessengerModal.open({
+          listing: this.state.listing,
+          questionArr: this.state.questionArr,
+        }),
     },
     {
       icon: <i className='fas fa-bookmark'></i>,
