@@ -57,9 +57,15 @@ export class ListingInfoInput extends Component {
                   onBlur={() => this.setState({ focus: false })}
                   id={id}
                   value={value}
+                  ref={(input) => (this.input = input)}
                   {...others}
                 ></textarea>
-                <span className='listing-info-label'>{label}</span>
+                <span
+                  className='listing-info-label'
+                  onClick={() => this.input.focus()}
+                >
+                  {label}
+                </span>
               </label>
             ) : (
               <label

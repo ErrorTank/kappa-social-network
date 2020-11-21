@@ -83,6 +83,7 @@ export class ImageSlider extends Component {
                         main: file.path === files[currentSlide].path,
                       })}
                       onClick={() => this.getTo(i)}
+                      key={file.path}
                     >
                       <div className='img-wrapper'>
                         <img src={file.path} alt='' />
