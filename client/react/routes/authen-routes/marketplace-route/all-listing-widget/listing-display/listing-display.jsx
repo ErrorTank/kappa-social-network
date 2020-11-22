@@ -12,20 +12,20 @@ export class ListingDisplay extends Component {
       isHovering: false,
     };
   }
-  buttonList = [
-    {
-      icon: <i className='fab fa-facebook-messenger'></i>,
-      tooltipText: 'Nhắn tin',
-    },
-    {
-      icon: <i className='fas fa-bookmark'></i>,
-      tooltipText: 'Lưu',
-    },
-    {
-      icon: <i className='fas fa-share'></i>,
-      tooltipText: 'Chia sẻ',
-    },
-  ];
+  // buttonList = [
+  //   {
+  //     icon: <i className='fab fa-facebook-messenger'></i>,
+  //     tooltipText: 'Nhắn tin',
+  //   },
+  //   {
+  //     icon: <i className='fas fa-bookmark'></i>,
+  //     tooltipText: 'Lưu',
+  //   },
+  //   {
+  //     icon: <i className='fas fa-share'></i>,
+  //     tooltipText: 'Chia sẻ',
+  //   },
+  // ];
   handleMouseHover = () => {
     this.setState({ isHovering: !this.state.isHovering });
   };

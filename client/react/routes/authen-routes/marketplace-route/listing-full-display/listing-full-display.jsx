@@ -9,6 +9,8 @@ import { Breadcrumbs } from '../../../../common/breabcrumbs/breadcrumbs';
 import moment from 'moment';
 import { Avatar } from './../../../../common/avatar/avatar';
 import { sellMessengerModal } from './../../../../common/modal/sell-messenger-modal/sell-messenger-modal';
+import { CommonInput } from '../../../../common/common-input/common-input';
+import { Tooltip } from './../../../../common/tooltip/tooltip';
 
 class ListingFullDisplay extends Component {
   constructor(props) {
@@ -17,33 +19,86 @@ class ListingFullDisplay extends Component {
       listing: {
         files: {},
       },
+      message: 'Mặt hàng này còn chứ?',
+      questionArr: null,
     };
     listingApi
       .getListingByListingID(this.props.match.params.listingID)
       .then((e) => {
+        this.setQuestionArr(e);
         this.setState({ listing: e });
       });
   }
+
+  suggestQuestion = [
+    {
+      type: 'item',
+      question: [
+        'Tôi quan tâm đến mặt hàng này.',
+        'Mặt hàng này còn chứ?',
+        'Mặt hàng ở tình trạng như thế nào?',
+        'Bạn có giao hàng không?',
+      ],
+    },
+    {
+      type: 'rent',
+      question: [
+        'Ngày bắt đầu cho thuê có linh hoạt không?',
+        'Có phí đặt cọc hay phí nào khắc không?',
+        'Có bao gồm điện, nước, điện thoại và Internet không?',
+      ],
+    },
+  ];
+
+  setQuestionArr = (listing) => {
+    const {
+      title,
+      make,
+      year,
+      model,
+      price,
+      user,
+      homeType,
+      address,
+      files,
+    } = listing;
+
+    this.suggestQuestion.map((e) => {
+      if ((title || make) && e.type === 'item') {
+        this.setState({ questionArr: e.question });
+      }
+      if (homeType && e.type === 'rent') {
+        this.setState({ questionArr: e.question });
+      }
+    });
+  };
 
   buttonArr = [
     {
       icon: <i className='fab fa-facebook-messenger'></i>,
       className: 'facebook-button long',
       text: 'Nhắn tin',
-      click: () => sellMessengerModal.open({ listing: this.state.listing }),
+      tooltipText: 'Nhắn tin',
+      click: () =>
+        sellMessengerModal.open({
+          listing: this.state.listing,
+          questionArr: this.state.questionArr,
+        }),
     },
     {
       icon: <i className='fas fa-bookmark'></i>,
       className: 'facebook-button',
+      tooltipText: 'Lưu',
     },
     {
       icon: <i className='fas fa-share'></i>,
       className: 'facebook-button',
+      tooltipText: 'Chia sẻ',
     },
-    {
-      icon: <i className='fas fa-ellipsis-h'></i>,
-      className: 'facebook-button',
-    },
+    // {
+    //   icon: <i className='fas fa-ellipsis-h'></i>,
+    //   className: 'facebook-button',
+    // },
   ];
   additionInfo = [
     {
@@ -99,8 +154,12 @@ class ListingFullDisplay extends Component {
     //   title: 'Trạng thái xe',
     // },
   ];
+
+  handleMessageChange = (value) => {
+    this.setState({ message: value });
+  };
   render() {
-    const { listing } = this.state;
+    const { listing, message } = this.state;
     const {
       title,
       make,
@@ -142,14 +201,21 @@ class ListingFullDisplay extends Component {
 
               <div className='button-section-wrapper'>
                 {this.buttonArr.map((e, i) => (
-                  <Button
-                    className={classnames(e.className)}
-                    key={i}
-                    onClick={e.click}
+                  <Tooltip
+                    key={e.tooltipText}
+                    // className={'addition-button-tooltip'}
+                    text={() => e.tooltipText}
+                    position={'top'}
                   >
-                    {e.icon}
-                    {e.text && <span>{e.text}</span>}
-                  </Button>
+                    <Button
+                      className={classnames(e.className)}
+                      key={i}
+                      onClick={e.click}
+                    >
+                      {e.icon}
+                      {e.text && <span>{e.text}</span>}
+                    </Button>
+                  </Tooltip>
                 ))}
               </div>
 
@@ -225,8 +291,21 @@ class ListingFullDisplay extends Component {
                   Gửi tin nhắn cho người bán
                 </div>
               </div>
-              <div className='message-example'>Mặt hàng này còn chứ</div>
-              <div className='send-message-demo'>Gửi</div>
+
+              {/* <input /> */}
+              <CommonInput
+                type='text'
+                value={message}
+                onChange={(e) => this.handleMessageChange(e.target.value)}
+                className='message-example'
+              />
+              <div
+                className={classnames('send-message-demo', {
+                  'gray-filter': !message,
+                })}
+              >
+                Gửi
+              </div>
             </div>
           </div>
           <div className='blank-section'></div>
