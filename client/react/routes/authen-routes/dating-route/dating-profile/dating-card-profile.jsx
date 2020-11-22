@@ -92,9 +92,13 @@ export class DatingCardProfile extends Component {
               : "Hãy mô tả bản thân bằng một vài từ hoặc câu ..."}
           </div>
           <div>
-            {profile.height ? `${profile.height} cm` : "Thêm chiều cao"}
+            {profile.height ? (
+              `${profile.height} cm`
+            ) : (
+              <span>Thêm chiều cao</span>
+            )}
           </div>
-          <div>{profile.job ? profile.job : "Thêm việc làm"}</div>
+          <div>{profile.job ? profile.job : <span>Thêm việc làm</span>}</div>
           <div>
             {profile.universityPostgraduate
               ? profile.universityPostgraduate
@@ -134,7 +138,40 @@ export class DatingCardProfile extends Component {
               ? " Thường xuyên"
               : "Không muốn tiết lộ"}
           </div>
-          <div></div>
+          <div>
+            {profile.drinking === "NEVER"
+              ? "Không bao giờ"
+              : profile.drinking === "OCCASIONALLY"
+              ? "Thỉnh thoảng"
+              : profile.drinking === "OFTEN"
+              ? " Thường xuyên"
+              : "Không muốn tiết lộ"}
+          </div>
+          <div>
+            {profile.religion === "PREFER NOT TO SAY"
+              ? "Không muốn tiết lộ"
+              : profile.religion === "AGNOSTIC"
+              ? "Người theo thuyết bất khả trị"
+              : profile.religion === "ATHEIST"
+              ? "Người vô thần"
+              : profile.religion === "BUDDHIST"
+              ? "Phật giáo"
+              : profile.religion === "CATHOLIC"
+              ? "Công giáo"
+              : profile.religion === "CHRISTIAN"
+              ? "Kito giáo"
+              : profile.religion === "HINDU"
+              ? "Hindu giáo"
+              : profile.religion === "JEWISH"
+              ? "Do thái"
+              : profile.religion === "MUSLIM"
+              ? "Hồi giáo"
+              : profile.religion === "SIKH"
+              ? "Sikh giáo"
+              : profile.religion === "SPIRITUAL"
+              ? "Tâm linh"
+              : "Khác"}
+          </div>
         </div>
       </div>
     );
