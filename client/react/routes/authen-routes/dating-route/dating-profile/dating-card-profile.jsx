@@ -82,9 +82,59 @@ export class DatingCardProfile extends Component {
           </div>
 
           <div className="dcpi-location">
-            {profile.location.ward.name} {profile.location.district.name}{" "}
-            {profile.location.ward.name}
+            Đang ở {profile.location.ward && profile.location.ward.name}{" "}
+            {profile.location.district && profile.location.district.name}{" "}
+            {profile.location.city && profile.location.city.name}
           </div>
+          <div>
+            {profile.bio
+              ? profile.bio
+              : "Hãy mô tả bản thân bằng một vài từ hoặc câu ..."}
+          </div>
+          <div>
+            {profile.height ? `${profile.height} cm` : "Thêm chiều cao"}
+          </div>
+          <div>{profile.job ? profile.job : "Thêm việc làm"}</div>
+          <div>
+            {profile.universityPostgraduate
+              ? profile.universityPostgraduate
+              : profile.university
+              ? profile.university
+              : profile.secondarySchool
+              ? profile.secondaryschool
+              : "Thêm trường học"}
+          </div>
+          <div>
+            {profile.educationLevel === "A-LEVELS,HIGHERS OR EQUIVALENT"
+              ? "Bằng trung học"
+              : profile.educationLevel === "BACHELORS DEGREE"
+              ? "Bằng đại học"
+              : profile.educationLevel === "UNIVERSITY(POSTGRADUATE) DEGREE"
+              ? "Bằng cao học"
+              : "Không muốn tiết lộ"}
+          </div>
+          <div>
+            Quê Quán {profile.homeTown.ward && profile.homeTown.ward.name}{" "}
+            {profile.homeTown.district && profile.homeTown.district.name}{" "}
+            {profile.homeTown.city && profile.homeTown.city.name}
+          </div>
+          <div>
+            {profile.yourKids === "I DON'T HAVE KIDS"
+              ? "Chưa có con"
+              : profile.yourKids === "I HAVE KIDS"
+              ? "Đã có con"
+              : "Không muốn tiết lộ"}
+          </div>
+          <div>
+            {profile.smoking === "NEVER"
+              ? "Không bao giờ"
+              : profile.smoking === "OCCASIONALLY"
+              ? "Thỉnh thoảng"
+              : profile.smoking === "OFTEN"
+              ? " Thường xuyên"
+              : "Không muốn tiết lộ"}
+          </div>
+          <div></div>
         </div>
       </div>
     );
