@@ -81,7 +81,11 @@ class SellMessengerModal extends Component {
           <div className='suggest-question'>
             {questionArr &&
               questionArr.map((each, i) => (
-                <div className='each-question' key={i}>
+                <div
+                  className='each-question'
+                  key={i}
+                  onClick={() => this.handleMessageChange(each)}
+                >
                   <span>{each}</span>
                 </div>
               ))}

@@ -9,6 +9,8 @@ import { Breadcrumbs } from '../../../../common/breabcrumbs/breadcrumbs';
 import moment from 'moment';
 import { Avatar } from './../../../../common/avatar/avatar';
 import { sellMessengerModal } from './../../../../common/modal/sell-messenger-modal/sell-messenger-modal';
+import { CommonInput } from '../../../../common/common-input/common-input';
+import { Tooltip } from './../../../../common/tooltip/tooltip';
 
 class ListingFullDisplay extends Component {
   constructor(props) {
@@ -17,7 +19,7 @@ class ListingFullDisplay extends Component {
       listing: {
         files: {},
       },
-      message: '',
+      message: 'Mặt hàng này còn chứ?',
       questionArr: null,
     };
     listingApi
@@ -76,6 +78,7 @@ class ListingFullDisplay extends Component {
       icon: <i className='fab fa-facebook-messenger'></i>,
       className: 'facebook-button long',
       text: 'Nhắn tin',
+      tooltipText: 'Nhắn tin',
       click: () =>
         sellMessengerModal.open({
           listing: this.state.listing,
@@ -85,15 +88,17 @@ class ListingFullDisplay extends Component {
     {
       icon: <i className='fas fa-bookmark'></i>,
       className: 'facebook-button',
+      tooltipText: 'Lưu',
     },
     {
       icon: <i className='fas fa-share'></i>,
       className: 'facebook-button',
+      tooltipText: 'Chia sẻ',
     },
-    {
-      icon: <i className='fas fa-ellipsis-h'></i>,
-      className: 'facebook-button',
-    },
+    // {
+    //   icon: <i className='fas fa-ellipsis-h'></i>,
+    //   className: 'facebook-button',
+    // },
   ];
   additionInfo = [
     {
@@ -149,8 +154,12 @@ class ListingFullDisplay extends Component {
     //   title: 'Trạng thái xe',
     // },
   ];
+
+  handleMessageChange = (value) => {
+    this.setState({ message: value });
+  };
   render() {
-    const { listing } = this.state;
+    const { listing, message } = this.state;
     const {
       title,
       make,
@@ -192,14 +201,21 @@ class ListingFullDisplay extends Component {
 
               <div className='button-section-wrapper'>
                 {this.buttonArr.map((e, i) => (
-                  <Button
-                    className={classnames(e.className)}
-                    key={i}
-                    onClick={e.click}
+                  <Tooltip
+                    key={e.tooltipText}
+                    // className={'addition-button-tooltip'}
+                    text={() => e.tooltipText}
+                    position={'top'}
                   >
-                    {e.icon}
-                    {e.text && <span>{e.text}</span>}
-                  </Button>
+                    <Button
+                      className={classnames(e.className)}
+                      key={i}
+                      onClick={e.click}
+                    >
+                      {e.icon}
+                      {e.text && <span>{e.text}</span>}
+                    </Button>
+                  </Tooltip>
                 ))}
               </div>
 
@@ -275,8 +291,21 @@ class ListingFullDisplay extends Component {
                   Gửi tin nhắn cho người bán
                 </div>
               </div>
-              <div className='message-example'>Mặt hàng này còn chứ</div>
-              <div className='send-message-demo'>Gửi</div>
+
+              {/* <input /> */}
+              <CommonInput
+                type='text'
+                value={message}
+                onChange={(e) => this.handleMessageChange(e.target.value)}
+                className='message-example'
+              />
+              <div
+                className={classnames('send-message-demo', {
+                  'gray-filter': !message,
+                })}
+              >
+                Gửi
+              </div>
             </div>
           </div>
           <div className='blank-section'></div>

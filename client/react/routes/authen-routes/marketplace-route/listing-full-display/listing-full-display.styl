@@ -220,19 +220,16 @@
       }
 
       .message-example {
-        border: 1px solid lightgray;
-        padding: 8px 12px;
-        cursor: not-allowed;
         box-sizing: border-box;
         color: normalTextLight;
-        font-weight: 500;
-        border-radius: 6px;
-        font-weight: 500;
-        font-size: 15px;
-        background-color: btnCancelLight;
+        width: 100%;
+
+        &:focus {
+          border: 1px solid blueTextLight !important;
+        }
 
         &:hover {
-          background-color: grayBackgroundLight;
+          background-color: darken(btnCancelLight, 10%);
         }
       }
 
@@ -250,6 +247,11 @@
         background-color: blueTextLight;
         border-radius: 6px;
         color: white;
+
+        &.gray-filter {
+          filter: grayscale(100%) contrast(30%) brightness(150%);
+          pointer-events: none;
+        }
       }
     }
   }
