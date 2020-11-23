@@ -28,19 +28,10 @@ export class CategoryTraitWidget extends Component {
   ];
 
   render() {
-    const { radius, updateValue } = this.props;
+    const { radius, updateValue, setState, state } = this.props;
     const { categoryDisplay, currentSortType } = this.state;
     // console.log(this.props);
-    let sortOptions = [
-      {
-        label: 'Giá: Thấp nhất trước',
-        value: 'Lowest first',
-      },
-      {
-        label: 'Giá: Cao nhất trước',
-        value: 'Highest first',
-      },
-    ];
+
     return (
       <ThemeContext.Consumer>
         {({ darkMode }) => (
@@ -54,6 +45,8 @@ export class CategoryTraitWidget extends Component {
               <MarketplaceFilterSection
                 radius={radius}
                 updateValue={updateValue}
+                setState={setState}
+                state={state}
               />
               <CategoriesSection
                 darkMode={darkMode}

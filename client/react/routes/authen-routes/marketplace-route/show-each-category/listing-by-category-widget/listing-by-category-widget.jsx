@@ -7,33 +7,14 @@ import { KComponent } from './../../../../../common/k-component';
 export class ListingByCategoryWidget extends KComponent {
   constructor(props) {
     super(props);
-    this.state = {
-      listingByCategory: {
-        listingArr: [],
-      },
-    };
+    this.state = {};
   }
-  componentDidMount() {
-    this.getListing();
-  }
-  componentDidUpdate(prevProps) {
-    if (
-      prevProps.match.params.categoryID !== this.props.match.params.categoryID
-    ) {
-      this.getListing();
-    }
-  }
-  getListing = () => {
-    listingApi
-      .getListingByCategoryID(this.props.match.params.categoryID)
-      .then((e) => this.setState({ listingByCategory: e }));
-  };
+
   render() {
-    const { listingByCategory } = this.state;
-    const { radius, myPosition } = this.props;
+    const { radius, myPosition, listingByCategory } = this.props;
     return (
       <div className='listing-by-category-widget'>
-        {!!listingByCategory.listingArr.length ? (
+        {listingByCategory && !!listingByCategory.listingArr.length ? (
           <div className='listing-by-category-wrapper'>
             <div className='listing-suitable'>
               {listingByCategory.listingArr.map((listing) => {

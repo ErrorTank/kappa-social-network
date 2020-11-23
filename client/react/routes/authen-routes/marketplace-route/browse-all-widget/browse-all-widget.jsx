@@ -63,18 +63,7 @@ export class BrowseAllWidget extends KComponent {
                 darkMode={darkMode}
                 menuNavigation={this.browseAllMenu}
               />
-              <MarketplaceFilterSection radius={radius}>
-                <ListingInfoSelect
-                  label={'Bán kính'}
-                  options={radiusArr}
-                  displayAs={(item) => item.value + ' km'}
-                  value={{ value: radius }}
-                  isSelected={(option) => option.value === radius}
-                  onChange={(e) => {
-                    this.updateValue(`radius`, e.value);
-                  }}
-                />
-              </MarketplaceFilterSection>
+              <MarketplaceFilterSection radius={radius} />
               <CategoriesSection
                 darkMode={darkMode}
                 categoryDisplay={categoryDisplay}
