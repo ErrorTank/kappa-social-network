@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { datingProfile } from "../../../../../common/states/common";
 import classnames from "classnames";
 import { getAge } from "../../../../../common/utils/date-utils";
+import { VoiceCallWidget } from "./../../../../common/media-modal/voice-call-modal/voice-call-modal";
 
 export class DatingCardProfile extends Component {
   constructor(props) {
@@ -34,6 +35,7 @@ export class DatingCardProfile extends Component {
     let profile = datingProfile.getState();
     let { current } = this.state;
     let avatar = profile.avatars.length ? profile.avatars[current].path : null;
+    console.log(profile);
     return (
       <div className="dating-card-profile">
         <div className="dcp-top">
@@ -70,8 +72,9 @@ export class DatingCardProfile extends Component {
           )}
         </div>
         <div className="dcp-bot">
-          <div className="dcpi-name-age">
-            {profile.name} {","} {getAge(profile.birthday)}
+          <div className="dcp-name-age">
+            {profile.name}
+            {","} {getAge(profile.birthday)}
           </div>
           <div className="dcp-gender">
             {profile.gender === "MALE"
@@ -81,34 +84,33 @@ export class DatingCardProfile extends Component {
               : "Không xác định"}
           </div>
 
-          <div className="dcpi-location">
-            Đang ở {profile.location.ward && profile.location.ward.name}{" "}
-            {profile.location.district && profile.location.district.name}{" "}
+          <div className="dcp-location">
+            <i className="fas fa-map-marker-alt"></i>
+            Đang ở {profile.location.ward && `${profile.location.ward.name}, `}
+            {profile.location.district && `${profile.location.district.name}, `}
             {profile.location.city && profile.location.city.name}
           </div>
+          <div>{profile.bio && profile.bio}</div>
           <div>
-            {profile.bio
-              ? profile.bio
-              : "Hãy mô tả bản thân bằng một vài từ hoặc câu ..."}
+            <i className="fas fa-male"></i>
+            {profile.height && `${profile.height} cm`}
           </div>
           <div>
-            {profile.height ? (
-              `${profile.height} cm`
-            ) : (
-              <span>Thêm chiều cao</span>
-            )}
+            <i className="fas fa-briefcase"></i>
+            {profile.job && profile.job}
           </div>
-          <div>{profile.job ? profile.job : <span>Thêm việc làm</span>}</div>
           <div>
+            <i className="fas fa-graduation-cap"></i>
             {profile.universityPostgraduate
               ? profile.universityPostgraduate
               : profile.university
               ? profile.university
               : profile.secondarySchool
               ? profile.secondaryschool
-              : "Thêm trường học"}
+              : "Không muốn tiết lộ"}
           </div>
           <div>
+            <i className="fas fa-graduation-cap"></i>
             {profile.educationLevel === "A-LEVELS,HIGHERS OR EQUIVALENT"
               ? "Bằng trung học"
               : profile.educationLevel === "BACHELORS DEGREE"
@@ -118,11 +120,14 @@ export class DatingCardProfile extends Component {
               : "Không muốn tiết lộ"}
           </div>
           <div>
-            Quê Quán {profile.homeTown.ward && profile.homeTown.ward.name}{" "}
-            {profile.homeTown.district && profile.homeTown.district.name}{" "}
-            {profile.homeTown.city && profile.homeTown.city.name}
+            <i className="fas fa-home-lg"></i>
+            Quê Quán{" "}
+            {profile.homeTown.ward && `${profile.homeTown.ward.name}, `}
+            {profile.homeTown.district && `${profile.homeTown.district.name}, `}
+            {profile.homeTown.city && `${profile.homeTown.city.name}`}
           </div>
           <div>
+            <i className="fas fa-user-friends"></i>
             {profile.yourKids === "I DON'T HAVE KIDS"
               ? "Chưa có con"
               : profile.yourKids === "I HAVE KIDS"
@@ -130,6 +135,7 @@ export class DatingCardProfile extends Component {
               : "Không muốn tiết lộ"}
           </div>
           <div>
+            <i className="far fa-smoking"></i>
             {profile.smoking === "NEVER"
               ? "Không bao giờ"
               : profile.smoking === "OCCASIONALLY"
@@ -139,6 +145,7 @@ export class DatingCardProfile extends Component {
               : "Không muốn tiết lộ"}
           </div>
           <div>
+            <i className="fad fa-glass-martini-alt"></i>
             {profile.drinking === "NEVER"
               ? "Không bao giờ"
               : profile.drinking === "OCCASIONALLY"
@@ -148,6 +155,7 @@ export class DatingCardProfile extends Component {
               : "Không muốn tiết lộ"}
           </div>
           <div>
+            <i className="fas fa-praying-hands"></i>
             {profile.religion === "PREFER NOT TO SAY"
               ? "Không muốn tiết lộ"
               : profile.religion === "AGNOSTIC"
@@ -173,6 +181,7 @@ export class DatingCardProfile extends Component {
               : "Khác"}
           </div>
         </div>
+        <div className="dcp-button"> Sửa thông tin </div>
       </div>
     );
   }
