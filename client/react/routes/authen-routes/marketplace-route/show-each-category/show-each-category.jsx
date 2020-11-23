@@ -5,18 +5,42 @@ import { CategoryTraitWidget } from './category-trait-widget/category-trait-widg
 import { ListingByCategoryWidget } from './listing-by-category-widget/listing-by-category-widget';
 import { marketplaceInfo } from './../../../../../common/states/common';
 import { KComponent } from './../../../../common/k-component';
+import { listingApi } from './../../../../../api/common/listing-api';
 
 class ShowEachCategory extends KComponent {
   constructor(props) {
     super(props);
-    this.state = {};
+    this.state = {
+      listingByCategory: {
+        listingArr: [],
+      },
+    };
 
+    this.getListing();
     this.onUnmount(
       marketplaceInfo.onChange((newState, oldState) => {
         if (newState.radius !== oldState.radius) this.forceUpdate();
       })
     );
   }
+
+  // componentDidMount() {
+  //   this.getListing();
+  // }
+
+  componentDidUpdate(prevProps) {
+    if (
+      prevProps.match.params.categoryID !== this.props.match.params.categoryID
+    ) {
+      this.getListing();
+    }
+  }
+
+  getListing = () => {
+    listingApi
+      .getListingByCategoryID(this.props.match.params.categoryID)
+      .then((e) => this.setState({ listingByCategory: e }));
+  };
 
   componentDidMount() {
     const { radius, myPosition } = marketplaceInfo.getState();
@@ -34,8 +58,14 @@ class ShowEachCategory extends KComponent {
     localStorage.setItem([key], val);
     marketplaceInfo.setState({ ...oldState, [key]: val });
   };
+
+  setState = (key, val) => {
+    this.setState(key, val);
+  };
   render() {
     const { radius, myPosition } = marketplaceInfo.getState();
+    const { listingByCategory } = this.state;
+    // console.log(listingByCategory);
     return (
       <PageTitle title={'Marketplace Category'}>
         <div className='marketplace-route'>
@@ -45,6 +75,7 @@ class ShowEachCategory extends KComponent {
                 {...this.props}
                 radius={radius}
                 myPosition={myPosition}
+                listingByCategory={listingByCategory}
               />
             )}
             haveRightRender={false}
@@ -53,6 +84,8 @@ class ShowEachCategory extends KComponent {
                 {...this.props}
                 radius={radius}
                 updateValue={this.updateValue}
+                setState={this.setState}
+                state={this.state}
               />
             )}
           />
