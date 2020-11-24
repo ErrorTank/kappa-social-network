@@ -179,7 +179,7 @@ module.exports = (db, namespacesIO) => {
     "/edit-profile/profileId/:profileId",
     authorizationUserMiddleware,
     (req, res, next) => {
-      console.log("ok");
+      console.log("ok", req.body);
       return updateProfile(req.body, req.params.profileId)
         .then((data) => {
           console.log("ok");

@@ -5,6 +5,7 @@ import { PageTitle } from './../../../../../common/page-title/page-title';
 import { CreateListingInputWidget } from './../../marketplace-create-listing/create-listing-detail/cl-input-widget/cl-input-widget';
 import { CreateListingPreviewWidget } from './../../marketplace-create-listing/create-listing-detail/cl-preview-widget/cl-preview-widget';
 import { listingApi } from './../../../../../../api/common/listing-api';
+import { numberToMoney } from '../../../../../../common/utils/listing-utils';
 
 class EditListing extends KComponent {
   constructor(props) {
@@ -23,7 +24,7 @@ class EditListing extends KComponent {
           : e.make
           ? (type = 'vehicle')
           : (type = 'home');
-        this.setState({ ...e, type });
+        this.setState({ ...e, type, price: numberToMoney(e.price.toString()) });
       });
   }
 

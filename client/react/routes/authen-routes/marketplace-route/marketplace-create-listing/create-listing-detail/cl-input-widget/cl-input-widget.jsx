@@ -78,7 +78,14 @@ export class CreateListingInputWidget extends Component {
 
   setDefaultValue = () => {
     let { state, updateValue, setValues } = this.props;
+
     this.createInfo.forEach((each) => {
+      console.log(state.type);
+      console.log(each.name);
+      if (each.name === state.type) {
+        this.setState({ title: each.title });
+        updateValue('pictureLimit', each.pictureLimit);
+      }
       if (each.name === this.props.match.params.categoryName) {
         this.setState({ title: each.title });
         setValues({ type: each.name, pictureLimit: each.pictureLimit });
@@ -99,10 +106,6 @@ export class CreateListingInputWidget extends Component {
             updateValue(`${e.englishName}`, '');
           }
         });
-      }
-      if (each.name === state.type) {
-        this.setState({ title: each.title });
-        setValues({ pictureLimit: each.pictureLimit });
       }
     });
   };

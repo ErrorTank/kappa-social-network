@@ -97,12 +97,15 @@ const getListingByUserID = (userID) => {
     });
 };
 const getListingByListingID = (listingID) => {
-  return Listing.findOne({ _id: listingID })
-    .populate('user', '_id basic_info avatar bio joined_at')
-    .lean()
-    .then((listing) => {
-      return listing;
-    });
+  return (
+    Listing.findOne({ _id: listingID })
+      .populate('user', '_id basic_info avatar bio joined_at')
+      // .populate('')
+      .lean()
+      .then((listing) => {
+        return listing;
+      })
+  );
 };
 module.exports = {
   createListing,
