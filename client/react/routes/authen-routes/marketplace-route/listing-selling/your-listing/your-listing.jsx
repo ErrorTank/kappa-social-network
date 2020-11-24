@@ -3,6 +3,8 @@ import { numberToMoney } from '../../../../../../common/utils/listing-utils';
 import { listingApi } from './../../../../../../api/common/listing-api';
 import { Button } from './../../../../../common/button/button';
 import classnames from 'classnames';
+import { Dropdownable } from './../../../../../common/dropdownable/dropdownable';
+import { customHistory } from './../../../../routes';
 
 export class YourListing extends Component {
   constructor(props) {
@@ -12,6 +14,23 @@ export class YourListing extends Component {
       .getListingByUserID(this.props.user._id)
       .then((e) => this.setState({ sellingList: e }));
   }
+  additionFunction = [
+    {
+      icon: <i class='fas fa-list'></i>,
+      label: 'Xem bài niêm yết',
+      onClick: (e) => customHistory.push(`/marketplace/item/${e}`),
+    },
+    {
+      icon: <i class='fas fa-pen'></i>,
+      label: 'Chỉnh sửa bài niêm yết',
+      onClick: (e) => customHistory.push(`/marketplace/edit/${e}`),
+    },
+    {
+      icon: <i class='fas fa-trash-alt'></i>,
+      label: 'Xóa bài niêm yết',
+      // onClick: (e) => customHistory.push(`/marketplace/delete/${e}`),
+    },
+  ];
   render() {
     const { sellingList } = this.state;
     // console.log(sellingList);
@@ -55,9 +74,32 @@ export class YourListing extends Component {
                     <i className='fas fa-share'></i>
                     <span>Chia sẻ</span>
                   </Button>
-                  <Button className={classnames('facebook-button')}>
-                    <i className='fas fa-ellipsis-h'></i>
-                  </Button>
+
+                  <Dropdownable
+                    className={'listing-actions'}
+                    toggle={() => (
+                      <div className='listing-actions-toggle'>
+                        <Button className={classnames('facebook-button')}>
+                          <i className='fal fa-ellipsis-h'></i>
+                        </Button>
+                      </div>
+                    )}
+                    content={() => (
+                      <div className='listing-action-choice'>
+                        {this.additionFunction.map((each) => {
+                          return (
+                            <div
+                              className='listing-choice'
+                              onClick={() => each.onClick(e._id)}
+                            >
+                              <div className='lc-icon'>{each.icon}</div>
+                              <div className='lc-label'>{each.label}</div>
+                            </div>
+                          );
+                        })}
+                      </div>
+                    )}
+                  />
                 </div>
               </div>
             ))}

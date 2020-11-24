@@ -14,19 +14,15 @@ class ShowEachCategory extends KComponent {
       listingByCategory: {
         listingArr: [],
       },
+      sortType: '',
     };
 
-    this.getListing();
     this.onUnmount(
       marketplaceInfo.onChange((newState, oldState) => {
         if (newState.radius !== oldState.radius) this.forceUpdate();
       })
     );
   }
-
-  // componentDidMount() {
-  //   this.getListing();
-  // }
 
   componentDidUpdate(prevProps) {
     if (
@@ -43,6 +39,7 @@ class ShowEachCategory extends KComponent {
   };
 
   componentDidMount() {
+    this.getListing();
     const { radius, myPosition } = marketplaceInfo.getState();
     radius === undefined &&
       marketplaceInfo.setState({
@@ -59,9 +56,10 @@ class ShowEachCategory extends KComponent {
     marketplaceInfo.setState({ ...oldState, [key]: val });
   };
 
-  setState = (key, val) => {
-    this.setState(key, val);
+  handleState = (key, val) => {
+    this.setState({ [key]: val });
   };
+
   render() {
     const { radius, myPosition } = marketplaceInfo.getState();
     const { listingByCategory } = this.state;
@@ -84,7 +82,7 @@ class ShowEachCategory extends KComponent {
                 {...this.props}
                 radius={radius}
                 updateValue={this.updateValue}
-                setState={this.setState}
+                handleState={this.handleState}
                 state={this.state}
               />
             )}
