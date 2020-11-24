@@ -100,6 +100,10 @@ export class CreateListingInputWidget extends Component {
           }
         });
       }
+      if (each.name === state.type) {
+        this.setState({ title: each.title });
+        setValues({ pictureLimit: each.pictureLimit });
+      }
     });
   };
   //upload file

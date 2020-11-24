@@ -7,13 +7,16 @@ export class SelectRadio extends Component {
     this.state = {
       show: false,
     };
+    // this.addDefaultValue();
   }
   handleShow = () => {
     this.setState({ show: !this.state.show });
   };
+  // addDefaultValue = () => {
+  //   this.props.onChange(options[0]);
+  // };
   render() {
     const { className, title, onChange, value = '', options } = this.props;
-    // console.log(options);
     return (
       <div className={classnames('select-radio', { className })}>
         <div className='select-radio-toggle' onClick={this.handleShow}>
