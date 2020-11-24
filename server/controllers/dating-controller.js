@@ -176,7 +176,7 @@ module.exports = (db, namespacesIO) => {
     }
   );
   router.put(
-    "/dating/edit-profile/profileId/:profileId",
+    "/edit-profile/profileId/:profileId",
     authorizationUserMiddleware,
     (req, res, next) => {
       console.log("ok");

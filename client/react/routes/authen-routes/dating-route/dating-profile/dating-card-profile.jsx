@@ -2,14 +2,15 @@ import React, { Component } from "react";
 import { datingProfile } from "../../../../../common/states/common";
 import classnames from "classnames";
 import { getAge } from "../../../../../common/utils/date-utils";
-import { VoiceCallWidget } from "./../../../../common/media-modal/voice-call-modal/voice-call-modal";
+import { KComponent } from "./../../../../common/k-component";
 
-export class DatingCardProfile extends Component {
+export class DatingCardProfile extends KComponent {
   constructor(props) {
     super(props);
     this.state = {
       current: 0,
     };
+    this.onUnmount(datingProfile.onChange(() => this.forceUpdate()));
   }
 
   onSwipeLeft = () => {
@@ -31,6 +32,10 @@ export class DatingCardProfile extends Component {
       current: i,
     });
   };
+  // componentDidUpdate(prevProps){
+
+  // }
+
   render() {
     let profile = datingProfile.getState();
     let { current } = this.state;

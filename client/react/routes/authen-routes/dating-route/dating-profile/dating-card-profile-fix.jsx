@@ -16,6 +16,7 @@ import { drinkings } from "./../../../../../const/drinkings";
 import { religions } from "./../../../../../const/religions";
 import { targets } from "./../../../../../const/targets";
 import { datingApi } from "./../../../../../api/common/dating";
+import { customHistory } from "./../../../routes";
 export class DatingCardProfileFix extends Component {
   constructor(props) {
     super(props);
@@ -104,9 +105,9 @@ export class DatingCardProfileFix extends Component {
           //   `${birthday.month}/${birthday.day}/${birthday.year}`
           // ),
           homeTown: {
-            ward: homeTown.ward._id,
-            city: homeTown.city._id,
-            district: homeTown.district._id,
+            ward: homeTown.ward,
+            city: homeTown.city,
+            district: homeTown.district,
           },
           gender: gender.value,
           secondarySchool,
@@ -140,11 +141,13 @@ export class DatingCardProfileFix extends Component {
                   lat: latitude,
                   lng: longitude,
                 },
+                homeTown: { ...homeTown },
               },
               datingProfile.getState()._id
             )
             .then((e) => {
-              this.props.onCreateProfile(e);
+              datingProfile.setState(e);
+              this.props.handleEdit();
             });
         });
       }
@@ -174,7 +177,7 @@ export class DatingCardProfileFix extends Component {
       allWard,
     } = this.state;
     const { handleEdit } = this.props;
-    console.log(avatars);
+    console.log(homeTown);
     return (
       <div className="dating-card-profile-fix">
         <div className="picture-input" id="files">
@@ -505,7 +508,7 @@ export class DatingCardProfileFix extends Component {
             }}
           />
         </div>
-        <div className="dcpf-button" onClick={(handleEdit, this.submit)}>
+        <div className="dcpf-button" onClick={this.submit}>
           Lưu
         </div>
       </div>
