@@ -200,7 +200,7 @@ const autoPopulateParent = function (next) {
       model: "City",
     },
     {
-      path: "homwTown.district",
+      path: "homeTown.district",
       model: "District",
     },
     {
@@ -234,7 +234,7 @@ profileSchema.post("save", function (doc, next) {
         model: "City",
       },
       {
-        path: "homwTown.district",
+        path: "homeTown.district",
         model: "District",
       },
       {
