@@ -14,6 +14,7 @@ class ShowEachCategory extends KComponent {
       listingByCategory: {
         listingArr: [],
       },
+      sortType: '',
     };
 
     this.getListing();
@@ -59,9 +60,10 @@ class ShowEachCategory extends KComponent {
     marketplaceInfo.setState({ ...oldState, [key]: val });
   };
 
-  setState = (key, val) => {
-    this.setState(key, val);
+  handleState = (key, val) => {
+    this.setState({ [key]: val });
   };
+
   render() {
     const { radius, myPosition } = marketplaceInfo.getState();
     const { listingByCategory } = this.state;
@@ -84,7 +86,7 @@ class ShowEachCategory extends KComponent {
                 {...this.props}
                 radius={radius}
                 updateValue={this.updateValue}
-                setState={this.setState}
+                handleState={this.handleState}
                 state={this.state}
               />
             )}

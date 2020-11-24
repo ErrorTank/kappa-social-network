@@ -28,8 +28,8 @@ export class CategoryTraitWidget extends Component {
   ];
 
   render() {
-    const { radius, updateValue, setState, state } = this.props;
-    const { categoryDisplay, currentSortType } = this.state;
+    const { radius, updateValue, handleState, state } = this.props;
+    const { categoryDisplay } = this.state;
     // console.log(this.props);
 
     return (
@@ -45,8 +45,9 @@ export class CategoryTraitWidget extends Component {
               <MarketplaceFilterSection
                 radius={radius}
                 updateValue={updateValue}
-                setState={setState}
+                handleState={handleState}
                 state={state}
+                isFilter={true}
               />
               <CategoriesSection
                 darkMode={darkMode}
