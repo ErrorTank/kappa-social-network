@@ -34,6 +34,7 @@ export class DatingCardProfile extends Component {
   render() {
     let profile = datingProfile.getState();
     let { current } = this.state;
+    const { handleEdit } = this.props;
     let avatar = profile.avatars.length ? profile.avatars[current].path : null;
     console.log(profile);
     return (
@@ -75,6 +76,10 @@ export class DatingCardProfile extends Component {
           <div className="dcp-name-age">
             {profile.name}
             {","} {getAge(profile.birthday)}
+            <div className="dcp-button" onClick={handleEdit}>
+              {" "}
+              Sửa thông tin{" "}
+            </div>
           </div>
           <div className="dcp-gender">
             {profile.gender === "MALE"
@@ -83,21 +88,49 @@ export class DatingCardProfile extends Component {
               ? "Nữ"
               : "Không xác định"}
           </div>
-
+          <div>
+            {profile.bio && (
+              <>
+                <i className="fas fa-book-reader"></i> {profile.bio}
+              </>
+            )}
+          </div>
           <div className="dcp-location">
             <i className="fas fa-map-marker-alt"></i>
             Đang ở {profile.location.ward && `${profile.location.ward.name}, `}
             {profile.location.district && `${profile.location.district.name}, `}
             {profile.location.city && profile.location.city.name}
           </div>
-          <div>{profile.bio && profile.bio}</div>
           <div>
-            <i className="fas fa-male"></i>
-            {profile.height && `${profile.height} cm`}
+            {profile.target && profile.target !== "PREFER NOT TO SAY" && (
+              <>
+                <i class="fad fa-heart"></i>
+                Đang tìm{" "}
+                {profile.target === "CHATTING"
+                  ? "Người trò chuyện"
+                  : profile.target === "FRIENDSHIP"
+                  ? "Tình bạn"
+                  : profile.target === "SOMETHING CASUAL"
+                  ? "Kiểu hẹn hò không ràng buộc"
+                  : profile.target === "LONG-TERM RELATIONSHIP"
+                  ? "Mối quan hệ lâu dài"
+                  : null}
+              </>
+            )}
           </div>
           <div>
-            <i className="fas fa-briefcase"></i>
-            {profile.job && profile.job}
+            {profile.height && (
+              <>
+                <i className="fas fa-male"></i> {profile.height} cm{" "}
+              </>
+            )}
+          </div>
+          <div>
+            {profile.job && (
+              <>
+                <i className="fas fa-briefcase"></i> {profile.job}
+              </>
+            )}
           </div>
           <div>
             <i className="fas fa-graduation-cap"></i>
@@ -181,7 +214,6 @@ export class DatingCardProfile extends Component {
               : "Khác"}
           </div>
         </div>
-        <div className="dcp-button"> Sửa thông tin </div>
       </div>
     );
   }

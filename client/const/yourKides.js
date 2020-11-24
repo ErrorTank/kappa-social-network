@@ -1,4 +1,4 @@
-export const yourKids = [
+export const yourKides = [
   {
     id: "I DON'T HAVE KID",
     label: "Chưa có con",

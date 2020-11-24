@@ -1,10 +1,5 @@
-import {
-  authenApi,
-  offlineApi
-} from "../api";
-import {
-  urlUtils
-} from "../../common/utils/url-utils";
+import { authenApi, offlineApi } from "../api";
+import { urlUtils } from "../../common/utils/url-utils";
 import user from "../../../server/db/model/user";
 
 export const datingApi = {
@@ -40,5 +35,8 @@ export const datingApi = {
   },
   getMessages(chatBoxId, skip) {
     return authenApi.get(`/dating/chatbox/chatBoxId/${chatBoxId}?skip=${skip}`);
-  }
+  },
+  updateProfile(data, profileId) {
+    return authenApi.put(`/dating/edit-profile/profileId/${profileId}`, data);
+  },
 };

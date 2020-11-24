@@ -344,6 +344,25 @@ const getMessages = (chatBoxId, skip) => {
         .slice(skipToNumber, skipToNumber + 15);
     });
 };
+const updateProfile = (data, profileId) => {
+  console.log(data, "ok");
+  return Profile.findOneAndUpdate(
+    {
+      _id: ObjectId(profileId),
+    },
+    data,
+    {
+      new: true,
+    }
+  )
+    .lean()
+    .then((profile) => {
+      // console.log(comment.context)
+      // console.log(messageID)
+      console.log(profile);
+      return profile;
+    });
+};
 module.exports = {
   checkDatingProfile,
   createProfile,
@@ -357,4 +376,5 @@ module.exports = {
   createChatBox,
   getChatBoxes,
   getMessages,
+  updateProfile,
 };

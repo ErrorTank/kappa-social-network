@@ -13,7 +13,10 @@ import { InputFileWrapper } from "./../../../../../common/file-input/file-input"
 import { v4 as uuidv4 } from "uuid";
 import { ImageBox } from "./image-box/image-box";
 import { postApi } from "./../../../../../../api/common/post-api";
-import { yourKids } from "./../../../../../../const/yourKids";
+import { yourKides } from "../../../../../../const/yourKides";
+import classnames from "classnames";
+import { FileDisplay } from "./../../../../../layout/authen-layout/create-message-widget/chat-box/message-utilities/file-display/file-display";
+
 export class DatingRegisterForm extends Component {
   constructor(props) {
     super(props);
@@ -38,15 +41,12 @@ export class DatingRegisterForm extends Component {
       educationLevel: null,
       avatars: [],
       dob: null,
+
+      pictureLimit: 10,
     };
     addressApi.getAddress({}).then((allCity) => this.setState({ allCity }));
   }
-  addFiles = (files) => {
-    let newFiles = Array.from(files).map((file) => {
-      return { fileID: uuidv4(), file, type: "image" };
-    });
-    this.setState({ avatars: this.state.avatars.concat(newFiles) });
-  };
+
   uploadSingleFile = (file) => {
     return file.path
       ? Promise.resolve(file)
@@ -66,7 +66,7 @@ export class DatingRegisterForm extends Component {
       university,
       height,
       location,
-      yourKid,
+      yourKids,
       educationLevel,
       avatars,
       dob,
@@ -93,7 +93,7 @@ export class DatingRegisterForm extends Component {
             city: location.city._id,
             district: location.district._id,
           },
-          yourKid: yourKid.value,
+          yourKids: yourKids.value,
           educationLevel: educationLevel.value,
           avatars: newFiles,
         };
@@ -154,7 +154,26 @@ export class DatingRegisterForm extends Component {
       ),
     });
   };
+  // addFiles = (files) => {
+  //   let newFiles = Array.from(files).map((file) => {
+  //     return { fileID: uuidv4(), file, type: "image" };
+  //   });
+  //   this.setState({ avatars: this.state.avatars.concat(newFiles) });
+  // };
+  //file( image in this case ) function
+  addFiles = (files) => {
+    let newFiles = Array.from(files).map((file) => {
+      return { fileID: uuidv4(), file, type: "image" };
+    });
+    this.setState({ avatars: this.state.avatars.concat(newFiles) });
+  };
+  removeFile = (fileID) => {
+    this.setState({
+      avatars: this.state.avatars.filter((file) => file.fileID !== fileID),
+    });
+  };
   render() {
+    const { avatars, pictureLimit } = this.state;
     console.log(this.state);
     let {
       name,
@@ -327,11 +346,11 @@ export class DatingRegisterForm extends Component {
               <ListingInfoSelect
                 className="dr-input"
                 label={"Bạn có con chưa"}
-                value={yourKid}
-                options={yourKids}
+                value={yourKids}
+                options={yourKides}
                 displayAs={(item) => item.label}
                 onChange={(item) => {
-                  this.setState({ yourKid: item });
+                  this.setState({ yourKids: item });
                 }}
               />
               <ListingInfoSelect
@@ -346,7 +365,7 @@ export class DatingRegisterForm extends Component {
               />
             </div>
           </div>
-          <div className="text-center">
+          {/* <div className="text-center">
             <div className="img-list">
               {this.state.avatars.map((item) => {
                 return (
@@ -358,8 +377,8 @@ export class DatingRegisterForm extends Component {
                 );
               })}
             </div>
-          </div>
-          <InputFileWrapper
+          </div> */}
+          {/* <InputFileWrapper
             multiple={true}
             accept={"image/*,image/heif,image/heic"}
             onUploaded={this.addFiles}
@@ -370,8 +389,83 @@ export class DatingRegisterForm extends Component {
                 Thêm ảnh
               </div>
             )}
-          </InputFileWrapper>
-
+          </InputFileWrapper> */}
+          <div className="picture-input-wrapper">
+            <div className="picture-input" id="files">
+              <div className="picture-input-header">
+                <span
+                  className={classnames("picture-limit", {
+                    // error: files.length > pictureLimit,
+                  })}
+                >
+                  Ảnh
+                  <span className="dot"> · </span>
+                  {avatars.length || 0} / {<span>{pictureLimit}</span>}
+                </span>
+                <span className="sub">
+                  {" "}
+                  - Bạn có thể thêm tối đa {pictureLimit} ảnh
+                </span>
+              </div>
+              {!!avatars.length ? (
+                <div
+                  className="images-display"
+                  onMouseEnter={() => this.mouse("image")}
+                  onMouseLeave={() => this.mouseOut()}
+                >
+                  <div className="images-container">
+                    {avatars.map((file) => (
+                      <FileDisplay
+                        key={file.fileID}
+                        file={file}
+                        onClose={() => this.removeFile(file.fileID)}
+                      />
+                    ))}
+                    {!!avatars.length && (
+                      <InputFileWrapper
+                        multiple={true}
+                        accept={"image/*,image/heif,image/heic"}
+                        onUploaded={this.addFiles}
+                        limitSize={10 * 1024 * 1024}
+                      >
+                        {({ onClick }) => (
+                          <div className="add-file-wrapper">
+                            {avatars.length < pictureLimit && (
+                              <div className="add-file" onClick={onClick}>
+                                <i className="fas fa-file-plus"></i>
+                                <span>Thêm ảnh</span>
+                              </div>
+                            )}
+                          </div>
+                        )}
+                      </InputFileWrapper>
+                    )}
+                  </div>
+                </div>
+              ) : (
+                <InputFileWrapper
+                  multiple={true}
+                  accept={"image/*,image/heif,image/heic"}
+                  onUploaded={this.addFiles}
+                  limitSize={10 * 1024 * 1024}
+                >
+                  {({ onClick }) => (
+                    <div
+                      className={classnames("add-picture-section", {
+                        // invalid: error.files,
+                      })}
+                      onClick={onClick}
+                    >
+                      <div className="add-picture-button">
+                        <i className="fas fa-file-plus"></i>
+                        <span>Thêm ảnh</span>
+                      </div>
+                    </div>
+                  )}
+                </InputFileWrapper>
+              )}
+            </div>
+          </div>
           <div className="button" onClick={this.submit}>
             Tiếp tục
           </div>
