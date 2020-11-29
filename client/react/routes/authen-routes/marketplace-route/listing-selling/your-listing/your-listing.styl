@@ -72,6 +72,43 @@
       .sl-function {
         display: flex;
         padding: 0 16px 20px;
+
+        .listing-actions {
+          // 
+          .listing-action-choice {
+            display: flex;
+            flex-direction: column;
+            min-width: 100px;
+            border-radius: 8px;
+            width: 344px;
+            align-items: stretch;
+            padding: 8px 0;
+
+            .listing-choice {
+              display: flex;
+              flex-grow: 1;
+              padding: 8px;
+              align-items: center;
+              gap: 12px;
+              border-radius: 8px;
+              margin: 0 8px;
+
+              &:hover {
+                cursor: pointer;
+                background-color: btnCancelLight;
+              }
+
+              .lc-icon {
+                font-size: 15px;
+              }
+
+              .lc-label {
+                font-size: 15px;
+                font-weight: 500;
+              }
+            }
+          }
+        }
       }
     }
   }

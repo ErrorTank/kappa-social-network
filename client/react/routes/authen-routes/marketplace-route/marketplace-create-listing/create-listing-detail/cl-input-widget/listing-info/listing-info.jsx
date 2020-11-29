@@ -242,7 +242,7 @@ export class ListingInfo extends Component {
               <div className='images-container'>
                 {files.map((file) => (
                   <FileDisplay
-                    key={file.fileID}
+                    key={file.fileID || file.path}
                     file={file}
                     onClose={() => this.removeFile(file.fileID)}
                   />

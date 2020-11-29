@@ -69,6 +69,9 @@ export class CreateListingInputWidget extends Component {
     ) {
       this.setDefaultValue();
     }
+    if (prevProps.state.type !== this.props.state.type) {
+      this.setDefaultValue();
+    }
   }
 
   componentDidMount = () => {
@@ -84,8 +87,9 @@ export class CreateListingInputWidget extends Component {
       console.log(each.name);
       if (each.name === state.type) {
         this.setState({ title: each.title });
-        updateValue('pictureLimit', each.pictureLimit);
+        setValues({ pictureLimit: each.pictureLimit });
       }
+
       if (each.name === this.props.match.params.categoryName) {
         this.setState({ title: each.title });
         setValues({ type: each.name, pictureLimit: each.pictureLimit });
@@ -270,9 +274,9 @@ export class CreateListingInputWidget extends Component {
             <p className='fake-breadcrumb'>Marketplace</p>
             <h1 className='header-title'>{this.state.title} cần bán</h1>
           </div>
-          <div className='save-draft-button'>
+          {/* <div className='save-draft-button'>
             <span className='save-draft-title'>Save Draft</span>
-          </div>
+          </div> */}
         </div>
 
         <div className='line-seperater'></div>
