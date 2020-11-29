@@ -40,6 +40,7 @@ export class ListingInfoSelect extends Component {
       isSelected = (option) => false,
       ...others
     } = this.props;
+    // console.log(disabled, label);
     return (
       <div
         id={id}
@@ -53,7 +54,9 @@ export class ListingInfoSelect extends Component {
         >
           <label htmlFor={id} className='listing-info-wrapper'>
             <div
-              className={classnames('listing-info-toggle')}
+              className={classnames('listing-info-toggle', {
+                disabled: disabled,
+              })}
               onClick={() =>
                 !disabled &&
                 this.setState({
@@ -66,7 +69,6 @@ export class ListingInfoSelect extends Component {
               <div
                 className={classnames('label-wrapper', {
                   'has-value': value,
-                  disabled: disabled,
                 })}
                 {...others}
               >

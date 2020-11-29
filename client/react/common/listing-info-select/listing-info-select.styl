@@ -38,6 +38,11 @@
       z-index: 1;
       border-radius: 5px;
 
+      &.disabled {
+        cursor: not-allowed;
+        background-color: btnCancelLight;
+      }
+
       &:hover {
         border-color: gray;
       }
@@ -45,10 +50,6 @@
       .label-wrapper {
         position: relative;
         width: 90%;
-
-        &.disabled {
-          cursor: not-allowed;
-        }
 
         &.has-value {
           .listing-info-label {

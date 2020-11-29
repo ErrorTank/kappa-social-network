@@ -18,4 +18,7 @@ export const listingApi = {
   getListingByListingID(listingID) {
     return authenApi.get(`/listing/get-listing-by-listingID/${listingID}`);
   },
+  updateListing(data) {
+    return authenApi.put(`/listing/edit-listing`, data);
+  },
 };
