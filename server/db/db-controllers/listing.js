@@ -108,20 +108,26 @@ const getListingByListingID = (listingID) => {
     });
 };
 const updateListing = (data) => {
-  console.log(data, 'ok');
-  return Profile.findOneAndUpdate(
-    {
-      _id: ObjectId(data._id),
-    },
-    data,
-    {
-      new: true,
-    }
-  )
-    .lean()
-    .then((listing) => {
-      return listing;
-    });
+  let categoryName = findSubCategory(data);
+  return Category.findOne({ name: categoryName }).then((category) => {
+    let updateListing = {
+      ...data,
+      category: category._id,
+    };
+    return Listing.findOneAndUpdate(
+      {
+        _id: ObjectId(data._id),
+      },
+      updateListing,
+      {
+        new: true,
+      }
+    )
+      .lean()
+      .then((listing) => {
+        return listing;
+      });
+  });
 };
 module.exports = {
   createListing,
