@@ -148,7 +148,10 @@ export class MyTinderCard extends Component {
             </>
           )}
         </div>
-        <div className="dating-card-show-detail">
+        <div
+          className="dating-card-show-detail"
+          onClick={this.props.openDetail}
+        >
           <Tooltip position="top" text={() => "Mở hồ sơ"}>
             <i className="fal fa-info-circle"></i>
           </Tooltip>

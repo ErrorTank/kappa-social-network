@@ -8,12 +8,14 @@ import ReactDOM from "react-dom";
 import classnames from "classnames";
 import { datingLikeUtilities } from "./../../dating-tabs/dating-like";
 import { datingTabPanelUtilities } from "../../dating-tab-panel";
+import { MyDetailTinderCard } from "./myTinderCard/myDetailTinderCard";
 export const datingCardUtilities = {};
 export class DatingCard extends Component {
   constructor(props) {
     super(props);
     this.state = {
       profiles: [],
+      openDetail: false,
     };
     this.canClick = true;
     this.timeout = null;
@@ -25,6 +27,11 @@ export class DatingCard extends Component {
       });
     };
   }
+  openDetail = () => {
+    this.setState({
+      openDetail: !this.state.openDetail,
+    });
+  };
   componentDidMount() {
     datingApi.getInitCardProfileInfo().then((e) =>
       this.setState({
@@ -117,7 +124,14 @@ export class DatingCard extends Component {
                     )
                   }
                 >
-                  <MyTinderCard info={each} />
+                  {this.state.openDetail === false ? (
+                    <MyTinderCard info={each} openDetail={this.openDetail} />
+                  ) : (
+                    <MyDetailTinderCard
+                      info={each}
+                      openDetail={this.openDetail}
+                    />
+                  )}
                 </TinderCard>
               ))}
             </>
