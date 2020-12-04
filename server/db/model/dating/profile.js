@@ -39,6 +39,7 @@ const profileSchema = new Schema({
       "LONG-TERM RELATIONSHIP",
       "PREFER NOT TO SAY",
     ],
+    default: "PREFER NOT TO SAY",
   },
   height: {
     type: Number,
