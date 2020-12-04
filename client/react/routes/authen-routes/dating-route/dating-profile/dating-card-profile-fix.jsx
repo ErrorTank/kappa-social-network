@@ -17,6 +17,7 @@ import { religions } from "./../../../../../const/religions";
 import { targets } from "./../../../../../const/targets";
 import { datingApi } from "./../../../../../api/common/dating";
 import { customHistory } from "./../../../routes";
+import { postApi } from "./../../../../../api/common/post-api";
 export class DatingCardProfileFix extends Component {
   constructor(props) {
     super(props);
