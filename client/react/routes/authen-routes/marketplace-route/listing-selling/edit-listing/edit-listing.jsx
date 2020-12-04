@@ -24,7 +24,12 @@ class EditListing extends KComponent {
           : e.make
           ? (type = 'vehicle')
           : (type = 'home');
-        this.setState({ ...e, type, price: numberToMoney(e.price.toString()) });
+        this.setState({
+          ...e,
+          type,
+          price: numberToMoney(e.price.toString()),
+          category: e.category.name,
+        });
       });
   }
 
@@ -40,7 +45,7 @@ class EditListing extends KComponent {
   };
 
   render() {
-    console.log(this.state);
+    // console.log(this.state);
     return (
       <div className='create-listing-detail'>
         <PageTitle title={'Chỉnh sửa niêm yết'}>
@@ -53,6 +58,7 @@ class EditListing extends KComponent {
                 updateValue={this.updateValue}
                 setValues={this.setValues}
                 {...this.props}
+                isEdit={true}
               />
             )}
           />

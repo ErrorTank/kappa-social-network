@@ -27,6 +27,7 @@ export let itemField = [
     error: {
       required: 'Vui lòng chọn giá trị hợp lệ.',
     },
+    notEditable: true,
     options: [
       {
         name: 'Nhà & vườn',
@@ -276,6 +277,7 @@ export let itemField = [
     error: {
       required: 'Vui lòng chọn giá trị hợp lệ.',
     },
+    notEditable: true,
   },
 ];
 

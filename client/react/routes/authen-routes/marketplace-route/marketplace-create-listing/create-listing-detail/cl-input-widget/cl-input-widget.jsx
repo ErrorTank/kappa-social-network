@@ -69,6 +69,9 @@ export class CreateListingInputWidget extends Component {
     ) {
       this.setDefaultValue();
     }
+    if (prevProps.state.type !== this.props.state.type) {
+      this.setDefaultValue();
+    }
   }
 
   componentDidMount = () => {
@@ -77,15 +80,14 @@ export class CreateListingInputWidget extends Component {
   };
 
   setDefaultValue = () => {
-    let { state, updateValue, setValues } = this.props;
+    let { state, updateValue, setValues, isEdit } = this.props;
 
     this.createInfo.forEach((each) => {
-      console.log(state.type);
-      console.log(each.name);
       if (each.name === state.type) {
         this.setState({ title: each.title });
-        updateValue('pictureLimit', each.pictureLimit);
+        setValues({ pictureLimit: each.pictureLimit });
       }
+
       if (each.name === this.props.match.params.categoryName) {
         this.setState({ title: each.title });
         setValues({ type: each.name, pictureLimit: each.pictureLimit });
@@ -136,7 +138,7 @@ export class CreateListingInputWidget extends Component {
 
   // check canCreate, true then filter result then call create api, false then set error on required input
   setNewListing = () => {
-    const { state, updateValue, setValues } = this.props;
+    const { state, updateValue, setValues, isEdit } = this.props;
     const { files, type } = state;
     const { canCreate, error } = this.state;
     if (canCreate) {
@@ -172,10 +174,14 @@ export class CreateListingInputWidget extends Component {
               lon: longitude,
             };
             let submitListing = { ...newListing, ...moreInfo };
-            listingApi.createListing(submitListing).then((e) => {
-              console.log(e);
-              customHistory.push('/marketplace/you/selling');
-            });
+            console.log(state._id);
+            isEdit
+              ? listingApi.createListing(submitListing).then((e) => {
+                  customHistory.push('/marketplace/you/selling');
+                })
+              : listingApi.updateListing(submitListing).then((e) => {
+                  customHistory.push('/marketplace/you/selling');
+                });
           });
         }
       );
@@ -263,16 +269,21 @@ export class CreateListingInputWidget extends Component {
   render() {
     let user = userInfo.getState();
     // console.log(this.state.error);
+    const { isEdit } = this.props;
     return (
       <div className='create-listing-input-widget'>
         <div className='cs-input-header'>
           <div className='header-info'>
             <p className='fake-breadcrumb'>Marketplace</p>
-            <h1 className='header-title'>{this.state.title} cần bán</h1>
+            <h1 className='header-title'>
+              {isEdit
+                ? 'Chỉnh sửa bài niêm yết'
+                : `${this.state.title} cần bán`}
+            </h1>
           </div>
-          <div className='save-draft-button'>
+          {/* <div className='save-draft-button'>
             <span className='save-draft-title'>Save Draft</span>
-          </div>
+          </div> */}
         </div>
 
         <div className='line-seperater'></div>
@@ -300,6 +311,7 @@ export class CreateListingInputWidget extends Component {
             setError={this.setError}
             error={this.state.error}
             resetError={this.resetErrorStorage}
+            isEdit={isEdit}
           />
         </div>
 
@@ -310,7 +322,7 @@ export class CreateListingInputWidget extends Component {
             })}
             onClick={() => this.setNewListing()}
           >
-            Tiếp
+            {isEdit ? 'Cập nhật' : 'Đăng'}
           </div>
         </div>
       </div>

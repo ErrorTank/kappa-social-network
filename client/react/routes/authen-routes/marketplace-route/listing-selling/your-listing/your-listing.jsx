@@ -16,17 +16,17 @@ export class YourListing extends Component {
   }
   additionFunction = [
     {
-      icon: <i class='fas fa-list'></i>,
+      icon: <i className='fas fa-list'></i>,
       label: 'Xem bài niêm yết',
-      onClick: (e) => customHistory.push(`/marketplace/item/${e}`),
+      onClick: (e) => customHistory.push(`/marketplace/listing/${e}`),
     },
     {
-      icon: <i class='fas fa-pen'></i>,
+      icon: <i className='fas fa-pen'></i>,
       label: 'Chỉnh sửa bài niêm yết',
       onClick: (e) => customHistory.push(`/marketplace/edit/${e}`),
     },
     {
-      icon: <i class='fas fa-trash-alt'></i>,
+      icon: <i className='fas fa-trash-alt'></i>,
       label: 'Xóa bài niêm yết',
       // onClick: (e) => customHistory.push(`/marketplace/delete/${e}`),
     },
@@ -86,11 +86,12 @@ export class YourListing extends Component {
                     )}
                     content={() => (
                       <div className='listing-action-choice'>
-                        {this.additionFunction.map((each) => {
+                        {this.additionFunction.map((each, i) => {
                           return (
                             <div
                               className='listing-choice'
                               onClick={() => each.onClick(e._id)}
+                              key={i}
                             >
                               <div className='lc-icon'>{each.icon}</div>
                               <div className='lc-label'>{each.label}</div>

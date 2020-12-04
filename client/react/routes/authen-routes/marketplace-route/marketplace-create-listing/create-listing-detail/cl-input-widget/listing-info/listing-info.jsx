@@ -114,8 +114,8 @@ export class ListingInfo extends Component {
         vehicle: fieldByVehicleType,
         home: fieldByHomeFor,
       };
-      console.log(newState.type);
-      console.log(newState.category);
+      // console.log(newState.type);
+      // console.log(newState.category);
       this.handleSetDependent(fieldOfType[newState.type], newState.category);
     }
   }
@@ -211,7 +211,7 @@ export class ListingInfo extends Component {
   };
 
   render() {
-    const { state, updateValue, error } = this.props;
+    const { state, updateValue, error, isEdit } = this.props;
     let { pictureLimit, type, category, files, ...other } = state;
     const { inputField, dependedInput } = this.state;
     // console.log(error.files);
@@ -242,7 +242,7 @@ export class ListingInfo extends Component {
               <div className='images-container'>
                 {files.map((file) => (
                   <FileDisplay
-                    key={file.fileID}
+                    key={file.fileID || file.path}
                     file={file}
                     onClose={() => this.removeFile(file.fileID)}
                   />
@@ -350,6 +350,7 @@ export class ListingInfo extends Component {
                       name: state[each.englishName],
                     }
                   }
+                  disabled={isEdit && each.notEditable}
                   onMouseEnter={() => this.mouse(each.englishName)}
                   onMouseLeave={() => this.mouseOut()}
                   isSelected={(option) =>

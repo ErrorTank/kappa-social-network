@@ -173,7 +173,7 @@ export class CreateListingPreviewWidget extends Component {
                     {this.additionInfo.map((each) => {
                       return (
                         state[each.name] && (
-                          <div className='addition-info'>
+                          <div className='addition-info' key={each.name}>
                             <div className='addition-info-type'>
                               {each.title}
                             </div>
