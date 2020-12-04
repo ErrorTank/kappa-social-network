@@ -3,6 +3,7 @@ import { modals } from './../modals';
 import { CommonModalLayout } from './../common-modal-layout';
 import { numberToMoney } from '../../../../common/utils/listing-utils';
 import { ListingInfoInput } from './../../listing-info-input/listing-info-input';
+import { messageWidgetController } from './../../../layout/authen-layout/create-message-widget/create-message-widget';
 
 export const sellMessengerModal = {
   open(config) {
@@ -40,7 +41,7 @@ class SellMessengerModal extends Component {
       address,
       files,
     } = listing;
-    console.log(message);
+    console.log(user);
     return (
       <CommonModalLayout
         className='sell-messenger-model'
@@ -55,10 +56,18 @@ class SellMessengerModal extends Component {
               onClose();
             },
             content: (
-              <>
+              <div
+                className='send-sell-message'
+                onClick={() => {
+                  messageWidgetController.createNewChatBox({
+                    userID: user._id,
+                    message: message,
+                  });
+                }}
+              >
                 <i className='fab fa-facebook-messenger'></i>
                 Gửi tin nhắn
-              </>
+              </div>
             ),
           },
         ]}
