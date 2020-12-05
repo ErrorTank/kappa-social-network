@@ -28,6 +28,27 @@ const initDbCollections = (appDb) => {
   //     },
   //   }
   // ).exec();
+  // Profile.find({})
+
+  //   .lean()
+  //   .then((data) => {
+  //     data.forEach((x) => {
+  //       Profile.findOneAndUpdate(
+  //         {
+  //           _id: ObjectId(x._id),
+  //         },
+  //         {
+  //           $set: {
+  //             locationCoordinate: {
+  //               type: "Point",
+  //               coordinates: [x.location.lat, x.location.lng],
+  //             },
+  //           },
+  //         }
+  //       ).exec();
+  //     });
+  //   });
+
   // Profile.updateMany(
   //   {},
   //   {

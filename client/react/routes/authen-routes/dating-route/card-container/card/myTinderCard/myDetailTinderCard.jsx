@@ -150,7 +150,7 @@ export class MyDetailTinderCard extends Component {
               : info.university
               ? info.university
               : info.secondarySchool
-              ? info.secondaryschool
+              ? info.secondarySchool
               : "Không muốn tiết lộ"}
           </div>
           <div>
