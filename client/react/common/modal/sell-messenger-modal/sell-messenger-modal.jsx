@@ -41,7 +41,7 @@ class SellMessengerModal extends Component {
       address,
       files,
     } = listing;
-    console.log(user);
+    // console.log(message);
     return (
       <CommonModalLayout
         className='sell-messenger-model'

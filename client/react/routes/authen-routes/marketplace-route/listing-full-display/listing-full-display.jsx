@@ -11,6 +11,7 @@ import { Avatar } from './../../../../common/avatar/avatar';
 import { sellMessengerModal } from './../../../../common/modal/sell-messenger-modal/sell-messenger-modal';
 import { CommonInput } from '../../../../common/common-input/common-input';
 import { Tooltip } from './../../../../common/tooltip/tooltip';
+import { userInfo } from './../../../../../common/states/common';
 
 class ListingFullDisplay extends Component {
   constructor(props) {
@@ -79,6 +80,7 @@ class ListingFullDisplay extends Component {
       className: 'facebook-button long',
       text: 'Nhắn tin',
       tooltipText: 'Nhắn tin',
+      canDisable: true,
       click: () =>
         sellMessengerModal.open({
           listing: this.state.listing,
@@ -159,6 +161,7 @@ class ListingFullDisplay extends Component {
     this.setState({ message: value });
   };
   render() {
+    const currentUser = userInfo.getState();
     const { listing, message } = this.state;
     const {
       title,
@@ -178,6 +181,7 @@ class ListingFullDisplay extends Component {
     } = listing;
     // console.log(listing);
     // console.log(user);
+    // console.log(currentUser);
     return (
       <PageTitle title={'Listing'}>
         <div className='listing-full-display'>
@@ -211,6 +215,9 @@ class ListingFullDisplay extends Component {
                       className={classnames(e.className)}
                       key={i}
                       onClick={e.click}
+                      disabled={
+                        user && e.canDisable && currentUser._id === user._id
+                      }
                     >
                       {e.icon}
                       {e.text && <span>{e.text}</span>}
@@ -292,7 +299,6 @@ class ListingFullDisplay extends Component {
                 </div>
               </div>
 
-              {/* <input /> */}
               <CommonInput
                 type='text'
                 value={message}
@@ -301,7 +307,8 @@ class ListingFullDisplay extends Component {
               />
               <div
                 className={classnames('send-message-demo', {
-                  'gray-filter': !message,
+                  'gray-filter':
+                    !message || (user && currentUser._id === user._id),
                 })}
               >
                 Gửi
