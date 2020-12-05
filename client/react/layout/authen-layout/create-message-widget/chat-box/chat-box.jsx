@@ -137,6 +137,14 @@ export class ChatBox extends KComponent {
     );
   }
 
+  componentDidMount() {
+    this.props.marketplaceMessage &&
+      this.handleSubmitChat({
+        content: this.props.marketplaceMessage,
+        files: [],
+      });
+  }
+
   componentWillUnmount() {
     if (this.io) {
       this.io.off('change-message-state');

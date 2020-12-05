@@ -67,6 +67,7 @@ module.exports = (db, namespacesIO) => {
     }
   );
   router.put('/edit-listing', authorizationUserMiddleware, (req, res, next) => {
+    console.log(req.body);
     return updateListing(req.body)
       .then((data) => {
         return res.status(200).json(data);

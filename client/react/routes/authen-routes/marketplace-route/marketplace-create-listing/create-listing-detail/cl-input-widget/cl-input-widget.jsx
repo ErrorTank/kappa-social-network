@@ -113,11 +113,13 @@ export class CreateListingInputWidget extends Component {
   };
   //upload file
   uploadSingleFile = (file) => {
-    return postApi
-      .preUploadMedia({ file: file.file }, 'file')
-      .then((fileData) => ({
-        ...fileData,
-      }));
+    return file.path
+      ? Promise.resolve(file)
+      : postApi
+          .preUploadMedia({ file: file.file }, 'file')
+          .then((fileData) => ({
+            ...fileData,
+          }));
   };
 
   // error function
@@ -175,7 +177,7 @@ export class CreateListingInputWidget extends Component {
             };
             let submitListing = { ...newListing, ...moreInfo };
             console.log(state._id);
-            isEdit
+            !isEdit
               ? listingApi.createListing(submitListing).then((e) => {
                   customHistory.push('/marketplace/you/selling');
                 })
