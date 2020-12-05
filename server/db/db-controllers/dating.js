@@ -125,15 +125,15 @@ const getCardProfileInfo = (userID, { seenID, action, exclude }) => {
             "location.ward": {
               $arrayElemAt: ["$location.ward", 0],
             },
-            "homwTown.city": {
-              $arrayElemAt: ["$homwTown.city", 0],
+            "homeTown.city": {
+              $arrayElemAt: ["$homeTown.city", 0],
             },
-            "homwTown.district": {
-              $arrayElemAt: ["$homwTown.district", 0],
+            "homeTown.district": {
+              $arrayElemAt: ["$homeTown.district", 0],
             },
 
-            "homwTown.ward": {
-              $arrayElemAt: ["$homwTown.ward", 0],
+            "homeTown.ward": {
+              $arrayElemAt: ["$homeTown.ward", 0],
             },
           },
         },
@@ -150,7 +150,45 @@ const getInitCardProfileInfo = (userID) => {
     .then((user) => {
       return Profile.aggregate([
         {
+          $addFields: {
+            age: {
+              $divide: [
+                { $subtract: [new Date(), "$DateOfBirth"] },
+                365 * 24 * 60 * 60 * 1000,
+              ],
+            },
+          },
+        },
+        {
           $match: {
+            gender: user.filterSetting.gender,
+            educationLevel: user.filterSetting.educationLevel,
+            yourKids: user.filterSetting.theirKids,
+            religion: user.filterSetting.religion,
+            $and: [
+              {
+                height: {
+                  $gte: user.filterSetting.fromNumber,
+                },
+              },
+              {
+                height: {
+                  $lte: user.filterSetting.toNumber,
+                },
+              },
+            ],
+            $and: [
+              {
+                age: {
+                  $gte: user.filterSetting.fromAge,
+                },
+              },
+              {
+                age: {
+                  $lte: user.filterSetting.toAge,
+                },
+              },
+            ],
             _id: {
               $nin: user.seen
                 .map((x) => ObjectId(x.user.toString()))
@@ -158,6 +196,20 @@ const getInitCardProfileInfo = (userID) => {
             },
           },
         },
+        {
+          $geoNear: {
+            near: {
+              type: "Point",
+              coordinates: [user.location.lat, user.location.lng],
+            },
+            distanceField: "dist.calculated",
+            maxDistance: user.filterSetting.distance,
+            // query: { category: "Parks" },
+            includeLocs: "dist.location",
+            spherical: true,
+          },
+        },
+
         {
           $sample: {
             size: 5,
@@ -223,15 +275,15 @@ const getInitCardProfileInfo = (userID) => {
             "location.ward": {
               $arrayElemAt: ["$location.ward", 0],
             },
-            "homwTown.city": {
-              $arrayElemAt: ["$homwTown.city", 0],
+            "homeTown.city": {
+              $arrayElemAt: ["$homeTown.city", 0],
             },
-            "homwTown.district": {
-              $arrayElemAt: ["$homwTown.district", 0],
+            "homeTown.district": {
+              $arrayElemAt: ["$homeTown.district", 0],
             },
 
-            "homwTown.ward": {
-              $arrayElemAt: ["$homwTown.ward", 0],
+            "homeTown.ward": {
+              $arrayElemAt: ["$homeTown.ward", 0],
             },
           },
         },

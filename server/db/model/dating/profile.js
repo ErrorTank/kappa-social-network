@@ -19,6 +19,12 @@ const profileSchema = new Schema({
     type: Date,
     require: true,
   },
+  locationCoordinate: {
+    type: {
+      type: String,
+    },
+    coordinates: [Number],
+  },
   location: {
     lat: Number,
     lng: Number,
