@@ -4,6 +4,8 @@ import { CommonModalLayout } from './../common-modal-layout';
 import { numberToMoney } from '../../../../common/utils/listing-utils';
 import { ListingInfoInput } from './../../listing-info-input/listing-info-input';
 import { messageWidgetController } from './../../../layout/authen-layout/create-message-widget/create-message-widget';
+import { messengerApi } from './../../../../api/common/messenger-api';
+import { chatApi } from './../../../../api/common/chat-api';
 
 export const sellMessengerModal = {
   open(config) {
@@ -26,6 +28,42 @@ class SellMessengerModal extends Component {
   }
   handleMessageChange = (value) => {
     this.setState({ message: value });
+  };
+
+  createTempMessage = ({ state = {}, needUploadFile = false, file = null }) => {
+    let newMessageID = uuidv4();
+    return {
+      _id: newMessageID,
+      sentBy: { _id: userInfo.getState()._id },
+      content: state.content || '',
+      mentions: state.mentions || [],
+      special: MESSAGE_TYPES.CASUAL,
+      hyperlinks: state.hyperlinks || [],
+      state: MessageState.CACHED,
+      call_info: state.call_info || null,
+      reactions: {
+        angry: [],
+        cry: [],
+        laugh: [],
+        love: [],
+        thump_down: [],
+        thump_up: [],
+        wow: [],
+      },
+      seenBy: [],
+      temp: true,
+      needUploadFile,
+      file,
+      emoji: state.emoji || null,
+      reply_for: state.reply
+        ? {
+            file: state.reply.file,
+            content: state.reply.content,
+            sentBy: state.reply.sentBy,
+            emoji: state.reply.emoji,
+          }
+        : null,
+    };
   };
   render() {
     let { onClose, listing, questionArr, handleMessageChange } = this.props;
@@ -59,10 +97,36 @@ class SellMessengerModal extends Component {
               <div
                 className='send-sell-message'
                 onClick={() => {
-                  messageWidgetController.createNewChatBox({
-                    userID: user._id,
-                    message: message,
-                  });
+                  const { message } = this.state;
+                  if (message) {
+                    let newMessage = null;
+                    if (chatState.content) {
+                      newMessage = this.createTempMessage({ state: chatState });
+                    }
+                    messengerApi
+                      .getUserChatRoomBrief(props.userID)
+                      .then(({ chat_room }) => {});
+                    //  chatApi.sendMessage(
+                    //    this.state.chat_room_brief._id,
+                    //    omit(
+                    //      {
+                    //        ...newMessage,
+                    //        sentBy: newMessage.sentBy._id,
+                    //        reply_for: newMessage.reply_for
+                    //          ? {
+                    //              ...newMessage.reply_for,
+                    //              sentBy: newMessage.reply_for.sentBy._id,
+                    //            }
+                    //          : null,
+                    //      },
+                    //      ['state', 'temp', 'needUploadFile', 'file']
+                    //    )
+                    //  );
+
+                    messageWidgetController.createNewChatBox({
+                      userID: user._id,
+                    });
+                  }
                 }}
               >
                 <i className='fab fa-facebook-messenger'></i>

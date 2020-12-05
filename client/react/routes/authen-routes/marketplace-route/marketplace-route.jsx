@@ -16,11 +16,15 @@ class MarketplaceRoute extends KComponent {
         lat: latitude,
         lon: longitude,
       };
-      localStorage.setItem('radius', 10);
+      if (!localStorage.getItem('radius')) localStorage.setItem('radius', 10);
       localStorage.setItem('lat', result.lat);
       localStorage.setItem('lon', result.lon);
-      marketplaceInfo.setState({ radius: 10, myPosition: result });
+      marketplaceInfo.setState({
+        radius: localStorage.getItem('radius') || 10,
+        myPosition: result,
+      });
     });
+
     this.onUnmount(
       marketplaceInfo.onChange((newState, oldState) => {
         if (newState.radius !== oldState.radius) this.forceUpdate();
@@ -29,17 +33,13 @@ class MarketplaceRoute extends KComponent {
   }
 
   render() {
-    let info = marketplaceInfo.getState();
-    const { radius, myPosition } = info;
     return (
       <PageTitle title={'Marketplace'}>
         <div className='marketplace-route'>
           <CommonLayout
-            mainRender={() => (
-              <AllListingWidget myPosition={myPosition} radius={radius} />
-            )}
+            mainRender={() => <AllListingWidget />}
             haveRightRender={false}
-            leftRender={() => <BrowseAllWidget radius={radius} />}
+            leftRender={() => <BrowseAllWidget />}
           />
         </div>
       </PageTitle>

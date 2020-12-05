@@ -33,13 +33,10 @@ export class CreateMessageWidget extends Component {
       },
       createNewChatBox: ({ userID, message }) => {
         let { bubbleList } = this.state;
-        console.log(message);
+
         this.setState({ currentChatBox: userID, showCreatePanel: false });
         searchMessageWidgetController.close();
 
-        if (message) {
-          this.setState({ marketplaceMessage: message });
-        }
         if (bubbleList.indexOf(userID) === -1) {
           this.setState({ bubbleList: bubbleList.concat(userID) });
         }
@@ -192,7 +189,6 @@ export class CreateMessageWidget extends Component {
                   onSeenMessages={(messages) =>
                     this.seenMessages(each, messages)
                   }
-                  marketplaceMessage={this.state.marketplaceMessage}
                 />
               ))}
             </>
