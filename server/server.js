@@ -23,7 +23,7 @@ dbManager
     return require('./scripts/init-db-collections')(appDb);
   })
   .then((appDb) => {
-    // require('./scripts/feedMarketplace');
+    // require('./scripts/feedMarketplace');s
     //require("./scripts/feedDatingProfile.js");
     let environment = process.env.NODE_ENV;
     const port = process.env.PORT || 4000;

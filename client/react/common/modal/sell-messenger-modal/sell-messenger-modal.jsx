@@ -6,6 +6,11 @@ import { ListingInfoInput } from './../../listing-info-input/listing-info-input'
 import { messageWidgetController } from './../../../layout/authen-layout/create-message-widget/create-message-widget';
 import { messengerApi } from './../../../../api/common/messenger-api';
 import { chatApi } from './../../../../api/common/chat-api';
+import { v4 as uuidv4 } from 'uuid';
+import { userInfo } from './../../../../common/states/common';
+import { MESSAGE_TYPES } from '../../../layout/authen-layout/create-message-widget/chat-box/message-section/message';
+import { MessageState } from './../../../layout/authen-layout/create-message-widget/chat-box/chat-box';
+import omit from 'lodash/omit';
 
 export const sellMessengerModal = {
   open(config) {
@@ -65,6 +70,40 @@ class SellMessengerModal extends Component {
         : null,
     };
   };
+
+  handleSendSellMessage = (chatState) => {
+    let { user } = this.props.listing;
+    messengerApi.getUserChatRoomBrief(user._id).then(({ chat_room }) => {
+      console.log(chat_room);
+
+      let newMessage = null;
+      if (chatState.content) {
+        newMessage = this.createTempMessage({ state: chatState });
+      }
+      chatApi
+        .sendMessage(
+          chat_room._id,
+          omit(
+            {
+              ...newMessage,
+              sentBy: newMessage.sentBy._id,
+              reply_for: newMessage.reply_for
+                ? {
+                    ...newMessage.reply_for,
+                    sentBy: newMessage.reply_for.sentBy._id,
+                  }
+                : null,
+            },
+            ['state', 'temp', 'needUploadFile', 'file']
+          )
+        )
+        .then((e) =>
+          messageWidgetController.focusOnChatBox({
+            userID: user._id,
+          })
+        );
+    });
+  };
   render() {
     let { onClose, listing, questionArr, handleMessageChange } = this.props;
     const { message } = this.state;
@@ -79,7 +118,7 @@ class SellMessengerModal extends Component {
       address,
       files,
     } = listing;
-    // console.log(message);
+
     return (
       <CommonModalLayout
         className='sell-messenger-model'
@@ -99,32 +138,9 @@ class SellMessengerModal extends Component {
                 onClick={() => {
                   const { message } = this.state;
                   if (message) {
-                    let newMessage = null;
-                    if (chatState.content) {
-                      newMessage = this.createTempMessage({ state: chatState });
-                    }
-                    messengerApi
-                      .getUserChatRoomBrief(props.userID)
-                      .then(({ chat_room }) => {});
-                    //  chatApi.sendMessage(
-                    //    this.state.chat_room_brief._id,
-                    //    omit(
-                    //      {
-                    //        ...newMessage,
-                    //        sentBy: newMessage.sentBy._id,
-                    //        reply_for: newMessage.reply_for
-                    //          ? {
-                    //              ...newMessage.reply_for,
-                    //              sentBy: newMessage.reply_for.sentBy._id,
-                    //            }
-                    //          : null,
-                    //      },
-                    //      ['state', 'temp', 'needUploadFile', 'file']
-                    //    )
-                    //  );
-
-                    messageWidgetController.createNewChatBox({
-                      userID: user._id,
+                    this.handleSendSellMessage({
+                      content: message,
+                      files: [],
                     });
                   }
                 }}
