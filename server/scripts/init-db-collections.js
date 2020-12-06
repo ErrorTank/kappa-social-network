@@ -71,8 +71,8 @@ const initDbCollections = (appDb) => {
   // User.updateMany({}, {$set: {followed_posts: []}}).then(() => console.log("cac"))
   // User.updateMany({}, {$set: {favorites: [], schools: [], works: []}}).then(() => console.log("cac"))
   // User.updateMany({}, {$set: {notification_settings: [
-  //       "comment_on_followed_post", "mentioned_in_comment", "reply_on_comment", "mentioned_in_reply", "react_comment",
-  //       "react_post", "tagged_on_post",  "post_on_wall"
+  //       "comment_on_comment_post",  "react_on_comment_post",
+  //       "tagged_on_post","post_on_wall"
   //     ]}}).then(() => console.log("cac"))
   // Post.updateMany({}, {$set: {belonged_wall: null}}).then(() => console.log("cac"))
   // Post.deleteMany({}).then(() => console.log("cac"))
