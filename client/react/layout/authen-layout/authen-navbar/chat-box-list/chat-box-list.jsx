@@ -41,11 +41,12 @@ export class ChatBoxList extends Component {
         let {unseen} = this.props;
         return (
 
-            <div className="chat-box-list nav-bar-dropdown">
+            <div className=" nav-bar-dropdown">
                 <div className="nbd-title">
                     Tin nhắn
                 </div>
                 <InfiniteScrollWrapper
+                    className={"chat-box-list"}
                     onScrollTop={() => {
 
                         this.fetchUserChatRooms();

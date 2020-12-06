@@ -145,6 +145,17 @@ export class ChatBox extends KComponent {
       });
   }
 
+
+  componentDidUpdate(prevProps, prevState, snapshot) {
+    if(this.props.active && !prevProps.active){
+      let scrollToLatest = messagesContainerUtilities.createScrollLatest();
+      setTimeout(() => {
+        scrollToLatest();
+
+      }, 200);
+    }
+  }
+
   componentWillUnmount() {
     if (this.io) {
       this.io.off('change-message-state');
