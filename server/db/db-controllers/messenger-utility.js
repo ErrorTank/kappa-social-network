@@ -38,6 +38,7 @@ const getUserPersonalChatRoom = (ownerID, userID, options = {}) => {
         as: 'chat_rooms',
       },
     },
+
     {
       $match: {
         'chat_rooms.is_group_chat': false,
@@ -135,7 +136,9 @@ const getUserChatRoomBrief = (ownerID, userID) => {
       return Promise.reject(new ApplicationError('cannot_reach_out'));
     }
     if (!chat_room) {
+      let newID = ObjectId();
       return new ChatRoom({
+        _id: newID,
         involve_person: [
           { related: ObjectId(ownerID) },
           { related: ObjectId(userID) },
@@ -150,9 +153,14 @@ const getUserChatRoomBrief = (ownerID, userID) => {
         .save()
         .then((cr) => {
           let newCr = cr.toObject();
+          console.log(newID);
           Promise.all([
-            simpleUpdateUser(ownerID, { $push: { chat_rooms: newCr._id } }),
-            simpleUpdateUser(userID, { $push: { chat_rooms: newCr._id } }),
+            simpleUpdateUser(ownerID, {
+              $push: { chat_rooms: ObjectId(newID) },
+            }),
+            simpleUpdateUser(userID, {
+              $push: { chat_rooms: ObjectId(newID) },
+            }),
           ]);
           return { chat_room: newCr };
         });

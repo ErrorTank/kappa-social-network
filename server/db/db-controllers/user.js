@@ -380,15 +380,11 @@ const updateSearchHistory = (userID, historyID, data) => {
 };
 
 const simpleUpdateUser = (userID, data) => {
-  return User.findOneAndUpdate(
-    { _id: ObjectId(userID) },
-    { $set: data },
-    {
-      new: true,
-      select:
-        'followed_posts saved_posts blocked_posts person_blocked _id contact basic_info joined_at isVerify last_active_at dark_mode private_info search_history avatar',
-    }
-  ).lean();
+  return User.findOneAndUpdate({ _id: ObjectId(userID) }, data, {
+    new: true,
+    select:
+      'followed_posts saved_posts blocked_posts person_blocked _id contact basic_info joined_at isVerify last_active_at dark_mode private_info search_history avatar',
+  }).lean();
 };
 
 const getUserBasicInfo = (userID, query = {}) => {

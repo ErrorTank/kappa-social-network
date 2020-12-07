@@ -103,7 +103,7 @@ export class CreateMessageWidget extends Component {
     let reverseList = bubbleList.reverse();
     let showBubbles = reverseList.slice(0, 4);
     let collapseBubbles = reverseList.slice(4);
-    let activeChatBox = bubbleList.find(each => each === currentChatBox);
+    let activeChatBox = bubbleList.find((each) => each === currentChatBox);
     return (
       <FloatBottomWidget
         className={classnames('create-message-widget', { darkMode })}
@@ -177,8 +177,8 @@ export class CreateMessageWidget extends Component {
               )}
             />
           ) : (
-            <>
-
+            activeChatBox && (
+              <>
                 <ChatBox
                   chatRoomID={this.props.chatRoomID}
                   key={activeChatBox}
@@ -191,8 +191,8 @@ export class CreateMessageWidget extends Component {
                     this.seenMessages(activeChatBox, messages)
                   }
                 />
-
-            </>
+              </>
+            )
           );
         }}
       />

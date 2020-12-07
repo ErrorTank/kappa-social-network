@@ -248,7 +248,6 @@ let categories = [
   //more
 ];
 
-ChatRoom.deleteMany({}).then(() => console.log('ok'));
 // Category.insertMany(categories)
 //   .then((data) => console.log(data))
 //   .catch((err) => console.log(err));
