@@ -39,4 +39,7 @@ export const datingApi = {
   updateProfile(data, profileId) {
     return authenApi.put(`/dating/edit-profile/profileId/${profileId}`, data);
   },
+  updateFilterSetting(data, profileId) {
+    return authenApi.put(`/dating/update-filter/profileId/${profileId}`, data);
+  },
 };

@@ -117,18 +117,27 @@ const profileSchema = new Schema({
     Type: Number,
   },
   filterSetting: {
-    distance: Number,
+    distance: {
+      type: Number,
+      default: 100,
+    },
     gender: {
       type: String,
       enum: ["MALE", "FEMALE", "OTHERS"],
     },
     ageRange: {
-      fromNumber: Number,
-      toNumber: Number,
+      fromNumber: {
+        type: Number,
+        default: 18,
+      },
+      toNumber: { type: Number, default: 30 },
     },
     heightRange: {
-      fromNumber: Number,
-      toNumber: Number,
+      fromNumber: {
+        type: Number,
+        default: 140,
+      },
+      toNumber: { type: Number, default: 200 },
     },
     educationLevel: {
       type: String,

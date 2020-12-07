@@ -18,6 +18,7 @@ const {
   getChatBoxes,
   getMessages,
   updateProfile,
+  updateFilterSetting,
 } = require("../db/db-controllers/dating");
 module.exports = (db, namespacesIO) => {
   router.get(
@@ -183,6 +184,17 @@ module.exports = (db, namespacesIO) => {
       return updateProfile(req.body, req.params.profileId)
         .then((data) => {
           console.log("ok");
+          return res.status(200).json(data);
+        })
+        .catch((err) => next(err));
+    }
+  );
+  router.put(
+    "/update-filter/profileId/:profileId",
+    authorizationUserMiddleware,
+    (req, res, next) => {
+      return updateFilterSetting(req.body, req.params.profileId)
+        .then((data) => {
           return res.status(200).json(data);
         })
         .catch((err) => next(err));
