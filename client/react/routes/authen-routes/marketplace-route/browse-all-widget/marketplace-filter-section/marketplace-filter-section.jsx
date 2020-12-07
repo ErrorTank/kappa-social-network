@@ -23,7 +23,7 @@ export class MarketplaceFilterSection extends KComponent {
     ];
     const { updateValue, radius, state, handleState, isFilter } = this.props;
     // const { sortType } = state;
-    console.log(state);
+    // console.log(state);
     return (
       <div className='marketplace-filter-section'>
         <h2 className='marketplace-filter-title'>Bộ lọc</h2>
@@ -37,9 +37,7 @@ export class MarketplaceFilterSection extends KComponent {
               displayAs={(item) => item.value + ' km'}
               value={{ value: radius }}
               isSelected={(option) => option.value === radius}
-              onChange={(e) => {
-                updateValue(`radius`, e.value);
-              }}
+              onChange={(e) => updateValue(`radius`, e.value)}
             />
           </div>
           {isFilter && (
@@ -48,8 +46,8 @@ export class MarketplaceFilterSection extends KComponent {
               title={'Sắp xếp theo'}
               options={sortOptions}
               onChange={(val) => {
-                console.log(val);
-                console.log(val.target.value);
+                // console.log(val);
+                // console.log(val.target.value);
                 handleState(`sortType`, val.value);
               }}
             />

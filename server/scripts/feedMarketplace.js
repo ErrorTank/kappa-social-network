@@ -5,6 +5,7 @@ const dbManager = require('../config/db');
 const appDb = dbManager.getConnections()[0];
 const Category = require('../db/model/marketplace/category')(appDb);
 const Listing = require('../db/model/marketplace/listing')(appDb);
+const ChatRoom = require('../db/model/chat-room')(appDb);
 
 let categories = [
   // parent category
@@ -247,7 +248,7 @@ let categories = [
   //more
 ];
 
-Category.insertMany(categories)
-  .then((data) => console.log(data))
-  .catch((err) => console.log(err));
+// Category.insertMany(categories)
+//   .then((data) => console.log(data))
+//   .catch((err) => console.log(err));
 // Category.deleteMany({}).then(() => console.log('ok'));

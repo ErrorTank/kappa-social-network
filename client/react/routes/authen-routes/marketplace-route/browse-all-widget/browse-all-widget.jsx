@@ -12,18 +12,24 @@ import { ListingInfoSelect } from './../../../../common/listing-info-select/list
 import { KComponent } from './../../../../common/k-component';
 import { getCategoriesNavigation } from '../../../../../common/utils/listing-utils';
 import { customHistory } from '../../../routes';
+import { marketplaceInfo } from './../../../../../common/states/common';
 
 export class BrowseAllWidget extends KComponent {
   constructor(props) {
     super(props);
     this.state = {
       categoryDisplay: [],
-      radius: this.props.radius || localStorage.radius,
     };
 
     categoryApi.getCategory({}).then((categories) => {
       this.setState({ categoryDisplay: getCategoriesNavigation(categories) });
     });
+
+    this.onUnmount(
+      marketplaceInfo.onChange((newState, oldState) => {
+        if (newState.radius !== oldState.radius) this.forceUpdate();
+      })
+    );
   }
 
   updateValue = (key, val) => {
@@ -51,8 +57,12 @@ export class BrowseAllWidget extends KComponent {
   ];
 
   render() {
-    const { categoryDisplay, radius } = this.state;
-    const { updateValue } = this.props;
+    const { categoryDisplay } = this.state;
+    let info = marketplaceInfo.getState();
+    const { radius } = info;
+    // const { updateValue } = this.props;
+    // console.log(marketplaceInfo.getState().radius);
+    // console.log(localStorage.getItem('radius'));
     return (
       <ThemeContext.Consumer>
         {({ darkMode }) => (
@@ -63,7 +73,10 @@ export class BrowseAllWidget extends KComponent {
                 darkMode={darkMode}
                 menuNavigation={this.browseAllMenu}
               />
-              <MarketplaceFilterSection radius={radius} />
+              <MarketplaceFilterSection
+                radius={radius || localStorage.getItem('radius')}
+                updateValue={this.updateValue}
+              />
               <CategoriesSection
                 darkMode={darkMode}
                 categoryDisplay={categoryDisplay}

@@ -8,6 +8,7 @@ import { insideCircle } from 'geolocation-utils';
 import { LoadingInline } from './../../../../common/loading-inline/loading-inline';
 import { KComponent } from './../../../../common/k-component';
 import { customHistory } from './../../../routes';
+import { marketplaceInfo } from './../../../../../common/states/common';
 
 export class AllListingWidget extends KComponent {
   constructor(props) {
@@ -16,12 +17,24 @@ export class AllListingWidget extends KComponent {
       listingByCategory: [],
       loading: true,
     };
+    this.onUnmount(
+      marketplaceInfo.onChange((newState, oldState) => {
+        if (newState.radius !== oldState.radius) {
+          this.getListingInRadius();
+          this.forceUpdate();
+        }
+      })
+    );
   }
   componentDidMount() {
-    this.props.myPosition && this.getListingInRadius();
+    let info = marketplaceInfo.getState();
+    const { radius, myPosition } = info;
+    myPosition && this.getListingInRadius();
   }
+
   getListingInRadius = () => {
-    const { radius, myPosition } = this.props;
+    let info = marketplaceInfo.getState();
+    const { radius, myPosition } = info;
     this.setState({ loading: true });
     listingApi
       .getListing({
@@ -34,16 +47,10 @@ export class AllListingWidget extends KComponent {
         this.setState({ listingByCategory, loading: false });
       });
   };
-  componentDidUpdate(prevProps) {
-    if (
-      prevProps.radius !== this.props.radius ||
-      prevProps.myPosition !== this.props.myPosition
-    ) {
-      this.getListingInRadius();
-    }
-  }
+
   render() {
-    const { myPosition, radius } = this.props;
+    let info = marketplaceInfo.getState();
+    const { radius, myPosition } = info;
     const { listingByCategory, loading } = this.state;
     // console.log(listingByCategory);
     return (
@@ -70,7 +77,16 @@ export class AllListingWidget extends KComponent {
                     <div className='listing-list-display'>
                       {e.listingArr.map((listing) => {
                         return (
-                          <ListingDisplay listing={listing} key={listing._id} />
+                          insideCircle(
+                            listing.position,
+                            myPosition,
+                            radius * 1000
+                          ) && (
+                            <ListingDisplay
+                              listing={listing}
+                              key={listing._id}
+                            />
+                          )
                         );
                       })}
                     </div>
