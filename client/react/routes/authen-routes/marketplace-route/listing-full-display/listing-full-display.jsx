@@ -12,7 +12,13 @@ import { sellMessengerModal } from './../../../../common/modal/sell-messenger-mo
 import { CommonInput } from '../../../../common/common-input/common-input';
 import { Tooltip } from './../../../../common/tooltip/tooltip';
 import { userInfo } from './../../../../../common/states/common';
-
+import { messengerApi } from './../../../../../api/common/messenger-api';
+import { chatApi } from './../../../../../api/common/chat-api';
+import { messageWidgetController } from './../../../../layout/authen-layout/create-message-widget/create-message-widget';
+import { v4 as uuidv4 } from 'uuid';
+import { MESSAGE_TYPES } from '../../../../layout/authen-layout/create-message-widget/chat-box/message-section/message';
+import { MessageState } from './../../../../layout/authen-layout/create-message-widget/chat-box/chat-box';
+import omit from 'lodash/omit';
 class ListingFullDisplay extends Component {
   constructor(props) {
     super(props);
@@ -73,7 +79,74 @@ class ListingFullDisplay extends Component {
       }
     });
   };
+  createTempMessage = ({ state = {}, needUploadFile = false, file = null }) => {
+    let newMessageID = uuidv4();
+    return {
+      _id: newMessageID,
+      sentBy: { _id: userInfo.getState()._id },
+      content: state.content || '',
+      mentions: state.mentions || [],
+      special: MESSAGE_TYPES.CASUAL,
+      hyperlinks: state.hyperlinks || [],
+      state: MessageState.CACHED,
+      call_info: state.call_info || null,
+      reactions: {
+        angry: [],
+        cry: [],
+        laugh: [],
+        love: [],
+        thump_down: [],
+        thump_up: [],
+        wow: [],
+      },
+      seenBy: [],
+      temp: true,
+      needUploadFile,
+      file,
+      emoji: state.emoji || null,
+      reply_for: state.reply
+        ? {
+            file: state.reply.file,
+            content: state.reply.content,
+            sentBy: state.reply.sentBy,
+            emoji: state.reply.emoji,
+          }
+        : null,
+    };
+  };
+  handleSendSellMessage = (chatState) => {
+    let { user } = this.state.listing;
+    messengerApi.getUserChatRoomBrief(user._id).then(({ chat_room }) => {
+      console.log(chat_room);
 
+      let newMessage = null;
+      if (chatState.content) {
+        newMessage = this.createTempMessage({ state: chatState });
+      }
+      chatApi
+        .sendMessage(
+          chat_room._id,
+          omit(
+            {
+              ...newMessage,
+              sentBy: newMessage.sentBy._id,
+              reply_for: newMessage.reply_for
+                ? {
+                    ...newMessage.reply_for,
+                    sentBy: newMessage.reply_for.sentBy._id,
+                  }
+                : null,
+            },
+            ['state', 'temp', 'needUploadFile', 'file']
+          )
+        )
+        .then((e) =>
+          messageWidgetController.focusOnChatBox({
+            userID: user._id,
+          })
+        );
+    });
+  };
   buttonArr = [
     {
       icon: <i className='fab fa-facebook-messenger'></i>,
@@ -291,7 +364,18 @@ class ListingFullDisplay extends Component {
               )}
             </div>
 
-            <div className='send-message-wrapper'>
+            <div
+              className='send-message-wrapper'
+              onClick={() => {
+                const { message } = this.state;
+                if (message) {
+                  this.handleSendSellMessage({
+                    content: message,
+                    files: [],
+                  });
+                }
+              }}
+            >
               <div className='send-message-header'>
                 <i className='fab fa-facebook-messenger'></i>
                 <div className='send-message-title'>

@@ -10,10 +10,14 @@ export class YourListing extends Component {
   constructor(props) {
     super(props);
     this.state = {};
+    this.handleGetListing();
+  }
+  handleGetListing = () => {
     listingApi
       .getListingByUserID(this.props.user._id)
       .then((e) => this.setState({ sellingList: e }));
-  }
+  };
+
   additionFunction = [
     {
       icon: <i className='fas fa-list'></i>,
@@ -28,9 +32,14 @@ export class YourListing extends Component {
     {
       icon: <i className='fas fa-trash-alt'></i>,
       label: 'Xóa bài niêm yết',
-      // onClick: (e) => customHistory.push(`/marketplace/delete/${e}`),
+      onClick: (e) => this.handleDeleteListing(e),
     },
   ];
+  handleDeleteListing = (id) => {
+    listingApi.deleteListing(id);
+    this.handleGetListing();
+    this.forceUpdate();
+  };
   render() {
     const { sellingList } = this.state;
     // console.log(sellingList);

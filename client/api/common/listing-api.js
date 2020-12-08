@@ -21,4 +21,7 @@ export const listingApi = {
   updateListing(data) {
     return authenApi.put(`/listing/edit-listing`, data);
   },
+  deleteListing(listingID) {
+    return authenApi.delete(`/listing/delete-listing/${listingID}`);
+  },
 };

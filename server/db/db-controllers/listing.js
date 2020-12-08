@@ -129,6 +129,13 @@ const updateListing = (data) => {
       });
   });
 };
+const deleteListing = ({ listingID }) => {
+  return Listing.findOneAndDelete({
+    _id: ObjectId(listingID),
+  })
+    .lean()
+    .exec();
+};
 module.exports = {
   createListing,
   getListing,
@@ -136,4 +143,5 @@ module.exports = {
   getListingByUserID,
   getListingByListingID,
   updateListing,
+  deleteListing,
 };

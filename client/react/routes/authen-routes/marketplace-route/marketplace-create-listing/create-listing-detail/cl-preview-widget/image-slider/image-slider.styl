@@ -37,8 +37,8 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    max-height: 100%;
-    height: 100%;
+    max-height: calc(100% - 36px);
+    height: calc(100% - 50px);
     z-index: 0;
 
     .img-display {
@@ -47,6 +47,7 @@
         max-width: 580px;
 
         img {
+          display: block;
           max-height: 380px;
           max-width: 580px;
         }

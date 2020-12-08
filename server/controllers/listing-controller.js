@@ -10,6 +10,7 @@ const {
   getListingByUserID,
   getListingByListingID,
   updateListing,
+  deleteListing,
 } = require('../db/db-controllers/listing');
 const ObjectId = mongoose.Types.ObjectId;
 
@@ -74,5 +75,12 @@ module.exports = (db, namespacesIO) => {
       })
       .catch((err) => next(err));
   });
+  router.delete(
+    '/delete-listing/:listingID',
+    authorizationUserMiddleware,
+    (req, res, next) => {
+      return deleteListing(req.params);
+    }
+  );
   return router;
 };
