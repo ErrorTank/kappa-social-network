@@ -415,19 +415,17 @@ const updateProfile = (data, profileId) => {
     });
 };
 const updateFilterSetting = (data, profileId) => {
-  return Profile.findOneAndUpdate(
+  console.log(data);
+  return Profile.update(
     {
       _id: ObjectId(profileId),
     },
-    data,
     {
-      new: true,
+      $set: {
+        filterSetting: data,
+      },
     }
-  )
-    .lean()
-    .then((profile) => {
-      return profile;
-    });
+  ).exec();
 };
 module.exports = {
   checkDatingProfile,

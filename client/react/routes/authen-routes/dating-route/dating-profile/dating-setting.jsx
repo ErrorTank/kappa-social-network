@@ -12,6 +12,7 @@ import { filterEducationLevels } from "./../../../../../const/filterEducationLev
 import { filterTheirKides } from "./../../../../../const/filterTheirKids";
 import { filterReligions } from "../../../../../const/filterReligions";
 import { religions } from "../../../../../const/religions";
+import { datingApi } from "./../../../../../api/common/dating";
 
 export class DatingSetting extends Component {
   constructor(props) {
@@ -58,6 +59,10 @@ export class DatingSetting extends Component {
       theirKids: theirKids.value,
       religion: religion.value,
     };
+    datingApi.updateFilterSetting(
+      { ...submittedData },
+      datingProfile.getState()._id
+    );
   };
 
   render() {
@@ -84,36 +89,31 @@ export class DatingSetting extends Component {
           </div>
           <h2>Thông tin của tôi</h2>
         </div>
-        <span className="ds-text"> Cài đặt tìm kiếm</span>
-        <div className="wrap">
-          <div className="title">
-            <div className="dash"></div>
-            <div className="text-title">Thông tin cơ bản</div>
-            <div className="dash"></div>
-          </div>
-          <div className="row-wrapper">
-            <ListingInfoSelect
-              className="dr-input"
-              label={"Khoảng cách "}
-              value={distance}
-              options={distances}
-              displayAs={(item) => item + " km"}
-              onChange={(item) => {
-                this.setState({ distance: item });
-              }}
-            />
-            <ListingInfoSelect
-              className="dr-input"
-              label={"Giới tính"}
-              value={gender}
-              options={filterGenders}
-              displayAs={(item) => item.label}
-              onChange={(item) => {
-                this.setState({ gender: item });
-              }}
-            />
-
-            <div>
+        <div className="ds-edit">
+          <span className="ds-text"> Cài đặt tìm kiếm</span>
+          <div className="ds-wrap">
+            <div className="ds-title"> Thông tin cơ bản</div>
+            <div className="row-wrapper">
+              <ListingInfoSelect
+                className="dr-input"
+                label={"Khoảng cách "}
+                value={distance}
+                options={distances}
+                displayAs={(item) => item + " km"}
+                onChange={(item) => {
+                  this.setState({ distance: item });
+                }}
+              />
+              <ListingInfoSelect
+                className="dr-input"
+                label={"Giới tính"}
+                value={gender}
+                options={filterGenders}
+                displayAs={(item) => item.label}
+                onChange={(item) => {
+                  this.setState({ gender: item });
+                }}
+              />
               <ListingInfoSelect
                 className="dr-input"
                 label={"Trình độ học vấn"}
@@ -146,79 +146,84 @@ export class DatingSetting extends Component {
               />
             </div>
           </div>
-        </div>
-        <div className="wrap">
-          <div className="title"> Độ tuổi</div>
-          <div className="row-wrapper">
-            <ListingInfoSelect
-              className="dr-input"
-              label={"Từ"}
-              value={ageRange.fromNumber}
-              options={filterAges}
-              displayAs={(item) => item + " tuổi"}
-              onChange={(item) => {
-                this.setState({
-                  ageRange: {
-                    ...ageRange,
-                    fromNumber: item,
-                  },
-                });
-              }}
-            />
-            <ListingInfoSelect
-              className="dr-input"
-              label={"Đến"}
-              value={ageRange.toNumber}
-              options={filterAges}
-              displayAs={(item) => item + " tuổi"}
-              onChange={(item) => {
-                this.setState({
-                  ageRange: {
-                    ...ageRange,
-                    toNumber: item,
-                  },
-                });
-              }}
-            />
+
+          <div className="ds-wrap">
+            <div className="ds-title"> Độ tuổi</div>
+            <div className="row-wrapper-age">
+              <ListingInfoSelect
+                className="dr-input"
+                label={"Từ"}
+                value={ageRange.fromNumber}
+                options={filterAges}
+                displayAs={(item) => item + " tuổi"}
+                onChange={(item) => {
+                  this.setState({
+                    ageRange: {
+                      ...ageRange,
+                      fromNumber: item,
+                    },
+                  });
+                }}
+              />
+              <ListingInfoSelect
+                className="dr-input"
+                label={"Đến"}
+                value={ageRange.toNumber}
+                options={filterAges}
+                displayAs={(item) => item + " tuổi"}
+                onChange={(item) => {
+                  if (item > this.state.ageRange.fromNumber) {
+                    this.setState({
+                      ageRange: {
+                        ...ageRange,
+                        toNumber: item,
+                      },
+                    });
+                  }
+                }}
+              />
+            </div>
           </div>
-        </div>
-        <div className="wrap">
-          <div className="title"> Chiều cao</div>
-          <div className="row-wrapper">
-            <ListingInfoSelect
-              className="dr-input"
-              label={"Từ"}
-              value={heightRange.fromNumber}
-              options={heights}
-              displayAs={(item) => item + " cm"}
-              onChange={(item) => {
-                this.setState({
-                  heightRange: {
-                    fromNumber: item,
-                    ...heightRange,
-                  },
-                });
-              }}
-            />
-            <ListingInfoSelect
-              className="dr-input"
-              label={"Đến"}
-              value={heightRange.toNumber}
-              options={heights}
-              displayAs={(item) => item + " cm"}
-              onChange={(item) => {
-                this.setState({
-                  heightRange: {
-                    ...heightRange,
-                    toNumber: item,
-                  },
-                });
-              }}
-            />
+          <div className="ds-wrap">
+            <div className="ds-title"> Chiều cao</div>
+            <div className="row-wrapper-age">
+              <ListingInfoSelect
+                className="dr-input"
+                label={"Từ"}
+                value={heightRange.fromNumber}
+                options={heights}
+                displayAs={(item) => item + " cm"}
+                onChange={(item) => {
+                  this.setState({
+                    heightRange: {
+                      fromNumber: item,
+                      ...heightRange,
+                    },
+                  });
+                }}
+              />
+              <ListingInfoSelect
+                className="dr-input"
+                label={"Đến"}
+                value={heightRange.toNumber}
+                options={heights}
+                displayAs={(item) => item + " cm"}
+                onChange={(item) => {
+                  if (item > this.state.heightRange.fromNumber) {
+                    this.setState({
+                      heightRange: {
+                        ...heightRange,
+                        toNumber: item,
+                      },
+                    });
+                  }
+                }}
+              />
+            </div>
           </div>
-        </div>
-        <div className="dcpf-button" onClick={this.submit}>
-          Lưu
+          <div className="dcpf-button" onClick={this.submit}>
+            Lưu
+          </div>
         </div>
       </div>
     );
