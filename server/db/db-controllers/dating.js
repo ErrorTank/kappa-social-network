@@ -150,6 +150,19 @@ const getInitCardProfileInfo = (userID) => {
     .then((user) => {
       return Profile.aggregate([
         {
+          $geoNear: {
+            near: {
+              type: "Point",
+              coordinates: [user.location.lat, user.location.lng],
+            },
+            distanceField: "dist.calculated",
+            maxDistance: user.filterSetting.distance,
+            // query: { category: "Parks" },
+            includeLocs: "dist.location",
+            spherical: true,
+          },
+        },
+        {
           $addFields: {
             age: {
               $divide: [
@@ -196,20 +209,6 @@ const getInitCardProfileInfo = (userID) => {
             },
           },
         },
-        {
-          $geoNear: {
-            near: {
-              type: "Point",
-              coordinates: [user.location.lat, user.location.lng],
-            },
-            distanceField: "dist.calculated",
-            maxDistance: user.filterSetting.distance,
-            // query: { category: "Parks" },
-            includeLocs: "dist.location",
-            spherical: true,
-          },
-        },
-
         {
           $sample: {
             size: 5,
@@ -415,6 +414,19 @@ const updateProfile = (data, profileId) => {
       return profile;
     });
 };
+const updateFilterSetting = (data, profileId) => {
+  console.log(data);
+  return Profile.update(
+    {
+      _id: ObjectId(profileId),
+    },
+    {
+      $set: {
+        filterSetting: data,
+      },
+    }
+  ).exec();
+};
 module.exports = {
   checkDatingProfile,
   createProfile,
@@ -429,4 +441,5 @@ module.exports = {
   getChatBoxes,
   getMessages,
   updateProfile,
+  updateFilterSetting,
 };

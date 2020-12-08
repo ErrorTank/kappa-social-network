@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { datingApi } from "./../../../../../api/common/dating";
 import { datingIO } from "./../../../../../socket/sockets";
 import uniqBy from "lodash/uniqBy";
+import { datingCardUtilities } from "./../card-container/card/datingCard";
 
 export class DatingMatched extends Component {
   constructor(props) {
@@ -33,7 +34,13 @@ export class DatingMatched extends Component {
     return (
       <div className="dating-matched">
         {profiles.map((people, i) => (
-          <div className="img-matched" key={i}>
+          <div
+            className="img-matched"
+            key={i}
+            onClick={() =>
+              datingCardUtilities.pushProfile({ ...people, isAccept: true })
+            }
+          >
             <img src={people.avatars[0].path} />
             <div className="username">{people.name}</div>
           </div>
