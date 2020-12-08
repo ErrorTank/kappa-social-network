@@ -49,16 +49,100 @@ const getCardProfileInfo = (userID, { seenID, action, exclude }) => {
   )
     .lean()
     .then((user) => {
-      return Profile.aggregate([
-        {
-          $match: {
-            _id: {
-              $nin: exclude
-                .map((each) => ObjectId(each))
-                .concat(user.seen.map((x) => ObjectId(x.user.toString())))
-                .concat(ObjectId(user._id)),
+      let match = {
+        // gender: user.filterSetting.gender,
+        // educationLevel: user.filterSetting.educationLevel,
+        // yourKids: user.filterSetting.theirKids,
+        // religion: user.filterSetting.religion,
+        $and: [
+          {
+            height: {
+              $gte: user.filterSetting.fromNumber,
             },
           },
+          {
+            height: {
+              $lte: user.filterSetting.toNumber,
+            },
+          },
+        ],
+        $and: [
+          {
+            age: {
+              $gte: user.filterSetting.fromAge,
+            },
+          },
+          {
+            age: {
+              $lte: user.filterSetting.toAge,
+            },
+          },
+        ],
+        _id: {
+          $nin: exclude
+            .map((each) => ObjectId(each))
+            .concat(user.seen.map((x) => ObjectId(x.user.toString())))
+            .concat(ObjectId(user._id)),
+        },
+      };
+      if (user.filterSetting.theirKids === "THEY HAVE KIDS") {
+        match.yourKids = "I HAVE KIDS";
+      }
+      if (user.filterSetting.theirKids === "THEY DON'T HAVE KIDS") {
+        match.yourKids = "I DON'T HAVE KIDS";
+      }
+      if (user.filterSetting.gender === "FEMALE") {
+        match.gender = "FEMALE";
+      }
+      if (user.filterSetting.gender === "MALE") {
+        match.gender = "MALE";
+      }
+      if (
+        user.filterSetting.educationLevel === "A-LEVELS,HIGHERS OR EQUIVALENT"
+      ) {
+        match.educationLevel = "A-LEVELS,HIGHERS OR EQUIVALENT";
+      }
+      if (user.filterSetting.educationLevel === "BACHELORS DEGREE") {
+        match.educationLevel = "BACHELORS DEGREE";
+      }
+      if (
+        user.filterSetting.educationLevel === "UNIVERSITY(POSTGRADUATE) DEGREE"
+      ) {
+        match.educationLevel = "UNIVERSITY(POSTGRADUATE) DEGREE";
+      }
+      if (user.filterSetting.religion === "AGNOSTIC") {
+        match.religion = "AGNOSTIC";
+      }
+      if (user.filterSetting.religion === "ATHEIST") {
+        match.religion = "ATHEIST";
+      }
+      if (user.filterSetting.religion === "BUDDHIST") {
+        match.religion = "BUDDHIST";
+      }
+      if (user.filterSetting.religion === "CATHOLIC") {
+        match.religion = "CATHOLIC";
+      }
+      if (user.filterSetting.religion === "CHRISTIAN") {
+        match.religion = "CHRISTIAN";
+      }
+      if (user.filterSetting.religion === "HINDU") {
+        match.religion = "HINDU";
+      }
+      if (user.filterSetting.religion === "BUDDHJEWISHIST") {
+        match.religion = "BUDDHJEWISHIST";
+      }
+      if (user.filterSetting.religion === "MUSLIM") {
+        match.religion = "MUSLIM";
+      }
+      if (user.filterSetting.religion === "SIKH") {
+        match.religion = "SIKH";
+      }
+      if (user.filterSetting.religion === "SPIRITUAL") {
+        match.religion = "SPIRITUAL";
+      }
+      return Profile.aggregate([
+        {
+          $match: match,
         },
         {
           $sample: {
@@ -148,66 +232,125 @@ const getInitCardProfileInfo = (userID) => {
   })
     .lean()
     .then((user) => {
-      return Profile.aggregate([
-        {
-          $geoNear: {
-            near: {
-              type: "Point",
-              coordinates: [user.location.lat, user.location.lng],
+      let match = {
+        // gender: user.filterSetting.gender,
+        // educationLevel: user.filterSetting.educationLevel,
+        // yourKids: user.filterSetting.theirKids,
+        // religion: user.filterSetting.religion,
+        $and: [
+          // {
+          //   height: {
+          //     $gte: user.filterSetting.fromNumber,
+          //   },
+          // },
+          // {
+          //   height: {
+          //     $lte: user.filterSetting.toNumber,
+          //   },
+          // },
+          {
+            age: {
+              $gte: Number(user.filterSetting.ageRange.fromNumber),
             },
-            distanceField: "dist.calculated",
-            maxDistance: user.filterSetting.distance,
-            // query: { category: "Parks" },
-            includeLocs: "dist.location",
-            spherical: true,
           },
+          {
+            age: {
+              $lte: Number(user.filterSetting.ageRange.toNumber),
+            },
+          },
+        ],
+
+        _id: {
+          $nin: user.seen
+            .map((x) => ObjectId(x.user.toString()))
+            .concat(ObjectId(user._id)),
         },
+      };
+      if (user.filterSetting.theirKids === "THEY HAVE KIDS") {
+        match.yourKids = "I HAVE KIDS";
+      }
+      if (user.filterSetting.theirKids === "THEY DON'T HAVE KIDS") {
+        match.yourKids = "I DON'T HAVE KIDS";
+      }
+      if (user.filterSetting.gender === "FEMALE") {
+        match.gender = "FEMALE";
+      }
+      if (user.filterSetting.gender === "MALE") {
+        match.gender = "MALE";
+      }
+      if (
+        user.filterSetting.educationLevel === "A-LEVELS,HIGHERS OR EQUIVALENT"
+      ) {
+        match.educationLevel = "A-LEVELS,HIGHERS OR EQUIVALENT";
+      }
+      if (user.filterSetting.educationLevel === "BACHELORS DEGREE") {
+        match.educationLevel = "BACHELORS DEGREE";
+      }
+      if (
+        user.filterSetting.educationLevel === "UNIVERSITY(POSTGRADUATE) DEGREE"
+      ) {
+        match.educationLevel = "UNIVERSITY(POSTGRADUATE) DEGREE";
+      }
+      if (user.filterSetting.religion === "AGNOSTIC") {
+        match.religion = "AGNOSTIC";
+      }
+      if (user.filterSetting.religion === "ATHEIST") {
+        match.religion = "ATHEIST";
+      }
+      if (user.filterSetting.religion === "BUDDHIST") {
+        match.religion = "BUDDHIST";
+      }
+      if (user.filterSetting.religion === "CATHOLIC") {
+        match.religion = "CATHOLIC";
+      }
+      if (user.filterSetting.religion === "CHRISTIAN") {
+        match.religion = "CHRISTIAN";
+      }
+      if (user.filterSetting.religion === "HINDU") {
+        match.religion = "HINDU";
+      }
+      if (user.filterSetting.religion === "BUDDHJEWISHIST") {
+        match.religion = "BUDDHJEWISHIST";
+      }
+      if (user.filterSetting.religion === "MUSLIM") {
+        match.religion = "MUSLIM";
+      }
+      if (user.filterSetting.religion === "SIKH") {
+        match.religion = "SIKH";
+      }
+      if (user.filterSetting.religion === "SPIRITUAL") {
+        match.religion = "SPIRITUAL";
+      }
+
+      return Profile.aggregate([
+        // {
+        //   $geoNear: {
+        //     near: {
+        //       type: "Point",
+        //       coordinates: [
+        //         Number(user.location.lat),
+        //         Number(user.location.lng),
+        //       ],
+        //     },
+        //     distanceField: "locationCoordinate.coordinates",
+        //     // maxDistance: Number(user.filterSetting.distance),
+        //     // query: { category: "Parks" },
+        //     spherical: true,
+        //     key: "locationCoordinate.coordinates",
+        //   },
+        // },
         {
           $addFields: {
             age: {
               $divide: [
-                { $subtract: [new Date(), "$DateOfBirth"] },
+                { $subtract: [new Date(), "$birthday"] },
                 365 * 24 * 60 * 60 * 1000,
               ],
             },
           },
         },
         {
-          $match: {
-            gender: user.filterSetting.gender,
-            educationLevel: user.filterSetting.educationLevel,
-            yourKids: user.filterSetting.theirKids,
-            religion: user.filterSetting.religion,
-            $and: [
-              {
-                height: {
-                  $gte: user.filterSetting.fromNumber,
-                },
-              },
-              {
-                height: {
-                  $lte: user.filterSetting.toNumber,
-                },
-              },
-            ],
-            $and: [
-              {
-                age: {
-                  $gte: user.filterSetting.fromAge,
-                },
-              },
-              {
-                age: {
-                  $lte: user.filterSetting.toAge,
-                },
-              },
-            ],
-            _id: {
-              $nin: user.seen
-                .map((x) => ObjectId(x.user.toString()))
-                .concat(ObjectId(user._id)),
-            },
-          },
+          $match: match,
         },
         {
           $sample: {

@@ -23,7 +23,10 @@ const profileSchema = new Schema({
     type: {
       type: String,
     },
-    coordinates: [Number],
+    coordinates: {
+      type: [Number],
+      index: { type: "2dsphere", sparse: false },
+    },
   },
   location: {
     lat: Number,
@@ -263,4 +266,5 @@ profileSchema.post("save", function (doc, next) {
       next();
     });
 });
+profileSchema.index({ locationCoordinate: "2dsphere" });
 module.exports = (db) => db.model("Profile", profileSchema);

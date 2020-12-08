@@ -15,11 +15,6 @@ export const filterReligions = [
     value: "BUDDHIST",
   },
   {
-    id: "PREFER NOT TO SAY",
-    label: "Không muốn tiết lộ",
-    value: "PREFER NOT TO SAY",
-  },
-  {
     id: "CATHOLIC",
     label: "Công giáo",
     value: "CATHOLIC",
