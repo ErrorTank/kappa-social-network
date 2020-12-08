@@ -4,6 +4,8 @@ import { ListingInfoSelect } from './../../../../../common/listing-info-select/l
 import { radiusArr } from './../../../../../../const/listing';
 import { SelectRadio } from '../../../../../common/marketplace-filter/select-radio';
 
+import { createSimpleForm } from '../../../../../common/form-validator/form-validator';
+
 export class MarketplaceFilterSection extends KComponent {
   constructor(props) {
     super(props);
@@ -14,11 +16,11 @@ export class MarketplaceFilterSection extends KComponent {
     let sortOptions = [
       {
         label: 'Giá: Thấp nhất trước',
-        value: 'Lowest first',
+        value: 'Lowest price first',
       },
       {
         label: 'Giá: Cao nhất trước',
-        value: 'Highest first',
+        value: 'Highest price first',
       },
     ];
     const { updateValue, radius, state, handleState, isFilter } = this.props;
@@ -40,17 +42,9 @@ export class MarketplaceFilterSection extends KComponent {
               onChange={(e) => updateValue(`radius`, e.value)}
             />
           </div>
+
           {isFilter && (
-            <SelectRadio
-              value={state.sortType}
-              title={'Sắp xếp theo'}
-              options={sortOptions}
-              onChange={(val) => {
-                // console.log(val);
-                // console.log(val.target.value);
-                handleState(`sortType`, val.value);
-              }}
-            />
+            <SelectRadio title={'Sắp xếp theo'} options={sortOptions} />
           )}
         </div>
       </div>
