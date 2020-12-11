@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
-import { numberToMoney } from '../../../../../../common/utils/listing-utils';
 import { listingApi } from './../../../../../../api/common/listing-api';
 import { Button } from './../../../../../common/button/button';
 import classnames from 'classnames';
 import { Dropdownable } from './../../../../../common/dropdownable/dropdownable';
 import { customHistory } from './../../../../routes';
+import { deleteListingModal } from './../../../../../common/modal/delete-listing-modal/delete-listing-modal';
+import { numberToMoney } from '../../../../../../common/utils/listing-utils';
 
 export class YourListing extends Component {
   constructor(props) {
@@ -17,17 +18,16 @@ export class YourListing extends Component {
       .getListingByUserID(this.props.user._id)
       .then((e) => this.setState({ sellingList: e }));
   };
-
   additionFunction = [
     {
       icon: <i className='fas fa-list'></i>,
       label: 'Xem bài niêm yết',
-      onClick: (e) => customHistory.push(`/marketplace/listing/${e}`),
+      onClick: (e) => customHistory.push(`/marketplace/listing/${e._id}`),
     },
     {
       icon: <i className='fas fa-pen'></i>,
       label: 'Chỉnh sửa bài niêm yết',
-      onClick: (e) => customHistory.push(`/marketplace/edit/${e}`),
+      onClick: (e) => customHistory.push(`/marketplace/edit/${e._id}`),
     },
     {
       icon: <i className='fas fa-trash-alt'></i>,
@@ -35,10 +35,12 @@ export class YourListing extends Component {
       onClick: (e) => this.handleDeleteListing(e),
     },
   ];
-  handleDeleteListing = (id) => {
-    listingApi.deleteListing(id);
-    this.handleGetListing();
-    this.forceUpdate();
+  handleDeleteListing = (listing) => {
+    deleteListingModal.open({
+      listing,
+      handleGetListing: () => this.handleGetListing(),
+      forceUpdate: () => this.forceUpdate(),
+    });
   };
   render() {
     const { sellingList } = this.state;
@@ -61,7 +63,7 @@ export class YourListing extends Component {
                       <div className='sl-title'>
                         {e.title
                           ? e.title
-                          : e.model || e.year || e.model
+                          : e.make || e.year || e.model
                           ? `${e.make} ${e.model} ${e.year}`
                           : e.homeType}
                       </div>
@@ -99,7 +101,7 @@ export class YourListing extends Component {
                           return (
                             <div
                               className='listing-choice'
-                              onClick={() => each.onClick(e._id)}
+                              onClick={() => each.onClick(e)}
                               key={i}
                             >
                               <div className='lc-icon'>{each.icon}</div>

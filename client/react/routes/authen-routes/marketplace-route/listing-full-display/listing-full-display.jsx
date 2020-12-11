@@ -367,12 +367,14 @@ class ListingFullDisplay extends Component {
             <div
               className='send-message-wrapper'
               onClick={() => {
-                const { message } = this.state;
-                if (message) {
-                  this.handleSendSellMessage({
-                    content: message,
-                    files: [],
-                  });
+                if (user && currentUser._id !== user._id) {
+                  const { message } = this.state;
+                  if (message) {
+                    this.handleSendSellMessage({
+                      content: message,
+                      files: [],
+                    });
+                  }
                 }
               }}
             >
