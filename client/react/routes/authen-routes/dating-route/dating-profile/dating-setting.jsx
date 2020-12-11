@@ -63,6 +63,7 @@ export class DatingSetting extends Component {
       { ...submittedData },
       datingProfile.getState()._id
     );
+    customHistory.push("/dating");
   };
 
   render() {
