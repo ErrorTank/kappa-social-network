@@ -47,8 +47,10 @@ class DeleteListingModal extends Component {
                   className='delete-listing-btn'
                   onClick={() => {
                     listingApi.deleteListing(listing._id);
-                    handleGetListing();
-                    forceUpdate();
+                    setTimeout(() => {
+                      handleGetListing();
+                      forceUpdate();
+                    }, 100);
                   }}
                 >
                   Xóa

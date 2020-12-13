@@ -1,47 +1,55 @@
-.create-post-modal{
-  width 500px
-  .modal-body{
-    overflow-y auto
-    max-height 80vh
+.create-post-modal {
+  width: 500px;
+
+  .modal-body {
+    overflow-y: auto;
+    max-height: 70vh;
   }
-  &.expand{
-    width 1000px
-    .modal-body{
-      padding 0 !important
-    }
-  }
-  &.no-padding{
-    .modal-body{
-      padding 0 !important
-    }
-  }
-  .back-wrapper{
-    width 35px
-    height 35px
-    position relative
-    border 1px solid common-border
-    background-color bgLight
-    cursor pointer
-    display inline-block
-    vertical-align middle
-    border-radius 50%
-    &:hover{
-      background-color darken(bgLight, 5%)
-    }
-    i{
-      absoluteMiddle()
-      font-size 2rem
-    }
-  }
-  .btn-post{
-    background-color primaryButton
-    color white
-    font-size 1.5rem
-    margin 0 !important
-    font-weight bold
-    &:hover{
-      background darken(primaryButton, 8%)
+
+  &.expand {
+    width: 1000px;
+
+    .modal-body {
+      padding: 0 !important;
     }
   }
 
+  &.no-padding {
+    .modal-body {
+      padding: 0 !important;
+    }
+  }
+
+  .back-wrapper {
+    width: 35px;
+    height: 35px;
+    position: relative;
+    border: 1px solid common-border;
+    background-color: bgLight;
+    cursor: pointer;
+    display: inline-block;
+    vertical-align: middle;
+    border-radius: 50%;
+
+    &:hover {
+      background-color: darken(bgLight, 5%);
+    }
+
+    i {
+      absoluteMiddle();
+      font-size: 2rem;
+    }
+  }
+
+  .btn-post {
+    background-color: primaryButton;
+    color: white;
+    font-size: 1.5rem;
+    margin: 0 !important;
+    font-weight: bold;
+
+    &:hover {
+      background: darken(primaryButton, 8%);
+    }
+  }
 }
