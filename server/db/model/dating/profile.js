@@ -20,13 +20,18 @@ const profileSchema = new Schema({
     require: true,
   },
   locationCoordinate: {
-    type: {
-      type: String,
-    },
-    coordinates: {
-      type: [Number],
-      index: { type: "2dsphere", sparse: false },
-    },
+    type: new mongoose.Schema({
+      type: {
+        type: String,
+        enum: ['Point'],
+        required: true
+      },
+      coordinates: {
+        type: [Number],
+        required: true
+      }
+    }),
+    index: "2dsphere"
   },
   location: {
     lat: Number,
@@ -267,4 +272,6 @@ profileSchema.post("save", function (doc, next) {
     });
 });
 profileSchema.index({ locationCoordinate: "2dsphere" });
-module.exports = (db) => db.model("Profile", profileSchema);
+module.exports = (db) => {
+  return db.model("Profile", profileSchema)
+};
