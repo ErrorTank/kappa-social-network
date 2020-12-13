@@ -1,5 +1,6 @@
 const feed = require("./feed");
 const mongoose = require("mongoose");
+
 const ObjectId = mongoose.Types.ObjectId;
 const initDbCollections = (appDb) => {
   const User = require("../db/model/user")(appDb);
@@ -31,7 +32,7 @@ const initDbCollections = (appDb) => {
   //   }
   // ).exec();
   // Profile.find({})
-
+  //
   //   .lean()
   //   .then((data) => {
   //     data.forEach((x) => {
@@ -43,11 +44,11 @@ const initDbCollections = (appDb) => {
   //           $set: {
   //             locationCoordinate: {
   //               type: "Point",
-  //               coordinates: [x.location.lat, x.location.lng],
+  //               coordinates: [x.location.lng, x.location.lat],
   //             },
   //           },
   //         }
-  //       ).exec();
+  //       ).exec().then(() => console.log("cac"));
   //     });
   //   });
 

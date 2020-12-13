@@ -183,7 +183,7 @@ export class DatingRegisterForm extends Component {
       allDistrict,
       allWard,
       height,
-      yourKid,
+      yourKids,
       educationLevel,
       gender,
       location,
