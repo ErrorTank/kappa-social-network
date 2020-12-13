@@ -195,10 +195,11 @@ export class DatingSetting extends Component {
                 options={heights}
                 displayAs={(item) => item + " cm"}
                 onChange={(item) => {
+                  console.log(item);
                   this.setState({
                     heightRange: {
-                      fromNumber: item,
                       ...heightRange,
+                      fromNumber: item,
                     },
                   });
                 }}
