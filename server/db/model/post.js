@@ -22,7 +22,10 @@ const postSchema = new Schema({
     type: Boolean,
     default: false,
   },
-
+  listing: {
+    type: ObjectId,
+    ref: 'Listing',
+  },
   belonged_group: {
     type: ObjectId,
     ref: 'Group',
@@ -117,10 +120,6 @@ const postSchema = new Schema({
         ref: 'Comment',
       },
     ],
-  },
-  listing: {
-    type: ObjectId,
-    ref: 'Listing',
   },
 });
 const autoPopulateParent = function (next) {
