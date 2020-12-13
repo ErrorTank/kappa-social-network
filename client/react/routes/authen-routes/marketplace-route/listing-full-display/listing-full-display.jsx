@@ -19,6 +19,8 @@ import { v4 as uuidv4 } from 'uuid';
 import { MESSAGE_TYPES } from '../../../../layout/authen-layout/create-message-widget/chat-box/message-section/message';
 import { MessageState } from './../../../../layout/authen-layout/create-message-widget/chat-box/chat-box';
 import omit from 'lodash/omit';
+import { createPostModal } from './../../../../common/create-post-modal/create-post-modal';
+
 class ListingFullDisplay extends Component {
   constructor(props) {
     super(props);
@@ -169,6 +171,12 @@ class ListingFullDisplay extends Component {
       icon: <i className='fas fa-share'></i>,
       className: 'facebook-button',
       tooltipText: 'Chia sẻ',
+      click: () =>
+        createPostModal.open({
+          placeholder: `Bình luận của bạn?`,
+          shareMarketplace: true,
+          listing: this.state.listing,
+        }),
     },
     // {
     //   icon: <i className='fas fa-ellipsis-h'></i>,
