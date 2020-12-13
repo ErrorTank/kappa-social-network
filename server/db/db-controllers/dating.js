@@ -102,6 +102,21 @@ const getCardProfileInfo = (userID, {seenID, action, exclude}) => {
             }
             return Profile.aggregate([
                 {
+                    $geoNear: {
+                        near: {
+                            type: "Point",
+                            coordinates: [
+                                Number(user.location.lng),
+                                Number(user.location.lat)
+                            ],
+                        },
+                        distanceField: "dist.calculated",
+                        maxDistance: Number(user.filterSetting.distance)* 1000,
+                        spherical: true,
+                        key: "locationCoordinate",
+                    },
+                },
+                {
                     $match: match,
                 },
                 {
