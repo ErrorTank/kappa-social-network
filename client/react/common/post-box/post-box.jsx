@@ -43,6 +43,7 @@ import { postFilesPreviewModal } from '../post-files-preview-modal/post-files-pr
 import { Link } from 'react-router-dom';
 import { numberToMoney } from '../../../common/utils/listing-utils';
 import { Button } from './../button/button';
+import { customHistory } from './../../routes/routes';
 
 export class PostBox extends PureComponent {
   constructor(props) {
@@ -271,7 +272,7 @@ export class PostBox extends PureComponent {
       initBehaviorConfig = {},
       listing,
     } = this.props;
-
+    // console.log(listing);
     let { commentID, replyID } = initBehaviorConfig;
 
     let reactions = sortReactions(post.reactions);
@@ -401,7 +402,9 @@ export class PostBox extends PureComponent {
                 </div>
                 <Button
                   className={classnames('mp-send-button facebook-button')}
-                  // onClick={e.click}
+                  onClick={() =>
+                    customHistory.push(`/marketplace/listing/${listing._id}`)
+                  }
                 >
                   <i className='fab fa-facebook-messenger'></i>
                   <span>Nhắn tin</span>

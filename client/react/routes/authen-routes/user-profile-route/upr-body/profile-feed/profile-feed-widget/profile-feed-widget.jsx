@@ -112,7 +112,7 @@ export class ProfileFeedWidget extends Component {
                   onChangePost={(post) => this.changePost(each._id, post, i)}
                   onDeletePost={() => this.deletePost(each, i)}
                   onSharePost={(p) => this.addPost(p)}
-                  listing={each.listing}
+                  listing={each.listing && each.listing[0]}
                 />
               ))}
               {loading && (

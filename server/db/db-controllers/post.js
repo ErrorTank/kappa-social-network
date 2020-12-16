@@ -315,14 +315,22 @@ const getAllPosts = ({ userID, skip, limit }) => {
             as: 'belonged_person',
           },
         },
-        // {
-        //   $lookup: {
-        //     from: 'listings',
-        //     localField: 'listing',
-        //     foreignField: '_id',
-        //     as: 'listing',
-        //   },
-        // },
+        {
+          $lookup: {
+            from: 'listings',
+            localField: 'listing',
+            foreignField: '_id',
+            as: 'listing',
+          },
+        },
+        {
+          $lookup: {
+            from: 'users',
+            localField: 'listing.user',
+            foreignField: '_id',
+            as: 'listing.user',
+          },
+        },
         {
           $lookup: {
             from: 'users',
