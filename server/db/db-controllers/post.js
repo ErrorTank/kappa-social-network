@@ -323,14 +323,14 @@ const getAllPosts = ({ userID, skip, limit }) => {
             as: 'listing',
           },
         },
-        {
-          $lookup: {
-            from: 'users',
-            localField: 'listing.user',
-            foreignField: '_id',
-            as: 'listing.user',
-          },
-        },
+        // {
+        //   $lookup: {
+        //     from: 'users',
+        //     localField: 'listing.user',
+        //     foreignField: '_id',
+        //     as: 'listing.user',
+        //   },
+        // },
         {
           $lookup: {
             from: 'users',
@@ -1318,6 +1318,16 @@ const getPostsByUserID = (getterID, userID, { skip, limit }) => {
             from: 'listings',
             localField: 'listing',
             foreignField: '_id',
+            // pipeline: [
+            //   {
+            //     $lookup: {
+            //       from: 'users',
+            //       localField: 'listing.user',
+            //       foreignField: '_id',
+            //       as: 'listing.user',
+            //     },
+            //   },
+            // ],
             as: 'listing',
           },
         },

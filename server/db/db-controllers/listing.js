@@ -136,6 +136,28 @@ const deleteListing = ({ listingID }) => {
     .lean()
     .exec();
 };
+
+const saveListing = ({ userID, listingID }) => {
+  let execCommand;
+  if (on) {
+    execCommand = {
+      $push,
+      savedUser: [...savedUser, ObjectId(userID)],
+    };
+  }
+  // if (off) {
+  //   execCommand['$pull'] = {
+  //     [`reactions.${REVERSE_REACTIONS[off]}`]: ObjectId(userID),
+  //   };
+  // }
+  return Post.findOneAndUpdate(
+    {
+      _id: ObjectId(listingID),
+    },
+    execCommand,
+    { new: true }
+  ).lean();
+};
 module.exports = {
   createListing,
   getListing,
@@ -144,4 +166,5 @@ module.exports = {
   getListingByListingID,
   updateListing,
   deleteListing,
+  saveListing,
 };

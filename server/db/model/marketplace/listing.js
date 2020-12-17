@@ -19,7 +19,7 @@ const listingSchema = new Schema({
     lat: Number,
     lon: Number,
   },
-  user: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
+  user: { type: ObjectId, ref: 'User' },
 
   //
   title: {

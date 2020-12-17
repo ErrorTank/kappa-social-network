@@ -272,7 +272,7 @@ export class PostBox extends PureComponent {
       initBehaviorConfig = {},
       listing,
     } = this.props;
-    // console.log(listing);
+    console.log(listing);
     let { commentID, replyID } = initBehaviorConfig;
 
     let reactions = sortReactions(post.reactions);

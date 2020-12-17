@@ -166,6 +166,11 @@ class ListingFullDisplay extends Component {
       icon: <i className='fas fa-bookmark'></i>,
       className: 'facebook-button',
       tooltipText: 'Lưu',
+      click: () =>
+        listingApi.saveListing(
+          userInfo.getState()._id,
+          this.state.listing._id
+        ),
     },
     {
       icon: <i className='fas fa-share'></i>,
