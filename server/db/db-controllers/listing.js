@@ -137,12 +137,15 @@ const deleteListing = ({ listingID }) => {
     .exec();
 };
 
-const saveListing = ({ userID, listingID }) => {
+const saveListing = ({ userID, saveListingConfig, listingID }) => {
+  console.log(saveListingConfig);
+  let { on, off } = saveListingConfig;
   let execCommand;
   if (on) {
     execCommand = {
-      $push,
-      savedUser: [...savedUser, ObjectId(userID)],
+      $push: {
+        savedUser: ObjectId(userID),
+      },
     };
   }
   // if (off) {

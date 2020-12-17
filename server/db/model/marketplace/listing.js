@@ -20,7 +20,15 @@ const listingSchema = new Schema({
     lon: Number,
   },
   user: { type: ObjectId, ref: 'User' },
-
+  savedUser: {
+    default: [],
+    type: [
+      {
+        type: ObjectId,
+        ref: 'User',
+      },
+    ],
+  },
   //
   title: {
     type: String,

@@ -81,6 +81,7 @@ class ListingFullDisplay extends Component {
       }
     });
   };
+
   createTempMessage = ({ state = {}, needUploadFile = false, file = null }) => {
     let newMessageID = uuidv4();
     return {
@@ -149,6 +150,25 @@ class ListingFullDisplay extends Component {
         );
     });
   };
+
+  getSavedListing = (userID, savedUser = []) => {
+    console.log(savedUser);
+    if (savedUser.find((each) => each === userID)) {
+      return true;
+    }
+    return null;
+  };
+  handleSavedListing = () => {
+    const { listing } = this.state;
+    const { savedUser } = listing;
+    let activeSave = this.getSavedListing(userInfo.getState()._id, savedUser);
+
+    listingApi.saveListing(
+      userInfo.getState()._id,
+      activeSave ? { off: true } : { on: true },
+      this.state.listing._id
+    );
+  };
   buttonArr = [
     {
       icon: <i className='fab fa-facebook-messenger'></i>,
@@ -166,11 +186,7 @@ class ListingFullDisplay extends Component {
       icon: <i className='fas fa-bookmark'></i>,
       className: 'facebook-button',
       tooltipText: 'Lưu',
-      click: () =>
-        listingApi.saveListing(
-          userInfo.getState()._id,
-          this.state.listing._id
-        ),
+      click: () => this.handleSavedListing(),
     },
     {
       icon: <i className='fas fa-share'></i>,
@@ -264,7 +280,10 @@ class ListingFullDisplay extends Component {
       homeType,
       address,
       files,
+      savedUser,
     } = listing;
+    let activeSave = this.getSavedListing(currentUser._id, savedUser);
+
     // console.log(listing);
     // console.log(user);
     // console.log(currentUser);
@@ -293,12 +312,13 @@ class ListingFullDisplay extends Component {
                 {this.buttonArr.map((e, i) => (
                   <Tooltip
                     key={e.tooltipText}
-                    // className={'addition-button-tooltip'}
                     text={() => e.tooltipText}
                     position={'top'}
                   >
                     <Button
-                      className={classnames(e.className)}
+                      className={classnames(e.className, {
+                        active: activeSave && e.tooltipText === 'Lưu',
+                      })}
                       key={i}
                       onClick={e.click}
                       disabled={
