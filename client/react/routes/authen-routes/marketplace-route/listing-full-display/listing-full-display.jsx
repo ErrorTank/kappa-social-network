@@ -163,11 +163,16 @@ class ListingFullDisplay extends Component {
     const { savedUser } = listing;
     let activeSave = this.getSavedListing(userInfo.getState()._id, savedUser);
 
-    listingApi.saveListing(
-      userInfo.getState()._id,
-      activeSave ? { off: true } : { on: true },
-      this.state.listing._id
-    );
+    listingApi
+      .saveListing(
+        userInfo.getState()._id,
+        activeSave ? { off: true } : { on: true },
+        this.state.listing._id
+      )
+      .then((e) => {
+        // console.log(e);
+        this.setState({ listing: e });
+      });
   };
   buttonArr = [
     {
@@ -283,7 +288,7 @@ class ListingFullDisplay extends Component {
       savedUser,
     } = listing;
     let activeSave = this.getSavedListing(currentUser._id, savedUser);
-
+    console.log(activeSave);
     // console.log(listing);
     // console.log(user);
     // console.log(currentUser);
@@ -312,7 +317,11 @@ class ListingFullDisplay extends Component {
                 {this.buttonArr.map((e, i) => (
                   <Tooltip
                     key={e.tooltipText}
-                    text={() => e.tooltipText}
+                    text={() =>
+                      activeSave && e.tooltipText === 'Lưu'
+                        ? 'Đã Lưu'
+                        : e.tooltipText
+                    }
                     position={'top'}
                   >
                     <Button

@@ -148,18 +148,22 @@ const saveListing = ({ userID, saveListingConfig, listingID }) => {
       },
     };
   }
-  // if (off) {
-  //   execCommand['$pull'] = {
-  //     [`reactions.${REVERSE_REACTIONS[off]}`]: ObjectId(userID),
-  //   };
-  // }
-  return Post.findOneAndUpdate(
+  if (off) {
+    execCommand = {
+      $pull: {
+        savedUser: ObjectId(userID),
+      },
+    };
+  }
+  return Listing.findOneAndUpdate(
     {
       _id: ObjectId(listingID),
     },
     execCommand,
     { new: true }
-  ).lean();
+  )
+    .populate('user category')
+    .lean();
 };
 module.exports = {
   createListing,

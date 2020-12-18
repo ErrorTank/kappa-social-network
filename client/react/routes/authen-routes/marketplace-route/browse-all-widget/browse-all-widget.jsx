@@ -40,19 +40,19 @@ export class BrowseAllWidget extends KComponent {
 
   browseAllMenu = [
     {
-      icon: 'fas fa-store',
+      icon: <i className='fas fa-store'></i>,
       title: 'Lướt xem tất cả',
       link: '/marketplace',
     },
     {
-      icon: 'fas fa-tags',
+      icon: <i className='fas fa-tags'></i>,
       title: 'Bài niêm yết của bạn',
       link: '/marketplace/you/selling',
     },
     {
-      icon: 'fas fa-user',
-      title: 'Tài khoản của bạn',
-      link: '/marketplace/you',
+      icon: <i className='fas fa-bookmark'></i>,
+      title: 'Đã Lưu',
+      link: '/marketplace/you/saved',
     },
   ];
 
