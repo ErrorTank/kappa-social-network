@@ -51,7 +51,7 @@ export class BrowseAllWidget extends KComponent {
     },
     {
       icon: <i className='fas fa-bookmark'></i>,
-      title: 'Đã Lưu',
+      title: 'Đã lưu',
       link: '/marketplace/you/saved',
     },
   ];
