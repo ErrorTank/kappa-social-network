@@ -30,4 +30,12 @@ export const listingApi = {
       saveListingConfig,
     });
   },
+  getSavedListing(userID) {
+    return authenApi.get(`/listing/get-saved-listing/${userID}`);
+  },
+  updateStock(listingConfig, listingID) {
+    return authenApi.put(`/listing/update-stock/${listingID}`, {
+      listingConfig,
+    });
+  },
 };

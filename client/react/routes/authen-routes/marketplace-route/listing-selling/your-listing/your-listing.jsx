@@ -6,7 +6,7 @@ import { Dropdownable } from './../../../../../common/dropdownable/dropdownable'
 import { customHistory } from './../../../../routes';
 import { deleteListingModal } from './../../../../../common/modal/delete-listing-modal/delete-listing-modal';
 import { numberToMoney } from '../../../../../../common/utils/listing-utils';
-
+import moment from 'moment';
 export class YourListing extends Component {
   constructor(props) {
     super(props);
@@ -17,6 +17,17 @@ export class YourListing extends Component {
     listingApi
       .getListingByUserID(this.props.user._id)
       .then((e) => this.setState({ sellingList: e }));
+  };
+  handleUpdateStock = (listing) => {
+    listingApi
+      .updateStock(
+        listing.isStocked ? { off: true } : { on: true },
+        listing._id
+      )
+      .then((e) => {
+        // console.log(e);
+        this.handleGetListing();
+      });
   };
   additionFunction = [
     {
@@ -44,7 +55,7 @@ export class YourListing extends Component {
   };
   render() {
     const { sellingList } = this.state;
-    // console.log(sellingList);
+    console.log(sellingList);
     return (
       <div className='your-listing'>
         <div className='sold-listing-wrapper'>
@@ -70,6 +81,17 @@ export class YourListing extends Component {
                       <div className='sl-price'>
                         {numberToMoney(e.price.toString())}
                       </div>
+                      <div className='sl-more-info'>
+                        <span
+                          className={classnames('stock-wrapper', {
+                            runout: !e.isStocked,
+                          })}
+                        >
+                          {!e.isStocked ? 'Hết hàng' : 'Còn hàng'}
+                        </span>
+
+                        {` ·  Đăng lúc ${moment(e.postTime).format('DD/MM')}`}
+                      </div>
                     </div>
                     <div className='sl-addition-info'>
                       Đã niêm yết trên Marketplace
@@ -77,9 +99,16 @@ export class YourListing extends Component {
                   </div>
                 </div>
                 <div className='sl-function'>
-                  <Button className={classnames('facebook-button long')}>
+                  <Button
+                    className={classnames('facebook-button long active')}
+                    onClick={() => {
+                      this.handleUpdateStock(e);
+                    }}
+                  >
                     <i className='fas fa-check'></i>
-                    <span>Đánh dấu là còn hàng</span>
+                    <span>
+                      Đánh dấu là {e.isStocked ? 'hết hàng' : 'còn hàng'}
+                    </span>
                   </Button>
                   <Button className={classnames('facebook-button long')}>
                     <i className='fas fa-share'></i>

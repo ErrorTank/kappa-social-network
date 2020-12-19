@@ -29,6 +29,11 @@ const listingSchema = new Schema({
       },
     ],
   },
+  isStocked: {
+    type: Boolean,
+    default: true,
+  },
+
   //
   title: {
     type: String,

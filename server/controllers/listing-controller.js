@@ -12,6 +12,8 @@ const {
   updateListing,
   deleteListing,
   saveListing,
+  getSavedListing,
+  updateStock,
 } = require('../db/db-controllers/listing');
 const ObjectId = mongoose.Types.ObjectId;
 
@@ -89,6 +91,29 @@ module.exports = (db, namespacesIO) => {
     (req, res, next) => {
       //  console.log(req.body);
       return saveListing({ ...req.body, ...req.params })
+        .then((data) => {
+          return res.status(200).json(data);
+        })
+        .catch((err) => next(err));
+    }
+  );
+  router.get(
+    '/get-saved-listing/:userID',
+    authorizationUserMiddleware,
+    (req, res, next) => {
+      return getSavedListing(req.params.userID)
+        .then((data) => {
+          return res.status(200).json(data);
+        })
+        .catch((err) => next(err));
+    }
+  );
+  router.put(
+    '/update-stock/:listingID',
+    authorizationUserMiddleware,
+    (req, res, next) => {
+      //  console.log(req.body);
+      return updateStock({ ...req.body, ...req.params })
         .then((data) => {
           return res.status(200).json(data);
         })

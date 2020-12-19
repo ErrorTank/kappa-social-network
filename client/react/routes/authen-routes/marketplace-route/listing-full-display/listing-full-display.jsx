@@ -120,7 +120,7 @@ class ListingFullDisplay extends Component {
   handleSendSellMessage = (chatState) => {
     let { user } = this.state.listing;
     messengerApi.getUserChatRoomBrief(user._id).then(({ chat_room }) => {
-      console.log(chat_room);
+      // console.log(chat_room);
 
       let newMessage = null;
       if (chatState.content) {
@@ -152,7 +152,7 @@ class ListingFullDisplay extends Component {
   };
 
   getSavedListing = (userID, savedUser = []) => {
-    console.log(savedUser);
+    // console.log(savedUser);
     if (savedUser.find((each) => each === userID)) {
       return true;
     }
@@ -286,9 +286,10 @@ class ListingFullDisplay extends Component {
       address,
       files,
       savedUser,
+      isStocked,
     } = listing;
     let activeSave = this.getSavedListing(currentUser._id, savedUser);
-    console.log(activeSave);
+    // console.log(activeSave);
     // console.log(listing);
     // console.log(user);
     // console.log(currentUser);
@@ -306,6 +307,14 @@ class ListingFullDisplay extends Component {
                 </div>
                 <div className={classnames('info-price')}>
                   {price && numberToMoney(price.toString())}
+                  {` · `}
+                  <div
+                    className={classnames('stock-wrapper', {
+                      runout: !isStocked,
+                    })}
+                  >
+                    {!isStocked ? 'Hết hàng' : 'Còn hàng'}
+                  </div>
                 </div>
                 <Breadcrumbs categoryID={category} isListing={true} />
                 <div className='info-time-position'>
@@ -331,7 +340,10 @@ class ListingFullDisplay extends Component {
                       key={i}
                       onClick={e.click}
                       disabled={
-                        user && e.canDisable && currentUser._id === user._id
+                        (user &&
+                          e.canDisable &&
+                          currentUser._id === user._id) ||
+                        (isStocked && e.tooltipText === 'Nhắn tin')
                       }
                     >
                       {e.icon}
@@ -409,7 +421,7 @@ class ListingFullDisplay extends Component {
             <div
               className='send-message-wrapper'
               onClick={() => {
-                if (user && currentUser._id !== user._id) {
+                if (user && currentUser._id !== user._id && isStocked) {
                   const { message } = this.state;
                   if (message) {
                     this.handleSendSellMessage({
@@ -436,7 +448,9 @@ class ListingFullDisplay extends Component {
               <div
                 className={classnames('send-message-demo', {
                   'gray-filter':
-                    !message || (user && currentUser._id === user._id),
+                    !message ||
+                    (user && currentUser._id === user._id) ||
+                    !isStocked,
                 })}
               >
                 Gửi
