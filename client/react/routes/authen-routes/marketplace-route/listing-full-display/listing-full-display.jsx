@@ -29,58 +29,13 @@ class ListingFullDisplay extends Component {
         files: {},
       },
       message: 'Mặt hàng này còn chứ?',
-      questionArr: null,
     };
     listingApi
       .getListingByListingID(this.props.match.params.listingID)
       .then((e) => {
-        this.setQuestionArr(e);
         this.setState({ listing: e });
       });
   }
-
-  suggestQuestion = [
-    {
-      type: 'item',
-      question: [
-        'Tôi quan tâm đến mặt hàng này.',
-        'Mặt hàng này còn chứ?',
-        'Mặt hàng ở tình trạng như thế nào?',
-        'Bạn có giao hàng không?',
-      ],
-    },
-    {
-      type: 'rent',
-      question: [
-        'Ngày bắt đầu cho thuê có linh hoạt không?',
-        'Có phí đặt cọc hay phí nào khắc không?',
-        'Có bao gồm điện, nước, điện thoại và Internet không?',
-      ],
-    },
-  ];
-
-  setQuestionArr = (listing) => {
-    const {
-      title,
-      make,
-      year,
-      model,
-      price,
-      user,
-      homeType,
-      address,
-      files,
-    } = listing;
-
-    this.suggestQuestion.map((e) => {
-      if ((title || make) && e.type === 'item') {
-        this.setState({ questionArr: e.question });
-      }
-      if (homeType && e.type === 'rent') {
-        this.setState({ questionArr: e.question });
-      }
-    });
-  };
 
   createTempMessage = ({ state = {}, needUploadFile = false, file = null }) => {
     let newMessageID = uuidv4();
@@ -181,11 +136,12 @@ class ListingFullDisplay extends Component {
       text: 'Nhắn tin',
       tooltipText: 'Nhắn tin',
       canDisable: true,
-      click: () =>
+      click: () => {
+        messageWidgetController.close();
         sellMessengerModal.open({
           listing: this.state.listing,
-          questionArr: this.state.questionArr,
-        }),
+        });
+      },
     },
     {
       icon: <i className='fas fa-bookmark'></i>,
@@ -307,13 +263,12 @@ class ListingFullDisplay extends Component {
                 </div>
                 <div className={classnames('info-price')}>
                   {price && numberToMoney(price.toString())}
-                  {` · `}
                   <div
                     className={classnames('stock-wrapper', {
                       runout: !isStocked,
                     })}
                   >
-                    {!isStocked ? 'Hết hàng' : 'Còn hàng'}
+                    {!isStocked && ` · Hết hàng`}
                   </div>
                 </div>
                 <Breadcrumbs categoryID={category} isListing={true} />
@@ -343,7 +298,7 @@ class ListingFullDisplay extends Component {
                         (user &&
                           e.canDisable &&
                           currentUser._id === user._id) ||
-                        (isStocked && e.tooltipText === 'Nhắn tin')
+                        (!isStocked && e.tooltipText === 'Nhắn tin')
                       }
                     >
                       {e.icon}
