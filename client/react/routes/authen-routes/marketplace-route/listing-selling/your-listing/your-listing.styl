@@ -61,10 +61,23 @@
             .sl-price {
               font-size: 15px;
             }
+
+            .sl-more-info {
+              font-size: 13px;
+              font-weight: 400;
+              margin: 2px 0;
+
+              .stock-wrapper {
+                &.runout {
+                  color: red;
+                }
+              }
+            }
           }
 
           .sl-addition-info {
             font-size: 13px;
+            line-height: 1.113;
           }
         }
       }
@@ -72,6 +85,10 @@
       .sl-function {
         display: flex;
         padding: 0 16px 20px;
+
+        .active {
+          color: blueTextLight;
+        }
 
         .listing-actions {
           // 

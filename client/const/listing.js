@@ -31,7 +31,7 @@ export let itemField = [
     options: [
       {
         name: 'Nhà & vườn',
-        icon: 'fas fa-home-lg-alt',
+        icon: <i className='fas fa-home-lg-alt'></i>,
         isDisabled: true,
       },
       {
@@ -51,7 +51,7 @@ export let itemField = [
       },
       {
         name: 'Giải trí',
-        icon: 'fas fa-gamepad-alt',
+        icon: <i className='fas fa-gamepad-alt'></i>,
         isDisabled: true,
       },
       {
@@ -62,7 +62,7 @@ export let itemField = [
       },
       {
         name: 'Quần áo & phụ kiện',
-        icon: 'fas fa-backpack',
+        icon: <i className='fas fa-backpack'></i>,
       },
       {
         name: 'Túi & hành lý',
@@ -78,7 +78,7 @@ export let itemField = [
       },
       {
         name: 'Gia đình',
-        icon: 'fas fa-heart',
+        icon: <i className='fas fa-heart'></i>,
         isDisabled: true,
       },
       {
@@ -95,7 +95,7 @@ export let itemField = [
       },
       {
         name: 'Đồ điện tử',
-        icon: 'fas fa-mobile-alt',
+        icon: <i className='fas fa-mobile-alt'></i>,
         isDisabled: true,
       },
       {
@@ -106,7 +106,7 @@ export let itemField = [
       },
       {
         name: 'Sở thích',
-        icon: 'fas fa-guitar',
+        icon: <i className='fas fa-guitar'></i>,
         isDisabled: true,
       },
       {
@@ -129,7 +129,7 @@ export let itemField = [
       },
       {
         name: 'Rao vặt',
-        icon: 'fas fa-binoculars',
+        icon: <i className='fas fa-binoculars'></i>,
         isDisabled: true,
       },
       {
@@ -140,13 +140,13 @@ export let itemField = [
       },
       {
         name: 'Xe cộ',
-        icon: 'fas fa-car',
+        icon: <i className='fas fa-car'></i>,
         isDisabled: true,
         link: '/marketplace/create/vehicle',
       },
       {
         name: 'Nhà đất',
-        icon: 'fas fa-home',
+        icon: <i className='fas fa-home'></i>,
         isDisabled: true,
         link: '/marketplace/create/home',
       },

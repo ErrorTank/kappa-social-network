@@ -41,6 +41,9 @@ import { feedPostIO } from '../../../socket/sockets';
 import { topFloatNotifications } from '../float-top-notification/float-top-notification';
 import { postFilesPreviewModal } from '../post-files-preview-modal/post-files-preview-modal';
 import { Link } from 'react-router-dom';
+import { numberToMoney } from '../../../common/utils/listing-utils';
+import { Button } from './../button/button';
+import { customHistory } from './../../routes/routes';
 
 export class PostBox extends PureComponent {
   constructor(props) {
@@ -267,8 +270,9 @@ export class PostBox extends PureComponent {
       onChangePost,
       isPreview,
       initBehaviorConfig = {},
+      listing,
     } = this.props;
-
+    // console.log(listing);
     let { commentID, replyID } = initBehaviorConfig;
 
     let reactions = sortReactions(post.reactions);
@@ -381,6 +385,37 @@ export class PostBox extends PureComponent {
         </div>
 
         <div className='post-body'>
+          {listing && (
+            <div className='marketplace-post-info'>
+              <div className='mp-main-info'>
+                <div className='mp-wrapper'>
+                  <div className='mp-title'>
+                    {listing.title
+                      ? listing.title
+                      : listing.make
+                      ? `${listing.make} ${listing.model} ${listing.year}`
+                      : listing.homeType}
+                  </div>
+                  <div className='mp-price'>
+                    {listing.price && numberToMoney(listing.price.toString())}
+                  </div>
+                </div>
+                <Button
+                  className={classnames('mp-send-button facebook-button')}
+                  onClick={() =>
+                    customHistory.push(`/marketplace/listing/${listing._id}`)
+                  }
+                >
+                  <i className='fab fa-facebook-messenger'></i>
+                  <span>Nhắn tin</span>
+                </Button>
+              </div>
+
+              {listing.decription && (
+                <div className='mp-decription'>{listing.decription}</div>
+              )}
+            </div>
+          )}
           {post.content && (
             <div className='content'>
               {getRenderableContentFromMessage(post)}

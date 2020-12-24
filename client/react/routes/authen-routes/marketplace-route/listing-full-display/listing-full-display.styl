@@ -62,6 +62,14 @@
           font-size: 17px;
           font-weight: 500;
           line-height: 20px;
+
+          .stock-wrapper {
+            display: inline;
+
+            &.runout {
+              color: red;
+            }
+          }
         }
 
         .info-time-position {
@@ -76,6 +84,10 @@
       .button-section-wrapper {
         margin: 8px 8px 4px 16px;
         display: flex;
+
+        .active {
+          color: blueTextLight;
+        }
       }
 
       .addition-info-wrapper {

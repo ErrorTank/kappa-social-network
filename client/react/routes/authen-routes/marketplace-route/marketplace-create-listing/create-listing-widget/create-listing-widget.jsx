@@ -16,7 +16,7 @@ export class CreateListingWidget extends Component {
         <div className='create-listing-body'>
           <div className='pick-listing-type'>
             <MenuNavigationWithIcon
-              icon={'fas fa-tag'}
+              icon={<i className='fas fa-tag'></i>}
               title={'Chọn loại bài niêm yết'}
               type={'main'}
             />
@@ -24,13 +24,14 @@ export class CreateListingWidget extends Component {
           <div className='line-seperate'></div>
           <div className='other-choice'>
             <MenuNavigationWithIcon
-              icon={'fas fa-user'}
+              icon={<i className='fas fa-user'></i>}
               title={'Bài niêm yết của bạn'}
+              link={'/marketplace/you/selling'}
             />
-            <MenuNavigationWithIcon
-              icon={'fas fa-question-circle'}
+            {/* <MenuNavigationWithIcon
+              icon={<i className='fas fa-question-circle'></i>}
               title={'Trợ giúp người bán'}
-            />
+            /> */}
           </div>
         </div>
       </div>

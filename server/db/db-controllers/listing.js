@@ -136,6 +136,71 @@ const deleteListing = ({ listingID }) => {
     .lean()
     .exec();
 };
+
+const saveListing = ({ userID, saveListingConfig, listingID }) => {
+  // console.log(saveListingConfig);
+  let { on, off } = saveListingConfig;
+  let execCommand;
+  if (on) {
+    execCommand = {
+      $push: {
+        savedUser: ObjectId(userID),
+      },
+    };
+  }
+  if (off) {
+    execCommand = {
+      $pull: {
+        savedUser: ObjectId(userID),
+      },
+    };
+  }
+  return Listing.findOneAndUpdate(
+    {
+      _id: ObjectId(listingID),
+    },
+    execCommand,
+    { new: true }
+  )
+    .populate('user category')
+    .lean();
+};
+const updateStock = ({ listingConfig, listingID }) => {
+  let { on, off } = listingConfig;
+  let execCommand;
+  if (on) {
+    execCommand = {
+      $set: {
+        isStocked: true,
+      },
+    };
+  }
+  if (off) {
+    execCommand = {
+      $set: {
+        isStocked: false,
+      },
+    };
+  }
+  return Listing.findOneAndUpdate(
+    {
+      _id: ObjectId(listingID),
+    },
+    execCommand,
+    { new: true }
+  )
+    .populate('user category')
+    .lean();
+};
+
+const getSavedListing = (userID) => {
+  return Listing.find({ savedUser: userID })
+    .populate('user category')
+    .lean()
+    .then((e) => {
+      return e;
+    });
+};
 module.exports = {
   createListing,
   getListing,
@@ -144,4 +209,7 @@ module.exports = {
   getListingByListingID,
   updateListing,
   deleteListing,
+  saveListing,
+  getSavedListing,
+  updateStock,
 };

@@ -62,11 +62,7 @@ export class MenuNavigationWithIcon extends Component {
           className='menu-navigation-wrapper'
           onClick={() => customHistory.push(link)}
         >
-          {icon && (
-            <div className='mn-icon'>
-              <i className={icon}></i>
-            </div>
-          )}
+          {icon && <div className='mn-icon'>{icon}</div>}
           <div className='mn-title-wrapper'>
             <span className='mn-title'>{title}</span>
           </div>

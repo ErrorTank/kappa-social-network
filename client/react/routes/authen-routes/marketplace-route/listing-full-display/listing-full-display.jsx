@@ -29,58 +29,14 @@ class ListingFullDisplay extends Component {
         files: {},
       },
       message: 'Mặt hàng này còn chứ?',
-      questionArr: null,
     };
     listingApi
       .getListingByListingID(this.props.match.params.listingID)
       .then((e) => {
-        this.setQuestionArr(e);
         this.setState({ listing: e });
       });
   }
 
-  suggestQuestion = [
-    {
-      type: 'item',
-      question: [
-        'Tôi quan tâm đến mặt hàng này.',
-        'Mặt hàng này còn chứ?',
-        'Mặt hàng ở tình trạng như thế nào?',
-        'Bạn có giao hàng không?',
-      ],
-    },
-    {
-      type: 'rent',
-      question: [
-        'Ngày bắt đầu cho thuê có linh hoạt không?',
-        'Có phí đặt cọc hay phí nào khắc không?',
-        'Có bao gồm điện, nước, điện thoại và Internet không?',
-      ],
-    },
-  ];
-
-  setQuestionArr = (listing) => {
-    const {
-      title,
-      make,
-      year,
-      model,
-      price,
-      user,
-      homeType,
-      address,
-      files,
-    } = listing;
-
-    this.suggestQuestion.map((e) => {
-      if ((title || make) && e.type === 'item') {
-        this.setState({ questionArr: e.question });
-      }
-      if (homeType && e.type === 'rent') {
-        this.setState({ questionArr: e.question });
-      }
-    });
-  };
   createTempMessage = ({ state = {}, needUploadFile = false, file = null }) => {
     let newMessageID = uuidv4();
     return {
@@ -119,7 +75,7 @@ class ListingFullDisplay extends Component {
   handleSendSellMessage = (chatState) => {
     let { user } = this.state.listing;
     messengerApi.getUserChatRoomBrief(user._id).then(({ chat_room }) => {
-      console.log(chat_room);
+      // console.log(chat_room);
 
       let newMessage = null;
       if (chatState.content) {
@@ -149,6 +105,30 @@ class ListingFullDisplay extends Component {
         );
     });
   };
+
+  getSavedListing = (userID, savedUser = []) => {
+    // console.log(savedUser);
+    if (savedUser.find((each) => each === userID)) {
+      return true;
+    }
+    return null;
+  };
+  handleSavedListing = () => {
+    const { listing } = this.state;
+    const { savedUser } = listing;
+    let activeSave = this.getSavedListing(userInfo.getState()._id, savedUser);
+
+    listingApi
+      .saveListing(
+        userInfo.getState()._id,
+        activeSave ? { off: true } : { on: true },
+        this.state.listing._id
+      )
+      .then((e) => {
+        // console.log(e);
+        this.setState({ listing: e });
+      });
+  };
   buttonArr = [
     {
       icon: <i className='fab fa-facebook-messenger'></i>,
@@ -156,16 +136,18 @@ class ListingFullDisplay extends Component {
       text: 'Nhắn tin',
       tooltipText: 'Nhắn tin',
       canDisable: true,
-      click: () =>
+      click: () => {
+        messageWidgetController.close();
         sellMessengerModal.open({
           listing: this.state.listing,
-          questionArr: this.state.questionArr,
-        }),
+        });
+      },
     },
     {
       icon: <i className='fas fa-bookmark'></i>,
       className: 'facebook-button',
       tooltipText: 'Lưu',
+      click: () => this.handleSavedListing(),
     },
     {
       icon: <i className='fas fa-share'></i>,
@@ -259,7 +241,11 @@ class ListingFullDisplay extends Component {
       homeType,
       address,
       files,
+      savedUser,
+      isStocked,
     } = listing;
+    let activeSave = this.getSavedListing(currentUser._id, savedUser);
+    // console.log(activeSave);
     // console.log(listing);
     // console.log(user);
     // console.log(currentUser);
@@ -277,6 +263,13 @@ class ListingFullDisplay extends Component {
                 </div>
                 <div className={classnames('info-price')}>
                   {price && numberToMoney(price.toString())}
+                  <div
+                    className={classnames('stock-wrapper', {
+                      runout: !isStocked,
+                    })}
+                  >
+                    {!isStocked && ` · Hết hàng`}
+                  </div>
                 </div>
                 <Breadcrumbs categoryID={category} isListing={true} />
                 <div className='info-time-position'>
@@ -288,16 +281,24 @@ class ListingFullDisplay extends Component {
                 {this.buttonArr.map((e, i) => (
                   <Tooltip
                     key={e.tooltipText}
-                    // className={'addition-button-tooltip'}
-                    text={() => e.tooltipText}
+                    text={() =>
+                      activeSave && e.tooltipText === 'Lưu'
+                        ? 'Đã Lưu'
+                        : e.tooltipText
+                    }
                     position={'top'}
                   >
                     <Button
-                      className={classnames(e.className)}
+                      className={classnames(e.className, {
+                        active: activeSave && e.tooltipText === 'Lưu',
+                      })}
                       key={i}
                       onClick={e.click}
                       disabled={
-                        user && e.canDisable && currentUser._id === user._id
+                        (user &&
+                          e.canDisable &&
+                          currentUser._id === user._id) ||
+                        (!isStocked && e.tooltipText === 'Nhắn tin')
                       }
                     >
                       {e.icon}
@@ -375,7 +376,7 @@ class ListingFullDisplay extends Component {
             <div
               className='send-message-wrapper'
               onClick={() => {
-                if (user && currentUser._id !== user._id) {
+                if (user && currentUser._id !== user._id && isStocked) {
                   const { message } = this.state;
                   if (message) {
                     this.handleSendSellMessage({
@@ -402,7 +403,9 @@ class ListingFullDisplay extends Component {
               <div
                 className={classnames('send-message-demo', {
                   'gray-filter':
-                    !message || (user && currentUser._id === user._id),
+                    !message ||
+                    (user && currentUser._id === user._id) ||
+                    !isStocked,
                 })}
               >
                 Gửi

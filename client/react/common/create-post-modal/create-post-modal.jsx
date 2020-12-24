@@ -283,8 +283,8 @@ class CreatePostModal extends Component {
     ];
 
     let { title, actions, component, onBack } = steps[this.state.stepIndex];
-    console.log(this.props.listing);
-    console.log(this.state.files);
+    // console.log(this.props.listing);
+    // console.log(this.state.files);
     return (
       <ThemeContext.Consumer>
         {({ darkMode }) => (

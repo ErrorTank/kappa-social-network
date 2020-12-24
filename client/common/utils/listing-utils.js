@@ -1,6 +1,7 @@
 // import isNil from "lodash/isNil"
 import { categoryApi } from './../../api/common/category-api';
 import { itemField } from './../../const/listing';
+import React, { Component } from 'react';
 
 const checkNumber = (value) => {
   const re = /^[0-9\b]+$/;
@@ -36,9 +37,9 @@ const numberToMoney = (value) => {
 
 const getCategoriesNavigation = (categories) => {
   let otherCategory = [
-    { icon: 'fas fa-home', name: 'Bán nhà' },
+    { icon: <i className='fas fa-home'></i>, name: 'Bán nhà' },
     {
-      icon: 'far fa-home-alt',
+      icon: <i className='far fa-home-alt'></i>,
       name: 'Cho thuê',
     },
   ];

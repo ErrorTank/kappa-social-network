@@ -24,4 +24,18 @@ export const listingApi = {
   deleteListing(listingID) {
     return authenApi.delete(`/listing/delete-listing/${listingID}`);
   },
+  saveListing(userID, saveListingConfig, listingID) {
+    return authenApi.put(`/listing/save-listing/${listingID}`, {
+      userID,
+      saveListingConfig,
+    });
+  },
+  getSavedListing(userID) {
+    return authenApi.get(`/listing/get-saved-listing/${userID}`);
+  },
+  updateStock(listingConfig, listingID) {
+    return authenApi.put(`/listing/update-stock/${listingID}`, {
+      listingConfig,
+    });
+  },
 };

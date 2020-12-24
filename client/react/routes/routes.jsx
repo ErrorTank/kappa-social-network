@@ -138,6 +138,12 @@ const ShowEachCategory = lazy(
     )
   )
 );
+
+const SavedListing = lazy(
+  delayLoad(() =>
+    import('./authen-routes/marketplace-route/saved-listing/saved-listing')
+  )
+);
 const ListingFullDisplay = lazy(
   delayLoad(() =>
     import(
@@ -242,6 +248,12 @@ class MainRoute extends React.Component {
                     path={'/marketplace/you/selling'}
                     exact
                     render={(props) => <ListingSelling {...props} />}
+                  />
+                  <AuthenRoute
+                    {...layoutProps}
+                    path={'/marketplace/you/saved'}
+                    exact
+                    render={(props) => <SavedListing {...props} />}
                   />
                   <AuthenRoute
                     {...layoutProps}

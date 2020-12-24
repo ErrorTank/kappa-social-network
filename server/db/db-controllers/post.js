@@ -13,7 +13,11 @@ const { MessageState } = require('../../common/const/message-state');
 const { REVERSE_REACTIONS } = require('../../utils/messenger-utils');
 
 const createNewPost = (value) => {
-  let newPost = { ...value, _id: new ObjectId() };
+  let newPost = {
+    ...value,
+    _id: new ObjectId(),
+    listing: ObjectId(value.listing),
+  };
   let promises = [
     new Post(newPost).save(),
     User.findOneAndUpdate(
@@ -311,6 +315,22 @@ const getAllPosts = ({ userID, skip, limit }) => {
             as: 'belonged_person',
           },
         },
+        {
+          $lookup: {
+            from: 'listings',
+            localField: 'listing',
+            foreignField: '_id',
+            as: 'listing',
+          },
+        },
+        // {
+        //   $lookup: {
+        //     from: 'users',
+        //     localField: 'listing.user',
+        //     foreignField: '_id',
+        //     as: 'listing.user',
+        //   },
+        // },
         {
           $lookup: {
             from: 'users',
@@ -1291,6 +1311,24 @@ const getPostsByUserID = (getterID, userID, { skip, limit }) => {
             localField: 'belonged_page',
             foreignField: '_id',
             as: 'belonged_page',
+          },
+        },
+        {
+          $lookup: {
+            from: 'listings',
+            localField: 'listing',
+            foreignField: '_id',
+            // pipeline: [
+            //   {
+            //     $lookup: {
+            //       from: 'users',
+            //       localField: 'listing.user',
+            //       foreignField: '_id',
+            //       as: 'listing.user',
+            //     },
+            //   },
+            // ],
+            as: 'listing',
           },
         },
         {

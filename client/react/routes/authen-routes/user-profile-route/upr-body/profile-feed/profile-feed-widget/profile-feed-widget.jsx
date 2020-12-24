@@ -81,7 +81,7 @@ export class ProfileFeedWidget extends Component {
 
   render() {
     let { list, loading, needReloaded } = this.state;
-    console.log(list);
+    // console.log(list);
     let user = userInfo.getState();
     return (
       <div className='profile-feed-widget'>
@@ -112,6 +112,7 @@ export class ProfileFeedWidget extends Component {
                   onChangePost={(post) => this.changePost(each._id, post, i)}
                   onDeletePost={() => this.deletePost(each, i)}
                   onSharePost={(p) => this.addPost(p)}
+                  listing={each.listing && each.listing[0]}
                 />
               ))}
               {loading && (
