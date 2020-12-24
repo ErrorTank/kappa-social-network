@@ -1,8 +1,8 @@
 export const yourKides = [
   {
-    id: "I DON'T HAVE KID",
+    id: "I DON'T HAVE KIDS",
     label: "Chưa có con",
-    value: "I DON'T HAVE KID",
+    value: "I DON'T HAVE KIDS",
   },
   {
     id: "I HAVE KIDS",
