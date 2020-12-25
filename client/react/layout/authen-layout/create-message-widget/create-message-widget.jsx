@@ -50,6 +50,10 @@ export class CreateMessageWidget extends Component {
             bubbleList: bubbleList.concat(userID),
           });
         } else {
+          this.setState({
+            currentChatBox: userID,
+            showCreatePanel: false,
+          });
           if (this.state.currentChatBox !== userID) {
             messengerApi
               .getUserBubbleBriefInfo(userID)

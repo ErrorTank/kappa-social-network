@@ -161,8 +161,18 @@ const autoPopulateParent = function (next) {
     {
       path: 'listing',
       model: 'Listing',
-      select: '_id title make year model homeType decription price',
+      // populate: {
+      //   path: 'listing.user',
+      //   model: 'User',
+      // },
+      // select: '_id title make year model homeType decription price',
     },
+    // {
+    //   path: 'listing.user',
+    //   model: 'User',
+    //   select:
+    //     '_id basic_info avatar last_active_at active notification_settings',
+    // },
   ]);
   next();
 };
@@ -210,8 +220,18 @@ postSchema.post('save', function (doc, next) {
       {
         path: 'listing',
         model: 'Listing',
-        select: '_id title make year model homeType decription price',
+        // populate: {
+        //   path: 'listing.user',
+        //   model: 'User',
+        // },
+        // select: '_id title make year model homeType decription price',
       },
+      // {
+      //   path: 'listing.user',
+      //   model: 'User',
+      //   select:
+      //     '_id basic_info avatar last_active_at active notification_settings',
+      // },
     ])
     .execPopulate()
     .then(function () {

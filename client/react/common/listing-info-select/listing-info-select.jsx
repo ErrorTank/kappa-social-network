@@ -102,7 +102,7 @@ export class ListingInfoSelect extends Component {
                           displayIcon: each.icon,
                         })}
                       >
-                        {each.icon && <i className={each.icon}></i>}
+                        {each.icon && each.icon}
                       </div>
                       <div
                         className={classnames('displayName', {
