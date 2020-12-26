@@ -9,7 +9,6 @@ import 'draft-js/dist/Draft.css';
 import 'emoji-mart/css/emoji-mart.css'
 
 
-
 registerServiceWorker()
     .then(() => authenLoader.init())
     .then(async () => {

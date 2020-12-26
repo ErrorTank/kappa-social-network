@@ -6,7 +6,7 @@ import isFunction from "lodash/isFunction";
 
 const PC_CONFIG = {
     'iceServers': [
-        { 'urls': "stun:stun.stunprotocol.org" },
+        // { 'urls': "stun:stun.stunprotocol.org" },
         // {
         //     'urls': "turn:192.168.100.13:6969",
         //     'credential': '123123qwe',
@@ -17,9 +17,9 @@ const PC_CONFIG = {
             'credential': 'muazkh',
             'username': 'webrtc@live.com'
         },
-        // {
-        //     'urls': 'stun:stun.l.google.com:19302'
-        // },
+        {
+            'urls': 'stun:stun.l.google.com:19302'
+        },
         // {
         //     'urls': 'stun:stun.anyfirewall.com:3478'
         // },
@@ -41,16 +41,19 @@ export class PeerConnection extends Emitter {
      */
     constructor(friendID, callType) {
         super();
+        this.candidates = [];
         this.socket = messengerIO.getIOInstance();
         this.pc = new RTCPeerConnection(PC_CONFIG);
         this.pc.onicecandidate = (event) => {
-            // console.log(event)
+            console.log(event.candidate)
             return this.socket.emit('call', {
-                candidate: event.candidate
+                candidate: event.candidate,
+                friendID
             });
         };
+
         this.pc.ontrack = (event) => {
-            console.log("cac2")
+        
             return this.emit('peerStream', event.streams[0]);
         }
         this.friendID = friendID;
@@ -67,12 +70,13 @@ export class PeerConnection extends Emitter {
             .on('stream', (stream) => {
 
                 stream.getTracks().forEach((track) => {
-                    console.log("cac1")
+            
                     this.pc.addTrack(track, stream);
                 });
                 this.emit('localStream', stream);
 
                 if (isCaller) {
+                    console.log(this.callType)
                     this.socket.emit('request', {
                         callType: this.callType,
                         friendID: this.friendID,
@@ -130,8 +134,12 @@ export class PeerConnection extends Emitter {
     async getDescription(desc) {
         console.log("call")
         await this.pc.setLocalDescription(new RTCSessionDescription(desc))
+       
         this.socket.emit('call', {sdp: desc, friendID: this.friendID});
-
+    
+        // if(this.candidates.length){
+        //     this.candidates.forEach(each => this.pc.addIceCandidate(each))
+        // }
         return this;
     }
 
@@ -149,7 +157,9 @@ export class PeerConnection extends Emitter {
      */
     addIceCandidate(candidate) {
         if (candidate) {
+            console.log(candidate)
             const iceCandidate = new RTCIceCandidate(candidate);
+            // this.candidates.push(iceCandidate);
             this.pc.addIceCandidate(iceCandidate);
         }
         return this;

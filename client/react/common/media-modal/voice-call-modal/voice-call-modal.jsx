@@ -20,6 +20,7 @@ const CALL_STATUS_MATCHER = {
 export class VoiceCallWidget extends Component {
     constructor(props) {
         super(props);
+        console.log(props.disabledWebcam);
         this.state = {
             microphone: !props.disabledMicrophone,
             webcam: !props.disabledWebcam,
@@ -245,7 +246,7 @@ export class VoiceCallModal extends Component {
 
         return (
             <MediaCallLayout
-                callType={CALL_TYPES.VOICE}
+                callType={type}
                 {...config}
                 clientID={clientID}
                 onCalling={this.startDurationCount}
