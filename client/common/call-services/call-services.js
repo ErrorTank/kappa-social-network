@@ -21,6 +21,7 @@ const createCallServices = () => {
         ...callingState,
         initClientID: _clientID => clientID = _clientID,
         createIncomingModal: (type) => {
+            console.log(type);
             return ({callFrom}) => incomingMediaModal.open({
                 type,
                 callFrom,
