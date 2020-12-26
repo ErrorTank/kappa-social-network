@@ -4,67 +4,50 @@ import classnames from 'classnames';
 import * as yup from 'yup';
 import { createSimpleForm } from '../form-validator/form-validator';
 import { KComponent } from './../k-component';
+import { marketplaceInfo } from './../../../common/states/common';
 
 export class SelectRadio extends KComponent {
   constructor(props) {
     super(props);
     this.state = {
       show: false,
+      value: null,
     };
-    this.form = createSimpleForm(
-      yup.object().shape({
-        sorting: yup
-          .string()
-          .oneOf(['Lowest price first', 'Highest price first']),
-      }),
-      {
-        initData: {
-          sorting: 'Lowest price first',
-        },
-      }
-    );
-    this.onUnmount(
-      this.form.on('change', () => {
-        this.forceUpdate();
-      })
-    );
-    this.form.validateData();
+    this.onUnmount(marketplaceInfo.onChange(() => this.forceUpdate()));
   }
   handleShow = () => {
     this.setState({ show: !this.state.show });
   };
-  // addDefaultValue = () => {
-  //   this.props.onChange(options[0]);
-  // };
+  handleChangeSorting = (value) => {
+    marketplaceInfo.setState({ ...marketplaceInfo.getState(), sort: value });
+  };
   render() {
     const { className, title, options } = this.props;
+
+    let def = marketplaceInfo.getState().sort || options[0];
+    console.log(def);
     return (
       <div className={classnames('select-radio', { className })}>
         <div className='select-radio-toggle' onClick={this.handleShow}>
           {title}
         </div>
-        {this.form.enhanceComponent(
-          'sorting',
-          ({ error, onChange, onEnter, value }) => {
-            let currentValue = options.find((each) => each.value === value);
-            console.log(currentValue);
-            return (
-              <div className='select-form'>
-                {this.state.show && (
-                  <RadioGroup
-                    className='pt-0 mb-3'
-                    onChange={onChange((val) => val.value)}
-                    value={currentValue}
-                    displayAs={(each) => each.label}
-                    isChecked={(each) => each.value === currentValue.value}
-                    options={options}
-                  />
-                )}
-              </div>
-            );
-          },
-          true
-        )}
+        <div className='select-form'>
+          {this.state.show && (
+            <RadioGroup
+              className='pt-0 mb-3'
+              onChange={(val) => {
+                this.handleChangeSorting(val);
+              }}
+              value={def}
+              displayAs={(each) => each.label}
+              isChecked={(each) => each.value === def.value}
+              options={options.map((each) => ({
+                ...each,
+                id: each.label,
+              }))}
+            />
+          )}
+        </div>
       </div>
     );
   }

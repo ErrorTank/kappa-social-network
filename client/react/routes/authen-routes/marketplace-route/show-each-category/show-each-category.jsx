@@ -19,7 +19,14 @@ class ShowEachCategory extends KComponent {
 
     this.onUnmount(
       marketplaceInfo.onChange((newState, oldState) => {
-        if (newState.radius !== oldState.radius) this.forceUpdate();
+        console.log(oldState);
+        console.log(newState);
+        if (newState.radius !== oldState.radius) {
+          this.forceUpdate();
+        }
+        if (this.formatSort(oldState.sort) !== this.formatSort(newState.sort)) {
+          this.getListing();
+        }
       })
     );
   }
@@ -32,9 +39,24 @@ class ShowEachCategory extends KComponent {
     }
   }
 
+  formatSort = (sort) => {
+    return !sort || sort.value === 'Lowest price first'
+      ? {
+          sortBy: 'price',
+          orderBy: 'asc',
+        }
+      : {
+          sortBy: 'price',
+          orderBy: 'des',
+        };
+  };
+
   getListing = () => {
+    let value = marketplaceInfo.getState().sort;
+    let sort = this.formatSort(value);
+
     listingApi
-      .getListingByCategoryID(this.props.match.params.categoryID)
+      .getListingByCategoryID(this.props.match.params.categoryID, sort)
       .then((e) => this.setState({ listingByCategory: e }));
   };
 

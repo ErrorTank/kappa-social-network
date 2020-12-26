@@ -65,19 +65,21 @@ const getListing = (query) => {
     });
 };
 
-const getListingByCategoryID = (userID) => {
+const getListingByCategoryID = (categoryID, { sortBy, orderBy }) => {
+  console.log(sortBy);
+  console.log(orderBy);
   return Category.find({})
     .lean()
     .then((categories) => {
-      return getCategoryByID(userID).then((categoryInfo) => {
-        let chilrenArr = getRootCategories(categories, userID);
+      return getCategoryByID(categoryID).then((categoryInfo) => {
+        let chilrenArr = getRootCategories(categories, categoryID);
         return Listing.find({
           category: {
             $in: chilrenArr.map((e) => ObjectId(e)),
           },
         })
           .lean()
-          .sort('-postTime')
+          .sort([[sortBy, orderBy === 'asc' ? 1 : -1]])
           .then((products) => {
             return {
               _id: categoryInfo._id,

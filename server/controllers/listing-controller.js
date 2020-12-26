@@ -41,7 +41,7 @@ module.exports = (db, namespacesIO) => {
     '/get-listing-by-categoryID/:categoryID',
     authorizationUserMiddleware,
     (req, res, next) => {
-      return getListingByCategoryID(req.params.categoryID)
+      return getListingByCategoryID(req.params.categoryID, req.query)
         .then((data) => {
           return res.status(200).json(data);
         })

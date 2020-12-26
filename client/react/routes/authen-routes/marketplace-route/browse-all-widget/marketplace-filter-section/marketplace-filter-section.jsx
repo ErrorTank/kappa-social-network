@@ -4,8 +4,6 @@ import { ListingInfoSelect } from './../../../../../common/listing-info-select/l
 import { radiusArr } from './../../../../../../const/listing';
 import { SelectRadio } from '../../../../../common/marketplace-filter/select-radio';
 
-import { createSimpleForm } from '../../../../../common/form-validator/form-validator';
-
 export class MarketplaceFilterSection extends KComponent {
   constructor(props) {
     super(props);
