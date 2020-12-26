@@ -551,6 +551,37 @@ const updateFilterSetting = (data, profileId) => {
     }
   ).exec();
 };
+const deleteMatchedProfile = (profileId, userId) => {
+  let execCommand;
+  execCommand = {
+    $pull: {
+      seen: { user: ObjectId(userId) },
+    },
+  };
+  return Profile.update(
+    {
+      _id: ObjectId(profileId),
+    },
+    execCommand,
+    { new: true }
+  ).exec();
+};
+const deleteChatBox = (profileId, userId) => {
+  return ChatBox.find({
+    $or: [
+      {
+        user1: ObjectId(profileId),
+        user2: ObjectId(userId),
+      },
+      {
+        user1: ObjectId(userId),
+        user2: ObjectId(profileId),
+      },
+    ],
+  })
+    .remove()
+    .exec();
+};
 module.exports = {
   checkDatingProfile,
   createProfile,
@@ -566,4 +597,6 @@ module.exports = {
   getMessages,
   updateProfile,
   updateFilterSetting,
+  deleteMatchedProfile,
+  deleteChatBox,
 };

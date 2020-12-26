@@ -23,9 +23,14 @@ dbManager
     return require('./scripts/init-db-collections')(appDb);
   })
   .then((appDb) => {
-    // require('./scripts/feedMarketplace');s
+    // require('./scripts/feedMarketplace');
     //require("./scripts/feedDatingProfile.js");
     let environment = process.env.NODE_ENV;
+    // initializePeerServer({
+    //     environment,
+    //     port: process.env.PEER_PORT,
+    //     path: process.env.PEER_PATH
+    // });
     const port = process.env.PORT || 4000;
     const server = https.createServer(
       {
@@ -48,7 +53,7 @@ dbManager
     app.use('/', createRoutes(appDb, nampespacesIO));
     app.use(createErrorHandlersMiddleware);
 
-    server.listen(port, () => {
+    server.listen(port, "0.0.0.0",  () => {
       console.log(`Server running on port: ${port}`);
     });
   })

@@ -109,7 +109,7 @@ export class DatingCardProfile extends KComponent {
           <div>
             {profile.target && profile.target !== "PREFER NOT TO SAY" && (
               <>
-                <i class="fad fa-heart"></i>
+                <i className="fad fa-heart"></i>
                 Đang tìm{" "}
                 {profile.target === "CHATTING"
                   ? "Người trò chuyện"

@@ -51,7 +51,7 @@ module.exports = (io, socket, context, { onDisconnect }) => {
     }
   });
   socket.on('call', (data) => {
-    if (data.sdp && data.friendID) {
+    if (data.friendID) {
       io.to(`/messenger-user-room/user/${data.friendID}`).emit('call', {
         ...data,
         from: socket.userID,

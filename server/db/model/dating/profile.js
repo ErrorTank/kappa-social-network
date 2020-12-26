@@ -23,15 +23,15 @@ const profileSchema = new Schema({
     type: new mongoose.Schema({
       type: {
         type: String,
-        enum: ['Point'],
-        required: true
+        enum: ["Point"],
+        required: true,
       },
       coordinates: {
         type: [Number],
-        required: true
-      }
+        required: true,
+      },
     }),
-    index: "2dsphere"
+    index: "2dsphere",
   },
   location: {
     lat: Number,
@@ -132,6 +132,7 @@ const profileSchema = new Schema({
     gender: {
       type: String,
       enum: ["MALE", "FEMALE", "OTHERS"],
+      default: "OTHERS",
     },
     ageRange: {
       fromNumber: {
@@ -273,5 +274,5 @@ profileSchema.post("save", function (doc, next) {
 });
 profileSchema.index({ locationCoordinate: "2dsphere" });
 module.exports = (db) => {
-  return db.model("Profile", profileSchema)
+  return db.model("Profile", profileSchema);
 };
