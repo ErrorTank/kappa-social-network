@@ -116,12 +116,13 @@ export class DatingRegisterForm extends Component {
               userInfo.getState()._id
             )
             .then((e) => {
-              this.props.onCreateProfile(e);
+              this.props.onCreateProfile(e).then(() => {
+                customHistory.push("/dating");
+              });
             });
         });
       }
     );
-    customHistory.push("/dating");
   };
   componentDidMount() {
     datingApi.getInheritUserInfor(userInfo.getState()._id).then((data) => {
