@@ -50,6 +50,7 @@ export class PeerConnection extends Emitter {
             });
         };
         this.pc.ontrack = (event) => {
+            console.log("cac2")
             return this.emit('peerStream', event.streams[0]);
         }
         this.friendID = friendID;
@@ -66,7 +67,7 @@ export class PeerConnection extends Emitter {
             .on('stream', (stream) => {
 
                 stream.getTracks().forEach((track) => {
-
+                    console.log("cac1")
                     this.pc.addTrack(track, stream);
                 });
                 this.emit('localStream', stream);

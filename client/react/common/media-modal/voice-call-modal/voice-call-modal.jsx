@@ -58,10 +58,12 @@ export class VoiceCallWidget extends Component {
         // console.log(this.props.localSrc)
         if (this.localVideo && this.props.localSrc) {
             // console.log(this.props.localSrc)
+            // console.log(this.props.localSrc.getAudioTracks())
             this.localVideo.srcObject = this.props.localSrc;
         }
         if (this.peerVideo && this.props.peerSrc) {
             // console.log(this.props.peerSrc)
+            // console.log(this.props.peerSrc.getAudioTracks())
             this.peerVideo.srcObject = this.props.peerSrc;
         }
 
@@ -131,7 +133,7 @@ export class VoiceCallWidget extends Component {
             }
         ]
         let {hours, minutes, seconds} = duration;
-        console.log(hours)
+
         return (
             <div
                 className={classnames("voice-call-modal", {active: callStatus === CALL_STATUS.CALLING && type === CALL_TYPES.VIDEO})}>
