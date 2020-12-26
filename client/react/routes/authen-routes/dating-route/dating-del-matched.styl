@@ -1,0 +1,125 @@
+.dating-card-profile{
+    height: 70vh;
+    position: relative;
+    min-width: 380px;
+    max-width: 380px;
+    margin-top: 1vh;
+    border-radius: 2%
+    overflow-y : auto //croll
+    border : 1px solid black
+    background-color: bgLight
+    .dcp-top{
+        height : 80%
+        background-color: #fff;
+        cursor: pointer;
+        position relative
+        &>img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            // border-radius: 2%
+        }
+        .avatar-navigator {
+            position: absolute;
+            top: 5px;
+            display: flex;
+            padding: 0 6px;
+            align-items: center;
+            justify-content: space-between;
+            width: 100%;
+
+            .navigator-box {
+                flex-grow: 1;
+                padding: 6px 2px;
+
+                &.active {
+                    .card-box {
+                        background: white;
+                        opacity: 1;
+                    }
+                }
+                .card-box {
+                    opacity: 0.2;
+                    background-color: black;
+                    border-radius: 5px;
+                    height: 5px;
+                    cursor: pointer;
+                }
+            }
+        }
+
+        &:hover {
+            .swipe-right, .swipe-left {
+                opacity: 1;
+            }
+        }
+
+        .swipe-right, .swipe-left {
+            position: absolute;
+            top: 50%;
+            color: white;
+            font-weight: bold;
+            font-size: 3rem;
+            cursor: pointer;
+            transition: opacity 0.2s ease;
+            opacity: 0;
+        }
+
+        .swipe-left {
+            left: 15px;
+        }
+
+        .swipe-right {
+            right: 15px;
+            }
+    }
+   
+    .dcp-bot{
+        font-size: 15px;
+        font-weight: 300;
+        color: black;
+        margin-top : 8px
+        padding-left: 18px;
+        padding-bottom: 10px;
+        padding-right: 20px;
+        text-shadow: 0 1px 1px rgba(0, 0, 0, 0.12);
+        .dcp-name-age{
+            font-size: 25px;
+            font-weight: 500;
+        }
+        .dcp-gender{
+            font-size: 15px   
+            font-weight: 300
+        }
+        i{
+            margin-right :10px
+        }
+        .action{
+            display flex
+            .dcpf-button{
+                margin : 10px auto;
+                display: flex
+                justify-content: center
+                align-items: center
+                font-size : 16px
+                font-weight: 500
+                color:white
+                background-color: blueTextLight
+                height :35px;
+                width : 150px
+                border-radius: 10px;
+                cursor pointer
+                font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif
+            }
+        }   
+    }
+    
+    
+}
+.dating-card-profile::-webkit-scrollbar {
+    display: none;
+}
+.dating-card-profile {
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
+}

@@ -31,15 +31,14 @@ export class DatingMatched extends Component {
   }
   render() {
     const { profiles } = this.state;
+    const { onClickProfile } = this.props;
     return (
       <div className="dating-matched">
         {profiles.map((people, i) => (
           <div
             className="img-matched"
             key={i}
-            onClick={() =>
-              datingCardUtilities.pushProfile({ ...people, isAccept: true })
-            }
+            onClick={() => onClickProfile(people)}
           >
             <img src={people.avatars[0].path} />
             <div className="username">{people.name}</div>

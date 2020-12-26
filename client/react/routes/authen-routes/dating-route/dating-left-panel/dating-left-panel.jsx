@@ -20,12 +20,14 @@ export class DatingLeftPanel extends Component {
   };
 
   render() {
+    const { onClickProfile } = this.props;
     return this.state.mode === "TABS" ? (
       <DatingTabPanel
         defaultTab={this.state.defaultTab}
         onSwitch={(selectedProfile) =>
           this.onSwitch({ mode: "MESSAGE", selectedProfile })
         }
+        onClickProfile={onClickProfile}
       />
     ) : (
       <DatingMessage

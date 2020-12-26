@@ -11,7 +11,8 @@ import { matchedModal } from "../../../common/modal/matched-modal/matched-modal"
 import { DatingLeftPanel } from "./dating-left-panel/dating-left-panel";
 import { beLikedModal } from "../../../common/modal/be-liked-modal/be-liked-modal";
 import { customHistory } from "./../../routes";
-
+import { datingSocketUtilities } from "./dating-layout";
+export const datingUtilities = {};
 export class DatingLayout extends Component {
   constructor(props) {
     super(props);
@@ -19,6 +20,7 @@ export class DatingLayout extends Component {
       loading: true,
       hasProfile: false,
     };
+    datingUtilities.connectDatingSocket = this.connectDatingSocket;
   }
   connectDatingSocket = (id) => {
     datingIO.connect({ token: authenCache.getAuthen() }).then((IO) => {
@@ -48,7 +50,8 @@ export class DatingLayout extends Component {
       .then((profile) => {
         if (profile) {
           this.connectDatingSocket(profile._id);
-
+          console.log("con cac");
+          console.log(profile);
           return datingProfile.setState(profile).then(() => true);
         }
         return null;
@@ -56,7 +59,6 @@ export class DatingLayout extends Component {
       .then((r) => {
         this.setState({
           loading: false,
-          hasProfile: r ? true : false,
         });
       });
   }
@@ -64,10 +66,10 @@ export class DatingLayout extends Component {
     let { loading, hasProfile } = this.state;
     return (
       <div className="dating-layout">
-        {this.props.children({
-          loading,
-          hasProfile,
-        })}
+        {!loading &&
+          this.props.children({
+            loading,
+          })}
       </div>
     );
   }

@@ -42,4 +42,9 @@ export const datingApi = {
   updateFilterSetting(data, profileId) {
     return authenApi.put(`/dating/update-filter/profileId/${profileId}`, data);
   },
+  deleteMatchedProfile(profileId, userId) {
+    return authenApi.delete(
+      `/dating/delete-matched/profileId/${profileId}/userId/${userId}`
+    );
+  },
 };

@@ -551,6 +551,21 @@ const updateFilterSetting = (data, profileId) => {
     }
   ).exec();
 };
+const deleteMatchedProfile = (profileId, userId) => {
+  let execCommand;
+  execCommand = {
+    $pull: {
+      seen: { user: ObjectId(userId) },
+    },
+  };
+  return Profile.update(
+    {
+      _id: ObjectId(profileId),
+    },
+    execCommand,
+    { new: true }
+  );
+};
 module.exports = {
   checkDatingProfile,
   createProfile,
@@ -566,4 +581,5 @@ module.exports = {
   getMessages,
   updateProfile,
   updateFilterSetting,
+  deleteMatchedProfile,
 };

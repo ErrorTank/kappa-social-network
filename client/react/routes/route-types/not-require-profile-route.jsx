@@ -1,12 +1,9 @@
 import React from "react";
 import { Route, Redirect } from "react-router-dom";
+import { datingProfile } from "../../../common/states/common";
 
-export function NotRequireProfileRoute({
-  loading,
-  hasProfile,
-  render,
-  ...rest
-}) {
+export function NotRequireProfileRoute({ loading, render, ...rest }) {
+  const hasProfile = datingProfile.getState();
   return (
     <Route
       {...rest}

@@ -45,7 +45,7 @@ export class DatingTabPanel extends Component {
       },
     ];
     let { mode } = this.state;
-    let { onSwitch } = this.props;
+    let { onSwitch, onClickProfile } = this.props;
     let Comp = tabNavigators.find((each) => each.mode === mode).component;
     return (
       <div className="dating-tab-panel">
@@ -64,7 +64,7 @@ export class DatingTabPanel extends Component {
           ))}
         </div>
         <div className="dating-tab-body">
-          <Comp onSwitch={onSwitch} />
+          <Comp onSwitch={onSwitch} onClickProfile={onClickProfile} />
         </div>
       </div>
     );
