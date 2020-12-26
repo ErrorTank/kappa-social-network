@@ -49,7 +49,7 @@ class SellMessengerModal extends Component {
         'Mặt hàng này còn chứ?',
         'Mặt hàng ở tình trạng như thế nào?',
         'Bạn có giao hàng không?',
-        `Sản phẩm: ${this.props.listing._id}`,
+        `Một số thông tin sản phẩm _id: ${this.props.listing._id}`,
       ],
     },
     {
@@ -58,6 +58,7 @@ class SellMessengerModal extends Component {
         'Ngày bắt đầu cho thuê có linh hoạt không?',
         'Có phí đặt cọc hay phí nào khắc không?',
         'Có bao gồm điện, nước, điện thoại và Internet không?',
+        `Một số thông tin sản phẩm _id: ${this.props.listing._id}`,
       ],
     },
   ];
@@ -97,6 +98,7 @@ class SellMessengerModal extends Component {
       hyperlinks: state.hyperlinks || [],
       state: MessageState.CACHED,
       call_info: state.call_info || null,
+      product: state.product || null,
       reactions: {
         angry: [],
         cry: [],
@@ -189,10 +191,22 @@ class SellMessengerModal extends Component {
                 onClick={() => {
                   const { message } = this.state;
                   if (message) {
-                    this.handleSendSellMessage({
-                      content: message,
-                      files: [],
-                    });
+                    if (message.search('_id:')) {
+                      // console.log(message.slice(0, message.search('_id:')));
+                      this.handleSendSellMessage({
+                        product: message.slice(message.search('_id:') + 5),
+                        files: [],
+                        content: message.slice(0, message.search('_id:')),
+                      });
+                    } else {
+                      this.handleSendSellMessage({
+                        content: message,
+                        files: [],
+                        product:
+                          message === 'Mặt hàng này còn chứ?' &&
+                          this.props.listing._id,
+                      });
+                    }
                   }
                 }}
               >
