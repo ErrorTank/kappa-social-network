@@ -1,10 +1,16 @@
 import React, { Component } from "react";
-import { datingProfile } from "../../../../common/states/common";
+import {
+  datingProfile,
+  matchedProfile,
+} from "../../../../common/states/common";
 import { getAge } from "../../../../common/utils/date-utils";
 import { distanceTo } from "geolocation-utils";
 import classnames from "classnames";
 import { datingApi } from "./../../../../api/common/dating";
-export class DatingDelMatched extends Component {
+import { uniqBy } from "lodash/uniqBy";
+import { KComponent } from "./../../../common/k-component";
+
+export class DatingDelMatched extends KComponent {
   constructor(props) {
     super(props);
     this.state = {
@@ -232,6 +238,12 @@ export class DatingDelMatched extends Component {
                   .then(() => {
                     datingApi.deleteChatBox(userProfile._id, data._id);
                     this.props.onClick();
+                    datingApi.getMatchProfile().then((e) => {
+                      matchedProfile.setState(
+                        e
+                        // uniqBy(matchedProfile.getState().concat(e), "_id")
+                      );
+                    });
                   });
               }}
             >

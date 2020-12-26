@@ -17,7 +17,7 @@ export class DatingMessageTab extends Component {
   }
   render() {
     const { chatBoxes } = this.state;
-    const { onSwitch } = this.props;
+    const { onSwitch, onClickProfile } = this.props;
     return (
       <div className="dating-message-tab">
         {chatBoxes.map((each, i) => {
@@ -29,7 +29,9 @@ export class DatingMessageTab extends Component {
             <div
               className="dating-chat-box"
               key={i}
-              onClick={() => onSwitch(receiver)}
+              onClick={() => {
+                onSwitch(receiver), onClickProfile(receiver);
+              }}
             >
               <div className="dating-chat-avatar">
                 <div className="avatar-wrapper">
