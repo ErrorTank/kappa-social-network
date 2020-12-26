@@ -48,9 +48,12 @@ var exceptionRequestsDev = [
   },
   {
     endpoint: /https:\/\/localhost:4000\/api\/dating\/delete-matched\/profileId\/\w+\/userId\/\w+/,
-    method: "GET",
+    method: "DELETE",
   },
-
+  {
+    endpoint: /https:\/\/localhost:4000\/api\/dating\/delete-chatBox\/profileId\/\w+\/userId\/\w+/,
+    method: "DELETE",
+  },
   {
     endpoint: /https:\/\/localhost:4000\/api\/dating\/chatboxes\/profileId\/\w+/,
     method: "GET",

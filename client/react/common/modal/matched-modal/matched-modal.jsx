@@ -38,10 +38,10 @@ class MatchedModal extends Component {
           ]}
         >
           <div className="mm-wrapper">
-            <div className="mm-img">
+            {/* <div className="mm-img">
               <img src={profile.avatars[0].path}></img>
               <img src={userProfile.avatars[0].path} />
-            </div>
+            </div> */}
             <div className="mm-content">
               Bạn và {profile.name} đã kết đôi thành công
             </div>

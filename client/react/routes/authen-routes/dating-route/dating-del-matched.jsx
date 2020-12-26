@@ -226,9 +226,14 @@ export class DatingDelMatched extends Component {
           <div className="action">
             <span
               className="dcpf-button"
-              onClick={() =>
-                datingApi.deleteMatchedProfile(userProfile._id, data._id)
-              }
+              onClick={() => {
+                datingApi
+                  .deleteMatchedProfile(userProfile._id, data._id)
+                  .then(() => {
+                    datingApi.deleteChatBox(userProfile._id, data._id);
+                    this.props.onClick();
+                  });
+              }}
             >
               Hủy tương hợp
             </span>

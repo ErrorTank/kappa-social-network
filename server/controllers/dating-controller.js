@@ -20,6 +20,7 @@ const {
   updateProfile,
   updateFilterSetting,
   deleteMatchedProfile,
+  deleteChatBox,
 } = require("../db/db-controllers/dating");
 module.exports = (db, namespacesIO) => {
   router.get(
@@ -206,6 +207,17 @@ module.exports = (db, namespacesIO) => {
     authorizationUserMiddleware,
     (req, res, next) => {
       return deleteMatchedProfile(req.params.profileId, req.params.userId)
+        .then((data) => {
+          return res.status(200).json(data);
+        })
+        .catch((err) => next(err));
+    }
+  );
+  router.delete(
+    "/delete-chatBox/profileId/:profileId/userId/:userId",
+    authorizationUserMiddleware,
+    (req, res, next) => {
+      return deleteChatBox(req.params.profileId, req.params.userId)
         .then((data) => {
           return res.status(200).json(data);
         })

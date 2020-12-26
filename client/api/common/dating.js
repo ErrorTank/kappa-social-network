@@ -47,4 +47,9 @@ export const datingApi = {
       `/dating/delete-matched/profileId/${profileId}/userId/${userId}`
     );
   },
+  deleteChatBox(profileId, userId) {
+    return authenApi.delete(
+      `/dating/delete-chatBox/profileId/${profileId}/userId/${userId}`
+    );
+  },
 };
