@@ -4,9 +4,6 @@
   width: 100%;
   overflow-y: auto;
   height: calc(100vh - 60px);
-  display: flex;
-  justify-content: center;
-  align-items: center;
 
   .saved-listing-wrapper {
     display: flex;
@@ -16,30 +13,38 @@
     width: 100%;
   }
 
-  .saved-listing-empty {
-    padding: 24px;
+  .saved-listing-empty-wrapper {
     display: flex;
-    flex-direction: column;
     justify-content: center;
     align-items: center;
-    max-width: 354px;
+    width: 100%;
+    height: 100%;
 
-    .empty-icon {
-      margin-bottom: 10px;
+    .saved-listing-empty {
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      max-width: 354px;
 
-      img {
-        border-radius: 20px;
-        height: 112px;
-        width: 112px;
+      .empty-icon {
+        margin-bottom: 10px;
+
+        img {
+          border-radius: 20px;
+          height: 112px;
+          width: 112px;
+        }
       }
-    }
 
-    .empty-message {
-      text-align: center;
-      word-break: break-word;
-      color: secondaryTextLight;
-      font-weight: 700;
-      font-size: 20px;
+      .empty-message {
+        text-align: center;
+        word-break: break-word;
+        color: secondaryTextLight;
+        font-weight: 700;
+        font-size: 20px;
+      }
     }
   }
 }

@@ -29,10 +29,62 @@ class SellMessengerModal extends Component {
     super(props);
     this.state = {
       message: '',
+      questionArr: null,
     };
   }
+
+  componentDidMount() {
+    this.setQuestionArr();
+  }
+
   handleMessageChange = (value) => {
     this.setState({ message: value });
+  };
+
+  suggestQuestion = [
+    {
+      type: 'item',
+      question: [
+        'Tôi quan tâm đến mặt hàng này.',
+        'Mặt hàng này còn chứ?',
+        'Mặt hàng ở tình trạng như thế nào?',
+        'Bạn có giao hàng không?',
+        `Một số thông tin sản phẩm _id: ${this.props.listing._id}`,
+      ],
+    },
+    {
+      type: 'rent',
+      question: [
+        'Ngày bắt đầu cho thuê có linh hoạt không?',
+        'Có phí đặt cọc hay phí nào khắc không?',
+        'Có bao gồm điện, nước, điện thoại và Internet không?',
+        `Một số thông tin sản phẩm _id: ${this.props.listing._id}`,
+      ],
+    },
+  ];
+
+  setQuestionArr = () => {
+    const { listing } = this.props;
+    const {
+      title,
+      make,
+      year,
+      model,
+      price,
+      user,
+      homeType,
+      address,
+      files,
+    } = listing;
+
+    this.suggestQuestion.map((e) => {
+      if ((title || make) && e.type === 'item') {
+        this.setState({ questionArr: e.question });
+      }
+      if (homeType && e.type === 'rent') {
+        this.setState({ questionArr: e.question });
+      }
+    });
   };
 
   createTempMessage = ({ state = {}, needUploadFile = false, file = null }) => {
@@ -46,6 +98,7 @@ class SellMessengerModal extends Component {
       hyperlinks: state.hyperlinks || [],
       state: MessageState.CACHED,
       call_info: state.call_info || null,
+      product: state.product || null,
       reactions: {
         angry: [],
         cry: [],
@@ -74,7 +127,7 @@ class SellMessengerModal extends Component {
   handleSendSellMessage = (chatState) => {
     let { user } = this.props.listing;
     messengerApi.getUserChatRoomBrief(user._id).then(({ chat_room }) => {
-      console.log(chat_room);
+      // console.log(chat_room);
 
       let newMessage = null;
       if (chatState.content) {
@@ -97,16 +150,16 @@ class SellMessengerModal extends Component {
             ['state', 'temp', 'needUploadFile', 'file']
           )
         )
-        .then((e) =>
+        .then((e) => {
           messageWidgetController.focusOnChatBox({
             userID: user._id,
-          })
-        );
+          });
+        });
     });
   };
   render() {
-    let { onClose, listing, questionArr, handleMessageChange } = this.props;
-    const { message } = this.state;
+    let { onClose, listing, handleMessageChange } = this.props;
+    const { message, questionArr } = this.state;
     const {
       title,
       make,
@@ -138,15 +191,27 @@ class SellMessengerModal extends Component {
                 onClick={() => {
                   const { message } = this.state;
                   if (message) {
-                    this.handleSendSellMessage({
-                      content: message,
-                      files: [],
-                    });
+                    if (message.search('_id:')) {
+                      // console.log(message.slice(0, message.search('_id:')));
+                      this.handleSendSellMessage({
+                        product: message.slice(message.search('_id:') + 5),
+                        files: [],
+                        content: message.slice(0, message.search('_id:')),
+                      });
+                    } else {
+                      this.handleSendSellMessage({
+                        content: message,
+                        files: [],
+                        product:
+                          message === 'Mặt hàng này còn chứ?' &&
+                          this.props.listing._id,
+                      });
+                    }
                   }
                 }}
               >
                 <i className='fab fa-facebook-messenger'></i>
-                Gửi tin nhắn
+                {` Gửi tin nhắn`}
               </div>
             ),
           },

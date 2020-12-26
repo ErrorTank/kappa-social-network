@@ -26,15 +26,19 @@ export class YourSavedListing extends Component {
             );
           })
         ) : (
-          <div className='saved-listing-empty'>
-            <div className='empty-icon'>
-              <img
-                src={'https://localhost:2000/assets/images/icons/bookmark.png'}
-                alt=''
-              />
-            </div>
-            <div className='empty-message'>
-              Hiện bạn không lưu sản phẩm nào. Hãy kiểm tra lại sau.
+          <div className='saved-listing-empty-wrapper'>
+            <div className='saved-listing-empty'>
+              <div className='empty-icon'>
+                <img
+                  src={
+                    'https://localhost:2000/assets/images/icons/bookmark.png'
+                  }
+                  alt=''
+                />
+              </div>
+              <div className='empty-message'>
+                Hiện bạn không lưu sản phẩm nào. Hãy kiểm tra lại sau.
+              </div>
             </div>
           </div>
         )}

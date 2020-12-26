@@ -16,6 +16,7 @@ import { postApi } from "./../../../../../../api/common/post-api";
 import { yourKides } from "../../../../../../const/yourKides";
 import classnames from "classnames";
 import { FileDisplay } from "./../../../../../layout/authen-layout/create-message-widget/chat-box/message-utilities/file-display/file-display";
+import { customHistory } from "./../../../../routes";
 
 export class DatingRegisterForm extends Component {
   constructor(props) {
@@ -120,6 +121,7 @@ export class DatingRegisterForm extends Component {
         });
       }
     );
+    customHistory.push("/dating");
   };
   componentDidMount() {
     datingApi.getInheritUserInfor(userInfo.getState()._id).then((data) => {
@@ -410,8 +412,8 @@ export class DatingRegisterForm extends Component {
               {!!avatars.length ? (
                 <div
                   className="images-display"
-                  onMouseEnter={() => this.mouse("image")}
-                  onMouseLeave={() => this.mouseOut()}
+                  // onMouseEnter={() => this.mouse("image")}
+                  // onMouseLeave={() => this.mouseOut()}
                 >
                   <div className="images-container">
                     {avatars.map((file) => (
