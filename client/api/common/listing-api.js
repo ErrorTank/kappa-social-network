@@ -9,8 +9,10 @@ export const listingApi = {
     let category = urlUtils.buildParams(data);
     return authenApi.get(`/listing/get-listing${category}`);
   },
-  getListingByCategoryID(categoryID) {
-    return authenApi.get(`/listing/get-listing-by-categoryID/${categoryID}`);
+  getListingByCategoryID(categoryID, options) {
+    return authenApi.get(
+      `/listing/get-listing-by-categoryID/${categoryID}?sortBy=${options.sortBy}&orderBy=${options.orderBy}`
+    );
   },
   getListingByUserID(userID) {
     return authenApi.get(`/listing/get-listing-by-userID/${userID}`);
