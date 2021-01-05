@@ -22,7 +22,6 @@ class DeleteListingModal extends Component {
     this.state = {
       // loading: true,
     };
-    // listingApi.getListingByListingID(this.props.id).then(e => this.setState({listing}));
   }
   render() {
     let { onClose, listing, handleGetListing, forceUpdate } = this.props;
@@ -46,11 +45,13 @@ class DeleteListingModal extends Component {
                 <div
                   className='delete-listing-btn'
                   onClick={() => {
-                    listingApi.deleteListing(listing._id);
-                    setTimeout(() => {
-                      handleGetListing();
-                      forceUpdate();
-                    }, 100);
+                    listingApi
+                      .deleteListing(listing._id)
+                      .then(() => handleGetListing());
+                    // setTimeout(() => {
+                    //   handleGetListing();
+                    //   forceUpdate();
+                    // }, 100);
                   }}
                 >
                   Xóa
