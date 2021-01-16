@@ -217,8 +217,8 @@ export class CreatePostMain extends Component {
                     className={classnames('mp-send-button facebook-button')}
                     // onClick={e.click}
                   >
-                    <i className='fab fa-facebook-messenger'></i>
-                    <span>Nhắn tin</span>
+                    <i className='fas fa-info-circle'></i>
+                    <span>Sản phẩm</span>
                   </Button>
                 </div>
 

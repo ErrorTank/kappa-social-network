@@ -831,7 +831,4 @@ export const radiusArr = [
   {
     value: 60,
   },
-  {
-    value: 1000,
-  },
 ];

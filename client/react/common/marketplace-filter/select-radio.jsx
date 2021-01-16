@@ -25,7 +25,7 @@ export class SelectRadio extends KComponent {
     const { className, title, options } = this.props;
 
     let def = marketplaceInfo.getState().sort || options[0];
-    console.log(def);
+    // console.log(def);
     return (
       <div className={classnames('select-radio', { className })}>
         <div className='select-radio-toggle' onClick={this.handleShow}>
