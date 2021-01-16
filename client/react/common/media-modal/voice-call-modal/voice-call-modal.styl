@@ -22,11 +22,26 @@
       display flex
       justify-content center
       align-items center
+      position: relative
+      overflow: hidden
       .peerVideo
       .localVideo {
+        position: absolute
         &.hide{
           display none
         }
+      }
+      .peerVideo{
+        left 50%
+        transform: translateX(-50%)
+        top 0
+        height 100%  
+      }
+      .localVideo {
+        z-index 1
+        bottom 0
+        right 0
+        height 200px
       }
 
       .center-calling-info{
@@ -102,6 +117,7 @@
         border-radius 50%
         width 50px
         height 50px
+        background-color: white
         border 1px solid greyTextLight
         cursor pointer
         &.close{
