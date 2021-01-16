@@ -17,7 +17,7 @@ const {createAuthToken} = require("../../authorization/auth");
 const sendAccountConfirmationToken = ({credentials, user}) => {
     if(credentials.register_type === "PHONE"){
 
-        return nexmoSmsService.sendSms(
+        return twilioSmsService.sendSms(
             user.contact.login_username.phone,
             `Mã xác nhận đăng ký tài khoản của bạn là: ${credentials.token}`
         )
