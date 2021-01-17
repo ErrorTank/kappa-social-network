@@ -397,8 +397,11 @@ class ListingFullDisplay extends Component {
               <CommonInput
                 type='text'
                 value={message}
-                onChange={(e) => this.handleMessageChange(e.target.value)}
+                onChange={(e) => {
+                  this.handleMessageChange(e.target.value);
+                }}
                 className='message-example'
+                disabled={(user && currentUser._id === user._id) || !isStocked}
               />
               <div
                 className={classnames('send-message-demo', {

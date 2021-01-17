@@ -700,16 +700,21 @@ const getUserNotifications = ({ userID, skip }) => {
         ],
       },
     ])
-    .then((u) => ({
-      notifications: u.notifications
-        .sort(
-          (a, b) =>
-            new Date(b.published_time).getTime() -
-            new Date(a.published_time).getTime()
-        )
-        .slice(Number(skip), Number(skip) + 7),
-      total: u.notifications.length,
-    }));
+    .then((u) =>
+      // {
+      //   console.log(u);
+      // }
+      ({
+        notifications: u.notifications
+          .sort(
+            (a, b) =>
+              new Date(b.published_time).getTime() -
+              new Date(a.published_time).getTime()
+          )
+          .slice(Number(skip), Number(skip) + 7),
+        total: u.notifications.length,
+      })
+    );
 };
 
 const seenNotifications = ({ userID, notifications }) => {

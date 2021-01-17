@@ -30,7 +30,7 @@ export class FeedList extends Component {
               onChangePost={(post) => onChangePost(each._id, post, i)}
               onDeletePost={() => onDeletePost(each, i)}
               onSharePost={(p) => onAddPost(p)}
-              listing={each.listing[0]}
+              listing={each.listing && each.listing[0]}
             />
           ))}
         </div>
