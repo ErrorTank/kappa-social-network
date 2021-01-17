@@ -108,7 +108,7 @@ class CreatePostModal extends Component {
           belonged_wall: this.props.belongedWall,
           tagged: tagged.map((each) => each._id),
           shared_post: this.props.isShare ? this.props.postID : null,
-          listing: this.props.listing._id,
+          listing: this.props.listing && this.props.listing._id,
           ...transformEditorState(
             convertToRaw(editorState.getCurrentContent())
           ),
