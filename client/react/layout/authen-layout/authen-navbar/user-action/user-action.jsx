@@ -51,7 +51,7 @@ export class UserAction extends KComponent {
     constructor(props) {
         super(props);
         this.state = {
-            unseen: [],
+            unseenCount: 0,
             notificationsCount: 0
 
         }
@@ -60,13 +60,13 @@ export class UserAction extends KComponent {
             messengerApi.getUserUnseenMessagesCount(userID),
             userApi.getUnseenNotificationsCount()
 
-        ]).then(([unseen, {count: notificationsCount}]) => {
-            this.setState({unseen, notificationsCount})
+        ]).then(([{count: unseenCount}, {count: notificationsCount}]) => {
+            this.setState({unseenCount, notificationsCount})
         })
 
 
         userAction = {
-            removeChatRoom: crID => this.setState({unseen: this.state.unseen.filter(each => each._id !== crID)})
+            reduceUnseencount: () => this.setState({unseenCount: this.state.unseenCount > 0 ? this.state.unseenCount - 1 : 0})
         }
     }
 
@@ -79,6 +79,7 @@ export class UserAction extends KComponent {
     }
 
     render() {
+        let {unseenCount} = this.state;
         let user = userInfo.getState();
 
         return (
@@ -128,9 +129,9 @@ export class UserAction extends KComponent {
                             text={() => "Chat"}
                         >
                             <div className="circle-action badge-action">
-                                {!!this.state.unseen.length && (
+                                {!!unseenCount && (
                                     <div className="unseen-count">
-                                        <span>{this.state.unseen.length}</span>
+                                        <span>{unseenCount}</span>
 
                                     </div>
                                 )}
@@ -143,7 +144,7 @@ export class UserAction extends KComponent {
                     dropdownRender={() => (
                         <ChatBoxList
                             darkMode={this.props.darkMode}
-                            unseen={this.state.unseen}
+                        
                         />
                     )}
 

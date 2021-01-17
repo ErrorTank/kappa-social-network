@@ -57,9 +57,9 @@ module.exports = (db, namespacesIO) => {
     '/user/:userID/unseen-messages/count',
     authorizationUserMiddleware,
     (req, res, next) => {
-      return getUserUnseenMessagesCount(req.user._id)
+      return getUserChatRooms(req.user._id, 0)
         .then((data) => {
-          return res.status(200).json(data);
+          return res.status(200).json({count: data.filter(each => !each.is_seen).length});
         })
         .catch((err) => next(err));
     }

@@ -994,6 +994,9 @@ const deletePost = ({ postID }) => {
     User.updateMany(
       {
         'followed_posts.post': ObjectId(postID),
+        'notifications': {
+          
+        }
       },
       {
         $pull: {
