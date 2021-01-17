@@ -33,7 +33,7 @@ const USER_FRIEND_RELATION = {
 
 const sendResetPasswordToken = ({ credentials, user }) => {
   if (credentials.register_type === 'PHONE') {
-    return nexmoSmsService
+    return twilioSmsService
       .sendSms(
         user.contact.login_username.phone,
         `Mã xác nhận đổi mật khẩu của bạn là: ${credentials.token}`

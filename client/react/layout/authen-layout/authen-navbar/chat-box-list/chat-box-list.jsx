@@ -10,7 +10,9 @@ import {WithUserStatus} from "../../../../common/user-statuts-subcriber/user-sta
 import {messageWidgetController} from "../../create-message-widget/create-message-widget";
 import {Emoji} from "emoji-mart";
 import {isImageFile} from "../../../../../common/utils/file-upload-utils";
+import { CALL_TYPES } from '../../../../../common/call-services/call-services';
 
+export const chatBoxList = {}
 
 export class ChatBoxList extends Component {
     constructor(props) {
@@ -21,6 +23,15 @@ export class ChatBoxList extends Component {
             fetching: true
         }
         this.fetchUserChatRooms()
+        chatBoxList.seen = crID => {
+            let newChatRooms = this.state.chat_rooms.map(each => {
+                return {
+                    ...each,
+                    is_seen: crID === each._id ? true : each.is_seen
+                }
+            })
+            this.setState({chat_rooms: newChatRooms})
+        }
 
     }
 
@@ -38,7 +49,7 @@ export class ChatBoxList extends Component {
 
     render() {
         let {chat_rooms, fetching} = this.state;
-        let {unseen} = this.props;
+
         return (
 
             <div className=" nav-bar-dropdown">
@@ -63,7 +74,7 @@ export class ChatBoxList extends Component {
                                 </div>
                             ) : chat_rooms.map(each => (
                                 <div
-                                    className={classnames("chat-room-box", {"unseen": unseen.find(r => r._id === each._id)})}
+                                    className={classnames("chat-room-box", {"unseen": !each.is_seen})}
                                     key={each._id}
                                     onClick={() => messageWidgetController.createNewChatBox({userID: each.contact._id})}
                                 >
@@ -110,7 +121,9 @@ export class ChatBoxList extends Component {
                                             ) : (
                                                 <>
 
-                                                    {each.latest_message.file ? (
+                                                    {each.latest_message.call_info ? (
+                                                        <span>Cuộc gọi {each.latest_message.call_info.call_type === CALL_TYPES.VIDEO ? "Video" : "Thoại"}</span>
+                                                    ) : each.latest_message.file ? (
                                                         <span>{each.latest_message.sentBy === userInfo.getState()._id && "Bạn"} đã gửi một {isImageFile(each.latest_message.file.name) ? "ảnh" : "file"}</span>
                                                     ) : (
                                                         <span>{each.latest_message.sentBy === userInfo.getState()._id && "Bạn:"} {getRenderableContentFromMessage(each.latest_message)}</span>

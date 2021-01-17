@@ -1,6 +1,6 @@
 
 
-const formatPhone = (phone, prefix = "84") => prefix + phone.substring(1);
+const formatPhone = (phone, prefix = "+84") => prefix + phone.substring(1);
 
 const services = {
     "twilio": () => {
@@ -14,8 +14,13 @@ const services = {
                     to: formatPhone(toPhone)
                 })
                 .then(message => {
-                    console.log("Send Message successfully!");
+                    console.log(message)
+                    console.log("Send Message successfully");
                     return Promise.resolve();
+                })
+                .catch(err => {
+                    console.log(err)
+                    return Promise.reject(err)
                 })
 
         }

@@ -68,7 +68,7 @@ export class GuestNavbarLoginWidget extends KComponent {
                 }).then(() => customHistory.push("/"));
             })
             .catch(err => {
-                console.log(err)
+                this.setState({logging: false})
                 let matcher = {
                     "account_not_existed": () => appModal.alert({
                         title: "Không thể đăng nhập",

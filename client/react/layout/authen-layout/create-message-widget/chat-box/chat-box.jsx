@@ -32,6 +32,7 @@ import {
 import { appModal } from '../../../../common/modal/modals';
 import { ToggleMinimize } from './toggle-minimize';
 import { userAction } from '../../authen-navbar/user-action/user-action';
+import { chatBoxList } from '../../authen-navbar/chat-box-list/chat-box-list';
 
 export const MessageState = {
   CACHED: 'CACHED',
@@ -409,7 +410,8 @@ export class ChatBox extends KComponent {
     );
     this.props.onSeenMessages(unseenMessages);
     if (unseenMessages.length) {
-      userAction.removeChatRoom(this.state.chat_room_brief._id);
+      userAction.reduceUnseencount();
+      chatBoxList.seen(this.state.chat_room_brief._id)
       chatApi.seenMessages(this.state.chat_room_brief._id, unseenMessages);
     }
   };
