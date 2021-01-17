@@ -6,8 +6,8 @@ export const listingApi = {
     return authenApi.post('/listing/create-listing', data);
   },
   getListing(data) {
-    let category = urlUtils.buildParams(data);
-    return authenApi.get(`/listing/get-listing${category}`);
+    let listingReq = urlUtils.buildParams(data);
+    return authenApi.get(`/listing/get-listing${listingReq}`);
   },
   getListingByCategoryID(categoryID, options) {
     return authenApi.get(
