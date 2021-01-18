@@ -1,48 +1,48 @@
-import React, { Component } from 'react';
-import { modals } from '../modal/modals';
-import { LoadingInline } from '../loading-inline/loading-inline';
-import { CommonModalLayout } from '../modal/common-modal-layout';
+import React, { Component } from "react";
+import { modals } from "../modal/modals";
+import { LoadingInline } from "../loading-inline/loading-inline";
+import { CommonModalLayout } from "../modal/common-modal-layout";
 
-import { ThemeContext } from '../../context/theme-context';
+import { ThemeContext } from "../../context/theme-context";
 
-import { v4 as uuidv4 } from 'uuid';
-import { createEditorStateWithText } from 'draft-js-plugins-editor';
-import { CreatePostMain } from './create-post-main/create-post-main';
-import { Tooltip } from '../tooltip/tooltip';
-import classnames from 'classnames';
-import { InputFileWrapper } from '../file-input/file-input';
-import { isImageFile } from '../../../common/utils/file-upload-utils';
-import { FilesDisplay } from './files-display/files-display';
-import { FileConfig } from './file-config/file-config';
-import { TagFriends } from './tag-friends/tag-friends';
-import { transformEditorState } from '../../../common/utils/editor-utils';
-import { convertToRaw } from 'draft-js';
-import { mergeArray } from '../../../common/utils/array-utils';
-import { postApi } from '../../../api/common/post-api';
-import { userFollowedPosts } from '../../../common/states/common';
+import { v4 as uuidv4 } from "uuid";
+import { createEditorStateWithText } from "draft-js-plugins-editor";
+import { CreatePostMain } from "./create-post-main/create-post-main";
+import { Tooltip } from "../tooltip/tooltip";
+import classnames from "classnames";
+import { InputFileWrapper } from "../file-input/file-input";
+import { isImageFile } from "../../../common/utils/file-upload-utils";
+import { FilesDisplay } from "./files-display/files-display";
+import { FileConfig } from "./file-config/file-config";
+import { TagFriends } from "./tag-friends/tag-friends";
+import { transformEditorState } from "../../../common/utils/editor-utils";
+import { convertToRaw } from "draft-js";
+import { mergeArray } from "../../../common/utils/array-utils";
+import { postApi } from "../../../api/common/post-api";
+import { userFollowedPosts } from "../../../common/states/common";
 
 export const PostPolicies = [
   {
-    label: 'Công khai',
-    icon: <i className='fas fa-globe-asia'></i>,
-    value: 'PUBLIC',
+    label: "Công khai",
+    icon: <i className="fas fa-globe-asia"></i>,
+    value: "PUBLIC",
   },
   {
-    label: 'Cá nhân',
-    icon: <i className='fas fa-user-lock'></i>,
-    value: 'PERSONAL',
+    label: "Cá nhân",
+    icon: <i className="fas fa-user-lock"></i>,
+    value: "PERSONAL",
   },
   {
-    label: 'Bạn bè',
-    icon: <i className='fas fa-user-friends'></i>,
-    value: 'FRIENDS',
+    label: "Bạn bè",
+    icon: <i className="fas fa-user-friends"></i>,
+    value: "FRIENDS",
   },
 ];
 
 export const PostPoliciesMAP = {
-  PUBLIC: 'PUBLIC',
-  PERSONAL: 'PERSONAL',
-  FRIENDS: 'FRIENDS',
+  PUBLIC: "PUBLIC",
+  PERSONAL: "PERSONAL",
+  FRIENDS: "FRIENDS",
 };
 
 export const createPostModal = {
@@ -59,9 +59,9 @@ class CreatePostModal extends Component {
     super(props);
     this.state = {
       loading: false,
-      content: '',
+      content: "",
       policy: props.data?.policy || PostPolicies[0],
-      editorState: props.data?.editorState || createEditorStateWithText(''),
+      editorState: props.data?.editorState || createEditorStateWithText(""),
       files: props.data?.files || props.listing?.files || [],
       tagged: props.data?.tagged || [],
       selected: null,
@@ -75,9 +75,9 @@ class CreatePostModal extends Component {
     return file.path
       ? Promise.resolve(file)
       : postApi
-          .preUploadMedia({ file: file.file }, 'file')
+          .preUploadMedia({ file: file.file }, "file")
           .then((fileData) => ({
-            caption: file.caption || '',
+            caption: file.caption || "",
             tagged: file.tagged
               ? file.tagged.map((each) => ({
                   ...each,
@@ -136,11 +136,11 @@ class CreatePostModal extends Component {
   addFiles = (files) => {
     let newFiles = Array.from(files).map((file) => {
       return isImageFile(file.name)
-        ? { fileID: uuidv4(), file, type: 'image' }
+        ? { fileID: uuidv4(), file, type: "image" }
         : {
             fileID: uuidv4(),
             file,
-            caption: '',
+            caption: "",
           };
     });
 
@@ -154,15 +154,15 @@ class CreatePostModal extends Component {
     let steps = [
       {
         title: isEdit
-          ? 'Cập nhật bài đăng'
+          ? "Cập nhật bài đăng"
           : shareMarketplace
-          ? 'Chia sẻ bài niêm yết trên Marketplace'
-          : 'Tạo bài đăng',
+          ? "Chia sẻ bài niêm yết trên Marketplace"
+          : "Tạo bài đăng",
         actions: [
           {
-            className: 'btn-post btn-block',
+            className: "btn-post btn-block",
             onClick: this.submit,
-            content: isEdit ? 'Cập nhật' : 'Đăng',
+            content: isEdit ? "Cập nhật" : "Đăng",
             disabled: !this.getInputRawContent() && !this.state.files.length,
             loading,
           },
@@ -181,23 +181,23 @@ class CreatePostModal extends Component {
                 ? this.setState({ stepIndex: 2, selected: this.state.files[0] })
                 : this.setState({ stepIndex: 1 });
             }}
-            listing={this.props.listing || ''}
+            listing={this.props.listing || ""}
           />
         ),
       },
       {
-        title: 'Ảnh và videos',
+        title: "Ảnh và videos",
         onBack: () => this.setState({ stepIndex: 0 }),
         actions: [
           {
-            className: 'btn-outline-primary',
+            className: "btn-outline-primary",
             onClick: () => this.upload.click(),
-            content: 'Thêm ảnh/videos',
+            content: "Thêm ảnh/videos",
           },
           {
-            className: 'btn-post',
+            className: "btn-post",
             onClick: () => this.setState({ stepIndex: 0 }),
-            content: 'Xong',
+            content: "Xong",
           },
         ],
         component: (
@@ -220,16 +220,16 @@ class CreatePostModal extends Component {
         ),
       },
       {
-        title: 'Chi tiết ảnh',
+        title: "Chi tiết ảnh",
         onBack: () =>
           this.setState({ stepIndex: this.state.files.length === 1 ? 0 : 1 }),
         actions: [
           {
-            className: 'btn-post',
+            className: "btn-post",
             onClick: () => {
               this.fileConf.save();
             },
-            content: 'Lưu',
+            content: "Lưu",
           },
         ],
         component: (
@@ -262,14 +262,14 @@ class CreatePostModal extends Component {
         ),
       },
       {
-        title: 'Tag bạn bè',
+        title: "Tag bạn bè",
         actions: [
           {
-            className: 'btn-post',
+            className: "btn-post",
             onClick: () => {
               this.setState({ stepIndex: 0 });
             },
-            content: 'Xong',
+            content: "Xong",
           },
         ],
         onBack: () => this.setState({ stepIndex: 0 }),
@@ -289,19 +289,19 @@ class CreatePostModal extends Component {
       <ThemeContext.Consumer>
         {({ darkMode }) => (
           <CommonModalLayout
-            className={classnames('create-post-modal', {
+            className={classnames("create-post-modal", {
               expand: this.state.stepIndex === 2,
-              'no-padding': this.state.stepIndex === 1,
+              "no-padding": this.state.stepIndex === 1,
             })}
             onClose={onClose}
             title={
               <>
                 {onBack && (
-                  <div className='back-wrapper' onClick={onBack}>
-                    <i className='far fa-long-arrow-alt-left'></i>
+                  <div className="back-wrapper" onClick={onBack}>
+                    <i className="far fa-long-arrow-alt-left"></i>
                   </div>
                 )}
-                <span style={{ marginLeft: onBack ? '10px' : '0' }}>
+                <span style={{ marginLeft: onBack ? "10px" : "0" }}>
                   {title}
                 </span>
               </>
@@ -313,18 +313,18 @@ class CreatePostModal extends Component {
               {!isShare && (
                 <InputFileWrapper
                   multiple={true}
-                  accept={'image/*,image/heif,image/heic,video/*'}
+                  accept={"image/*,image/heif,image/heic,video/*"}
                   onUploaded={this.addFiles}
                   limitSize={10 * 1024 * 1024}
                 >
                   {({ onClick }) => (
                     <Tooltip
-                      position={'top'}
-                      text={() => ''}
-                      className={'d-none'}
+                      position={"top"}
+                      text={() => ""}
+                      className={"d-none"}
                     >
                       <div
-                        style={{ display: 'none' }}
+                        style={{ display: "none" }}
                         ref={(upload) => (this.upload = upload)}
                         onClick={onClick}
                       />
