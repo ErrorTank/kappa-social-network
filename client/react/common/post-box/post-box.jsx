@@ -406,8 +406,8 @@ export class PostBox extends PureComponent {
                     customHistory.push(`/marketplace/listing/${listing._id}`)
                   }
                 >
-                  <i className='fab fa-facebook-messenger'></i>
-                  <span>Nhắn tin</span>
+                  <i className='fas fa-info-circle'></i>
+                  <span>Sản phẩm</span>
                 </Button>
               </div>
 

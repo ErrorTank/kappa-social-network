@@ -7,6 +7,8 @@ import { customHistory } from './../../../../routes';
 import { deleteListingModal } from './../../../../../common/modal/delete-listing-modal/delete-listing-modal';
 import { numberToMoney } from '../../../../../../common/utils/listing-utils';
 import moment from 'moment';
+import { createPostModal } from './../../../../../common/create-post-modal/create-post-modal';
+
 export class YourListing extends Component {
   constructor(props) {
     super(props);
@@ -55,7 +57,7 @@ export class YourListing extends Component {
   };
   render() {
     const { sellingList } = this.state;
-    console.log(sellingList);
+    // console.log(sellingList);
     return (
       <div className='your-listing'>
         <div className='sold-listing-wrapper'>
@@ -110,7 +112,16 @@ export class YourListing extends Component {
                       Đánh dấu là {e.isStocked ? 'hết hàng' : 'còn hàng'}
                     </span>
                   </Button>
-                  <Button className={classnames('facebook-button long')}>
+                  <Button
+                    className={classnames('facebook-button long')}
+                    onClick={() => {
+                      createPostModal.open({
+                        placeholder: `Bình luận của bạn?`,
+                        shareMarketplace: true,
+                        listing: e,
+                      });
+                    }}
+                  >
                     <i className='fas fa-share'></i>
                     <span>Chia sẻ</span>
                   </Button>

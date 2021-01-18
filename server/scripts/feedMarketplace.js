@@ -6,6 +6,7 @@ const appDb = dbManager.getConnections()[0];
 const Category = require('../db/model/marketplace/category')(appDb);
 const Listing = require('../db/model/marketplace/listing')(appDb);
 const ChatRoom = require('../db/model/chat-room')(appDb);
+const User = require('../db/model/user')(appDb);
 
 let categories = [
   // parent category
@@ -252,3 +253,9 @@ let categories = [
 //   .then((data) => console.log(data))
 //   .catch((err) => console.log(err));
 // Category.deleteMany({}).then(() => console.log('ok'));
+
+User.findOneAndUpdate(
+  { _id: ObjectId('5eccd70efc70863c7c5f9e0c') },
+  { notifications: [] },
+  { new: true }
+).then((e) => console.log('ok'));

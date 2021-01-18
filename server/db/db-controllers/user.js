@@ -33,7 +33,7 @@ const USER_FRIEND_RELATION = {
 
 const sendResetPasswordToken = ({ credentials, user }) => {
   if (credentials.register_type === 'PHONE') {
-    return nexmoSmsService
+    return twilioSmsService
       .sendSms(
         user.contact.login_username.phone,
         `Mã xác nhận đổi mật khẩu của bạn là: ${credentials.token}`
@@ -700,16 +700,21 @@ const getUserNotifications = ({ userID, skip }) => {
         ],
       },
     ])
-    .then((u) => ({
-      notifications: u.notifications
-        .sort(
-          (a, b) =>
-            new Date(b.published_time).getTime() -
-            new Date(a.published_time).getTime()
-        )
-        .slice(Number(skip), Number(skip) + 7),
-      total: u.notifications.length,
-    }));
+    .then((u) =>
+      // {
+      //   console.log(u);
+      // }
+      ({
+        notifications: u.notifications
+          .sort(
+            (a, b) =>
+              new Date(b.published_time).getTime() -
+              new Date(a.published_time).getTime()
+          )
+          .slice(Number(skip), Number(skip) + 7),
+        total: u.notifications.length,
+      })
+    );
 };
 
 const seenNotifications = ({ userID, notifications }) => {

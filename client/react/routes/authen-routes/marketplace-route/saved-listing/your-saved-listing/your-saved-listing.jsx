@@ -18,13 +18,11 @@ export class YourSavedListing extends Component {
     return (
       <div className='your-saved-listing'>
         {!!savedListingArr.length ? (
-          savedListingArr.map((e) => {
-            return (
-              <div className='saved-listing-wrapper'>
-                <ListingDisplay listing={e} key={e._id} />
-              </div>
-            );
-          })
+          <div className='saved-listing-wrapper'>
+            {savedListingArr.map((e) => {
+              return <ListingDisplay listing={e} key={e._id} />;
+            })}
+          </div>
         ) : (
           <div className='saved-listing-empty-wrapper'>
             <div className='saved-listing-empty'>

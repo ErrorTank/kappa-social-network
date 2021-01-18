@@ -1,24 +1,27 @@
-.dating-card-profile{
+.dating-card-profile {
     position: relative;
     height: 80vh;
     min-width: 380px;
     max-width: 380px;
     margin-top: 1vh;
-    border-radius: 2%
-    overflow-y : auto //croll
-    border : 1px solid black
-    background-color: bgLight
-    .dcp-top{
-        height : 80%
+    border-radius: 2%;
+    overflow-y: auto; // croll
+    border: 1px solid black;
+    background-color: bgLight;
+
+    .dcp-top {
+        height: 80%;
         background-color: #fff;
         cursor: pointer;
-        position relative
+        position: relative;
+
         &>img {
             width: 100%;
             height: 100%;
             object-fit: cover;
             // border-radius: 2%
         }
+
         .avatar-navigator {
             position: absolute;
             top: 5px;
@@ -38,6 +41,7 @@
                         opacity: 1;
                     }
                 }
+
                 .card-box {
                     opacity: 0.2;
                     background-color: black;
@@ -71,50 +75,57 @@
 
         .swipe-right {
             right: 15px;
-            }
+        }
     }
-   
-    .dcp-bot{
+
+    .dcp-bot {
         font-size: 15px;
         font-weight: 300;
         color: black;
-        margin-top : 8px
+        margin-top: 8px;
         padding-left: 18px;
         padding-bottom: 10px;
         padding-right: 20px;
         text-shadow: 0 1px 1px rgba(0, 0, 0, 0.12);
-        .dcp-name-age{
+
+        .dcp-name-age {
+            display: flex;
+            justify-content: space-between;
             font-size: 25px;
             font-weight: 500;
-            .dcp-button{
-                margin-left : 50px;
-                display inline
-                font-size : 16px
-                font-weight: 500
-                color:white
-                background-color: blueTextLight
-                height :40px
-                width : 110px;
+
+            .dcp-button {
+                margin-left: 50px;
+                display: inline;
+                font-size: 16px;
+                font-weight: 500;
+                color: white;
+                background-color: blueTextLight;
+                height: 40px;
+                width: 110px;
                 border-radius: 10px;
-                cursor pointer
-                font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif
+                cursor: pointer;
+                font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+                padding: 5px;
+            }
         }
+
+        .dcp-gender {
+            font-size: 15px;
+            font-weight: 300;
         }
-        .dcp-gender{
-            font-size: 15px   
-            font-weight: 300
+
+        i {
+            margin-right: 10px;
         }
-        i{
-            margin-right :10px
-        }   
     }
-    
-    
 }
+
 .dating-card-profile::-webkit-scrollbar {
     display: none;
 }
+
 .dating-card-profile {
-  -ms-overflow-style: none;  /* IE and Edge */
-  scrollbar-width: none;  /* Firefox */
+    -ms-overflow-style: none; /* IE and Edge */
+    scrollbar-width: none; /* Firefox */
 }
