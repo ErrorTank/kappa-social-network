@@ -387,6 +387,7 @@ module.exports = (db, namespacesIO) => {
     authorizationUserMiddleware,
     checkAuthorizeUser,
     (req, res, next) => {
+      
       return simpleUpdateUser(req.user._id, { $set: omit(req.body, '_id') })
         .then((data) => {
           return getUserAboutBrief(req.user._id).then((user) =>

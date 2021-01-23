@@ -3,15 +3,24 @@ import {CommonInput} from "../../../../common/common-input/common-input";
 import {Button} from "../../../../common/button/button";
 import {userApi} from "../../../../../api/common/user-api";
 import {userInfo} from "../../../../../common/states/common";
+import { KComponent } from '../../../../common/k-component';
 
-export class UserBasicInfo extends Component {
+export class UserBasicInfo extends KComponent {
     constructor(props) {
         super(props);
         this.state = {
             bio: props.user.bio || "",
             edit: false,
-            loading: false
+            loading: false,
+            username: props.user.basic_info.username
         }
+        this.onUnmount(userInfo.onChange((nextState) => {
+            let username = nextState.basic_info.username
+            this.setState({
+                username
+                
+            })
+        }))
     }
 
     updateBio = () => {
@@ -33,19 +42,20 @@ export class UserBasicInfo extends Component {
             this.setState({
                 loading: false,
                 edit: false,
-                bio: this.props.user.bio
+                bio: this.props.user.bio,
+                username: this.props.user.basic_info.username
             })
         }
     }
 
     render() {
-        let {bio, edit, loading} = this.state;
+        let {bio, edit, loading, username} = this.state;
         let {user, isOwner} = this.props;
         const MAX_LENGTH = 100;
         return (
             <div className="user-basic-info">
                 <div className={"username"}>
-                    {user.basic_info.username}
+                    {username}
                 </div>
                 {(!edit ? (
                     <div className="bio">

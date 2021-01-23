@@ -380,6 +380,7 @@ const updateSearchHistory = (userID, historyID, data) => {
 };
 
 const simpleUpdateUser = (userID, data) => {
+ 
   return User.findOneAndUpdate({ _id: ObjectId(userID) }, data, {
     new: true,
     select:

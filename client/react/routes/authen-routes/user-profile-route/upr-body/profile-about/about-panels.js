@@ -35,7 +35,9 @@ export const createAboutPanels = ({isOwner, user, onSave, onSaveList, friendStat
                     renderForm: ({onClose}) => (
                         <NameForm
                             user={user}
-                            onSave={onSave}
+                            onSave={data => {
+                                return onSave(data)
+                            }}
                             onClose={onClose}
                         />
                     )
@@ -102,8 +104,11 @@ export const createAboutPanels = ({isOwner, user, onSave, onSaveList, friendStat
                         <ProfileLinkForm
                             user={user}
                             onSave={(data) => {
-                                customHistory.push(`/user/${data["basic_info.profile_link"]}/about`);
-                                return onSave(data);
+                                
+                                return onSave(data)
+                                .then(() => {
+                                    customHistory.push(`/user/${data["basic_info.profile_link"]}/about`);   
+                                });
 
                             }}
                             onClose={() => {

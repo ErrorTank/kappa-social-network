@@ -35,30 +35,30 @@
     white-space: pre-wrap;
   }
 }
+.new-message-notify {
+  position: -webkit-sticky; /* Safari */
+  position: sticky;
+  display: inline-block;
+  top: calc(100% - 35px);
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: white;
+  box-shadow: 0px 2px 6px #C4C4C4;
+  padding: 5px 10px;
+  z-index: 1;
+  font-size: 1.2rem;
+  border-radius: 5px;
+  cursor: pointer;
 
+  &:hover {
+    background-color: darken(white, 3%);
+  }
+}
 .message-section {
   overflow-x: hidden;
   position: relative;
 
-  .new-message-notify {
-    position: -webkit-sticky; /* Safari */
-    position: sticky;
-    display: inline-block;
-    top: calc(100% - 35px);
-    left: 50%;
-    transform: translateX(-50%);
-    background-color: white;
-    box-shadow: 0px 2px 6px #C4C4C4;
-    padding: 5px 10px;
-    z-index: 1;
-    font-size: 1.2rem;
-    border-radius: 5px;
-    cursor: pointer;
-
-    &:hover {
-      background-color: darken(white, 3%);
-    }
-  }
+  
 
   .messages {
     .typing {

@@ -9,16 +9,24 @@ import {USER_FRIEND_RELATION} from "./upr-header/profile-navigator";
 import {topFloatNotifications} from "../../../common/float-top-notification/float-top-notification";
 import {customHistory} from "../../routes";
 import {Link} from "react-router-dom";
+import { KComponent } from '../../../common/k-component';
 
-class UserProfileRoute extends Component {
+class UserProfileRoute extends KComponent {
     constructor(props) {
         super(props);
         this.state = {
             user: null,
             friendStatus: null,
+            username: ''
         }
         this.fetchUser(props.match.params.userID);
-
+        this.onUnmount(userInfo.onChange((nextState) => {
+            let username = nextState.basic_info.username
+            this.setState({
+                username
+                
+            })
+        }))
     }
 
     fetchUser = userID => {
@@ -44,7 +52,7 @@ class UserProfileRoute extends Component {
             promises.push(userApi.checkIsFriend(userInfo.getState()._id, userID));
         }
         Promise.all(promises)
-            .then(([user, friendStatus]) => this.setState({user, friendStatus: friendStatus?.value || null}))
+            .then(([user, friendStatus]) => this.setState({user, friendStatus: friendStatus?.value || null, username: user.basic_info.username}))
 
     }
 
@@ -55,11 +63,11 @@ class UserProfileRoute extends Component {
     }
 
     render() {
-        let {user, friendStatus} = this.state;
+        let {user, friendStatus, username} = this.state;
 
         return (
             <PageTitle
-                title={!user ? `Tải thông tin...` : user.basic_info.username}
+                title={!username ? `Tải thông tin...` : username}
             >
                 <div className="user-profile-route">
                     <CommonLayout

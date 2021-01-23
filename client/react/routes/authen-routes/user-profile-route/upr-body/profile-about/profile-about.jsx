@@ -43,6 +43,12 @@ export default class ProfileAbout extends Component {
                         </p>
                     )
                 });
+                let {basic_info, contact} = userBrief
+                userInfo.setState({
+                    ...userInfo.getState(),
+                    basic_info,
+                    contact
+                })
                 this.setState({userBrief});
             })
     };
