@@ -59,12 +59,19 @@ export class DatingSetting extends Component {
       theirKids: theirKids.value,
       religion: religion.value,
     };
+
     datingApi.updateFilterSetting(
       { ...submittedData },
       datingProfile.getState()._id
-    );
-    customHistory.push("/dating");
+    ).then(e => customHistory.push("/dating"));
+    
   };
+  getDefaultValue = (value, options) => {
+    let result = options.find( obj => {
+      return obj.value === value
+    })
+    return result;
+  } 
 
   render() {
     let {
@@ -76,6 +83,7 @@ export class DatingSetting extends Component {
       theirKids,
       religion,
     } = this.state;
+
     return (
       <div className="dating-setting">
         <div className="dating-header">
@@ -108,7 +116,7 @@ export class DatingSetting extends Component {
               <ListingInfoSelect
                 className="dr-input"
                 label={"Giới tính"}
-                value={gender}
+                value={gender.id ? gender : this.getDefaultValue(gender, filterGenders)}
                 options={filterGenders}
                 displayAs={(item) => item.label}
                 onChange={(item) => {
@@ -118,7 +126,7 @@ export class DatingSetting extends Component {
               <ListingInfoSelect
                 className="dr-input"
                 label={"Trình độ học vấn"}
-                value={educationLevel}
+                value={educationLevel.id ? educationLevel : this.getDefaultValue(educationLevel, filterEducationLevels)}
                 options={filterEducationLevels}
                 displayAs={(item) => item.label}
                 onChange={(item) => {
@@ -128,8 +136,8 @@ export class DatingSetting extends Component {
               <ListingInfoSelect
                 className="dr-input"
                 label={"Con cái"}
-                value={theirKids}
-                options={filterTheirKides}
+                value={theirKids.id ? theirKids : this.getDefaultValue(theirKids, filterTheirKides)}
+                options={filterTheirKides }
                 displayAs={(item) => item.label}
                 onChange={(item) => {
                   this.setState({ theirKids: item });
@@ -138,7 +146,7 @@ export class DatingSetting extends Component {
               <ListingInfoSelect
                 className="dr-input"
                 label={"Quan điểm tôn giáo"}
-                value={religion}
+                value={religion.id ? religion : this.getDefaultValue(religion, filterReligions)}
                 options={filterReligions}
                 displayAs={(item) => item.label}
                 onChange={(item) => {

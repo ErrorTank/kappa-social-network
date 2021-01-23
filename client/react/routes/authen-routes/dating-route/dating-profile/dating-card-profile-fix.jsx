@@ -26,14 +26,14 @@ export class DatingCardProfileFix extends Component {
       name: profile.name,
       bio: profile.bio,
       location: {
-        ward: profile.location.ward._id,
-        district: profile.location.district._id,
-        city: profile.location.city._id,
+        ward: profile.location.ward,
+        district: profile.location.district,
+        city: profile.location.city,
       },
       homeTown: {
-        ward: profile.homeTown.ward._id,
-        district: profile.homeTown.district._id,
-        city: profile.homeTown.city._id,
+        ward: profile.homeTown.ward,
+        district: profile.homeTown.district,
+        city: profile.homeTown.city,
       },
       gender: profile.gender,
       job: profile.job,
@@ -79,6 +79,13 @@ export class DatingCardProfileFix extends Component {
             ...fileData,
           }));
   };
+
+  getDefaultValue = (value, options) => {
+    let result = options.find( obj => {
+      return obj.value === value
+    })
+    return result;
+  } 
   submit = () => {
     let {
       name,
@@ -98,6 +105,7 @@ export class DatingCardProfileFix extends Component {
       drinking,
       religion,
     } = this.state;
+    
     Promise.all(avatars.map((each) => this.uploadSingleFile(each))).then(
       (newFiles) => {
         let submittedData = {
@@ -177,8 +185,10 @@ export class DatingCardProfileFix extends Component {
       allDistrict,
       allWard,
     } = this.state;
+
     const { handleEdit } = this.props;
-    console.log(homeTown);
+    // console.log(homeTown);
+    console.log(this.state);
     return (
       <div className="dating-card-profile-fix">
         <div className="picture-input" id="files">
@@ -278,7 +288,7 @@ export class DatingCardProfileFix extends Component {
           <ListingInfoSelect
             className="dr-input"
             label={"Giới tính"}
-            value={gender}
+            value={gender.id ? gender : this.getDefaultValue(gender, genders)}
             options={genders}
             displayAs={(item) => item.label}
             onChange={(item) => {
@@ -410,7 +420,7 @@ export class DatingCardProfileFix extends Component {
             <ListingInfoSelect
               className="dr-input"
               label={"Bạn có con chưa"}
-              value={yourKids}
+              value={yourKids.id ? yourKids : this.getDefaultValue(yourKids, yourKides)}
               options={yourKides}
               displayAs={(item) => item.label}
               onChange={(item) => {
@@ -423,7 +433,7 @@ export class DatingCardProfileFix extends Component {
           <ListingInfoSelect
             className="dr-input"
             label={"Hút thuốc"}
-            value={smoking}
+            value={smoking.id ? smoking : this.getDefaultValue(smoking, smokings)}
             options={smokings}
             displayAs={(item) => item.label}
             onChange={(item) => {
@@ -435,7 +445,7 @@ export class DatingCardProfileFix extends Component {
           <ListingInfoSelect
             className="dr-input"
             label={"Uống rượu"}
-            value={drinking}
+            value={drinking.id ? drinking : this.getDefaultValue(drinking, drinkings)}
             options={drinkings}
             displayAs={(item) => item.label}
             onChange={(item) => {
@@ -447,7 +457,7 @@ export class DatingCardProfileFix extends Component {
           <ListingInfoSelect
             className="dr-input"
             label={"Quan điểm tôn giáo"}
-            value={religion}
+            value={religion.id ? religion : this.getDefaultValue(religion, religions)}
             options={religions}
             displayAs={(item) => item.label}
             onChange={(item) => {
@@ -489,7 +499,7 @@ export class DatingCardProfileFix extends Component {
           <ListingInfoSelect
             className="dr-input"
             label={"Trình độ học vấn của bạn"}
-            value={educationLevel}
+            value={educationLevel.id ? educationLevel : this.getDefaultValue(educationLevel, educationLevels)}
             options={educationLevels}
             displayAs={(item) => item.label}
             onChange={(item) => {
@@ -501,7 +511,7 @@ export class DatingCardProfileFix extends Component {
           <ListingInfoSelect
             className="dr-input"
             label={"Đang tìm kiếm"}
-            value={target}
+            value={target.id ? target : this.getDefaultValue(target, targets)}
             options={targets}
             displayAs={(item) => item.label}
             onChange={(item) => {
