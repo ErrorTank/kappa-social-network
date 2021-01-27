@@ -13,6 +13,8 @@ import { filterTheirKides } from "./../../../../../const/filterTheirKids";
 import { filterReligions } from "../../../../../const/filterReligions";
 import { religions } from "../../../../../const/religions";
 import { datingApi } from "./../../../../../api/common/dating";
+import { KComponent } from "./../../../../common/k-component";
+import profile from "../../../../../../server/db/model/dating/profile";
 
 export class DatingSetting extends Component {
   constructor(props) {
@@ -59,19 +61,18 @@ export class DatingSetting extends Component {
       theirKids: theirKids.value,
       religion: religion.value,
     };
-
-    datingApi.updateFilterSetting(
-      { ...submittedData },
-      datingProfile.getState()._id
-    ).then(e => customHistory.push("/dating"));
-    
+    datingApi
+      .updateFilterSetting({ ...submittedData }, datingProfile.getState()._id)
+      .then((e) => {
+        customHistory.push("/dating");
+      });
   };
   getDefaultValue = (value, options) => {
-    let result = options.find( obj => {
-      return obj.value === value
-    })
+    let result = options.find((obj) => {
+      return obj.value === value;
+    });
     return result;
-  } 
+  };
 
   render() {
     let {
@@ -116,7 +117,11 @@ export class DatingSetting extends Component {
               <ListingInfoSelect
                 className="dr-input"
                 label={"Giới tính"}
-                value={gender.id ? gender : this.getDefaultValue(gender, filterGenders)}
+                value={
+                  gender.id
+                    ? gender
+                    : this.getDefaultValue(gender, filterGenders)
+                }
                 options={filterGenders}
                 displayAs={(item) => item.label}
                 onChange={(item) => {
@@ -126,7 +131,14 @@ export class DatingSetting extends Component {
               <ListingInfoSelect
                 className="dr-input"
                 label={"Trình độ học vấn"}
-                value={educationLevel.id ? educationLevel : this.getDefaultValue(educationLevel, filterEducationLevels)}
+                value={
+                  educationLevel.id
+                    ? educationLevel
+                    : this.getDefaultValue(
+                        educationLevel,
+                        filterEducationLevels
+                      )
+                }
                 options={filterEducationLevels}
                 displayAs={(item) => item.label}
                 onChange={(item) => {
@@ -136,8 +148,12 @@ export class DatingSetting extends Component {
               <ListingInfoSelect
                 className="dr-input"
                 label={"Con cái"}
-                value={theirKids.id ? theirKids : this.getDefaultValue(theirKids, filterTheirKides)}
-                options={filterTheirKides }
+                value={
+                  theirKids.id
+                    ? theirKids
+                    : this.getDefaultValue(theirKids, filterTheirKides)
+                }
+                options={filterTheirKides}
                 displayAs={(item) => item.label}
                 onChange={(item) => {
                   this.setState({ theirKids: item });
@@ -146,7 +162,11 @@ export class DatingSetting extends Component {
               <ListingInfoSelect
                 className="dr-input"
                 label={"Quan điểm tôn giáo"}
-                value={religion.id ? religion : this.getDefaultValue(religion, filterReligions)}
+                value={
+                  religion.id
+                    ? religion
+                    : this.getDefaultValue(religion, filterReligions)
+                }
                 options={filterReligions}
                 displayAs={(item) => item.label}
                 onChange={(item) => {

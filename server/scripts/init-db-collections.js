@@ -52,14 +52,14 @@ const initDbCollections = (appDb) => {
   //     });
   //   });
 
-      // Profile.updateMany(
-      //   {},
-      //   {
-      //     $set: {
-      //       seen: [],
-      //     },
-      //   }
-      // ).exec();
+  // Profile.updateMany(
+  //   {},
+  //   {
+  //     $set: {
+  //       seen: [],
+  //     },
+  //   }
+  // ).exec();
   // ChatBox.updateMany(
   //   {},
   //   {
