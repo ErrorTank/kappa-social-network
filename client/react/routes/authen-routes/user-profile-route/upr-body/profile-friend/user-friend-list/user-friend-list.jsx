@@ -210,7 +210,11 @@ export class UserFriendList extends Component {
 
     fetchFriends = (config) => {
         this.props.api(config)
-            .then(({list, total}) => this.setState({list: this.state.list.concat(list), total, loading: false}))
+            .then(({list, total}) => {
+                if(this.state.loading){
+                    this.setState({list: this.state.list.concat(list), total, loading: false})
+                }
+            })
     }
 
     removeInvitation = user => {

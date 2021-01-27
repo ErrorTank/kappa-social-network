@@ -59,7 +59,7 @@ const initDbCollections = (appDb) => {
       //       seen: [],
       //     },
       //   }
-      // ).exec();
+      // ).exec();\
   // ChatBox.updateMany(
   //   {},
   //   {
