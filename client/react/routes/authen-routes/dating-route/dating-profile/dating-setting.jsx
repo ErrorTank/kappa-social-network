@@ -13,8 +13,6 @@ import { filterTheirKides } from "./../../../../../const/filterTheirKids";
 import { filterReligions } from "../../../../../const/filterReligions";
 import { religions } from "../../../../../const/religions";
 import { datingApi } from "./../../../../../api/common/dating";
-import { KComponent } from "./../../../../common/k-component";
-import profile from "../../../../../../server/db/model/dating/profile";
 
 export class DatingSetting extends Component {
   constructor(props) {
@@ -61,11 +59,16 @@ export class DatingSetting extends Component {
       theirKids: theirKids.value,
       religion: religion.value,
     };
+
+    let profile = { ...this.state };
+
+    datingProfile.setState({
+      ...datingProfile.getState(),
+      filterSetting: { ...profile },
+    });
     datingApi
       .updateFilterSetting({ ...submittedData }, datingProfile.getState()._id)
-      .then((e) => {
-        customHistory.push("/dating");
-      });
+      .then((e) => customHistory.push("/dating"));
   };
   getDefaultValue = (value, options) => {
     let result = options.find((obj) => {
@@ -84,7 +87,7 @@ export class DatingSetting extends Component {
       theirKids,
       religion,
     } = this.state;
-
+    console.log(this.state);
     return (
       <div className="dating-setting">
         <div className="dating-header">
