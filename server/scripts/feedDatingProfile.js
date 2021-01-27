@@ -1,9 +1,9 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 const ObjectId = mongoose.Types.ObjectId;
 const Schema = mongoose.Schema;
-const dbManager = require('../config/db');
+const dbManager = require("../config/db");
 const appDb = dbManager.getConnections()[0];
-const Profile = require('../db/model/dating/profile')(appDb);
+const Profile = require("../db/model/dating/profile")(appDb);
 
 let profile = [
   // {
@@ -64,10 +64,6 @@ let profile = [
   //   },
   //   seen: [],
   // },
-<<<<<<< HEAD
-
-=======
->>>>>>> c0405432647baf99f2213d3fc68c7b7fcbc1cb6c
   // {
   //   _id: new ObjectId(),
   //   bio: "người ta thay bồ như thay áo, còn tôi quyết định không mặc gì",
@@ -128,10 +124,6 @@ let profile = [
   //   },
   //   seen: [],
   // },
-<<<<<<< HEAD
-
-=======
->>>>>>> c0405432647baf99f2213d3fc68c7b7fcbc1cb6c
   // {
   //   _id: new ObjectId(),
   //   bio: "Match để biết thêm chi tiết",
@@ -198,10 +190,6 @@ let profile = [
   //   },
   //   seen: [],
   // },
-<<<<<<< HEAD
-
-=======
->>>>>>> c0405432647baf99f2213d3fc68c7b7fcbc1cb6c
   // {
   //   _id: new ObjectId(),
   //   bio: "Tìm một mối quan hệ nghiêm túc",
@@ -263,10 +251,6 @@ let profile = [
   //   },
   //   seen: [],
   // },
-<<<<<<< HEAD
-
-=======
->>>>>>> c0405432647baf99f2213d3fc68c7b7fcbc1cb6c
   // {
   //   _id: new ObjectId(),
   //   bio: "Tìm một người bạn nói chuyện những lúc buồn",
@@ -321,10 +305,6 @@ let profile = [
   //   },
   //   seen: [],
   // },
-<<<<<<< HEAD
-
-=======
->>>>>>> c0405432647baf99f2213d3fc68c7b7fcbc1cb6c
   // {
   //   _id: new ObjectId(),
   //   bio: "Đang lạc người anh yêu..",
@@ -379,10 +359,6 @@ let profile = [
   //   },
   //   seen: [],
   // },
-<<<<<<< HEAD
-
-=======
->>>>>>> c0405432647baf99f2213d3fc68c7b7fcbc1cb6c
   // {
   //   _id: new ObjectId(),
   //   bio: "Thích thì ib",
@@ -437,10 +413,6 @@ let profile = [
   //   },
   //   seen: [],
   // },
-<<<<<<< HEAD
-
-=======
->>>>>>> c0405432647baf99f2213d3fc68c7b7fcbc1cb6c
   // {
   //   _id: new ObjectId(),
   //   bio:
@@ -496,7 +468,6 @@ let profile = [
   //   },
   //   seen: [],
   // },
-<<<<<<< HEAD
 
   // {
   //   _id: new ObjectId(),
@@ -715,180 +686,11 @@ let profile = [
       },
       {
         path: "https://localhost:2000/assets/images/leemenho/leemenho1.jpeg",
-=======
-  // {
-  //   _id: new ObjectId(),
-  //   bio: "Nếu match nghĩa là anh đẹp trai",
-  //   name: "Khánh Linh",
-  //   avatars: [
-  //     {
-  //       path: "https://localhost:2000/assets/images/KhanhLinh/khanhlinh1.jpeg",
-  //       isAvatar: true,
-  //     },
-  //     {
-  //       path: "https://localhost:2000/assets/images/KhanhLinh/khanhlinh2.jpeg",
-  //       isAvatar: false,
-  //     },
-  //   ],
-  //   birthday: new Date(2001, 7, 16),
-  //   location: {
-  //     lat: 21.029866,
-  //     lng: 105.850788,
-  //     ward: ObjectId("5e92c7b6b4c8182784f5b99a"),
-  //     district: ObjectId("5e92c7b4b4c8182784f5993c"),
-  //     city: ObjectId("5e92c7b4b4c8182784f59d86"),
-  //   },
-  //   gender: "FEMALE",
-  //   target: "CHATTING",
-  //   height: 175,
-  //   hometown: {
-  //     ward: ObjectId("5e92c7b6b4c8182784f5b99a"),
-  //     district: ObjectId("5e92c7b4b4c8182784f5993c"),
-  //     city: ObjectId("5e92c7b4b4c8182784f59d86"),
-  //   },
-  //   job: "Student",
-  //   secondarySchool: "THPT Trung Văn",
-  //   university: "Đại học Bách khoa Hà Nội",
-  //   educationLevel: "A-LEVELS,HIGHERS OR EQUIVALENT",
-  //   yourKids: "I DON'T HAVE KIDS",
-  //   smoking: "PREFER NOT TO SAY",
-  //   drinking: "OCCASIONALLY",
-  //   religion: "OTHER",
-  //   popularity: 10,
-  //   filterSetting: {
-  //     distance: 15,
-  //     gender: "MALE",
-  //     ageRange: { fromNumber: 22, toNumber: 30 },
-  //     heightRange: { fromNumber: 160, toNumber: 190 },
-  //     educationLevel: "NO PREFERENCE",
-  //     theirKids: "THEY DON'T HAVE KIDS",
-  //     religion: "NO PREFERENCE",
-  //   },
-  //   seen: [],
-  // },
-  // {
-  //   _id: new ObjectId(),
-  //   bio: "Thích thì match, không thích thì match",
-  //   name: "Diana Trần",
-  //   avatars: [
-  //     {
-  //       path: "https://localhost:2000/assets/images/DianaTran/dianatran1.jpg",
-  //       isAvatar: true,
-  //     },
-  //     {
-  //       path: "https://localhost:2000/assets/images/DianaTran/dianatran2.jpg",
-  //       isAvatar: false,
-  //     },
-  //     {
-  //       path: "https://localhost:2000/assets/images/DianaTran/dianatran3.jpg",
-  //       isAvatar: false,
-  //     },
-  //   ],
-  //   birthday: new Date(1995, 2, 20),
-  //   location: {
-  //     lat: 21.045411,
-  //     lng: 105.841521,
-  //     ward: ObjectId("5e92c7b6b4c8182784f5b982"),
-  //     district: ObjectId("5e92c7b4b4c8182784f5993b"),
-  //     city: ObjectId("5e92c7b4b4c8182784f59d86"),
-  //   },
-  //   gender: "FEMALE",
-  //   target: "SOMETHING CASUAL",
-  //   height: 155,
-  //   hometown: {
-  //     ward: ObjectId("5e92c7b6b4c8182784f5b982"),
-  //     district: ObjectId("5e92c7b4b4c8182784f5993b"),
-  //     city: ObjectId("5e92c7b4b4c8182784f59d86"),
-  //   },
-  //   job: "Student",
-  //   secondarySchool: "THPT Đại Mỗ",
-  //   university: "Đại học Xây dựng",
-  //   educationLevel: "A-LEVELS,HIGHERS OR EQUIVALENT",
-  //   yourKids: "I DON'T HAVE KIDS",
-  //   smoking: "PREFER NOT TO SAY",
-  //   drinking: "NEVER",
-  //   religion: "OTHER",
-  //   popularity: 10,
-  //   filterSetting: {
-  //     distance: 30,
-  //     gender: "MALE",
-  //     ageRange: { fromNumber: 24, toNumber: 30 },
-  //     heightRange: { fromNumber: 170, toNumber: 190 },
-  //     educationLevel: "NO PREFERENCE",
-  //     theirKids: "THEY DON'T HAVE KIDS",
-  //     religion: "NO PREFERENCE",
-  //   },
-  //   seen: [],
-  // },
-  // {
-  //   _id: new ObjectId(),
-  //   bio: "Thích thì match, không thích thì match",
-  //   name: "Bảo Ngọc ",
-  //   avatars: [
-  //     {
-  //       path: "https://localhost:2000/assets/images/BaoNgoc/baongoc1.jpeg",
-  //       isAvatar: true,
-  //     },
-  //     {
-  //       path: "https://localhost:2000/assets/images/BaoNgoc/baongoc2.jpeg",
-  //       isAvatar: false,
-  //     },
-  //   ],
-  //   birthday: new Date(1993, 3, 19),
-  //   location: {
-  //     lat: 21.039731,
-  //     lng: 105.83071,
-  //     ward: ObjectId("5e92c7b6b4c8182784f5b982"),
-  //     district: ObjectId("5e92c7b4b4c8182784f5993b"),
-  //     city: ObjectId("5e92c7b4b4c8182784f59d86"),
-  //   },
-  //   gender: "FEMALE",
-  //   target: "SOMETHING CASUAL",
-  //   height: 155,
-  //   hometown: {
-  //     ward: ObjectId("5e92c7b6b4c8182784f5b982"),
-  //     district: ObjectId("5e92c7b4b4c8182784f5993b"),
-  //     city: ObjectId("5e92c7b4b4c8182784f59d86"),
-  //   },
-  //   job: "Nhân viên văn phòng",
-  //   secondarySchool: "THPT FPT",
-  //   university: "Đại học Phương Đông",
-  //   educationLevel: "A-LEVELS,HIGHERS OR EQUIVALENT",
-  //   yourKids: "I DON'T HAVE KIDS",
-  //   smoking: "PREFER NOT TO SAY",
-  //   drinking: "NEVER",
-  //   religion: "OTHER",
-  //   popularity: 28,
-  //   filterSetting: {
-  //     distance: 30,
-  //     gender: "MALE",
-  //     ageRange: { fromNumber: 24, toNumber: 30 },
-  //     heightRange: { fromNumber: 170, toNumber: 190 },
-  //     educationLevel: "NO PREFERENCE",
-  //     theirKids: "THEY DON'T HAVE KIDS",
-  //     religion: "NO PREFERENCE",
-  //   },
-  //   seen: [],
-  // },
-
-  {
-    _id: new ObjectId(),
-    bio: 'The one',
-    name: 'Bảo Tuấn anh ',
-    avatars: [
-      {
-        path: 'https://localhost:2000/assets/images/BaoNgoc/baongoc1.jpeg',
-        isAvatar: true,
-      },
-      {
-        path: 'https://localhost:2000/assets/images/BaoNgoc/baongoc2.jpeg',
->>>>>>> c0405432647baf99f2213d3fc68c7b7fcbc1cb6c
         isAvatar: false,
       },
     ],
     birthday: new Date(1990, 11, 19),
     location: {
-<<<<<<< HEAD
       lat: 21.002016,
       lng: 105.913155,
       ward: ObjectId("5e92c7b6b4c8182784f5ba43"),
@@ -907,39 +709,19 @@ let profile = [
     secondarySchool: "THPT Cổ Bi",
     university: "Học viện nông nghiệp",
     educationLevel: "A-LEVELS,HIGHERS OR EQUIVALENT",
-=======
-      lat: 21.039731,
-      lng: 105.83071,
-      ward: ObjectId('5e92c7b6b4c8182784f5b982'),
-      district: ObjectId('5e92c7b4b4c8182784f5993b'),
-      city: ObjectId('5e92c7b4b4c8182784f59d86'),
-    },
-    gender: 'FEMALE',
-    target: 'SOMETHING CASUAL',
-    height: 155,
-    hometown: {
-      ward: ObjectId('5e92c7b6b4c8182784f5b982'),
-      district: ObjectId('5e92c7b4b4c8182784f5993b'),
-      city: ObjectId('5e92c7b4b4c8182784f59d86'),
-    },
-    job: 'Nhân viên văn phòng',
-    secondarySchool: 'THPT FPT',
-    university: 'Đại học Phương Đông',
-    educationLevel: 'A-LEVELS,HIGHERS OR EQUIVALENT',
->>>>>>> c0405432647baf99f2213d3fc68c7b7fcbc1cb6c
     yourKids: "I DON'T HAVE KIDS",
-    smoking: 'PREFER NOT TO SAY',
-    drinking: 'NEVER',
-    religion: 'OTHER',
+    smoking: "PREFER NOT TO SAY",
+    drinking: "NEVER",
+    religion: "OTHER",
     popularity: 28,
     filterSetting: {
       distance: 30,
-      gender: 'MALE',
+      gender: "MALE",
       ageRange: { fromNumber: 24, toNumber: 30 },
       heightRange: { fromNumber: 170, toNumber: 190 },
-      educationLevel: 'NO PREFERENCE',
+      educationLevel: "NO PREFERENCE",
       theirKids: "THEY DON'T HAVE KIDS",
-      religion: 'NO PREFERENCE',
+      religion: "NO PREFERENCE",
     },
     seen: [],
   },
@@ -952,8 +734,4 @@ let profile = [
 //     ],
 //   },
 // }).then(() => console.log("son is a dog"));
-<<<<<<< HEAD
 Profile.insertMany(profile).then(() => console.log("tank is a dog"));
-=======
-Profile.insertMany(profile).then(() => console.log('tank is a dog'));
->>>>>>> c0405432647baf99f2213d3fc68c7b7fcbc1cb6c
