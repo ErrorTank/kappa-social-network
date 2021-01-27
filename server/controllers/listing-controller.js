@@ -82,7 +82,11 @@ module.exports = (db, namespacesIO) => {
     '/delete-listing/:listingID',
     authorizationUserMiddleware,
     (req, res, next) => {
-      return deleteListing(req.params);
+      return deleteListing(req.params)
+        .then((data) => {
+          return res.status(200).json(data);
+        })
+        .catch((err) => next(err));
     }
   );
   router.put(

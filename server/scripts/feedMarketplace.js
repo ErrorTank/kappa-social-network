@@ -254,8 +254,8 @@ let categories = [
 //   .catch((err) => console.log(err));
 // Category.deleteMany({}).then(() => console.log('ok'));
 
-User.findOneAndUpdate(
-  { _id: ObjectId('5eccd70efc70863c7c5f9e0c') },
-  { notifications: [] },
-  { new: true }
-).then((e) => console.log('ok'));
+// User.findOneAndUpdate(
+//   { _id: ObjectId('5eccd70efc70863c7c5f9e0c') },
+//   { notifications: [] },
+//   { new: true }
+// ).then((e) => console.log('ok'));
