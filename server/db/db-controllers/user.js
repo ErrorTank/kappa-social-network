@@ -1023,6 +1023,7 @@ const getUserFriends = (callerID, userID, config) => {
       );
       total = list.length;
     }
+    console.log(list)
     list = list
       .slice(Number(skip), Number(skip) + Number(limit))
       .map((each) => ({
@@ -1043,7 +1044,7 @@ const getUserFriends = (callerID, userID, config) => {
                 (f) => f.info.toString() === each.friends.info._id.toString()
               )
             ? 'FRIEND'
-            : each.friend_requests.find((each) => each.toString() === callerID)
+            : each.friends.info.friend_requests.find((each) => each.toString() === callerID)
             ? 'PENDING'
             : 'NOT_FRIEND',
       }))

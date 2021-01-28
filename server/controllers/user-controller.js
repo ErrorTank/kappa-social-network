@@ -247,6 +247,9 @@ module.exports = (db, namespacesIO) => {
           deleteNotificationByType(req.params.friendID, 'friend_request', {
             person: ObjectId(req.params.userID),
           });
+          deleteNotificationByType(req.params.userID, 'friend_request', {
+            person: ObjectId(req.params.friendID),
+          });
 
           return res.status(200).json(data);
         })
