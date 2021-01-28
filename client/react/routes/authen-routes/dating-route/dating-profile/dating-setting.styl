@@ -6,12 +6,29 @@
     overflow-y: auto;
 
     .dating-header {
-        >i {
-            align-self: center;
-            font-size: 18px;
-            font-weight: 500;
-            color: white;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        .icon-wrapper {
+            width: 25px;
+            height: 25px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-radius: 50%;
+            background-color: #fff;
+            top: 50%;
+            right: 5%;
             cursor: pointer;
+
+            >i {
+                align-self: center;
+                font-size: 13px;
+                font-weight: 500;
+                color: black;
+                cursor: pointer;
+            }
         }
     }
 
@@ -31,8 +48,9 @@
 
         .ds-wrap {
             .ds-title {
-                font-size: 14px;
-                font-weight: 400;
+                font-size: 15px;
+                font-weight: 500;
+                margin: 20px 0 0 16px;
             }
 
             .row-wrapper-age {

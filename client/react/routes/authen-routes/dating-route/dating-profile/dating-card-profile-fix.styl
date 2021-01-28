@@ -1,19 +1,27 @@
-.dating-card-profile-fix{
-    position: relative;
-    height: 80vh;
-    min-width: 380px;
-    max-width: 380px;
-    margin-top: 1vh;
-    border-radius: 2%
-    overflow-y : auto //croll
-    border : 1px solid black
-    background-color: bgLight
-    // .picture-input-wrapper{
-    //     width 320px
-    //     display: flex
-    //     justify-content: center
-    //     margin: 0 auto
-    .picture-input {
+.dating-card-profile-fix {
+  padding: 10px 0;
+  position: relative;
+  height: 80vh;
+  min-width: 380px;
+  max-width: 380px;
+  margin-top: 1vh;
+  border-radius: 2%;
+  overflow-y: auto; // croll
+  border: 1px solid black;
+  background-color: bgLight;
+
+  .text-title {
+    font-size: 15px;
+    font-weight: 500;
+    margin: 20px 0 0 16px;
+  }
+
+  // .picture-input-wrapper{
+  // width 320px
+  // display: flex
+  // justify-content: center
+  // margin: 0 auto
+  .picture-input {
     padding: 0 16px;
 
     .picture-input-header {
@@ -139,27 +147,29 @@
     }
   }
 
-    .dcpf-button{
-        margin : 10px auto;
-        display: flex
-        justify-content: center
-        bottom : 0;
-        left : 40%
-        font-size : 16px
-        font-weight: 500
-        color:white
-        background-color: blueTextLight
-        height :30px;
-        width : 50px
-        border-radius: 10px;
-        cursor pointer
-        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif
-    }
+  .dcpf-button {
+    margin: 10px auto;
+    display: flex;
+    justify-content: center;
+    bottom: 0;
+    left: 40%;
+    font-size: 16px;
+    font-weight: 500;
+    color: white;
+    background-color: blueTextLight;
+    height: 30px;
+    width: 50px;
+    border-radius: 10px;
+    cursor: pointer;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  }
 }
+
 .dating-card-profile-fix::-webkit-scrollbar {
-    display: none;
+  display: none;
 }
+
 .dating-card-profile-fix {
-  -ms-overflow-style: none;  /* IE and Edge */
-  scrollbar-width: none;  /* Firefox */
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
 }
