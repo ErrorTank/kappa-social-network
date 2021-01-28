@@ -50,7 +50,6 @@ export class DatingLayout extends Component {
       .then((profile) => {
         if (profile) {
           this.connectDatingSocket(profile._id);
-          // console.log("con cac");
           console.log(profile);
           return datingProfile.setState(profile).then(() => true);
         }
