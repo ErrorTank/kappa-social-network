@@ -49,7 +49,7 @@ class SellMessengerModal extends Component {
         'Mặt hàng này còn chứ?',
         'Mặt hàng ở tình trạng như thế nào?',
         'Bạn có giao hàng không?',
-        `Các thông tin sản phẩm _id: ${this.props.listing._id}`,
+        `Các thông tin sản phẩm...`,
       ],
     },
     {
@@ -58,7 +58,7 @@ class SellMessengerModal extends Component {
         'Ngày bắt đầu cho thuê có linh hoạt không?',
         'Có phí đặt cọc hay phí nào khắc không?',
         'Có bao gồm điện, nước, điện thoại và Internet không?',
-        `Các thông tin sản phẩm _id: ${this.props.listing._id}`,
+        `Các thông tin sản phẩm...`,
       ],
     },
   ];
@@ -191,12 +191,11 @@ class SellMessengerModal extends Component {
                 onClick={() => {
                   const { message } = this.state;
                   if (message) {
-                    if (message.search('_id:') > -1) {
-                      // console.log(message.slice(0, message.search('_id:')));
+                    if (message.search('Các thông tin sản phẩm') > -1) {
                       this.handleSendSellMessage({
-                        product: message.slice(message.search('_id:') + 5),
+                        product: this.props.listing._id,
                         files: [],
-                        content: message.slice(0, message.search('_id:')),
+                        content: message,
                       });
                     } else {
                       this.handleSendSellMessage({
