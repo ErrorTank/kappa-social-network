@@ -33,7 +33,9 @@ export class DatingSetting extends Component {
       theirKids: profile.filterSetting.theirKids,
       religion: profile.filterSetting.religion,
     };
+    console.log(profile);
   }
+
   submit = () => {
     let {
       distance,
