@@ -16,7 +16,7 @@ export const drinkings = [
   },
   {
     id: "PREFER NOT TO SAY",
-    label: "Không muốn tiết l",
+    label: "Không muốn tiết lộ",
     value: "PREFER NOT TO SAY",
   },
 ];

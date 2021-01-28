@@ -520,7 +520,7 @@ const getMessages = (chatBoxId, skip) => {
     });
 };
 const updateProfile = (data, profileId) => {
-  console.log(data, "ok");
+  // 9
   return Profile.findOneAndUpdate(
     {
       _id: ObjectId(profileId),
@@ -534,7 +534,7 @@ const updateProfile = (data, profileId) => {
     .then((profile) => {
       // console.log(comment.context)
       // console.log(messageID)
-      console.log(profile);
+      // console.log(profile);
       return profile;
     });
 };

@@ -91,7 +91,7 @@ export class DatingCardProfile extends KComponent {
               ? "Nam"
               : profile.gender === "FEMALE"
               ? "Nữ"
-              : "Không xác định"}
+              : "Khác"}
           </div>
           <div>
             {profile.bio && (

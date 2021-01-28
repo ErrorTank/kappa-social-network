@@ -1,18 +1,18 @@
-import React, { Component } from 'react';
-import { datingProfile } from '../../../../../common/states/common';
-import { Avatar } from './../../../../common/avatar/avatar';
-import { customHistory } from './../../../routes';
-import { distanceTo } from 'geolocation-utils';
-import { ListingInfoSelect } from './../../../../common/listing-info-select/listing-info-select';
-import { distances } from './../../../../../const/distance';
-import { filterGenders } from './../../../../../const/filterGender';
-import { filterAges } from './../../../../../const/filterAge';
-import { heights } from './../../../../../const/height';
-import { filterEducationLevels } from './../../../../../const/filterEducationLevels';
-import { filterTheirKides } from './../../../../../const/filterTheirKids';
-import { filterReligions } from '../../../../../const/filterReligions';
-import { religions } from '../../../../../const/religions';
-import { datingApi } from './../../../../../api/common/dating';
+import React, { Component } from "react";
+import { datingProfile } from "../../../../../common/states/common";
+import { Avatar } from "./../../../../common/avatar/avatar";
+import { customHistory } from "./../../../routes";
+import { distanceTo } from "geolocation-utils";
+import { ListingInfoSelect } from "./../../../../common/listing-info-select/listing-info-select";
+import { distances } from "./../../../../../const/distance";
+import { filterGenders } from "./../../../../../const/filterGender";
+import { filterAges } from "./../../../../../const/filterAge";
+import { heights } from "./../../../../../const/height";
+import { filterEducationLevels } from "./../../../../../const/filterEducationLevels";
+import { filterTheirKides } from "./../../../../../const/filterTheirKids";
+import { filterReligions } from "../../../../../const/filterReligions";
+import { religions } from "../../../../../const/religions";
+import { datingApi } from "./../../../../../api/common/dating";
 
 export class DatingSetting extends Component {
   constructor(props) {
@@ -68,7 +68,7 @@ export class DatingSetting extends Component {
     });
     datingApi
       .updateFilterSetting({ ...submittedData }, datingProfile.getState()._id)
-      .then((e) => customHistory.push('/dating'));
+      .then((e) => customHistory.push("/dating"));
   };
   getDefaultValue = (value, options) => {
     let result = options.find((obj) => {
@@ -89,37 +89,37 @@ export class DatingSetting extends Component {
     } = this.state;
     console.log(this.state);
     return (
-      <div className='dating-setting'>
-        <div className='dating-header'>
+      <div className="dating-setting">
+        <div className="dating-header">
           <i
-            className='far fa-chevron-left'
-            onClick={() => customHistory.push('/dating')}
+            className="far fa-chevron-left"
+            onClick={() => customHistory.push("/dating")}
           ></i>
-          <div className='header-avatar'>
+          <div className="header-avatar">
             <Avatar
               user={{ avatar: datingProfile.getState().avatars[0].path }}
             />
           </div>
           <h2>Thông tin của tôi</h2>
         </div>
-        <div className='ds-edit'>
-          <span className='ds-text'> Cài đặt tìm kiếm</span>
-          <div className='ds-wrap'>
-            <div className='ds-title'> Thông tin cơ bản</div>
-            <div className='row-wrapper'>
+        <div className="ds-edit">
+          <span className="ds-text"> Cài đặt tìm kiếm</span>
+          <div className="ds-wrap">
+            <div className="ds-title"> Thông tin cơ bản</div>
+            <div className="row-wrapper">
               <ListingInfoSelect
-                className='dr-input'
-                label={'Khoảng cách '}
+                className="dr-input"
+                label={"Khoảng cách "}
                 value={distance}
                 options={distances}
-                displayAs={(item) => item + ' km'}
+                displayAs={(item) => item + " km"}
                 onChange={(item) => {
                   this.setState({ distance: item });
                 }}
               />
               <ListingInfoSelect
-                className='dr-input'
-                label={'Giới tính'}
+                className="dr-input"
+                label={"Giới tính"}
                 value={
                   gender.id
                     ? gender
@@ -132,8 +132,8 @@ export class DatingSetting extends Component {
                 }}
               />
               <ListingInfoSelect
-                className='dr-input'
-                label={'Trình độ học vấn'}
+                className="dr-input"
+                label={"Trình độ học vấn"}
                 value={
                   educationLevel.id
                     ? educationLevel
@@ -149,8 +149,8 @@ export class DatingSetting extends Component {
                 }}
               />
               <ListingInfoSelect
-                className='dr-input'
-                label={'Con cái'}
+                className="dr-input"
+                label={"Con cái"}
                 value={
                   theirKids.id
                     ? theirKids
@@ -163,8 +163,8 @@ export class DatingSetting extends Component {
                 }}
               />
               <ListingInfoSelect
-                className='dr-input'
-                label={'Quan điểm tôn giáo'}
+                className="dr-input"
+                label={"Quan điểm tôn giáo"}
                 value={
                   religion.id
                     ? religion
@@ -179,15 +179,15 @@ export class DatingSetting extends Component {
             </div>
           </div>
 
-          <div className='ds-wrap'>
-            <div className='ds-title'> Độ tuổi</div>
-            <div className='row-wrapper-age'>
+          <div className="ds-wrap">
+            <div className="ds-title"> Độ tuổi</div>
+            <div className="row-wrapper-age">
               <ListingInfoSelect
-                className='dr-input'
-                label={'Từ'}
+                className="dr-input"
+                label={"Từ"}
                 value={ageRange.fromNumber}
                 options={filterAges}
-                displayAs={(item) => item + ' tuổi'}
+                displayAs={(item) => item + " tuổi"}
                 onChange={(item) => {
                   this.setState({
                     ageRange: {
@@ -198,11 +198,11 @@ export class DatingSetting extends Component {
                 }}
               />
               <ListingInfoSelect
-                className='dr-input'
-                label={'Đến'}
+                className="dr-input"
+                label={"Đến"}
                 value={ageRange.toNumber}
                 options={filterAges}
-                displayAs={(item) => item + ' tuổi'}
+                displayAs={(item) => item + " tuổi"}
                 onChange={(item) => {
                   if (item > this.state.ageRange.fromNumber) {
                     this.setState({
@@ -216,15 +216,15 @@ export class DatingSetting extends Component {
               />
             </div>
           </div>
-          <div className='ds-wrap'>
-            <div className='ds-title'> Chiều cao</div>
-            <div className='row-wrapper-age'>
+          <div className="ds-wrap">
+            <div className="ds-title"> Chiều cao</div>
+            <div className="row-wrapper-age">
               <ListingInfoSelect
-                className='dr-input'
-                label={'Từ'}
+                className="dr-input"
+                label={"Từ"}
                 value={heightRange.fromNumber}
                 options={heights}
-                displayAs={(item) => item + ' cm'}
+                displayAs={(item) => item + " cm"}
                 onChange={(item) => {
                   console.log(item);
                   this.setState({
@@ -236,11 +236,11 @@ export class DatingSetting extends Component {
                 }}
               />
               <ListingInfoSelect
-                className='dr-input'
-                label={'Đến'}
+                className="dr-input"
+                label={"Đến"}
                 value={heightRange.toNumber}
                 options={heights}
-                displayAs={(item) => item + ' cm'}
+                displayAs={(item) => item + " cm"}
                 onChange={(item) => {
                   if (item > this.state.heightRange.fromNumber) {
                     this.setState({
@@ -254,7 +254,7 @@ export class DatingSetting extends Component {
               />
             </div>
           </div>
-          <div className='dcpf-button' onClick={this.submit}>
+          <div className="dcpf-button" onClick={this.submit}>
             Lưu
           </div>
         </div>

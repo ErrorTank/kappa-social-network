@@ -1,6 +1,5 @@
 const feed = require("./feed");
 const mongoose = require("mongoose");
-
 const ObjectId = mongoose.Types.ObjectId;
 const initDbCollections = (appDb) => {
   const User = require("../db/model/user")(appDb);
@@ -32,7 +31,7 @@ const initDbCollections = (appDb) => {
   //   }
   // ).exec();
   // Profile.find({})
-  //
+
   //   .lean()
   //   .then((data) => {
   //     data.forEach((x) => {
@@ -48,7 +47,9 @@ const initDbCollections = (appDb) => {
   //             },
   //           },
   //         }
-  //       ).exec().then(() => console.log("cac"));
+  //       )
+  //         .exec()
+  //         .then(() => console.log("cac"));
   //     });
   //   });
 
