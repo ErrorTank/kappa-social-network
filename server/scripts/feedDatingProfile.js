@@ -631,11 +631,11 @@ let profile = [
     name: "Trung Hiếu",
     avatars: [
       {
-        path: "https://localhost:2000/assets/images/TrungHieu/trunghieu1.jpeg",
+        path: "https://localhost:2000/assets/images/TrungHieu/trunghieu2.jpg",
         isAvatar: true,
       },
       {
-        path: "https://localhost:2000/assets/images/TrungHieu/trunghieu2.jpeg",
+        path: "https://localhost:2000/assets/images/TrungHieu/trunghieu3.jpg",
         isAvatar: false,
       },
     ],
@@ -681,11 +681,11 @@ let profile = [
     name: "Lee Men Ho",
     avatars: [
       {
-        path: "https://localhost:2000/assets/images/leemenho/leemenho.jpeg",
+        path: "https://localhost:2000/assets/images/leemenho/leemenho.jpg",
         isAvatar: true,
       },
       {
-        path: "https://localhost:2000/assets/images/leemenho/leemenho1.jpeg",
+        path: "https://localhost:2000/assets/images/leemenho/leemenho2.jpg",
         isAvatar: false,
       },
     ],

@@ -35,6 +35,7 @@ export class DatingSetting extends Component {
     };
     console.log(profile);
   }
+
   submit = () => {
     let {
       distance,
