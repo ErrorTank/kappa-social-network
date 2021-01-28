@@ -81,11 +81,11 @@ export class DatingCardProfileFix extends Component {
   };
 
   getDefaultValue = (value, options) => {
-    let result = options.find( obj => {
-      return obj.value === value
-    })
+    let result = options.find((obj) => {
+      return obj.value === value;
+    });
     return result;
-  } 
+  };
   submit = () => {
     let {
       name,
@@ -105,7 +105,7 @@ export class DatingCardProfileFix extends Component {
       drinking,
       religion,
     } = this.state;
-    
+
     Promise.all(avatars.map((each) => this.uploadSingleFile(each))).then(
       (newFiles) => {
         let submittedData = {
@@ -264,7 +264,7 @@ export class DatingCardProfileFix extends Component {
             </InputFileWrapper>
           )}
         </div>
-        Giới thiệu bản thân
+        <span></span>Giới thiệu bản thân
         <div>
           <ListingInfoInput
             className="dr-input"
@@ -420,7 +420,11 @@ export class DatingCardProfileFix extends Component {
             <ListingInfoSelect
               className="dr-input"
               label={"Bạn có con chưa"}
-              value={yourKids.id ? yourKids : this.getDefaultValue(yourKids, yourKides)}
+              value={
+                yourKids.id
+                  ? yourKids
+                  : this.getDefaultValue(yourKids, yourKides)
+              }
               options={yourKides}
               displayAs={(item) => item.label}
               onChange={(item) => {
@@ -433,7 +437,9 @@ export class DatingCardProfileFix extends Component {
           <ListingInfoSelect
             className="dr-input"
             label={"Hút thuốc"}
-            value={smoking.id ? smoking : this.getDefaultValue(smoking, smokings)}
+            value={
+              smoking.id ? smoking : this.getDefaultValue(smoking, smokings)
+            }
             options={smokings}
             displayAs={(item) => item.label}
             onChange={(item) => {
@@ -445,7 +451,9 @@ export class DatingCardProfileFix extends Component {
           <ListingInfoSelect
             className="dr-input"
             label={"Uống rượu"}
-            value={drinking.id ? drinking : this.getDefaultValue(drinking, drinkings)}
+            value={
+              drinking.id ? drinking : this.getDefaultValue(drinking, drinkings)
+            }
             options={drinkings}
             displayAs={(item) => item.label}
             onChange={(item) => {
@@ -457,7 +465,9 @@ export class DatingCardProfileFix extends Component {
           <ListingInfoSelect
             className="dr-input"
             label={"Quan điểm tôn giáo"}
-            value={religion.id ? religion : this.getDefaultValue(religion, religions)}
+            value={
+              religion.id ? religion : this.getDefaultValue(religion, religions)
+            }
             options={religions}
             displayAs={(item) => item.label}
             onChange={(item) => {
@@ -499,7 +509,11 @@ export class DatingCardProfileFix extends Component {
           <ListingInfoSelect
             className="dr-input"
             label={"Trình độ học vấn của bạn"}
-            value={educationLevel.id ? educationLevel : this.getDefaultValue(educationLevel, educationLevels)}
+            value={
+              educationLevel.id
+                ? educationLevel
+                : this.getDefaultValue(educationLevel, educationLevels)
+            }
             options={educationLevels}
             displayAs={(item) => item.label}
             onChange={(item) => {
